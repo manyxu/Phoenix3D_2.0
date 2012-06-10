@@ -1,0 +1,101 @@
+vs_3_0
+// cgc version 3.0.0016, build date Feb 11 2011
+// command line args: -profile vs_3_0
+// source file: Standard.fx
+//vendor NVIDIA Corporation
+//version 3.0.0.16
+//profile vs_3_0
+//program v_Standard
+//semantic gWMatrix
+//semantic gVMatrix
+//semantic gPMatrix
+//semantic gPVWMatrix
+//semantic gVWMatrix
+//semantic gWIMatrix
+//semantic gVIMatrix
+//semantic gCameraWorldPosition
+//semantic gShineEmissive
+//semantic gShineAmbient
+//semantic gShineDiffuse
+//semantic gLightColour
+//semantic gLightModelDirection
+//semantic gControlFloat
+//semantic gDegreeFloat
+//semantic gDiffuseSampler
+//semantic gNormalSampler
+//semantic gSpecularSampler
+//semantic gReflectionSampler
+//var float3 modelPosition : $vin.POSITION0 : ATTR0 : 0 : 1
+//var float4 modelColor : $vin.COLOR0 : ATTR1 : 1 : 1
+//var float3 modelNormal : $vin.NORMAL0 : ATTR2 : 2 : 1
+//var float3 modelTangent : $vin.TANGENT0 : ATTR3 : 3 : 1
+//var float3 modelBiNormal : $vin.BINORMAL0 : ATTR4 : 4 : 1
+//var float2 modelTCoord0 : $vin.TEXCOORD0 : ATTR5 : 5 : 1
+//var float4 clipPosition : $vout.POSITION : ATTR0 : 6 : 1
+//var float4 vertexColor : $vout.COLOR0 : ATTR1 : 7 : 1
+//var float2 vertexTCoord0 : $vout.TEXCOORD0 : ATTR2 : 8 : 1
+//var float3 vertexLightDir : $vout.TEXCOORD1 : ATTR3 : 9 : 1
+//var float3 vertexNormal : $vout.TEXCOORD2 : ATTR4 : 10 : 1
+//var float3 vertexViewDir : $vout.TEXCOORD3 : ATTR5 : 11 : 1
+//var float4x4 gWMatrix :  : c[0], 4 : -1 : 1
+//var float4x4 gVMatrix :  : , 4 : -1 : 0
+//var float4x4 gPMatrix :  : , 4 : -1 : 0
+//var float4x4 gPVWMatrix :  : c[4], 4 : -1 : 1
+//var float4x4 gVWMatrix :  : , 4 : -1 : 0
+//var float4x4 gWIMatrix :  : , 4 : -1 : 0
+//var float4x4 gVIMatrix :  : , 4 : -1 : 0
+//var float3 gCameraWorldPosition :  : c[8] : -1 : 1
+//var float4 gShineEmissive :  :  : -1 : 0
+//var float4 gShineAmbient :  :  : -1 : 0
+//var float4 gShineDiffuse :  :  : -1 : 0
+//var float4 gLightColour :  :  : -1 : 0
+//var float3 gLightModelDirection :  : c[9] : -1 : 1
+//var float4 gControlFloat :  : c[10] : -1 : 1
+//var float4 gDegreeFloat :  :  : -1 : 0
+//var sampler2D gDiffuseSampler :  :  : -1 : 0
+//var sampler2D gNormalSampler :  :  : -1 : 0
+//var sampler2D gSpecularSampler :  :  : -1 : 0
+//var samplerCUBE gReflectionSampler :  :  : -1 : 0
+//const c[11] = 1 5
+//default gShineEmissive = 0 0 0 1
+//default gShineAmbient = 0.1 0.1 0.1 1
+//default gShineDiffuse = 0.47 0.47 0.47 1
+//default gLightColour = 0.30000001 0.30000001 0.30000001 1
+//default gLightModelDirection = -0.5 -0.5 -0.5
+dcl_position o0
+dcl_color0 o1
+dcl_texcoord2 o4
+dcl_texcoord0 o2
+dcl_texcoord1 o3
+dcl_texcoord3 o5
+def c11, 1.00000000, 5.00000000, 0, 0
+dcl_position0 v0
+dcl_color0 v1
+dcl_normal0 v2
+dcl_texcoord0 v5
+dcl_tangent0 v3
+dcl_binormal0 v4
+mov r1.w, c11.x
+mov r1.xyz, v0
+dp4 r0.z, r1, c2
+dp4 r0.x, r1, c0
+dp4 r0.y, r1, c1
+add r0.xyz, -r0, c8
+dp3 o5.z, v2, r0
+dp3 o5.y, r0, v4
+dp3 o5.x, r0, v3
+mov r0.w, c11.y
+dp4 o0.w, r1, c7
+dp4 o0.z, r1, c6
+dp4 o0.y, r1, c5
+dp4 o0.x, r1, c4
+mov o1, v1
+mov o4.xyz, v2
+mov o2.xy, v5
+dp3 o3.z, v2, c9
+dp3 o3.y, v4, c9
+dp3 o3.x, v3, c9
+if_eq c10.y, r0.w
+mov o3.xyz, c9
+mov o5.xyz, r0
+endif
