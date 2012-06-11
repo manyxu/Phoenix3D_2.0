@@ -32,7 +32,7 @@ EventChannel &EventChannel::AddSystemChannel ()
 	assertion(N>=0, "");
 	assertion(N<=SystemChannelLength, "");
 
-	AddChannel(SystemChannel::Value);
+	AddChannel(SystemChannel<N>::Value);
 
 	return (*this);
 }
@@ -43,7 +43,7 @@ EventChannel &EventChannel::RemoveSystemChannel ()
 	assertion(N>=0, "");
 	assertion(N<=SystemChannelLength, "");
 
-	RemoveChannel(SystemChannel::Value);
+	RemoveChannel(SystemChannel<N>::Value);
 
 	return (*this);
 }
