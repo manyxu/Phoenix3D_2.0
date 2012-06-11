@@ -22,7 +22,6 @@
 #include "PX2Unity.hpp"
 #include "PX2UserInterface.hpp"
 #include "PX2Game.hpp"
-#include "PX2Awesomium.hpp"
 
 namespace PX2
 {

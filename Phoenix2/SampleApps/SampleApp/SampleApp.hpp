@@ -46,10 +46,6 @@ protected:
 	WirePropertyPtr mWireProperty;
 	Culler mCuller;
 	Float4 mTextColor;
-	AwesomiumHandlerPtr mAwesomiumHandler;
-
-	Awesomium::WebCore* mCore;
-	Awesomium::WebView* mDefaultView;
 };
 
 #endif

@@ -62,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Awesomium_d.lib DevIL.lib ILU.lib ILUT.lib OIS_static_d.lib d3d9.lib d3dx9.lib dxerr9.lib opengl32.lib glu32.lib LinearMath.lib BulletCollision.lib BulletDynamics.lib PX2CoreVC90d.lib PX2MathematicsVC90d.lib PX2GraphicsDx9VC90d.lib PX2EventSystemVC90d.lib PX2UnityVC90d.lib PX2UserInterfaceVC90d.lib PX2TerrainVC90d.lib PX2BulletVC90d.lib PX2GameVC90d.lib PX2AwesomiumVC90d.lib PX2AppFrameDx9VC90d.lib"
+				AdditionalDependencies="Awesomium_d.lib DevIL.lib ILU.lib ILUT.lib OIS_static_d.lib d3d9.lib d3dx9.lib dxerr.lib opengl32.lib glu32.lib LinearMath.lib BulletCollision.lib BulletDynamics.lib PX2CoreVC90d.lib PX2MathematicsVC90d.lib PX2GraphicsDx9VC90d.lib PX2EventSystemVC90d.lib PX2UnityVC90d.lib PX2UserInterfaceVC90d.lib PX2TerrainVC90d.lib PX2BulletVC90d.lib PX2GameVC90d.lib PX2AppFrameDx9VC90d.lib"
 				OutputFile="..\..\Bin\SampleApp_d.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\ThirdPartiesLibsDependent\DXSDK\Lib\x86;&quot;..\..\ThirdPartiesLibsDependent\ois-v1-3\lib&quot;;..\..\ThirdPartiesLibsDependent\Awesomium\build\lib\Debug;..\..\ThirdPartiesLibsDependent\bullet\lib\debug;..\..\ThirdPartiesLibsDependent\DevIL\lib;..\..\PX2SDK\Library\Debug"

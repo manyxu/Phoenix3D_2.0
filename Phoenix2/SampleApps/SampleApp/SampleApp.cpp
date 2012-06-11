@@ -84,12 +84,6 @@ bool SampleApp::OnTernamate ()
 
 	EventWorld::GetSingleton().GoOut(this);
 
-	if (mAwesomiumHandler)
-	{
-		EventWorld::GetSingleton().GoOut(mAwesomiumHandler);
-		mAwesomiumHandler = 0;
-	}
-
 	Win32Application::OnTernamate();
 
 	return true;
