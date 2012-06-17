@@ -72,16 +72,6 @@ bool EventHandler::IsInWorld (EventWorld* world) const
 	return false;
 }
 //----------------------------------------------------------------------------
-void EventHandler::EnableUpdate ()
-{
-	mEnableUpdate = true;
-}
-//----------------------------------------------------------------------------
-void EventHandler::DisableUpdate ()
-{
-	mEnableUpdate = false;
-}
-//----------------------------------------------------------------------------
 void EventHandler::DoEnter ()
 {
 }
@@ -104,16 +94,7 @@ void EventHandler::Execute (Event* event)
 	assertion(event!=0, "event must exist.");
 	if (mEntered)
 	{
-		if (IsUpdateEvent(event))
-		{
-			if (mEnableUpdate)
-			{
-				DoUpdate();
-				DoExecute(event);
-			}
-		}
-		else
-			DoExecute(event);
+		DoExecute(event);
 	}
 }
 //----------------------------------------------------------------------------
@@ -129,10 +110,5 @@ void EventHandler::Leave ()
 	mEntered = false;
 	DoLeave();
 	mWorld = 0;
-}
-//----------------------------------------------------------------------------
-bool EventHandler::IsUpdateEvent (Event* event)
-{
-	return (event->mEventType == EVENT_UPDATE_HANDLER);
 }
 //----------------------------------------------------------------------------

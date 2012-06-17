@@ -43,10 +43,6 @@ namespace PX2
 		bool IsInWorld () const;
 		bool IsInWorld (EventWorld* pWorld) const;
 
-		// 更新
-		void EnableUpdate ();
-		void DisableUpdate ();
-
 		// 重载,进行相应的消息处理
 		virtual void DoEnter ();
 		virtual void DoUpdate ();
@@ -59,8 +55,6 @@ public_internal:
 		void Leave ();
 
 	private:
-		bool IsUpdateEvent (Event* event);
-
 		bool mEntered;
 		bool mEnableUpdate;
 		EventWorld* mWorld;

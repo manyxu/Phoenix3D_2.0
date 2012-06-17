@@ -14,15 +14,6 @@
 #ifndef PX2EVENTSYSTEMPREREQUISITES_HPP
 #define PX2EVENTSYSTEMPREREQUISITES_HPP
 
-// boost¾¯¸æ
-#pragma warning(disable:4127)
-
-// boost
-#include <boost/any.hpp>
-#include <boost/variant.hpp>
-#include <boost/pool/object_pool.hpp>
-#include <boost/function.hpp>
-
 #include "PX2Core.hpp"
 
 #endif

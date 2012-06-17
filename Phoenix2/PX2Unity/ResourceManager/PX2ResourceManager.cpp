@@ -319,13 +319,18 @@ Texture2D *ResourceManager::LoadTextureFromOtherImagefile (
 	}
 
 	int bufferSize;
-	char* buffer;
+	char* buffer = 0;
 	if (!FileIO::Load(filename, true, bufferSize, buffer))
 	{
 		return 0;
 	}
 
 	ILboolean b = ilLoadL(type, buffer, bufferSize);
+
+	if (buffer)
+	{
+		delete1(buffer);
+	}
 
 	if (!b)
 	{

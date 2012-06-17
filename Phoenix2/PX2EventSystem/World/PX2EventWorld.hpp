@@ -28,10 +28,6 @@ namespace PX2
 		EventWorld ();
 		~EventWorld ();
 
-		// 初始化/释放
-		bool Initlize ();
-		bool Ternamate (); //< 消息世界释放，把剩余消息广播完毕
-
 		// 消息句柄
 		void ComeIn (EventHandler *handler);
 		void GoOut (EventHandler *handler);

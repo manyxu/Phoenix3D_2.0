@@ -34,7 +34,6 @@ public:
 
 	// Event
 	virtual void DoEnter ();
-	virtual void DoUpdate ();
 	virtual void DoExecute (Event *event);
 	virtual void DoLeave ();
 

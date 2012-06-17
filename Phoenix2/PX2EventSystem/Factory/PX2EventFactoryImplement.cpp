@@ -11,12 +11,12 @@ using namespace PX2;
 //----------------------------------------------------------------------------
 Event* EventFactoryImplement::CreateEvent ()
 {
-	return mEventPool.construct();
+	return new0 Event();
 }
 //----------------------------------------------------------------------------
 void EventFactoryImplement::DestoryEvent (Event* event)
 {
-	mEventPool.destroy(event);
+	delete0(event);
 }
 //----------------------------------------------------------------------------
 void EventFactoryImplement::RegisterEventSpace (EventSpace* eventSpace)

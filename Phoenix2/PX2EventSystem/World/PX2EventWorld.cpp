@@ -20,8 +20,28 @@ EventWorld::EventWorld ()
 //----------------------------------------------------------------------------
 EventWorld::~EventWorld ()
 {
-	//Ternamate();
+	// handlers
+	mHandlers.clear();
 
+	// events
+	EventList::iterator itEvent;
+	for (itEvent=mNowEventList->begin();
+		itEvent!=mNowEventList->end();
+		++itEvent)
+	{
+		EventFactory::GetInstance().DestoryEvent(*itEvent);
+	}
+	mNowEventList->clear();
+
+	for (itEvent=mNextEventList->begin();
+		itEvent!=mNextEventList->end();
+		++itEvent)
+	{
+		EventFactory::GetInstance().DestoryEvent(*itEvent);
+	}
+	mNextEventList->clear();
+
+	// list
 	if (mNowEventList)
 	{
 		delete0(mNowEventList);
@@ -33,21 +53,6 @@ EventWorld::~EventWorld ()
 		delete0(mNextEventList);
 		mNextEventList = 0;
 	}
-}
-//----------------------------------------------------------------------------
-bool EventWorld::Initlize ()
-{
-	return true;
-}
-//----------------------------------------------------------------------------
-bool EventWorld::Ternamate ()
-{
-	while (!(mNowEventList->empty() && mNextEventList->empty() ) )
-	{
-		UpdateEvent();
-	}
-
-	return true;
 }
 //----------------------------------------------------------------------------
 void EventWorld::ComeIn (EventHandler *handler)
@@ -62,17 +67,7 @@ void EventWorld::ComeIn (EventHandler *handler)
 
 	handler->Enter(this);
 
-	Event* event = 0;
-	event = EventFactory::GetInstance().CreateEvent();
-
-	if (event)
-	{
-		event->SetEventType((Event::EventType)EVENT_ADD_HANDLER);
-		event->SetBeSystemEvent();
-		EventHandler* handlerPtr = handler;
-		event->SetData<EventHandler*>(handlerPtr);
-		_BroadcastingEvent(event);
-	}
+	AddHandler(handler);
 }
 //----------------------------------------------------------------------------
 void EventWorld::GoOut(EventHandler *handler)
@@ -87,34 +82,11 @@ void EventWorld::GoOut(EventHandler *handler)
 
 	handler->Leave();
 
-	// 立刻删除
 	RemoveHandler(handler);
-
-	Event* event = 0;
-	event = EventFactory::GetInstance().CreateEvent();
-
-	if (event)
-	{
-		event->SetEventType((Event::EventType)EVENT_REMOVE_HANDLER);
-		event->SetBeSystemEvent();
-		EventHandler* handlerPtr = handler;
-		event->SetData<EventHandler*>(handlerPtr);
-		_BroadcastingEvent(event);
-	}
 }
 //----------------------------------------------------------------------------
 void EventWorld::Update ()
 {
-	Event* event = 0;
-	event = EventFactory::GetInstance().CreateEvent();
-
-	if (event)
-	{
-		event->SetEventType((Event::EventType)EVENT_UPDATE_HANDLER);
-		event->SetBeSystemEvent();
-		_BroadcastingEvent(event);
-	}
-
 	UpdateEvent();
 }
 //----------------------------------------------------------------------------
@@ -168,22 +140,7 @@ void EventWorld::UpdateEvent ()
 			// 没有频道的消息
 			switch ((*itEvent)->GetEventType())
 			{
-			case EVENT_ADD_HANDLER:
-				AddHandler((*itEvent)->GetData<EventHandler*>());
-				break;
-			case EVENT_REMOVE_HANDLER:
-			//	RemoveHandler((*itEvent)->GetData<EventHandler*>());
-				break;
-			case EVENT_UPDATE_HANDLER:
-				{
-					EventHandlerList::iterator itHandler;
-					for (itHandler=mHandlers.begin();
-						itHandler!=mHandlers.end();
-						++itHandler)
-					{
-						(*itHandler)->Execute(*itEvent);
-					}
-				}
+			case EVENT_NONE:
 				break;
 			default:
 				break;

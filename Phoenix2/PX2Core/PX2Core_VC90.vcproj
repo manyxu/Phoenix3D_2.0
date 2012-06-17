@@ -298,6 +298,10 @@
 			Name="DataTypes"
 			>
 			<File
+				RelativePath=".\DataTypes\PX2Any.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\DataTypes\PX2DoubleChainList.hpp"
 				>
 			</File>
