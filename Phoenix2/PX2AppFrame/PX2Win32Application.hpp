@@ -77,7 +77,6 @@ namespace PX2
 
 		double mLastTime, mAccumulatedTime, mFrameRate;
 		int mFrameCount, mAccumulatedFrameCount, mTimer, mMaxTimer;
-
 	};
 
 }
