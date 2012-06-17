@@ -89,6 +89,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FxCompiler", "..\..\Tools\F
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleApp", "..\..\SampleApps\SampleApp\SampleApp.vcproj", "{91FE3DC7-0F48-4B62-B76A-D2A8F43D6421}"
+	ProjectSection(ProjectDependencies) = postProject
+		{05DC2BD1-0B6F-485A-809C-4E3B6B8F807C} = {05DC2BD1-0B6F-485A-809C-4E3B6B8F807C}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Max8ToPX2", "..\..\Tools\Max8ToPX2\Max8ToPX2.vcproj", "{0AC30DC4-266A-494B-82F3-1588EBDF6128}"
 	ProjectSection(ProjectDependencies) = postProject
