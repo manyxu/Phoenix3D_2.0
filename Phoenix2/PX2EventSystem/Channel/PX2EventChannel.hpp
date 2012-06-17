@@ -22,6 +22,7 @@ namespace PX2
 	/// 通道类型定义
 	typedef unsigned int EventChannelType;
 
+	// 32位和64位
 	template <class T,int I = (sizeof(T)>>2)>
 	class ChannelLength
 	{
@@ -34,6 +35,7 @@ namespace PX2
 		};
 	};
 
+	// 16位
 	template <class T>
 	class ChannelLength <T, 0>
 	{

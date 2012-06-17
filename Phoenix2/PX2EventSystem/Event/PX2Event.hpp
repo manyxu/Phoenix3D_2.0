@@ -25,9 +25,7 @@ namespace PX2
 	/// 系统事件
 	enum SystemEvent
 	{
-		EVENT_REMOVE_HANDLER = -1,
-		EVENT_ADD_HANDLER = -2,
-		EVENT_UPDATE_HANDLER = -3
+		EVENT_NONE = -1,
 	};
 
 	/// 事件对象

@@ -257,7 +257,6 @@ bool Win32Application::Ternamate ()
 
 	mEventWorld->GoOut(mUIManager);
 
-	mEventWorld->Ternamate();
 	if (mOISEventAdapter)
 		mOISEventAdapter->Ternamate();
 	mEventWorld = 0;

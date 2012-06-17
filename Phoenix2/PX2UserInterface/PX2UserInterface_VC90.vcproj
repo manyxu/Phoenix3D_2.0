@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\;..\PX2SDK\Include;..\ThirdPartiesLibsDependent\boost;&quot;..\ThirdPartiesLibsDependent\ois-v1-3\includes&quot;"
+				AdditionalIncludeDirectories=".\;..\PX2SDK\Include;&quot;..\ThirdPartiesLibsDependent\ois-v1-3\includes&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

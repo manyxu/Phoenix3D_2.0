@@ -41,9 +41,7 @@ namespace PX2
 
 	private:
 		typedef std::map<std::string, EventSpace*> EventSpaceMap;
-		typedef boost::object_pool<Event> EventPool;
 
-		EventPool mEventPool;
 		EventSpaceMap mSpaces;
 		int mEventQuantity;
 	};

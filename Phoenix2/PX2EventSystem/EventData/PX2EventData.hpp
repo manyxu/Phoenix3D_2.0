@@ -19,7 +19,7 @@
 namespace PX2
 {
 
-	typedef boost::any EventData;
+	typedef Any EventData;
 
 	template <class T>
 	class EventDataTemplate
@@ -32,7 +32,8 @@ namespace PX2
 
 		static T Get (const EventData& data)
 		{
-			return boost::any_cast<T>(data);
+			const T *val = Any_Cast<T>(&data);
+			return *val;
 		}
 	};
 

@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\ThirdPartiesLibsDependent\DXSDK\Include;..\..\ThirdPartiesLibsDependent\bullet\src;..\..\ThirdPartiesLibsDependent\boost;&quot;..\..\ThirdPartiesLibsDependent\ois-v1-3\includes&quot;;..\..\ThirdPartiesLibsDependent\Awesomium\include;..\..\PX2SDK\Include"
+				AdditionalIncludeDirectories="..\..\ThirdPartiesLibsDependent\DXSDK\Include;..\..\ThirdPartiesLibsDependent\bullet\src;&quot;..\..\ThirdPartiesLibsDependent\ois-v1-3\includes&quot;;..\..\PX2SDK\Include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;PX2_USE_DX9"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
