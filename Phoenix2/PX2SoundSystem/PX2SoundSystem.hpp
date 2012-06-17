@@ -19,6 +19,9 @@
 #include "PX2SmartPointer.hpp"
 #include "PX2Singleton.hpp"
 
+// 去除单件模式的警告
+#pragma warning(disable : 4312)
+
 namespace PX2
 {
 

@@ -16,7 +16,4 @@
 
 #include <fmod.hpp>
 
-// 去除单件模式的警告
-#pragma warning(disable : 4312)
-
 #endif
