@@ -143,7 +143,7 @@ bool XMLNode::AttributeToBool (const char *name)
 {
 	const char *pstr = AttributeToString(name);
 
-	if (pstr != 0)
+	if (0 == pstr)
 	{
 		return false;
 	}
