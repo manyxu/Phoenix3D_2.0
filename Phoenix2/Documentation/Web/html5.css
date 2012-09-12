@@ -1,0 +1,181 @@
+/* html5 css file, Copyright ?Pro HTML5 Programming */
+
+body {
+	background-color:#CCCCCC;
+	font-family:Geneva,Arial,Helvetica,sans-serif;
+	margin: 0px auto;
+	max-width:1000px;
+	border:solid;
+	border-color:#FFFFFF;
+}
+
+header {
+	background-color: red;
+	display:block;
+	color:#FFFFFF;
+	text-align:center;
+}
+
+header h2 {
+	margin: 0px;
+	font-size: 20px;
+	color: #FFFFFF;
+	background-color: blue;
+}
+
+h1 {
+	font-size: 60px;
+	margin: 0px;
+	color: #FFFFFF;
+}
+
+h2 {
+	font-size: 44px;
+	margin: 0px;
+	text-align:center;
+	color: #000000;
+}
+
+h3 {
+	font-size: 48px;
+	margin: 0px;
+	text-align:center;
+	color: #F47D31;
+}
+
+h4 {
+	color: #F47D31;
+	background-color: #fff;
+	-webkit-box-shadow: 2px 2px 20px #888;
+	-webkit-transform: rotate(-45deg);
+	-moz-box-shadow: 2px 2px 20px #888;
+	-moz-transform: rotate(-45deg);
+	position: absolute;
+	padding: 0px 150px;
+	top: 50px;
+	left: -120px;
+	text-align:center;
+	
+}
+
+nav {
+	display:block;
+	width:20%;
+	float:left;
+}
+
+nav a:link, nav a:visited {
+	display: block;
+	border-bottom: 3px solid #fff;
+	padding: 10px;
+	text-decoration: none;
+	font-weight: bold;
+	margin: 5px;
+}
+
+nav a:hover {
+	color: white;
+	background-color: #F47D31;
+}
+
+nav h3 {
+	margin: 15px;
+	color: white;
+}
+
+#container {
+	background-color: #888;
+}
+
+section {
+	display:block;
+	width:70%;
+	float:left;
+}
+
+article {
+	background-color: #eee;
+	display:block;
+	margin: 10px;
+	padding: 10px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	font-size: 15px;
+}
+
+article header {
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	padding: 20px;
+
+}
+
+article footer {
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	padding: 10px;
+}
+
+article h1 {
+	font-size: 18px;
+}
+
+	
+aside {
+	display:block;
+	width:25%;
+	float:left;
+}
+
+aside h3 {
+	margin: 15px;
+	color: white;
+}
+
+aside p {
+	margin: 15px;
+	color: white;
+	font-weight: bold;
+	font-style: italic;
+}
+	
+
+footer {
+	clear: both;	
+	display: block;
+	background-color: red;
+	color:#FFFFFF;
+	text-align:center;
+	padding: 20px;
+}
+
+footer h2 {
+	font-size: 14px;
+	color: white;
+}
+
+audio {
+width: 200px;
+}
+
+/* links */
+a {
+	color: #FFFFFF;
+	text-align:center;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a.redlink a {
+	color: #000000;
+	text-align:left;
+}
+
+a.redlink a:hover {
+	text-decoration: underline;
+}
