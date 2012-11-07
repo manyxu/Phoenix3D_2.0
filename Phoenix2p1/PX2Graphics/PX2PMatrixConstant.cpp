@@ -1,0 +1,41 @@
+/*
+*
+* ÎÄ¼þÃû³Æ	£º	PX2PMatrixConstant.cpp
+*
+*/
+
+#include "PX2PMatrixConstant.hpp"
+#include "PX2Camera.hpp"
+#include "PX2Renderable.hpp"
+using namespace PX2;
+
+PX2_IMPLEMENT_RTTI(PX2, ShaderFloat, PMatrixConstant);
+PX2_IMPLEMENT_STREAM(PMatrixConstant);
+PX2_IMPLEMENT_FACTORY(PMatrixConstant);
+PX2_IMPLEMENT_DEFAULT_NAMES(ShaderFloat, PMatrixConstant);
+PX2_IMPLEMENT_DEFAULT_STREAM(ShaderFloat, PMatrixConstant);
+
+//----------------------------------------------------------------------------
+PMatrixConstant::PMatrixConstant ()
+:
+ShaderFloat(4)
+{
+	mAllowUpdater = true;
+}
+//----------------------------------------------------------------------------
+PMatrixConstant::~PMatrixConstant ()
+{
+}
+//----------------------------------------------------------------------------
+void PMatrixConstant::Update (const Renderable*, const Camera* camera)
+{
+	const HMatrix& projMatrix = camera->GetProjectionMatrix();
+
+	const float* source = (const float*)projMatrix;
+	float* target = mData;
+	for (int i = 0; i < 16; ++i)
+	{
+		*target++ = *source++;
+	}
+}
+//----------------------------------------------------------------------------

@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="PX2Core.hpp" />
+    <ClInclude Include="PX2Assert.hpp">
+      <Filter>Assert</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Any.hpp">
+      <Filter>DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2DoubleChainList.hpp">
+      <Filter>DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2DayTime.hpp">
+      <Filter>DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2FileIO.hpp">
+      <Filter>InputOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Help.hpp">
+      <Filter>Help</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2InStream.hpp">
+      <Filter>InputOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Log.hpp">
+      <Filter>Log</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2LogFileHandler.hpp">
+      <Filter>Log</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Mutex.hpp">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2MutexType.hpp">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2BufferIO.hpp">
+      <Filter>InputOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Endian.hpp">
+      <Filter>InputOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Memory.hpp">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Object.hpp">
+      <Filter>ObjectSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Rtti.hpp">
+      <Filter>ObjectSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Names.hpp">
+      <Filter>ObjectSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Noncopyable.hpp">
+      <Filter>Design</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2SmartPointer.hpp">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2OutStream.hpp">
+      <Filter>InputOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ScopedCS.hpp">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ThreadType.hpp">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Time.hpp">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Table.hpp">
+      <Filter>DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Tuple.hpp">
+      <Filter>DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2MinHeap.hpp">
+      <Filter>DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Stream.hpp">
+      <Filter>InputOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Thread.hpp">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Environment.hpp">
+      <Filter>Help</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2InitTerm.hpp">
+      <Filter>InputOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Singleton.hpp">
+      <Filter>Design</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2CorePre.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PX2Assert.cpp">
+      <Filter>Assert</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2DayTime.cpp">
+      <Filter>DataTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2FileIO.cpp">
+      <Filter>InputOutput</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Help.cpp">
+      <Filter>Help</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2InStream.cpp">
+      <Filter>InputOutput</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Log.cpp">
+      <Filter>Log</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2LogFileHandler.cpp">
+      <Filter>Log</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Mutex.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2BufferIO.cpp">
+      <Filter>InputOutput</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Endian.cpp">
+      <Filter>InputOutput</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Memory.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Object.cpp">
+      <Filter>ObjectSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Rtti.cpp">
+      <Filter>ObjectSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2SmartPointer.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2OutStream.cpp">
+      <Filter>InputOutput</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ScopedCS.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Time.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Stream.cpp">
+      <Filter>InputOutput</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Thread.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Environment.cpp">
+      <Filter>Help</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2InitTerm.cpp">
+      <Filter>InputOutput</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PX2DoubleChainList.inl">
+      <Filter>DataTypes</Filter>
+    </None>
+    <None Include="PX2FileIO.inl">
+      <Filter>InputOutput</Filter>
+    </None>
+    <None Include="PX2InStream.inl">
+      <Filter>InputOutput</Filter>
+    </None>
+    <None Include="PX2BufferIO.inl">
+      <Filter>InputOutput</Filter>
+    </None>
+    <None Include="PX2Memory.inl">
+      <Filter>ObjectSystem</Filter>
+    </None>
+    <None Include="PX2Object.inl">
+      <Filter>ObjectSystem</Filter>
+    </None>
+    <None Include="PX2Rtti.inl">
+      <Filter>ObjectSystem</Filter>
+    </None>
+    <None Include="PX2SmartPointer.inl">
+      <Filter>Memory</Filter>
+    </None>
+    <None Include="PX2OutStream.inl">
+      <Filter>InputOutput</Filter>
+    </None>
+    <None Include="PX2Table.inl">
+      <Filter>DataTypes</Filter>
+    </None>
+    <None Include="PX2Tuple.inl">
+      <Filter>DataTypes</Filter>
+    </None>
+    <None Include="PX2MinHeap.inl">
+      <Filter>DataTypes</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Assert">
+      <UniqueIdentifier>{02606171-7f34-49ce-bcdb-44fdfd2a61c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DataTypes">
+      <UniqueIdentifier>{b3349378-bf1f-44f2-8019-f26d4334b689}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Help">
+      <UniqueIdentifier>{1b88ee0d-5213-4fa9-9441-c19669a67519}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Design">
+      <UniqueIdentifier>{07715a77-9952-4077-8ef5-0e1a171400d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="InputOutput">
+      <UniqueIdentifier>{92570a08-bff0-4a85-b026-43852064b551}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Log">
+      <UniqueIdentifier>{64803637-5a88-4ceb-9eef-c7abcd9529c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{eb612ec5-6983-4bfc-8811-2b18994b2769}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectSystem">
+      <UniqueIdentifier>{10aace37-2995-4be6-b408-29bf972d4f22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread">
+      <UniqueIdentifier>{a2f67114-d00d-4a0a-8913-129fc178e3e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Time">
+      <UniqueIdentifier>{076330ca-bc25-489c-9d39-65e96028744f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
