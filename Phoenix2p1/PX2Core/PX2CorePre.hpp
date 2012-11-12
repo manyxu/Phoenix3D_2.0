@@ -19,6 +19,7 @@
 // _WIN32 or WIN32  :  Microsoft Windows
 // __APPLE__        :  Macintosh OS X
 // __LINUX__        :  Linux
+// __ANDROID__		:  Android
 //----------------------------------------------------------------------------
 // Microsoft Windows
 //----------------------------------------------------------------------------
@@ -94,6 +95,15 @@ typedef double				float64_t;
 // Linux
 //----------------------------------------------------------------------------
 #if defined(__LINUX__)
+
+#include <inttypes.h>
+
+#define PX2_LITTLE_ENDIAN
+
+#endif
+//----------------------------------------------------------------------------
+// Android
+#if defined(__ANDROID__)
 
 #include <inttypes.h>
 

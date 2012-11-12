@@ -55,12 +55,16 @@ bool Application::OnInitlize ()
 	return true;
 }
 //----------------------------------------------------------------------------
-bool Application::OnEnterForeground()
+void Application::OnIdle ()
+{
+}
+//----------------------------------------------------------------------------
+bool Application::OnResume()
 {
 	return true;
 }
 //----------------------------------------------------------------------------
-bool Application::OnEnterBackground()
+bool Application::OnPause()
 {
 	return true;
 }

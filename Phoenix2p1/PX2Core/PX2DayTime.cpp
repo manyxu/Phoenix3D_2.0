@@ -51,7 +51,7 @@ DayTime GetDateTime (bool isUtc)
 		systime.wMinute, systime.wSecond, systime.wMilliseconds);
 }
 //----------------------------------------------------------------------------
-#elif defined(__LINUX__) || defined(__APPLE__)
+#elif defined(__LINUX__) || defined(__APPLE__) || defined(__ANDROID__)
 //----------------------------------------------------------------------------
 DayTime GetDateTime (bool isUtc)
 {

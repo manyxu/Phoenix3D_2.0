@@ -39,8 +39,10 @@ namespace PX2
 		// you overwrite these
 		virtual bool OnInitlize ();
 		virtual bool OnTernamate ();
-		virtual bool OnEnterForeground();
-		virtual bool OnEnterBackground();
+
+		virtual void OnIdle ();
+		virtual bool OnResume();
+		virtual bool OnPause();
 
 		// Enteries
 		typedef bool (*AppInitlizeFun)();

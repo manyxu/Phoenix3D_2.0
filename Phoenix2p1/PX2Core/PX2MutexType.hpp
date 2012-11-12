@@ -26,7 +26,7 @@ namespace PX2
 	typedef void* MutexType;
 }
 //----------------------------------------------------------------------------
-#elif defined(__LINUX__) || defined(__APPLE__)
+#elif defined(__LINUX__) || defined(__APPLE__) || defined(__ANDROID__)
 //----------------------------------------------------------------------------
 // 在Linux/Apple中，pthread.h里面仅仅是原始类型数据，包含pthread.h不会暴露
 // 额外的接口。

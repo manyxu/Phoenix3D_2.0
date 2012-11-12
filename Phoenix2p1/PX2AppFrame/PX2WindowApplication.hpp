@@ -72,9 +72,6 @@ namespace PX2
 		virtual bool OnInitlize ();
 		virtual bool OnTernamate ();
 
-		// Âß¼­£¬äÖÈ¾
-		virtual void OnIdle ();
-
 	protected:
 		// ´°¿Ú²ÎÊý
 		std::string mWindowTitle;

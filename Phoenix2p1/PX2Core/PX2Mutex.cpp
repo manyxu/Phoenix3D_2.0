@@ -76,7 +76,7 @@ void Mutex::Leave ()
 #endif
 }
 //----------------------------------------------------------------------------
-#elif defined(__LINUX__) || defined(__APPLE__)
+#elif defined(__LINUX__) || defined(__APPLE__) || defined(__ANDROID__)
 //----------------------------------------------------------------------------
 Mutex::Mutex ()
 {

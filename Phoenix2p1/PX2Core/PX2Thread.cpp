@@ -44,7 +44,7 @@ void Thread::Suspend ()
 	PX2_UNUSED(result);
 }
 //----------------------------------------------------------------------------
-#elif defined(__LINUX__) || defined(__APPLE__)
+#elif defined(__LINUX__) || defined(__APPLE__) || defined(__ANDROID__)
 //----------------------------------------------------------------------------
 Thread::Thread (void* function, void* userData, unsigned int processorNumber,
 				unsigned int stackSize)

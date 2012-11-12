@@ -22,6 +22,8 @@ public:
 	virtual bool OnTernamate ();
 
 	virtual void OnIdle ();
+	virtual bool OnResume();
+	virtual bool OnPause();
 
 protected:
 	void CreateScene ();

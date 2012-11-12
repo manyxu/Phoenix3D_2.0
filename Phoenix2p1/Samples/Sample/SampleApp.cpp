@@ -51,6 +51,16 @@ bool SampleApp::OnTernamate ()
 	return true;
 }
 //----------------------------------------------------------------------------
+bool SampleApp::OnResume()
+{
+	return true;
+}
+//----------------------------------------------------------------------------
+bool SampleApp::OnPause()
+{
+	return true;
+}
+//----------------------------------------------------------------------------
 void SampleApp::OnIdle ()
 {
 	MeasureTime();

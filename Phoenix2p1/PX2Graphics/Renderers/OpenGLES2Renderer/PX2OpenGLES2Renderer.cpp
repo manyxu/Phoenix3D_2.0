@@ -92,6 +92,11 @@ Renderer::Renderer (RendererInput& input, int width, int height,
 //----------------------------------------------------------------------------
 Renderer::~Renderer ()
 {
+	if (mData)
+	{
+		delete0(mData);
+		mData = 0;
+	}
 }
 //----------------------------------------------------------------------------
 // Pass №ЬАн
