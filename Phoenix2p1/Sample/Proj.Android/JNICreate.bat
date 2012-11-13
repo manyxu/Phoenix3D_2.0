@@ -1,0 +1,1 @@
+javah -classpath bin/classes -d jni PX2.Phoenix3d.Library.PX2Renderer

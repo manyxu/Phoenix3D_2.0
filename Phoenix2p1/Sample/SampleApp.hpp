@@ -7,13 +7,13 @@
 #ifndef SAMPLEAPP_H
 #define SAMPLEAPP_H
 
-#include "PX2WindowApplication.hpp"
+#include "PX2Application.hpp"
 using namespace PX2;
 
-class SampleApp : public WindowApplication
+class SampleApp : public Application
 {
 public:
-	PX2_DECLARE_WINDOW_APPLICATION(SampleApp);
+	PX2_DECLARE_APPLICATION(SampleApp);
 	
 	SampleApp ();
 	virtual ~SampleApp ();
@@ -33,6 +33,6 @@ protected:
 	Culler mCuller;
 };
 
-PX2_REGISTER_WINDOW_APPLICATION(SampleApp)
+PX2_REGISTER_APPLICATION(SampleApp)
 
 #endif

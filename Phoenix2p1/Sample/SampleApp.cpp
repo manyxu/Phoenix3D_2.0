@@ -6,7 +6,7 @@
 
 #include "SampleApp.hpp"
 
-PX2_IMPLEMENT_WINDOW_APPLICATION(SampleApp)
+PX2_IMPLEMENT_APPLICATION(SampleApp)
 //----------------------------------------------------------------------------
 SampleApp::SampleApp ()
 {
@@ -19,7 +19,7 @@ SampleApp::~SampleApp ()
 //----------------------------------------------------------------------------
 bool SampleApp::OnInitlize ()
 {
-	WindowApplication::OnInitlize();
+	Application::OnInitlize();
 
 	CreateScene();
 
@@ -46,7 +46,7 @@ bool SampleApp::OnTernamate ()
 {
 	mScene = 0;
 
-	WindowApplication::OnTernamate();
+	Application::OnTernamate();
 
 	return true;
 }
