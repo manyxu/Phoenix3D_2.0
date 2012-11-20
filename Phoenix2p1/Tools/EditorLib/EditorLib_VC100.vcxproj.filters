@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="EditSystem">
+      <UniqueIdentifier>{7df6e2ab-7c1d-4079-a34b-93d7701998db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneNodeCtrls">
+      <UniqueIdentifier>{b6f9d730-4bb4-4f94-bb45-1ded8d09cdb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Select">
+      <UniqueIdentifier>{62903983-52b1-4fb4-8bad-1c67113f7b9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commonds">
+      <UniqueIdentifier>{f1a81b72-f105-4bf6-b9f3-1d8f4ba82a76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Event">
+      <UniqueIdentifier>{99a3cea8-9715-4fac-9616-f2f903abd2e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{6eedd465-afcf-4912-8dde-ca9bba99deb8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PX2EditSystem.hpp">
+      <Filter>EditSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EditorLibPre.hpp" />
+    <ClInclude Include="PX2EditorLib.hpp" />
+    <ClInclude Include="PX2SceneNodeCtrl.hpp">
+      <Filter>SceneNodeCtrls</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EditEventType.hpp">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ActorSelection.hpp">
+      <Filter>Select</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EditCommand.hpp">
+      <Filter>Commonds</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EditMap.hpp">
+      <Filter>Map</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PX2EditSystem.cpp">
+      <Filter>EditSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2SceneNodeCtrl.cpp">
+      <Filter>SceneNodeCtrls</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EditEventType.cpp">
+      <Filter>Event</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ActorSelection.cpp">
+      <Filter>Select</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EditCommand.cpp">
+      <Filter>Commonds</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EditMap.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PX2EditSystem.inl">
+      <Filter>EditSystem</Filter>
+    </None>
+  </ItemGroup>
+</Project>
