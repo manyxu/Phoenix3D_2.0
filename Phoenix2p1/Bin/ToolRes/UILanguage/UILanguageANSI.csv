@@ -1,0 +1,24 @@
+索引,中文,英文
+Key,Chinese,English
+File,文件,File
+New,新建,New
+Open,打开,Open
+Close,关闭,Close
+Save,保存,Save
+SaveAs,另存为,Save as
+Exist,退出,Exist
+Edit,编辑,Edit
+Undo,撤销,Undo
+Redo,重复,Redo
+Select,选择,Select
+Move,移动,Move
+Rolate,旋转,Rolate
+Scale,缩放,Scale
+Game,游戏,Game
+PlayInEditor,编辑器中播放,PlayInEditor
+Play,播放,Play
+PlayConfig,播放配置,PlayConfig
+Help,帮助,Help
+PreView,预览,PreView
+Asserts,资源,Asserts
+Inspector,属性,Inspector
