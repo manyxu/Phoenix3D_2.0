@@ -1,0 +1,3 @@
+MainFrame			1001
+RenderViewWindow	3001
+ResTree				4001
