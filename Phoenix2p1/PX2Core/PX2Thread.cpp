@@ -54,7 +54,7 @@ mUserData(userData),
 mProcessorNumber(processorNumber),
 mStackSize(stackSize)
 {
-	// TODO.
+	pthread_create(&mThread, 0, function, userData);
 }
 //----------------------------------------------------------------------------
 Thread::~Thread ()
@@ -64,7 +64,6 @@ Thread::~Thread ()
 //----------------------------------------------------------------------------
 void Thread::Resume ()
 {
-	// TODO.
 }
 //----------------------------------------------------------------------------
 void Thread::Suspend ()

@@ -126,7 +126,7 @@ void ChainList<T>::DeleteAllNodes ()
 
 		if (static_cast<T *>(cur))
 		{
-			delete0 static_cast<T *>(cur);
+			delete0(static_cast<T *>(cur));
 			cur = 0;
 		}
 

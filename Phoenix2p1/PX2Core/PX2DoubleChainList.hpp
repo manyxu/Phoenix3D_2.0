@@ -14,6 +14,8 @@
 #ifndef PX2DOUBLECHAINLIST_HPP
 #define PX2DOUBLECHAINLIST_HPP
 
+#include "PX2Memory.hpp"
+
 namespace PX2
 {
 

@@ -15,6 +15,7 @@
 #define PX2ANY_HPP
 
 #include "PX2CorePre.hpp"
+#include <typeinfo>
 
 namespace PX2
 {
