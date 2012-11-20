@@ -1,6 +1,6 @@
 /*
 *
-* 文件名称	：	PX2Application.cpp
+* 文件名称	：	PX2Win32Application.cpp
 *
 */
 
@@ -8,26 +8,32 @@
 using namespace PX2;
 
 //----------------------------------------------------------------------------
-Application::AppInitlizeFun Application::msAppInitlizeFun = 0;
-Application::AppTernamateFun Application::msAppTernamateFun = 0;
-Application* Application::msApplication = 0;
-Application::EntryPoint Application::msEntry = 0;
+#if defined(_WIN32) || defined(WIN32)
+LRESULT CALLBACK MsWindowEventHandler (HWND handle, UINT message,
+	WPARAM wParam, LPARAM lParam)
+{
+	switch (message) 
+	{
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		break;
+
+	default:
+		break;
+	}
+
+	return DefWindowProc(handle, message, wParam, lParam);
+}
+#endif
 //----------------------------------------------------------------------------
 Application::Application ()
 	:
-mClearColor(Float4(1.0f, 0.0f, 0.0f, 1.0f)),
-	mColorFormat(Texture::TF_A8R8G8B8),
-	mRenderer(0),
-	mDepthStencilFormat(Texture::TF_D24S8),
-	mNumMultisamples(0),
-	mRoot(0),
-	mLastTime(-1.0),
-	mAccumulatedTime(0.0),
-	mFrameRate(0.0),
-	mFrameCount(0),
-	mAccumulatedFrameCount(0),
-	mTimer(30),
-	mMaxTimer(30)
+mWindowTitle("Application"),
+	mXPosition(0),
+	mYPosition(0),
+	mWidth(800),
+	mHeight(600),
+	mAllowResize(true)
 {
 }
 //----------------------------------------------------------------------------
@@ -35,129 +41,180 @@ Application::~Application ()
 {
 }
 //----------------------------------------------------------------------------
-bool Application::Initlize ()
+int Application::Entry (int numArguments, char** arguments)
 {
-#ifdef PX2_USE_MEMORY
-	Memory::Initialize();
-#endif
-
-	mRoot = new0 GraphicsRoot();
-	if (mRoot)
-		mRoot->Initlize();
-
-	OnInitlize();
-
-	return true;
+	Application* theApp = (Application*)msApplication;
+	return theApp->Main(numArguments, arguments);
 }
 //----------------------------------------------------------------------------
-bool Application::OnInitlize ()
-{
-	return true;
-}
-//----------------------------------------------------------------------------
-void Application::OnIdle ()
-{
-}
-//----------------------------------------------------------------------------
-bool Application::OnResume()
-{
-	return true;
-}
-//----------------------------------------------------------------------------
-bool Application::OnPause()
-{
-	return true;
-}
-//----------------------------------------------------------------------------
-bool Application::Ternamate ()
-{
-	OnTernamate();
-
-	if (mRoot)
-		mRoot->Terminate();
-
-	delete0(mRoot);
-
-#ifdef PX2_USE_MEMORY
-	Memory::Terminate("MemoryReport.txt");
-#endif
-
-	return true;
-}
-//----------------------------------------------------------------------------
-bool Application::OnTernamate ()
-{
-	return true;
-}
+#if defined(_WIN32) || defined(WIN32)
 int Application::Main (int numArguments, char** arguments)
 {
-	return 1;
-}
-//----------------------------------------------------------------------------
+	PX2_UNUSED(numArguments);
+	PX2_UNUSED(arguments);
 
-//----------------------------------------------------------------------------
-// 渲染性能衡量
-//----------------------------------------------------------------------------
-void Application::ResetTime ()
-{
-	mLastTime = -1.0f;
-}
-//----------------------------------------------------------------------------
-void Application::MeasureTime ()
-{
-	// start performance measurements
-	if (mLastTime == -1.0)
+	Initlize ();
+
+	// 预清除背景色
+	mRenderer->ClearBuffers();
+
+	// 显示窗口
+	ShowWindow(mhWnd, SW_SHOWNORMAL);
+	UpdateWindow(mhWnd);
+
+	// 消息循环
+	bool applicationRunning = true;
+	while (applicationRunning)
 	{
-		mLastTime = GetTimeInSeconds();
-		mAccumulatedTime = 0.0;
-		mFrameRate = 0.0;
-		mFrameCount = 0;
-		mAccumulatedFrameCount = 0;
-		mTimer = mMaxTimer;
+		MSG msg;
+		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
+		{
+			if (msg.message == WM_QUIT)
+			{
+				applicationRunning = false;
+				continue;
+			}
+
+			HACCEL accel = 0;
+			if (!TranslateAccelerator(mhWnd, accel, &msg))
+			{
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+			}
+
+		}
+		else
+		{
+			OnIdle();
+		}
 	}
 
-	// accumulate the time only when the miniature time allows it
-	if (--mTimer == 0)
-	{
-		double dCurrentTime = GetTimeInSeconds();
-		double dDelta = dCurrentTime - mLastTime;
-		mLastTime = dCurrentTime;
-		mAccumulatedTime += dDelta;
-		mAccumulatedFrameCount += mFrameCount;
-		mFrameCount = 0;
-		mTimer = mMaxTimer;
-	}
+	Ternamate ();
+
+	return 0;
 }
+#endif
 //----------------------------------------------------------------------------
-void Application::UpdateFrameCount ()
+#if defined __ANDROID__
+int Application::Main (int numArguments, char** arguments)
 {
-	mFrameCount++;
+	return 0;
 }
+#endif
 //----------------------------------------------------------------------------
-void Application::DrawFrameRate (int x, int y, const Float4& color)
+#if defined(_WIN32) || defined(WIN32)
+bool Application::OnInitlize ()
 {
-	if (mAccumulatedTime > 0.0)
+	ApplicationBase::OnInitlize();
+
+	// === 创建渲染窗口 ===
+
+	// 注册窗口类
+	static char sWindowClass[] = "Phoenix2 ApplicationBase";
+	WNDCLASS wc;
+	wc.style         = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+	wc.lpfnWndProc   = MsWindowEventHandler;
+	wc.cbClsExtra    = 0;
+	wc.cbWndExtra    = 0;
+	wc.hInstance     = 0;
+	wc.hIcon         = LoadIcon(0, IDI_APPLICATION);
+	wc.hCursor       = LoadCursor(0, IDC_ARROW);
+	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	wc.lpszClassName = sWindowClass;
+	wc.lpszMenuName  = 0;
+	RegisterClass(&wc);
+
+	DWORD dwStyle;
+	if (mAllowResize)
 	{
-		mFrameRate = mAccumulatedFrameCount/mAccumulatedTime;
+		dwStyle = WS_OVERLAPPEDWINDOW;
 	}
 	else
 	{
-		mFrameRate = 0.0;
+		dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
 	}
 
-	char message[256];
-	sprintf(message, "fps: %.1lf", mFrameRate);
-	mRenderer->Draw(x, y, color, message);
+	// 请求特定客户区大小的窗口大小
+	RECT rect = { 0, 0, mWidth-1, mHeight-1 };
+	AdjustWindowRect(&rect, dwStyle, FALSE);
+
+	// 创建窗口
+	mhWnd = CreateWindow(sWindowClass, mWindowTitle.c_str(),
+		dwStyle, mXPosition, mYPosition,
+		rect.right - rect.left + 1, rect.bottom - rect.top + 1, 0, 0, 0, 0);
+
+	// === 渲染器 ===
+
+#ifdef PX2_USE_DX9
+	// 创建渲染器
+	mInput.mWindowHandle = mhWnd;
+	mInput.mDriver = Direct3DCreate9(D3D_SDK_VERSION);
+	assertion(mInput.mDriver != 0, "Failed to create Direct3D9\n");
+	mRenderer = new0 Renderer(mInput, mWidth, mHeight,
+		mColorFormat, mDepthStencilFormat, mNumMultisamples);
+#endif
+
+#ifdef PX2_USE_OPENGLES2
+	mInput.mWindowHandle = mhWnd;
+	mInput.mRendererDC = GetDC(mhWnd);
+	mRenderer = new0 Renderer(mInput, mWidth, mHeight,
+		mColorFormat, mDepthStencilFormat, mNumMultisamples);
+#endif
+
+	mRenderer->SetClearColor(mClearColor);
+
+	mCamera = new0 Camera();
+	mRenderer->SetCamera(mCamera);
+
+	return true;
 }
+#endif
 //----------------------------------------------------------------------------
-int main (int numArguments, char* arguments[])
+#ifdef __ANDROID__
+bool Application::OnInitlize ()
 {
-	Application::msAppInitlizeFun();
+	ApplicationBase::OnInitlize();
 
-	int exitCode = Application::msEntry(numArguments, arguments);
+#ifdef PX2_USE_OPENGLES2
+	mRenderer = new0 Renderer(mInput, mWidth, mHeight,
+		mColorFormat, mDepthStencilFormat, mNumMultisamples);
+#endif
 
-	Application::msAppTernamateFun();
+	mRenderer->SetClearColor(mClearColor);
 
-	return exitCode;
+	mCamera = new0 Camera();
+	mRenderer->SetCamera(mCamera);
+
+	return true;
 }
+#endif
+//----------------------------------------------------------------------------
+#if defined(_WIN32) || defined(WIN32)
+bool Application::OnTernamate()
+{
+	ApplicationBase::OnTernamate();
+
+	mCamera = 0;
+
+	delete0(mRenderer);
+#ifdef PX2_USE_DX9
+	mInput.mDriver->Release();
+#endif
+
+	return true;
+}
+#endif
+//----------------------------------------------------------------------------
+#ifdef __ANDROID__
+bool Application::OnTernamate()
+{
+	ApplicationBase::OnTernamate();
+
+	mCamera = 0;
+
+	delete0(mRenderer);
+
+	return true;
+}
+#endif
 //----------------------------------------------------------------------------

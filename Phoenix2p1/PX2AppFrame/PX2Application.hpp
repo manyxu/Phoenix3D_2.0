@@ -3,76 +3,90 @@
 *
 * Copyright (C) 2009-2011 http://www.Phoenix3d.org/
 *
-* 文件名称	：	PX2Application.hpp
+* 文件名称	：	PX2WindowApplication.hpp
 *
-* 版本		:	1.0 (2012/04/15)
+* 版本		:	1.0 (2011/02/02)
 *
 * 作者		：	more
 *
 */
 
-#ifndef PX2APPLICATION_HPP
-#define PX2APPLICATION_HPP
+#ifndef PX2WINDOWAPPLICATION_HPP
+#define PX2WINDOWAPPLICATION_HPP
 
-#include "PX2Core.hpp"
-#include "PX2Mathematics.hpp"
-#include "PX2Graphics.hpp"
-#include "PX2Renderers.hpp"
+#include "PX2ApplicationBase.hpp"
+
+#if defined(_WIN32) || defined(WIN32)
+#include <windows.h>
+#endif
+
+#ifdef PX2_USE_DX9
+#include "PX2Dx9RendererInput.hpp"
+#include "PX2Dx9RendererData.hpp"
+#endif
+
+#ifdef PX2_USE_OPENGLES2
+#include "PX2OpenGLES2RendererInput.hpp"
+#include "PX2OpenGLES2RendererData.hpp"
+#endif
 
 namespace PX2
 {
 
-	class Application
+#define PX2_DECLARE_APPLICATION(classname) \
+	\
+	static bool AppInitialize (); \
+	static bool AppTerminate ();
+
+#define PX2_REGISTER_APPLICATION(classname) \
+	static bool gsAppInitializeRegistered_##classname = \
+	classname::AppInitialize (); \
+	static bool gsAppTerminnateRegistered_##classname = \
+	classname::AppTerminate ();
+
+#define PX2_IMPLEMENT_APPLICATION(classname) \
+	\
+	bool classname::AppInitialize () \
+	{ \
+		ApplicationBase::msAppInitlizeFun = &classname::AppInitialize; \
+		ApplicationBase::msAppTernamateFun = &classname::AppTerminate; \
+		ApplicationBase::msEntry = &Application::Entry; \
+		msApplication = new classname(); \
+		return true; \
+	} \
+	\
+	bool classname::AppTerminate () \
+	{ \
+		delete (msApplication); \
+		return true; \
+	}
+	//----------------------------------------------------------------------------
+
+	class Application : public ApplicationBase
 	{
-	protected:
-		Application ();
 	public:
+		Application ();
 		virtual ~Application ();
 
-		// App
-		static Application* msApplication;
-
-		// system use
-		bool Initlize ();
-		bool Ternamate ();
-
-		// you overwrite these
-		virtual bool OnInitlize ();
-		virtual bool OnTernamate ();
-
-		virtual void OnIdle ();
-		virtual bool OnResume();
-		virtual bool OnPause();
-
-		// Enteries
-		typedef bool (*AppInitlizeFun)();
-		static AppInitlizeFun msAppInitlizeFun;
-		typedef bool (*AppTernamateFun)();
-		static AppTernamateFun msAppTernamateFun;
-		typedef int (*EntryPoint)(int numArguments, char** arguments);
-		static EntryPoint msEntry;
+		static int Entry (int numArguments, char** arguments);
 
 		virtual int Main (int numArguments, char** arguments);
 
+		virtual bool OnInitlize ();
+		virtual bool OnTernamate ();
+
 	protected:
-		// 渲染性能衡量
-		void ResetTime ();
-		void MeasureTime ();
-		void UpdateFrameCount ();
-		void DrawFrameRate (int x, int y, const Float4& color);
-		
-		// 渲染相关
-		Texture::Format mColorFormat;
-		Texture::Format mDepthStencilFormat;
-		int mNumMultisamples;
-		Float4 mClearColor;
-		Renderer* mRenderer;
-		CameraPtr mCamera;
+		// 窗口参数
+		std::string mWindowTitle;
+		int mXPosition, mYPosition, mWidth, mHeight;
+		bool mAllowResize;
 
-		GraphicsRoot *mRoot;
+#if defined(_WIN32) || defined(WIN32)
+		// 窗口
+		HWND mhWnd;
+#endif
 
-		double mLastTime, mAccumulatedTime, mFrameRate;
-		int mFrameCount, mAccumulatedFrameCount, mTimer, mMaxTimer;
+		RendererInput mInput;
 	};
 
 }

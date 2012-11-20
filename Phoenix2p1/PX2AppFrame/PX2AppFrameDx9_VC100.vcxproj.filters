@@ -2,10 +2,11 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="PX2Application.hpp" />
-    <ClInclude Include="PX2WindowApplication.hpp" />
+    <ClInclude Include="PX2ApplicationBase.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PX2Application.cpp" />
-    <ClCompile Include="PX2WindowApplication.cpp" />
+    <ClCompile Include="PX2ApplicationBase.cpp" />
+    <ClCompile Include="PX2Main.cpp" />
   </ItemGroup>
 </Project>

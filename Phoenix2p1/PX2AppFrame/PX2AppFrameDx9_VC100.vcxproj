@@ -12,11 +12,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PX2Application.hpp" />
-    <ClInclude Include="PX2WindowApplication.hpp" />
+    <ClInclude Include="PX2ApplicationBase.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PX2Application.cpp" />
-    <ClCompile Include="PX2WindowApplication.cpp" />
+    <ClCompile Include="PX2ApplicationBase.cpp" />
+    <ClCompile Include="PX2Main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{97D918C4-1A28-4D49-BDD5-A21605491E42}</ProjectGuid>
