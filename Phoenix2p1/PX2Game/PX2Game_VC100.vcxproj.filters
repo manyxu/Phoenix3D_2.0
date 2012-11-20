@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Actors">
+      <UniqueIdentifier>{5720868f-dbd4-4a9e-9c8d-7cea1a3fffbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Netable">
+      <UniqueIdentifier>{1d6b6aeb-6cab-4a54-90f1-b74692abb9a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{d423b8f4-c4b0-4663-a7cc-6fdfd62036c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pick">
+      <UniqueIdentifier>{03aa4138-81cf-4e34-94d6-b65d1cd61802}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PX2Actor.cpp">
+      <Filter>Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Netable.cpp">
+      <Filter>Netable</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Scene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ActorPicker.cpp">
+      <Filter>Pick</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PX2GamePre.hpp" />
+    <ClInclude Include="PX2Game.hpp" />
+    <ClInclude Include="PX2Actor.hpp">
+      <Filter>Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Netable.hpp">
+      <Filter>Netable</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Scene.hpp">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ActorPicker.hpp">
+      <Filter>Pick</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ActorPickRecord.hpp">
+      <Filter>Pick</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PX2Netable.inl">
+      <Filter>Netable</Filter>
+    </None>
+    <None Include="PX2Actor.inl">
+      <Filter>Actors</Filter>
+    </None>
+    <None Include="PX2Scene.inl">
+      <Filter>Scenes</Filter>
+    </None>
+  </ItemGroup>
+</Project>
