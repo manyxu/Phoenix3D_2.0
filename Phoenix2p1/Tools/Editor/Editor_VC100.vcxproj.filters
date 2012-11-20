@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="AppFrame">
+      <UniqueIdentifier>{e758504d-b8f6-4752-b0c7-30da22b336bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderView">
+      <UniqueIdentifier>{b2460ca8-f264-4cae-b724-a86e9609e7d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewCtrl">
+      <UniqueIdentifier>{4968bcfc-ba67-4493-b83c-de867fcfb3c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{5e0eb0b6-6fcc-4020-8921-ac47d2f03b2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PreView">
+      <UniqueIdentifier>{d6e7b383-9a63-4148-9980-c005e4da7615}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wxExtents">
+      <UniqueIdentifier>{422afa1d-7bf0-439b-b4ba-4ff10b502476}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inspector">
+      <UniqueIdentifier>{899cb4a9-b104-4df6-af55-19454f4a434a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PX2EditorApp.hpp">
+      <Filter>AppFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EditorPre.hpp" />
+    <ClInclude Include="PX2MainFrame.hpp">
+      <Filter>AppFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2RenderViewWindow.hpp">
+      <Filter>RenderView</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EditorParams.hpp" />
+    <ClInclude Include="PX2ViewCtrl.hpp">
+      <Filter>ViewCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2GViewCtrl.hpp">
+      <Filter>ViewCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ViewCtrlInst.hpp">
+      <Filter>ViewCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ViewCtrlInstMan.hpp">
+      <Filter>ViewCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2DefViewCtrlInst.hpp">
+      <Filter>ViewCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2MultiViewCtrlInst.hpp">
+      <Filter>ViewCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2PreViewWindow.hpp">
+      <Filter>PreView</Filter>
+    </ClInclude>
+    <ClInclude Include="wxExtents\captionbar.h">
+      <Filter>wxExtents</Filter>
+    </ClInclude>
+    <ClInclude Include="wxExtents\foldpanelbar.h">
+      <Filter>wxExtents</Filter>
+    </ClInclude>
+    <ClInclude Include="wxExtents\foldpanelitem.h">
+      <Filter>wxExtents</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2InspectorWindow.hpp">
+      <Filter>Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ResTree.hpp">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ResTreeItem.hpp">
+      <Filter>Resource</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PX2EditorApp.cpp">
+      <Filter>AppFrame</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2MainFrame.cpp">
+      <Filter>AppFrame</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2RenderViewWindow.cpp">
+      <Filter>RenderView</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EditorParams.cpp" />
+    <ClCompile Include="PX2ViewCtrl.cpp">
+      <Filter>ViewCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2GViewCtrl.cpp">
+      <Filter>ViewCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ViewCtrlInst.cpp">
+      <Filter>ViewCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ViewCtrlInstMan.cpp">
+      <Filter>ViewCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2DefViewCtrlInst.cpp">
+      <Filter>ViewCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2MultiViewCtrlInst.cpp">
+      <Filter>ViewCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2PreViewWindow.cpp">
+      <Filter>PreView</Filter>
+    </ClCompile>
+    <ClCompile Include="wxExtents\captionbar.cpp">
+      <Filter>wxExtents</Filter>
+    </ClCompile>
+    <ClCompile Include="wxExtents\foldpanelbar.cpp">
+      <Filter>wxExtents</Filter>
+    </ClCompile>
+    <ClCompile Include="wxExtents\foldpanelitem.cpp">
+      <Filter>wxExtents</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2InspectorWindow.cpp">
+      <Filter>Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ResTree.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ResTreeItem.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PX2RenderViewWindow.inl">
+      <Filter>RenderView</Filter>
+    </None>
+    <None Include="PX2ViewCtrlInst.inl">
+      <Filter>ViewCtrl</Filter>
+    </None>
+    <None Include="PX2ViewCtrlInstMan.inl">
+      <Filter>ViewCtrl</Filter>
+    </None>
+  </ItemGroup>
+</Project>

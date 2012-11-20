@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C8417D88-B08C-4725-9D64-B54ED08DE260}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Editor_VC100</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\Bin\</OutDir>
+    <IntDir>_Output\$(PlatformToolset)\$(Platform)\Dx9$(Configuration)\</IntDir>
+    <TargetName>PX2EditorDx9D</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)\Bin\</OutDir>
+    <IntDir>_OutPut\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>PX2EditorDx9</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;PX2_USE_DX9;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\;.\wxExtents;..\..\PX2SDK\Include;..\..\ThirdPartiesLibs\Microsoft DirectX SDK (June 2010)\Include;..\..\ThirdPartiesLibs\wxWidgets-2.9.4\include;..\..\ThirdPartiesLibs\wxWidgets-2.9.4\lib\vc_lib\mswud;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>wxmsw29ud_aui.lib;wxmsw29ud_html.lib;wxmsw29ud_adv.lib;wxmsw29ud_core.lib;wxbase29ud_xml.lib;wxbase29ud.lib;wxmsw29ud_xrc.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;winmm.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;wininet.lib;PX2CoreD.lib;PX2MathermaticsD.lib;PX2GraphicsDx9D.lib;PX2EventSystemD.lib;PX2UnityD.lib;PX2GameD.lib;EditorLibD.lib;d3d9.lib;d3dx9.lib;dxerr.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\ThirdPartiesLibs\wxWidgets-2.9.4\lib\vc_lib;..\..\PX2SDK\Library\v100\Win32\Debug;..\..\ThirdPartiesLibs\Microsoft DirectX SDK (June 2010)\Lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;PX2_USE_DX9;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\PX2SDK\Include;..\..\ThirdPartiesLibs\Microsoft DirectX SDK (June 2010)\Include;..\..\ThirdPartiesLibs\wxWidgets-2.9.4\include;..\..\ThirdPartiesLibs\wxWidgets-2.9.4\lib\vc_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>wxmsw29u_aui.lib;wxmsw29u_html.lib;wxmsw29u_adv.lib;wxmsw29u_core.lib;wxbase29u_xml.lib;wxbase29u.lib;wxmsw29u_xrc.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;wxexpat.lib;winmm.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;wininet.lib;PX2Core.lib;PX2Mathermatics.lib;PX2GraphicsDx9.lib;PX2EventSystem.lib;PX2Unity.lib;PX2Game.lib;EditorLib.lib;d3d9.lib;d3dx9.lib;dxerr.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\ThirdPartiesLibs\wxWidgets-2.9.4\lib\vc_lib;..\..\PX2SDK\Library\v100\Win32\Release;..\..\ThirdPartiesLibs\Microsoft DirectX SDK (June 2010)\Lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="PX2InspectorWindow.hpp" />
+    <ClInclude Include="PX2MultiViewCtrlInst.hpp" />
+    <ClInclude Include="PX2PreViewWindow.hpp" />
+    <ClInclude Include="PX2ResTree.hpp" />
+    <ClInclude Include="PX2ResTreeItem.hpp" />
+    <ClInclude Include="PX2ViewCtrlInst.hpp" />
+    <ClInclude Include="PX2ViewCtrlInstMan.hpp" />
+    <ClInclude Include="PX2DefViewCtrlInst.hpp" />
+    <ClInclude Include="PX2GViewCtrl.hpp" />
+    <ClInclude Include="PX2EditorApp.hpp" />
+    <ClInclude Include="PX2EditorParams.hpp" />
+    <ClInclude Include="PX2MainFrame.hpp" />
+    <ClInclude Include="PX2EditorPre.hpp" />
+    <ClInclude Include="PX2RenderViewWindow.hpp" />
+    <ClInclude Include="PX2ViewCtrl.hpp" />
+    <ClInclude Include="wxExtents\captionbar.h" />
+    <ClInclude Include="wxExtents\foldpanelbar.h" />
+    <ClInclude Include="wxExtents\foldpanelitem.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PX2InspectorWindow.cpp" />
+    <ClCompile Include="PX2MultiViewCtrlInst.cpp" />
+    <ClCompile Include="PX2PreViewWindow.cpp" />
+    <ClCompile Include="PX2ResTree.cpp" />
+    <ClCompile Include="PX2ResTreeItem.cpp" />
+    <ClCompile Include="PX2ViewCtrlInst.cpp" />
+    <ClCompile Include="PX2ViewCtrlInstMan.cpp" />
+    <ClCompile Include="PX2DefViewCtrlInst.cpp" />
+    <ClCompile Include="PX2EditorApp.cpp" />
+    <ClCompile Include="PX2EditorParams.cpp" />
+    <ClCompile Include="PX2GViewCtrl.cpp" />
+    <ClCompile Include="PX2MainFrame.cpp" />
+    <ClCompile Include="PX2RenderViewWindow.cpp" />
+    <ClCompile Include="PX2ViewCtrl.cpp" />
+    <ClCompile Include="wxExtents\captionbar.cpp" />
+    <ClCompile Include="wxExtents\foldpanelbar.cpp" />
+    <ClCompile Include="wxExtents\foldpanelitem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PX2ViewCtrlInst.inl" />
+    <None Include="PX2ViewCtrlInstMan.inl" />
+    <None Include="PX2RenderViewWindow.inl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
