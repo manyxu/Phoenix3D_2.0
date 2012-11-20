@@ -25,9 +25,10 @@ Renderer::Renderer (RendererInput& input, int width, int height,
 
 	mData = new0 RendererData();
 
-	mData->mWindowHandle = (EGLNativeWindowType)input.mWindowHandle;
-	mData->mDisplayType = (EGLNativeDisplayType)input.mRendererDC;
+	mData->mWindowHandle = input.mWindowHandle;
+	mData->mDisplayType = input.mRendererDC;
 
+#if defined(_WIN32) || defined(WIN32)
 	EGLDisplay display = eglGetDisplay(input.mRendererDC);
 	if (display == EGL_NO_DISPLAY)
 	{
@@ -83,6 +84,7 @@ Renderer::Renderer (RendererInput& input, int width, int height,
 	 {
 		 assertion(false, "");
 	 }
+#endif
 
 	 // ÉèÖÃÈ±Ê¡äÖÈ¾×´Ì¬ºÍ²ÉÑù×´Ì¬
 	 mData->mCurrentRS.Initialize(mDefaultAlphaProperty, mDefaultCullProperty,
@@ -92,6 +94,8 @@ Renderer::Renderer (RendererInput& input, int width, int height,
 //----------------------------------------------------------------------------
 Renderer::~Renderer ()
 {
+	Terminate();
+
 	if (mData)
 	{
 		delete0(mData);
@@ -602,7 +606,9 @@ void Renderer::ClearBuffers (int x, int y, int w, int h)
 //----------------------------------------------------------------------------
 void Renderer::DisplayColorBuffer ()
 {
+#if defined(_WIN32) || defined(WIN32)
 	 eglSwapBuffers(mData->mDisplay, mData->mSurface);
+#endif
 }
 //----------------------------------------------------------------------------
 

@@ -690,7 +690,7 @@ void Renderer::ResizeWindow (int width, int height)
 
 	// 释放所有D3DPOOL_DEFAULT的资源。在Dx9中，着色器不需要重新创建，Dx9纹
 	// 理也是managed所有不需要重新创建。在DX10之后，我们就不要做设备丢失检
-	// 了。^_^现在我们只是简单的将所有资源都释放，释放完之后重建。
+	// 测了。^_^现在我们只是简单的将所有资源都释放，释放完之后重建。
 
 	// 先释放有D3DPOOL_DEFAULT资源。
 	std::set<const VertexFormat*> saveVertexFormats;

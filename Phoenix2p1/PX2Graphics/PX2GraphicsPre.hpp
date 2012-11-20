@@ -54,4 +54,8 @@
     #endif
 #endif
 
+#ifdef __ANDROID__
+	#define PX2_USE_OPENGLES2
+#endif
+
 #endif

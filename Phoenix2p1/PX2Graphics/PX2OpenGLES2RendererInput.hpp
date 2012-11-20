@@ -22,8 +22,8 @@ namespace PX2
 	class RendererInput
 	{
 	public:
-		HWND  mWindowHandle;
-		HDC mRendererDC;
+		EGLNativeWindowType  mWindowHandle;
+		EGLNativeDisplayType mRendererDC;
 	};
 
 }

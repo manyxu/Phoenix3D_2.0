@@ -15,6 +15,7 @@
 #define PX2OPENGLES2RENDERERPRE_HPP
 
 #include "PX2GraphicsPre.hpp"
+
 #include <GLES2/gl2.h>
 #include <EGL/egl.h>
 
