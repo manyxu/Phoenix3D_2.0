@@ -1,0 +1,116 @@
+ps_2_0
+// cgc version 3.0.0016, build date Feb 11 2011
+// command line args: -profile ps_2_0
+// source file: TerrainPerPixel.fx
+//vendor NVIDIA Corporation
+//version 3.0.0.16
+//profile ps_2_0
+//program p_TerrainPerPix
+//semantic p_TerrainPerPix.UVScale01
+//semantic p_TerrainPerPix.UVScale23
+//semantic p_TerrainPerPix.UVScale4
+//semantic gWMatrix
+//semantic gVMatrix
+//semantic gPMatrix
+//semantic gPVWMatrix
+//semantic gVWMatrix
+//semantic gWIMatrix
+//semantic gVIMatrix
+//semantic gCameraWorldPosition
+//semantic gShineEmissive
+//semantic gShineAmbient
+//semantic gShineDiffuse
+//semantic gLightColour
+//semantic gLightModelDirection
+//semantic Sampler0
+//semantic SamplerAlpha
+//semantic Sampler1
+//semantic Sampler2
+//semantic Sampler3
+//semantic Sampler4
+//var float4 vertexColor : $vin.COLOR :  : 0 : 0
+//var float2 vertexTCoord0 : $vin.TEXCOORD0 : TEX0 : 1 : 1
+//var float2 vertexTAlpha : $vin.TEXCOORD1 : TEX1 : 2 : 1
+//var float2 vertexTCoord1 : $vin.TEXCOORD2 : TEX2 : 3 : 1
+//var float2 vertexTCoord2 : $vin.TEXCOORD3 : TEX3 : 4 : 1
+//var float2 vertexTCoord3 : $vin.TEXCOORD4 : TEX4 : 5 : 1
+//var float2 vertexTCoord4 : $vin.TEXCOORD5 : TEX5 : 6 : 1
+//var float3 vertexPosition : $vin.TEXCOORD6 :  : 7 : 0
+//var float3 vertexNormal : $vin.TEXCOORD7 : TEX7 : 8 : 1
+//var float4 pixelColor : $vout.COLOR : COL : 9 : 1
+//var float4 UVScale01 :  : c[0] : 10 : 1
+//var float4 UVScale23 :  : c[1] : 11 : 1
+//var float4 UVScale4 :  : c[2] : 12 : 1
+//var float4x4 gWMatrix :  : , 4 : -1 : 0
+//var float4x4 gVMatrix :  : , 4 : -1 : 0
+//var float4x4 gPMatrix :  : , 4 : -1 : 0
+//var float4x4 gPVWMatrix :  : , 4 : -1 : 0
+//var float4x4 gVWMatrix :  : , 4 : -1 : 0
+//var float4x4 gWIMatrix :  : , 4 : -1 : 0
+//var float4x4 gVIMatrix :  : , 4 : -1 : 0
+//var float3 gCameraWorldPosition :  :  : -1 : 0
+//var float4 gShineEmissive :  : c[3] : -1 : 1
+//var float4 gShineAmbient :  : c[4] : -1 : 1
+//var float4 gShineDiffuse :  : c[5] : -1 : 1
+//var float4 gLightColour :  : c[6] : -1 : 1
+//var float3 gLightModelDirection :  : c[7] : -1 : 1
+//var sampler2D Sampler0 :  : texunit 0 : -1 : 1
+//var sampler2D SamplerAlpha :  : texunit 1 : -1 : 1
+//var sampler2D Sampler1 :  : texunit 2 : -1 : 1
+//var sampler2D Sampler2 :  : texunit 3 : -1 : 1
+//var sampler2D Sampler3 :  : texunit 4 : -1 : 1
+//var sampler2D Sampler4 :  : texunit 5 : -1 : 1
+//const c[8] = 1
+//default gShineEmissive = 0 0 0 1
+//default gShineAmbient = 0.1 0.1 0.1 1
+//default gShineDiffuse = 0.47 0.47 0.47 1
+//default gLightColour = 0.30000001 0.30000001 0.30000001 1
+//default gLightModelDirection = -0.5 -0.5 -0.5
+dcl_2d s0
+dcl_2d s1
+dcl_2d s2
+dcl_2d s3
+dcl_2d s4
+dcl_2d s5
+def c8, 1.00000000, 0, 0, 0
+dcl t0.xy
+dcl t1.xy
+dcl t2.xy
+dcl t3.xy
+dcl t4.xy
+dcl t5.xy
+dcl t7.xyz
+mul r4.xy, t5, c2
+mov r0.y, c0.w
+mov r0.x, c0.z
+mul r2.xy, t2, r0
+mul r0.xy, t0, c0
+mul r1.xy, t3, c1
+mov r3.y, c1.w
+mov r3.x, c1.z
+mul r3.xy, t4, r3
+texld r5, r4, s5
+texld r4, r3, s4
+texld r3, r1, s3
+texld r0, r0, s0
+texld r1, t1, s1
+texld r2, r2, s2
+add r2.xyz, r2, -r0
+mad r0.xyz, r1.x, r2, r0
+add r2.xyz, r3, -r0
+mad r0.xyz, r1.y, r2, r0
+add r2.xyz, r4, -r0
+mad r0.xyz, r1.z, r2, r0
+add r2.xyz, r5, -r0
+mov r3.xyz, c6
+mov r1.xy, c7
+mov r1.z, -c7
+dp3_sat r4.x, t7, r1
+mul r1.xyz, c5, r3
+mul r3.xyz, r1, r4.x
+mov r1.xyz, c4
+mad r1.xyz, c6, r1, r3
+mad r0.xyz, r1.w, r2, r0
+mad r0.xyz, r0, r1, c3
+mov r0.w, c8.x
+mov oC0, r0

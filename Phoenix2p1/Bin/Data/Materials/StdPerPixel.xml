@@ -1,0 +1,12 @@
+<material name="StdPerPixel">
+	<technique name="T0">
+		<pass name="P0">
+			<vertexshader>
+				<var file="StdPerPixel.fx" entry="StdPerPixel"/>
+			</vertexshader>
+			<pixelshader>
+				<var file="StdPerPixel.fx" entry="StdPerPixel"/>
+			</pixelshader>
+		</pass>
+	</technique>
+</material>
