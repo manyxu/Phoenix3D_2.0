@@ -63,6 +63,8 @@ bool SampleApp::OnPause()
 //----------------------------------------------------------------------------
 void SampleApp::OnIdle ()
 {
+	mRenderer->SetClearColor(Float4(1.0f, 0.0f, 0.0f, 1.0f));
+
 	MeasureTime();
 
 	mScene->Update();

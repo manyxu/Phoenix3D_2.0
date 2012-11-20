@@ -1,18 +1,20 @@
 
 #include "PX2_Phoenix3d_Library_PX2Renderer.h"
 #include "PX2Application.hpp"
+#include "SampleApp.hpp"
 
 //----------------------------------------------------------------------------
 JNIEXPORT void JNICALL Java_PX2_Phoenix3d_Library_PX2Renderer_nativeOdle
   (JNIEnv *, jclass)
-{
-	PX2::Application::msApplication->OnIdle();
+{   
+	PX2::ApplicationBase::msApplication->OnIdle();
 }
 //----------------------------------------------------------------------------
 JNIEXPORT void JNICALL Java_PX2_Phoenix3d_Library_PX2Renderer_nativeInit
   (JNIEnv *, jclass, jint, jint)
-{
-	PX2::Application::msAppInitlizeFun();
+{	
+	PX2::ApplicationBase::msAppInitlizeFun();
+	PX2::ApplicationBase::msApplication->Initlize ();
 }
 //----------------------------------------------------------------------------
 JNIEXPORT void JNICALL Java_PX2_Phoenix3d_Library_PX2Renderer_nativeOnPause
@@ -30,6 +32,6 @@ JNIEXPORT void JNICALL Java_PX2_Phoenix3d_Library_PX2Renderer_nativeOnResume
 JNIEXPORT void JNICALL Java_PX2_Phoenix3d_Library_PX2Renderer_nativeTerm
 	(JNIEnv *, jclass)
 {
-//	Application::msAppTernamateFun();
+	PX2::ApplicationBase::msAppTernamateFun();
 }
 //----------------------------------------------------------------------------
