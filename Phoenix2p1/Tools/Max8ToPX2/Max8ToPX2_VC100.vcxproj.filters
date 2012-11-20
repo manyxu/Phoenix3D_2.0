@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="PX2ExportSettings.cpp">
+      <Filter>PluginSupport\Export</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2SceneExport.cpp">
+      <Filter>PluginSupport\Export</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2DLLMain.cpp">
+      <Filter>PluginSupport</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Max8ClassDesc.cpp">
+      <Filter>PluginSupport</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Mtls.cpp">
+      <Filter>SceneBuilder</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2MtlTree.cpp">
+      <Filter>SceneBuilder</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2SceneBuilder.cpp">
+      <Filter>SceneBuilder</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2SceneBuilderAnimation.cpp">
+      <Filter>SceneBuilder</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2SceneBuilderLight.cpp">
+      <Filter>SceneBuilder</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2SceneBuilderMesh.cpp">
+      <Filter>SceneBuilder</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2SceneBuilderModifier.cpp">
+      <Filter>SceneBuilder</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2SceneBuilderModifierSkin.cpp">
+      <Filter>SceneBuilder</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2SceneBuilderMtl.cpp">
+      <Filter>SceneBuilder</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2UniMaterialMesh.cpp">
+      <Filter>SceneBuilder</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PX2ExportSettings.hpp">
+      <Filter>PluginSupport\Export</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2SceneExport.hpp">
+      <Filter>PluginSupport\Export</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Max8ClassDesc.hpp">
+      <Filter>PluginSupport</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Mtls.hpp">
+      <Filter>SceneBuilder</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2MtlTree.hpp">
+      <Filter>SceneBuilder</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2SceneBuilder.hpp">
+      <Filter>SceneBuilder</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2UniMaterialMesh.hpp">
+      <Filter>SceneBuilder</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Max8ToTdPluginPre.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="PluginSupport">
+      <UniqueIdentifier>{7d26f3ea-5a4f-4dda-83e5-8c36ad48bf6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{19bcd398-dead-4b68-8273-59619bea4f54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneBuilder">
+      <UniqueIdentifier>{cb61f1ac-a867-4345-976f-1932a4cc6949}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PluginSupport\Export">
+      <UniqueIdentifier>{2858cad4-9826-4e18-9a7c-e4d62a8c0325}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Max8ToPX2.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Max8ToPX2.rc">
+      <Filter>Resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
