@@ -296,12 +296,6 @@ namespace PX2
 		// unit-length axis U and rotation angle t*A.
 		Matrix3& Slerp (Real t, const Matrix3& rot0, const Matrix3& rot1);
 
-		// Singular value decomposition, M = L*D*Transpose(R), where L and R are
-		// orthogonal and D is a diagonal matrix whose diagonal entries are
-		// nonnegative.
-		void SingularValueDecomposition (Matrix3& left, Matrix3& diag,
-			Matrix3& rightTranspose) const;
-
 		// Polar decomposition, M = Q*S, where Q is orthogonal and S is symmetric.
 		// This uses the singular value decomposition:
 		//   M = L*D*Transpose(R) = (L*Transpose(R))*(R*D*Transpose(R)) = Q*S

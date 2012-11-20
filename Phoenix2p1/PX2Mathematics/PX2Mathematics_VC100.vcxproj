@@ -66,6 +66,8 @@
     <ClInclude Include="PX2Float3.hpp" />
     <ClInclude Include="PX2Float4.hpp" />
     <ClInclude Include="PX2Frustum3.hpp" />
+    <ClInclude Include="PX2GMatrix.hpp" />
+    <ClInclude Include="PX2GVector.hpp" />
     <ClInclude Include="PX2HMatrix.hpp" />
     <ClInclude Include="PX2HPlane.hpp" />
     <ClInclude Include="PX2HPoint.hpp" />
@@ -105,6 +107,8 @@
     <None Include="PX2ConvexPolygon2.inl" />
     <None Include="PX2EdgeKey.inl" />
     <None Include="PX2Frustum3.inl" />
+    <None Include="PX2GMatrix.inl" />
+    <None Include="PX2GVector.inl" />
     <None Include="PX2HMatrix.inl" />
     <None Include="PX2HPlane.inl" />
     <None Include="PX2HPoint.inl" />

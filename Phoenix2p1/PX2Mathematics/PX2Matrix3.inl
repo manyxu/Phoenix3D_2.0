@@ -915,7 +915,7 @@ void Matrix3<Real>::EigenDecomposition (Matrix3& rot, Matrix3& diag) const
 	bool reflection = rot.Tridiagonalize(diagonal, subdiagonal);
 	bool converged = rot.QLAlgorithm(diagonal, subdiagonal);
 	assertion(converged, "QLAlgorithm failed to converge\n");
-	WM5_UNUSED(converged);
+	PX2_UNUSED(converged);
 
 	// Sort the eigenvalues in increasing order, d0 <= d1 <= d2.  This is an
 	// insertion sort.
@@ -1885,26 +1885,6 @@ Matrix3<Real>& Matrix3<Real>::Slerp (Real t, const Matrix3& rot0,
 	MakeRotation(axis, t*angle);
 	*this = rot0*(*this);
 	return *this;
-}
-//----------------------------------------------------------------------------
-template <typename Real>
-void Matrix3<Real>::SingularValueDecomposition (Matrix3& left,
-												Matrix3& diag, Matrix3& rightTranspose) const
-{
-	// TODO.  Replace by a call to EigenDecomposition and a QR factorization
-	// that is specialized for 3x3.  The QDUDecomposition appears to assume
-	// the input matrix is invertible, but a general QR factorization has to
-	// deal with non-full rank.
-
-	GMatrix<Real> M(3, 3);
-	memcpy((Real*)M, mEntry, 9*sizeof(double));
-
-	GMatrix<Real> tmpL(3, 3), tmpD(3, 3), tmpRTranspose(3, 3);
-	Wm5::SingularValueDecomposition<Real>(M, tmpL, tmpD, tmpRTranspose);
-
-	memcpy(left.mEntry, (Real*)tmpL, 9*sizeof(Real));
-	memcpy(diag.mEntry,(Real*)tmpD, 9*sizeof(Real));
-	memcpy(rightTranspose.mEntry, (Real*)tmpRTranspose, 9*sizeof(Real));
 }
 //----------------------------------------------------------------------------
 template <typename Real>

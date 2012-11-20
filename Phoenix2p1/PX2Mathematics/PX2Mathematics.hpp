@@ -18,6 +18,8 @@
 #include "PX2APoint.hpp"
 #include "PX2AVector.hpp"
 #include "PX2HMatrix.hpp"
+#include "PX2GMatrix.hpp"
+#include "PX2GVector.hpp"
 #include "PX2HPlane.hpp"
 #include "PX2HPoint.hpp"
 #include "PX2HQuaternion.hpp"

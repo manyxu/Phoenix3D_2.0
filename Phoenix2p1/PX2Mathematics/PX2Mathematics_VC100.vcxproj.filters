@@ -239,6 +239,12 @@
       <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="PX2MathematicsPre.hpp" />
+    <ClInclude Include="PX2GMatrix.hpp">
+      <Filter>Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2GVector.hpp">
+      <Filter>Algebra</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PX2AVector.inl">
@@ -324,6 +330,12 @@
     </None>
     <None Include="PX2Math.inl">
       <Filter>Base</Filter>
+    </None>
+    <None Include="PX2GMatrix.inl">
+      <Filter>Algebra</Filter>
+    </None>
+    <None Include="PX2GVector.inl">
+      <Filter>Algebra</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
