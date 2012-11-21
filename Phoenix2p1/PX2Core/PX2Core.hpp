@@ -57,6 +57,8 @@
 #include "PX2Stream.hpp"
 
 // Threading
+#include "PX2Condition.hpp"
+#include "PX2ConditionType.hpp"
 #include "PX2Mutex.hpp"
 #include "PX2MutexType.hpp"
 #include "PX2ScopedCS.hpp"

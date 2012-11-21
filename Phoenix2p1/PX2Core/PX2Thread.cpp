@@ -54,7 +54,8 @@ mUserData(userData),
 mProcessorNumber(processorNumber),
 mStackSize(stackSize)
 {
-	pthread_create(&mThread, 0, function, userData);
+	typedef void *(*PX2_PTHREADFUN)(void *) ;
+	pthread_create(&mThread, 0, (PX2_PTHREADFUN)function, userData);
 }
 //----------------------------------------------------------------------------
 Thread::~Thread ()

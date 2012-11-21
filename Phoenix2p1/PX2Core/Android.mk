@@ -24,6 +24,7 @@ PX2Rtti.cpp \
 PX2ScopedCS.cpp \
 PX2SmartPointer.cpp \
 PX2Stream.cpp \
+PX2Condition.cpp \
 PX2Thread.cpp \
 PX2Time.cpp
 

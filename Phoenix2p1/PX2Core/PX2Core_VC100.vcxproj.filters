@@ -96,6 +96,12 @@
       <Filter>Design</Filter>
     </ClInclude>
     <ClInclude Include="PX2CorePre.hpp" />
+    <ClInclude Include="PX2Condition.hpp">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ConditionType.hpp">
+      <Filter>Thread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PX2Assert.cpp">
@@ -160,6 +166,9 @@
     </ClCompile>
     <ClCompile Include="PX2InitTerm.cpp">
       <Filter>InputOutput</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Condition.cpp">
+      <Filter>Thread</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

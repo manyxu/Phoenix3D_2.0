@@ -22,6 +22,8 @@
     <ClInclude Include="PX2Any.hpp" />
     <ClInclude Include="PX2Assert.hpp" />
     <ClInclude Include="PX2BufferIO.hpp" />
+    <ClInclude Include="PX2Condition.hpp" />
+    <ClInclude Include="PX2ConditionType.hpp" />
     <ClInclude Include="PX2Core.hpp" />
     <ClInclude Include="PX2CorePre.hpp" />
     <ClInclude Include="PX2DayTime.hpp" />
@@ -56,6 +58,7 @@
   <ItemGroup>
     <ClCompile Include="PX2Assert.cpp" />
     <ClCompile Include="PX2BufferIO.cpp" />
+    <ClCompile Include="PX2Condition.cpp" />
     <ClCompile Include="PX2DayTime.cpp" />
     <ClCompile Include="PX2Endian.cpp" />
     <ClCompile Include="PX2Environment.cpp" />
@@ -169,6 +172,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\ThirdPartiesLibs\pthread\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
