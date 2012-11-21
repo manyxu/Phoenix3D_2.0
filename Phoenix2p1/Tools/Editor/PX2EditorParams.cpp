@@ -8,6 +8,7 @@
 using namespace PX2Editor;
 using namespace PX2;
 
+//-----------------------------------------------------------------------------
 EditorParams::EditorParams ()
 {
 	mGridSize = 40.0f;

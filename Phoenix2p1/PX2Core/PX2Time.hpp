@@ -21,7 +21,7 @@ namespace PX2
 
 	int64_t GetTimeInMicroseconds ();
 	double GetTimeInSeconds ();
-
+	void SleepInSeconds (float seconds);
 }
 
 #endif

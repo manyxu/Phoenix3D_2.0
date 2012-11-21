@@ -9,6 +9,10 @@
 namespace PX2
 {
 
+#if defined(WIN32)
+	#include <Windows.h>
+#endif
+
 #ifdef __APPLE__
 #include <sys/time.h>
 	static timeval gsInitial;
@@ -67,6 +71,17 @@ namespace PX2
 	{
 		int64_t microseconds = GetTimeInMicroseconds();
 		return 1e-06*microseconds;
+	}
+	//----------------------------------------------------------------------------
+	void SleepInSeconds (float seconds)
+	{
+#if defined(WIN32)
+		Sleep((DWORD)(seconds*1000.0));
+#elif defined(__LINUX__) || defined(__APPLE__) || defined(__ANDROID__)
+		sleep(seconds);
+#else
+#error Other platforms not yet implemented.
+#endif
 	}
 	//----------------------------------------------------------------------------
 

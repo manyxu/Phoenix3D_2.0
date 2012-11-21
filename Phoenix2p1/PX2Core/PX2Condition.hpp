@@ -12,11 +12,12 @@
 
 namespace PX2
 {
-	void PX2CreateCondition (ConditionType &cond);
-	void PX2CloseCondition (ConditionType &cond);
-	void PX2PostCondition (ConditionType &cond);
-	void PX2WaitCondition (ConditionType &cond);
-	void PX2Sleep (float seconds);
+
+	void CreateCondition (ConditionType &cond);
+	void CloseCondition (ConditionType &cond);
+	void PostCondition (ConditionType &cond);
+	void WaitCondition (ConditionType &cond);
+
 }
 
 #endif

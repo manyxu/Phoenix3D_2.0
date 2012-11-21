@@ -9,6 +9,7 @@ LOCAL_SRC_FILES := PX2_Phoenix3d_Library_PX2Renderer.cpp\
 LOCAL_WHOLE_STATIC_LIBRARIES := PX2Core
 LOCAL_WHOLE_STATIC_LIBRARIES += PX2Mathematics
 LOCAL_WHOLE_STATIC_LIBRARIES += PX2Graphics
+LOCAL_WHOLE_STATIC_LIBRARIES += PX2EventSystem
 LOCAL_WHOLE_STATIC_LIBRARIES += PX2AppFrame
 LOCAL_WHOLE_STATIC_LIBRARIES += Sample
 
@@ -21,5 +22,6 @@ include $(BUILD_SHARED_LIBRARY)
 $(call import-module, PX2Core)
 $(call import-module, PX2Mathematics)
 $(call import-module, PX2Graphics)
+$(call import-module, PX2EventSystem)
 $(call import-module, PX2AppFrame)
 $(call import-module, Sample)
