@@ -13,23 +13,23 @@
     <Filter Include="XML\TinyXML">
       <UniqueIdentifier>{9b1e63bc-b4bb-468f-806c-d0e87044177d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DevIL">
-      <UniqueIdentifier>{fd4206fe-7bc6-45a8-8456-3d7e50f73b04}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DevIL\IL">
-      <UniqueIdentifier>{1146e4d7-038c-4043-9a90-3e22fffa80f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DevIL\PNG">
-      <UniqueIdentifier>{aed3769f-b24b-453b-832e-196d8a4fc6a7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DevIL\ZLIB">
-      <UniqueIdentifier>{3c246d42-894a-481f-8b5a-c0a5108ed30e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Language">
       <UniqueIdentifier>{b097d3ae-7b0d-413f-b922-34413176e103}</UniqueIdentifier>
     </Filter>
     <Filter Include="CSV">
       <UniqueIdentifier>{0d04ec63-240a-4721-bb66-23208165f819}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DevIL">
+      <UniqueIdentifier>{f87dd177-4c63-4899-b997-d78809553d4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DevIL\IL">
+      <UniqueIdentifier>{98969804-d4d8-4644-b55d-28c1125c32c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DevIL\NPG">
+      <UniqueIdentifier>{53c8f602-c88b-435e-8fd7-f5559cf39f46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DevIL\ZLIB">
+      <UniqueIdentifier>{fd2d7aee-3838-4865-9722-de31313144ae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -56,6 +56,12 @@
     </ClCompile>
     <ClCompile Include="PX2XMLNode.cpp">
       <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2LanguageManager.cpp">
+      <Filter>Language</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2CSVParser.cpp">
+      <Filter>CSV</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\altivec_common.c">
       <Filter>DevIL</Filter>
@@ -292,106 +298,100 @@
       <Filter>DevIL</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\PNG\example.c">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\PNG\png.c">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\PNG\pngerror.c">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\PNG\pngget.c">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\PNG\pngmem.c">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\PNG\pngpread.c">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\PNG\pngread.c">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\PNG\pngrio.c">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\PNG\pngrtran.c">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\PNG\pngrutil.c">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\PNG\pngset.c">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\PNG\pngtest.c">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\PNG\pngtrans.c">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\PNG\pngwio.c">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\PNG\pngwrite.c">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\PNG\pngwtran.c">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\PNG\pngwutil.c">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\ZLIB\adler32.c">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\ZLIB\compress.c">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\ZLIB\crc32.c">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\ZLIB\deflate.c">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\ZLIB\gzclose.c">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\ZLIB\gzlib.c">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\ZLIB\gzread.c">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\ZLIB\gzwrite.c">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\ZLIB\infback.c">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\ZLIB\inffast.c">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\ZLIB\inflate.c">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\ZLIB\inftrees.c">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\ZLIB\trees.c">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\ZLIB\uncompr.c">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\ZLIB\zutil.c">
-      <Filter>DevIL\ZLIB</Filter>
-    </ClCompile>
-    <ClCompile Include="PX2LanguageManager.cpp">
-      <Filter>Language</Filter>
-    </ClCompile>
-    <ClCompile Include="PX2CSVParser.cpp">
-      <Filter>CSV</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -414,6 +414,12 @@
     </ClInclude>
     <ClInclude Include="PX2XMLNode.hpp">
       <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2LanguageManager.hpp">
+      <Filter>Language</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2CSVParser.hpp">
+      <Filter>CSV</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\altivec_common.h">
       <Filter>DevIL</Filter>
@@ -554,64 +560,58 @@
       <Filter>DevIL\IL</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\PNG\png.h">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\PNG\pngconf.h">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\PNG\pngdebug.h">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\PNG\pnginfo.h">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\PNG\pnglibconf.h">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\PNG\pngpriv.h">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\PNG\pngstruct.h">
-      <Filter>DevIL\PNG</Filter>
+      <Filter>DevIL\ZLIB</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\ZLIB\crc32.h">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\ZLIB\deflate.h">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\ZLIB\gzguts.h">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\ZLIB\inffast.h">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\ZLIB\inffixed.h">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\ZLIB\inflate.h">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\ZLIB\inftrees.h">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\ZLIB\trees.h">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\ZLIB\zconf.h">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\ZLIB\zlib.h">
-      <Filter>DevIL\ZLIB</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\ZLIB\zutil.h">
-      <Filter>DevIL\ZLIB</Filter>
-    </ClInclude>
-    <ClInclude Include="PX2LanguageManager.hpp">
-      <Filter>Language</Filter>
-    </ClInclude>
-    <ClInclude Include="PX2CSVParser.hpp">
-      <Filter>CSV</Filter>
+      <Filter>DevIL\NPG</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

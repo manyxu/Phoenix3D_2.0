@@ -47,16 +47,18 @@ namespace PX2
 
 		typedef unsigned long ResHandle;
 
-		// Load
-		void DDSKeepCompressed (bool keep=true);
-		bool IsDDSKeepCompressed ();
+		// 加载
 		Object *BlockLoad (const std::string &filename);
 		ResHandle BackgroundLoad (const std::string &filename);
 		Object *CheckRes (ResHandle handle);
 		LoadState GetResLoadState (ResHandle handle);
 
-		// Garbage
+		// 回收
 		void GarbageCollect ();
+
+		// 加载选项
+		void DDSKeepCompressed (bool keep=true);
+		bool IsDDSKeepCompressed ();
 
 public_internal:
 		unsigned int RunLoadingThread ();
@@ -72,13 +74,12 @@ public_internal:
 		
 	private:
 		bool mDDSKeepCompressed;
-		typedef void *OSEventHandle;
 		Mutex mLoadRecordMutex;
 		Mutex mLoadingDequeMutex;
 		Thread *mLoadingThread;
 		std::deque<LoadRecord *>mLoadingDeque;
 		bool mQuitLoading;
-		OSEventHandle mLoadingDequeSemaphore;
+		ConditionType mLoadingDequeCondition;
 
 		typedef std::map<std::string, LoadRecord> ResTable;
 		typedef ResTable::iterator ResIterator;

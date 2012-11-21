@@ -50,6 +50,18 @@
  #define IL_NO_UTX
  #define IL_NO_XPM
 #define IL_USE_JPEGLIB_UNMODIFIED 1
+
+#ifdef __ANDROID__
+#define IL_NO_DDS
+#define IL_NO_DPX
+#define IL_NO_ILBM
+#define IL_NO_IFF
+#define IL_NO_MP3
+#define IL_NO_TEXTURE
+#define IL_NO_VTF
+#define IL_NO_VTF
+#endif
+
 //#define IL_USE_DXTC_NVIDIA
 //#define IL_USE_DXTC_SQUISH
 

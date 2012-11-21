@@ -18,8 +18,7 @@ using namespace std;
 
 //----------------------------------------------------------------------------
 #if defined(WIN32)
-#include <windows.h>
-static unsigned int WINAPI ThreadLoadFun (void *data)
+static unsigned int ThreadLoadFun (void *data)
 {
 	ResourceManager *manager = (ResourceManager*)data;
 
@@ -29,12 +28,12 @@ static unsigned int WINAPI ThreadLoadFun (void *data)
 	return 0;
 }
 #elif defined(__LINUX__) || defined(__APPLE__) || defined(__ANDROID__)
-static void *ThreadLoadFun (void *data)
+static void* ThreadLoadFun (void *data)
 {
 	ResourceManager *manager = (ResourceManager*)data;
 
 	if (manager)
-		return manager->RunLoadingThread();
+		manager->RunLoadingThread();
 
 	return 0;
 }
@@ -57,18 +56,15 @@ mDDSKeepCompressed(true)
 //----------------------------------------------------------------------------
 ResourceManager::~ResourceManager ()
 {
-#if defined(WIN32)
-	::ReleaseSemaphore(mLoadingDequeSemaphore, 1, NULL);
-#endif
+	PostCondition(mLoadingDequeCondition);
 
 	if (mLoadingThread)
 	{
 		delete0(mLoadingThread);
 		mLoadingThread = NULL;
 	}
-#if defined(WIN32)
-	::CloseHandle(mLoadingDequeSemaphore);
-#endif
+
+	CloseCondition(mLoadingDequeCondition);
 
 	// Shutdown Devil
 	ilShutDown();
@@ -103,12 +99,7 @@ ResourceManager::ResHandle ResourceManager::BackgroundLoad (
 			rec.State = LS_LOADQUE;
 			mLoadingDeque.push_front(&rec);
 
-#if defined(WIN32)	
-			bool b = (::ReleaseSemaphore(mLoadingDequeSemaphore, 1, NULL)==1);
-			assertion(b, "ReleaseSemaphore failed.");
-			PX2_UNUSED(b);
-#endif
-
+			PostCondition(mLoadingDequeCondition);
 		}
 	}
 
@@ -145,9 +136,7 @@ unsigned int ResourceManager::RunLoadingThread ()
 
 	while (!mQuitLoading)
 	{
-#if defined(WIN32)	
-		::WaitForSingleObject(mLoadingDequeSemaphore, INFINITE);
-#endif
+		WaitCondition(mLoadingDequeCondition);
 
 		if (mQuitLoading)
 			break;
@@ -215,9 +204,7 @@ void ResourceManager::LoadTheRecord (LoadRecord &rec)
 	// 可能其他线程正在加载这个资源
 	while (rec.State != LS_LOADED)
 	{
-#if defined(WIN32)
-		Sleep(10);
-#endif
+		SleepInSeconds(0.01f);
 	}
 }
 //----------------------------------------------------------------------------
@@ -322,7 +309,7 @@ Texture2D *ResourceManager::LoadTextureFromOtherImagefile (
 	else
 	{
 		assertion(false, "format is not supported.");
-		return false;
+		return 0;
 	}
 
 	int bufferSize;
@@ -562,10 +549,7 @@ Texture2D *ResourceManager::LoadTextureFromDDS (const std::string &filename)
 //----------------------------------------------------------------------------
 void ResourceManager::StartThread ()
 {
-#if defined(WIN32)
-	mLoadingDequeSemaphore = ::CreateSemaphore(NULL, 0, 10000, NULL);
-#endif
-
-	mLoadingThread = new0 Thread(ThreadLoadFun, this);
+	CreateCondition(mLoadingDequeCondition);
+	mLoadingThread = new0 Thread((void*)ThreadLoadFun, this);
 }
 //----------------------------------------------------------------------------

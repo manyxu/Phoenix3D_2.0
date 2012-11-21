@@ -149,7 +149,8 @@ bool XMLNode::AttributeToBool (const char *name)
 	}
 	else
 	{
-		return (stricmp(pstr, "true") == 0);
+		return (strncmp(pstr, "true", 4) == 0)
+			||(strncmp(pstr, "TRUE", 4) == 0);
 	}
 }
 //----------------------------------------------------------------------------
