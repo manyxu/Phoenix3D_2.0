@@ -29,7 +29,7 @@ void Memory::Initialize (Allocator allocator, Deallocator deallocator)
 	msMutex.Leave();
 }
 //----------------------------------------------------------------------------
-void Memory::Terminate (const std::string& filename)
+void Memory::Terminate (const std::string& filename, bool alwaysReportFile)
 {
 	msMutex.Enter();
 
@@ -39,11 +39,19 @@ void Memory::Terminate (const std::string& filename)
 		return;
 	}
 
-	FILE* outFile = fopen(filename.c_str(), "wt");
-	if (!outFile)
+	FILE* outFile = 0;
+	if (!alwaysReportFile && msMap->empty())
 	{
-		msMutex.Leave();
-		return;
+		// do not need report file
+	}
+	else
+	{
+		outFile = fopen(filename.c_str(), "wt");
+		if (!outFile)
+		{
+			msMutex.Leave();
+			return;
+		}
 	}
 
 	// Create a sorted map from the memory map based on unique ID.
@@ -72,11 +80,17 @@ void Memory::Terminate (const std::string& filename)
 		void* address = sortedIter->second.first;
 		Information info = sortedIter->second.second;
 
-		fprintf(outFile, format.c_str(), uniqueID, address, info.mNumBytes,
-			info.mNumDimensions, info.mFile, info.mLine);
+		if (outFile)
+		{
+			fprintf(outFile, format.c_str(), uniqueID, address, info.mNumBytes,
+				info.mNumDimensions, info.mFile, info.mLine);
+		}
 	}
 
-	fclose(outFile);
+	if (outFile)
+	{
+		fclose(outFile);
+	}
 
 	// 这里你必须使用'delete'而不是'delete0'，否则你会导致无限的循环。
 	delete msMap;

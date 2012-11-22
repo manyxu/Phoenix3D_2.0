@@ -79,7 +79,7 @@ bool ApplicationBase::Ternamate ()
 	delete0(mRoot);
 
 #ifdef PX2_USE_MEMORY
-	Memory::Terminate("MemoryReport.txt");
+	Memory::Terminate("PX2Application_MemoryReport.txt");
 #endif
 
 	return true;

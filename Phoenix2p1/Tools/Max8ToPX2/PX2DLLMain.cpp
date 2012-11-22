@@ -45,7 +45,7 @@ BOOL WINAPI DllMain (HINSTANCE instance, ULONG dwReason, LPVOID)
 
 		delete0(sResMan);
 #ifdef PX2_USE_MEMORY
-		PX2::Memory::Terminate("Max8ToPX2_MemoryReport.txt");
+		PX2::Memory::Terminate("Max8ToPX2_MemoryReport.txt", false);
 #endif
 		break;
 	case DLL_THREAD_ATTACH:

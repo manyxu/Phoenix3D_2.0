@@ -11,6 +11,7 @@ LOCAL_WHOLE_STATIC_LIBRARIES += PX2Mathematics
 LOCAL_WHOLE_STATIC_LIBRARIES += PX2Graphics
 LOCAL_WHOLE_STATIC_LIBRARIES += PX2EventSystem
 LOCAL_WHOLE_STATIC_LIBRARIES += PX2Unity
+LOCAL_WHOLE_STATIC_LIBRARIES += PX2Game
 LOCAL_WHOLE_STATIC_LIBRARIES += PX2AppFrame
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/..
@@ -28,4 +29,5 @@ $(call import-module, PX2Mathematics)
 $(call import-module, PX2Graphics)
 $(call import-module, PX2EventSystem)
 $(call import-module, PX2Unity)
+$(call import-module, PX2Game)
 $(call import-module, PX2AppFrame)

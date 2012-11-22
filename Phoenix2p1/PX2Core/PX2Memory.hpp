@@ -36,7 +36,7 @@ namespace PX2
 			Deallocator deallocator = &DefaultDeallocator
 			);
 
-		static void Terminate (const std::string& filename);
+		static void Terminate (const std::string& filename, bool alwaysReportFile=true);
 
 public_internal:
 		inline Memory (const char* file, int line) : mFile(file), mLine(line) {}
