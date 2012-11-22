@@ -84,7 +84,8 @@ VSOut VS(VSIn vsIn)
 	
    	vsOut.Position = mul(float4(vsIn.Position, 1.0f), PVWMatrix);
 	
-	vsOut.Colour.rgb = gLightColour.rgb*gShineAmbient.rgb 
+	vsOut.Colour.rgb = gShineEmissive.rgb
+		+ gLightColour.rgb*gShineAmbient.rgb 
 		+ gLightColour.rgb*gShineDiffuse.rgb*max(0, dot(normalWorld, gLightDir));
 	vsOut.Colour.a = 1.0;
 	
