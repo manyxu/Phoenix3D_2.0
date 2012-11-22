@@ -8,12 +8,7 @@ int gBlendMode
 	string UIType = "IntSpinner";
 	float UIMin = 0;
 	float UIMax = 4;	
-> = 0;
-// ------------------------------------------- doubleSide
-bool gDoubleSide
-<
-	string UIName = "DoubleSide";
-> = false;
+>  = 0;
 // ------------------------------------------- alphaVertex
 bool gAlphaVertex
 <
@@ -237,12 +232,7 @@ technique Default
 		AlphaRef = 178;
 		AlphaFunc = GREATEREQUAL;
 #endif
-
-#if gDoubleSide == true
-	CullMode = NONE;
-#else
-	CullMode = CW;
-#endif
+		CullMode = CW;
 		VertexShader		= compile vs_2_0 VS();
 		PixelShader		= compile ps_2_0 PS();
     }
