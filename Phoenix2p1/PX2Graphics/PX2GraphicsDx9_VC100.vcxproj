@@ -94,8 +94,10 @@
     <ClCompile Include="PX2ShineSpecularConstant.cpp" />
     <ClCompile Include="PX2SkinController.cpp" />
     <ClCompile Include="PX2SpecializedIO.cpp" />
+    <ClCompile Include="PX2StandardESMaterial_Specular.cpp" />
     <ClCompile Include="PX2StandardMaterial.cpp" />
     <ClCompile Include="PX2StandardMesh.cpp" />
+    <ClCompile Include="PX2StandardESMaterial_Default.cpp" />
     <ClCompile Include="PX2StencilProperty.cpp" />
     <ClCompile Include="PX2SwitchNode.cpp" />
     <ClCompile Include="PX2Texture.cpp" />
@@ -213,8 +215,10 @@
     <ClInclude Include="PX2ShineSpecularConstant.hpp" />
     <ClInclude Include="PX2SkinController.hpp" />
     <ClInclude Include="PX2SpecializedIO.hpp" />
+    <ClInclude Include="PX2StandardESMaterial_Specular.hpp" />
     <ClInclude Include="PX2StandardMaterial.hpp" />
     <ClInclude Include="PX2StandardMesh.hpp" />
+    <ClInclude Include="PX2StandardESMaterial_Default.hpp" />
     <ClInclude Include="PX2StencilProperty.hpp" />
     <ClInclude Include="PX2SwitchNode.hpp" />
     <ClInclude Include="PX2Texture.hpp" />

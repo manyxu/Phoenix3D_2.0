@@ -13,7 +13,6 @@ PX2_IMPLEMENT_RTTI(PX2, Material, VertexColor4Material);
 PX2_IMPLEMENT_STREAM(VertexColor4Material);
 PX2_IMPLEMENT_FACTORY(VertexColor4Material);
 PX2_IMPLEMENT_DEFAULT_NAMES(Material, VertexColor4Material);
-
 //----------------------------------------------------------------------------
 VertexColor4Material::VertexColor4Material ()
 {

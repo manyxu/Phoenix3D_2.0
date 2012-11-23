@@ -171,7 +171,7 @@ Material* Material::LoadPX2fx (const std::string& name, int mode)
 	return new0 Material(name, mode);
 }
 //----------------------------------------------------------------------------
-void Material::SavePXfx (const std::string& name, int mode)
+void Material::SavePX2fx (const std::string& name, int mode)
 {
 	FileIO outFile(name, mode);
 	if (!outFile)

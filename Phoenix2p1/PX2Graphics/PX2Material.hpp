@@ -57,7 +57,7 @@ namespace PX2
 		static Material* LoadPX2fx (const std::string& name,
 			int mode = FileIO::FM_DEFAULT_READ);
 
-		void SavePXfx (const std::string& name,
+		void SavePX2fx (const std::string& name,
 			int mode = FileIO::FM_DEFAULT_WRITE);
 
 	protected:

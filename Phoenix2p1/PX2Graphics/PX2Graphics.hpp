@@ -50,6 +50,7 @@
 #include "PX2VertexColor4Material.hpp"
 #include "PX2Texture2DMaterial.hpp"
 #include "PX2StandardMaterial.hpp"
+#include "PX2StandardESMaterial.hpp"
 
 // Renderers
 #include "PX2Renderer.hpp"
