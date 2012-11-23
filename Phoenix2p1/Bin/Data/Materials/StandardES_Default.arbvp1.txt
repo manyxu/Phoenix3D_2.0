@@ -1,0 +1,70 @@
+!!ARBvp1.0
+# cgc version 3.1.0010, build date Feb  8 2012
+# command line args: -profile arbvp1
+# source file: StandardES_Default.fx
+#vendor NVIDIA Corporation
+#version 3.1.0.10
+#profile arbvp1
+#program v_StandardES_Default
+#semantic gWMatrix
+#semantic gVMatrix
+#semantic gPMatrix
+#semantic gPVWMatrix
+#semantic gVWMatrix
+#semantic gWIMatrix
+#semantic gVIMatrix
+#semantic gCameraWorldPosition
+#semantic gShineEmissive
+#semantic gShineAmbient
+#semantic gShineDiffuse
+#semantic gLightColour
+#semantic gLightModelDirection
+#semantic gDiffuseSampler
+#var float3 modelPosition : $vin.POSITION : POSITION : 0 : 1
+#var float3 modelNormal : $vin.NORMAL : NORMAL : 1 : 1
+#var float2 modelTCoord0 : $vin.TEXCOORD0 : TEXCOORD0 : 2 : 1
+#var float4 clipPosition : $vout.POSITION : HPOS : 3 : 1
+#var float4 vertexColor : $vout.COLOR : COL0 : 4 : 1
+#var float2 vertexTCoord0 : $vout.TEXCOORD0 : TEX0 : 5 : 1
+#var float4x4 gWMatrix :  : , 4 : -1 : 0
+#var float4x4 gVMatrix :  : , 4 : -1 : 0
+#var float4x4 gPMatrix :  : , 4 : -1 : 0
+#var float4x4 gPVWMatrix :  : c[1], 4 : -1 : 1
+#var float4x4 gVWMatrix :  : , 4 : -1 : 0
+#var float4x4 gWIMatrix :  : , 4 : -1 : 0
+#var float4x4 gVIMatrix :  : , 4 : -1 : 0
+#var float3 gCameraWorldPosition :  :  : -1 : 0
+#var float4 gShineEmissive :  : c[5] : -1 : 1
+#var float4 gShineAmbient :  : c[6] : -1 : 1
+#var float4 gShineDiffuse :  : c[7] : -1 : 1
+#var float4 gLightColour :  : c[8] : -1 : 1
+#var float3 gLightModelDirection :  : c[9] : -1 : 1
+#var sampler2D gDiffuseSampler :  :  : -1 : 0
+#const c[0] = 1 0
+#default gShineEmissive = 0 0 0 1
+#default gShineAmbient = 0.1 0.1 0.1 1
+#default gShineDiffuse = 0.47 0.47 0.47 1
+#default gLightColour = 0.30000001 0.30000001 0.30000001 1
+#default gLightModelDirection = -0.5 -0.5 -0.5
+PARAM c[10] = { { 1, 0 },
+		program.local[1..9] };
+TEMP R0;
+TEMP R1;
+MOV R0.xyz, c[7];
+MOV R1.xyz, c[6];
+MUL R1.xyz, R1, c[8];
+DP3 R0.w, vertex.normal, c[9];
+MUL R0.xyz, R0, c[8];
+MAX R0.w, R0, c[0].y;
+ADD R1.xyz, R1, c[5];
+MAD result.color.xyz, R0, R0.w, R1;
+MOV R0.w, c[0].x;
+MOV R0.xyz, vertex.position;
+DP4 result.position.w, R0, c[4];
+DP4 result.position.z, R0, c[3];
+DP4 result.position.y, R0, c[2];
+DP4 result.position.x, R0, c[1];
+MOV result.texcoord[0].xy, vertex.texcoord[0];
+MOV result.color.w, c[7];
+END
+# 16 instructions, 2 R-regs

@@ -1,0 +1,49 @@
+!!ARBfp1.0
+# cgc version 3.1.0010, build date Feb  8 2012
+# command line args: -profile arbfp1
+# source file: StandardES_Default.fx
+#vendor NVIDIA Corporation
+#version 3.1.0.10
+#profile arbfp1
+#program p_StandardES_Default
+#semantic gWMatrix
+#semantic gVMatrix
+#semantic gPMatrix
+#semantic gPVWMatrix
+#semantic gVWMatrix
+#semantic gWIMatrix
+#semantic gVIMatrix
+#semantic gCameraWorldPosition
+#semantic gShineEmissive
+#semantic gShineAmbient
+#semantic gShineDiffuse
+#semantic gLightColour
+#semantic gLightModelDirection
+#semantic gDiffuseSampler
+#var float4 vertexColor : $vin.COLOR : COL0 : 0 : 1
+#var float2 vertexTCoord0 : $vin.TEXCOORD0 : TEX0 : 1 : 1
+#var float4 pixelColor : $vout.COLOR : COL : 2 : 1
+#var float4x4 gWMatrix :  : , 4 : -1 : 0
+#var float4x4 gVMatrix :  : , 4 : -1 : 0
+#var float4x4 gPMatrix :  : , 4 : -1 : 0
+#var float4x4 gPVWMatrix :  : , 4 : -1 : 0
+#var float4x4 gVWMatrix :  : , 4 : -1 : 0
+#var float4x4 gWIMatrix :  : , 4 : -1 : 0
+#var float4x4 gVIMatrix :  : , 4 : -1 : 0
+#var float3 gCameraWorldPosition :  :  : -1 : 0
+#var float4 gShineEmissive :  :  : -1 : 0
+#var float4 gShineAmbient :  :  : -1 : 0
+#var float4 gShineDiffuse :  :  : -1 : 0
+#var float4 gLightColour :  :  : -1 : 0
+#var float3 gLightModelDirection :  :  : -1 : 0
+#var sampler2D gDiffuseSampler :  : texunit 0 : -1 : 1
+#default gShineEmissive = 0 0 0 1
+#default gShineAmbient = 0.1 0.1 0.1 1
+#default gShineDiffuse = 0.47 0.47 0.47 1
+#default gLightColour = 0.30000001 0.30000001 0.30000001 1
+#default gLightModelDirection = -0.5 -0.5 -0.5
+TEMP R0;
+TEX R0, fragment.texcoord[0], texture[0], 2D;
+MUL result.color, R0, fragment.color.primary;
+END
+# 2 instructions, 1 R-regs
