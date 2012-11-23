@@ -323,11 +323,22 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 		}
 		else if (outBaseName == "StandardES")
 		{
-			char mtlName[256];
-			memset(mtlName, 0, 256*sizeof(char));
-			sprintf(mtlName, "%s/%s", mSettings->DstRootDir, 
-				"Data/Materials/StandardES.pxfx");
-			standardESMtl = new0 PX2::StandardESMaterial(mtlName);
+			if (false == specEnable)
+			{
+				char mtlName[256];
+				memset(mtlName, 0, 256*sizeof(char));
+				sprintf(mtlName, "%s/%s", mSettings->DstRootDir, 
+					"Data/Materials/StandardES_Default.pxfx");
+				standardESMtl_D = new0 PX2::StandardESMaterial_Default(mtlName);
+			}
+			else
+			{
+				char mtlName[256];
+				memset(mtlName, 0, 256*sizeof(char));
+				sprintf(mtlName, "%s/%s", mSettings->DstRootDir, 
+					"Data/Materials/StandardES_Specular.pxfx");
+				standardESMtl_S = new0 PX2::StandardESMaterial_Specular(mtlName);
+			}
 		}
 
 		if (standardMtl && diffTex)
@@ -341,15 +352,24 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 				normalEnable, normalTex, normalScale, specEnable, specTex,
 				specPower, 0, shineStandard);
 		}
-		else if (standardESMtl && diffTex)
+		else if (standardESMtl_D && diffTex)
 		{
 			if (doubleSize)
 			{
-				standardESMtl->GetCullProperty(0, 0)->Enabled = false;
+				standardESMtl_D->GetCullProperty(0, 0)->Enabled = false;
 			}
 
-			inst = standardESMtl->CreateInstance(diffTex, specEnable, specTex,
-				specPower, 0, shineStandard);
+			inst = standardESMtl_D->CreateInstance(diffTex, 0, shineStandard);
+		}
+		else if (standardESMtl_S && diffTex && specTex)
+		{
+			if (doubleSize)
+			{
+				standardESMtl_S->GetCullProperty(0, 0)->Enabled = false;
+			}
+
+			inst = standardESMtl_S->CreateInstance(diffTex, specTex, specPower,
+				0, shineStandard);
 		}
 
 		if (inst)
