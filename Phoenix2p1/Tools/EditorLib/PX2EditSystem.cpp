@@ -90,7 +90,7 @@ bool EditSystem::Terminate ()
 	}
 
 #ifdef PX2_USE_MEMORY
-	Memory::Terminate("PX2Editor_MemoryReport.txt");
+	Memory::Terminate("PX2Editor_MemoryReport.txt", false);
 #endif
 
 	return true;

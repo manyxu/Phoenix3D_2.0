@@ -182,9 +182,6 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 		PX2::StringHelp::SplitFullFilename(effectName, outPath, outBaseName,
 			outExtention);
 
-		PX2::MaterialInstance *inst = 0;
-		PX2::Material *mtl = 0;
-		PX2::StandardMaterial *standardMtl = 0;
 		PX2::ShinePtr shineStandard = new0 PX2::Shine();
 		bool alphaVertex = false;
 		PX2::Texture2DPtr diffTex;
@@ -198,15 +195,6 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 		PX2::TextureCubePtr reflectTex;
 		float reflectPower = 0.0f;
 		bool doubleSize = false;
-		if (outBaseName == "Standard")
-		{
-			char mtlName[256];
-			memset(mtlName, 0, 256*sizeof(char));
-			sprintf(mtlName, "%s/%s", mSettings->DstRootDir, 
-				"Data/Materials/Standard.pxfx");
-			mtl = new0 PX2::StandardMaterial(mtlName);
-		}
-		standardMtl = PX2::DynamicCast<PX2::StandardMaterial>(mtl);
 
 		ParamBlockDesc2 *paramDesc = 0;
 		int numParam = 0;
@@ -321,6 +309,27 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 			}
 		}
 
+		PX2::MaterialInstance *inst = 0;
+		PX2::StandardMaterial *standardMtl = 0;
+		PX2::StandardESMaterial_Default *standardESMtl_D = 0;
+		PX2::StandardESMaterial_Specular *standardESMtl_S = 0;
+		if (outBaseName == "Standard")
+		{
+			char mtlName[256];
+			memset(mtlName, 0, 256*sizeof(char));
+			sprintf(mtlName, "%s/%s", mSettings->DstRootDir, 
+				"Data/Materials/Standard.pxfx");
+			standardMtl = new0 PX2::StandardMaterial(mtlName);
+		}
+		else if (outBaseName == "StandardES")
+		{
+			char mtlName[256];
+			memset(mtlName, 0, 256*sizeof(char));
+			sprintf(mtlName, "%s/%s", mSettings->DstRootDir, 
+				"Data/Materials/StandardES.pxfx");
+			standardESMtl = new0 PX2::StandardESMaterial(mtlName);
+		}
+
 		if (standardMtl && diffTex)
 		{
 			if (doubleSize)
@@ -330,6 +339,16 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 
 			inst = standardMtl->CreateInstance(diffTex, alphaVertex, 
 				normalEnable, normalTex, normalScale, specEnable, specTex,
+				specPower, 0, shineStandard);
+		}
+		else if (standardESMtl && diffTex)
+		{
+			if (doubleSize)
+			{
+				standardESMtl->GetCullProperty(0, 0)->Enabled = false;
+			}
+
+			inst = standardESMtl->CreateInstance(diffTex, specEnable, specTex,
 				specPower, 0, shineStandard);
 		}
 
