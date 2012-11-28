@@ -14,7 +14,7 @@
 #ifndef PX2STRINGHELP_HPP
 #define PX2STRINGHELP_HPP
 
-#include "PX2UnityPre.hpp"
+#include "PX2CorePre.hpp"
 
 namespace PX2
 {
@@ -22,6 +22,8 @@ namespace PX2
 	class StringHelp
 	{
 	public:
+		static bool Initlize();
+
 		// 将文件路径标准化（将"\\"换成'/'）, 如果末尾没有'/',添加'/'
 		static std::string StandardisePath (const std::string &path);
 
@@ -55,6 +57,13 @@ namespace PX2
 
 		static const char *UnicodeToAnsi (const wchar_t *src, int srcChar=-1);
 		static wchar_t *AnsiToUnicode (const char *src, int srcChar=-1);
+
+		static std::string IntToString (int i);
+
+		// Hash
+		static unsigned int Hash(const std::string &str, unsigned int type);
+		static unsigned int Hash(const char *str, unsigned int type,
+			int length=-1); //< 如果length<0,表示传入的字符串是已\0结尾
 	};
 
 }
