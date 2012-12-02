@@ -91,7 +91,8 @@ const std::string FxCompiler::msVProfileName[Shader::MAX_PROFILES] =
 	"vs_1_1",
 	"vs_2_0",
 	"vs_3_0",
-	"arbvp1"
+	"arbvp1",
+	"vp_gles2"
 };
 
 const std::string FxCompiler::msPProfileName[Shader::MAX_PROFILES] =
@@ -100,7 +101,8 @@ const std::string FxCompiler::msPProfileName[Shader::MAX_PROFILES] =
 	"ps_1_1",
 	"ps_2_0",
 	"ps_3_0",
-	"arbfp1"
+	"arbfp1",
+	"fp_gles2"
 };
 
 const std::string FxCompiler::msVTName[Shader::VT_QUANTITY] =
@@ -302,55 +304,64 @@ bool FxCompiler::ProcessPassNode (XMLNode passNode, MaterialTechnique* technique
 
 	// vertexshader
 	XMLNode vertexShaderNode = passNode.GetChild("vertexshader");
-	if (!vertexShaderNode.IsNull())
+	XMLNode childNodeVS = vertexShaderNode.IterateChild();
+	while (!childNodeVS.IsNull())
 	{
-		XMLNode varNode = vertexShaderNode.GetChild("var");
-		if (!varNode.IsNull())
-		{
-			std::string filename(varNode.AttributeToString("file"));
-			std::string entryname(varNode.AttributeToString("entry"));
-			if (!CompileShader(true, filename, entryname))
-			{
-				assertion(false, "Process vertexshader failed.");
+		std::string name = childNodeVS.GetName();
 
-				return false;
+		if ("var" == name)
+		{
+			std::string type(childNodeVS.AttributeToString("type"));
+			std::string filename(childNodeVS.AttributeToString("file"));
+			std::string entryname(childNodeVS.AttributeToString("entry"));
+			
+			if ("cg" == type)
+			{
+				if (!CompileShader(true, filename, entryname))
+				{
+					assertion(false, "Process vertexshader failed.");
+
+					return false;
+				}
+			}
+			else if ("gles2" == type)
+			{
+				mCgVStatus[5] = 0;
 			}
 		}
-		else
-		{
-			assertion(false, "No var node.");
-		}
-	}
-	else
-	{
-		assertion(false, "No shader node.");
+
+		childNodeVS = vertexShaderNode.IterateChild(childNodeVS);
 	}
 
 	// pixelshader
 	XMLNode pixelShaderNode = passNode.GetChild("pixelshader");
-	if (!pixelShaderNode.IsNull())
+	XMLNode childNodePS = pixelShaderNode.IterateChild();
+	while (!childNodePS.IsNull())
 	{
-		XMLNode varNode = pixelShaderNode.GetChild("var");
-		if (!varNode.IsNull())
+		std::string name = childNodePS.GetName();
+
+		if ("var" == name)
 		{
-			std::string filename(varNode.AttributeToString("file"));
-			std::string entryname(varNode.AttributeToString("entry"));
+			std::string type(childNodePS.AttributeToString("type"));
+			std::string filename(childNodePS.AttributeToString("file"));
+			std::string entryname(childNodePS.AttributeToString("entry"));
 
-			if (!CompileShader(false, filename, entryname))
+			if ("cg" == type)
 			{
-				assertion(false, "Process pixelshader failed.");
+				if (!CompileShader(false, filename, entryname))
+				{
+					assertion(false, "Process pixelshader failed.");
 
-				return false;
+					return false;
+				}
+			}
+			else if ("gles2" == type)
+			{
+				mCgPStatus[5] = 0;
 			}
 		}
-		else
-		{
-			assertion(false, "No var node.");
-		}
-	}
-	else
-	{
-		assertion(false, "No shader node.");
+
+		childNodePS = vertexShaderNode.IterateChild(childNodePS);
 	}
 
 	// ¼ì²â×ÅÉ«Æ÷¶Ô
@@ -379,8 +390,8 @@ bool FxCompiler::ProcessPassNode (XMLNode passNode, MaterialTechnique* technique
 		materialPass->SetWireProperty(new0 WireProperty());
 	}
 
-	if (!UpdateMaterialPass(mCurVertexShaderName,
-		mCurPixelShaderName, materialPass))
+	if (!UpdateMaterialPass(mCurVertexShaderName, mCurPixelShaderName, 
+		materialPass))
 		return false;
 
 	return true;
@@ -392,6 +403,9 @@ bool FxCompiler::CompileShader (bool v, string filename, string shaderName)
 
 	for (int i=1; i<Shader::MAX_PROFILES; ++i)
 	{
+		if (i==5)
+			continue;
+
 		if (v)
 		{
 			mCurVertexShaderName = shaderName;
@@ -497,12 +511,16 @@ bool FxCompiler::UpdateMaterialPass (string vertexShaderName,
 
 	for (int i=1; i<Shader::MAX_PROFILES; ++i)
 	{
+		if (5 == i)
+			continue;
+
 		mActiveProfile = i;
 
 		std::string inVName = vertexShaderName + "." + msVProfileName[i] + ".txt";
+		std::string inPName = pixelShaderName + "." + msPProfileName[i] + ".txt";
+
 		bool hasVProfile = Parse(inVName, msVProfileName[i], vProgram[i]);
 
-		std::string inPName = pixelShaderName + "." + msPProfileName[i] + ".txt";
 		bool hasPProfile = Parse(inPName, msPProfileName[i], pProgram[i]);
 
 		if (hasVProfile && hasPProfile)

@@ -27,7 +27,7 @@ namespace PX2
 	{
 	public:
 		PdrVertexShader (Renderer* renderer, const VertexShader* vshader);
-		~PdrVertexShader ();
+		virtual ~PdrVertexShader ();
 
 		void Enable (Renderer* renderer, const VertexShader* vshader,
 			const ShaderParameters* parameters);

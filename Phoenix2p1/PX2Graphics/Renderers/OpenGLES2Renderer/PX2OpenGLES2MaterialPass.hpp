@@ -32,8 +32,13 @@ namespace PX2
 		void Enable (Renderer *renderer);
 		void Disable (Renderer *renderer);
 
+		GLuint GetProgram () { return mProgramObject; }
+
 	private:
+		const MaterialPass *mPass;
 		GLuint mProgramObject;
+
+		std::map<std::string, int> mAttribLocations;
 	};
 
 }

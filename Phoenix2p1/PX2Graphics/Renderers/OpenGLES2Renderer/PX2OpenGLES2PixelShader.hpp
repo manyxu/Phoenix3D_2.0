@@ -33,9 +33,6 @@ namespace PX2
 			const ShaderParameters* parameters);
 		void Disable (Renderer* renderer, const PixelShader* pshader,
 			const ShaderParameters* parameters);
-
-	private:
-		GLuint mShader;
 	};
 
 }

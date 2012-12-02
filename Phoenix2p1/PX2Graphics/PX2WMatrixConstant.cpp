@@ -31,7 +31,14 @@ void WMatrixConstant::Update (const Renderable* renderable, const Camera*)
 {
 	const HMatrix& worldMatrix = renderable->WorldTransform.Matrix();
 
+#ifdef PX2_USE_OPENGLES2
+	// you must trans on 0penGLES2
+	HMatrix matTrans = worldMatrix.Transpose();
+	const float *source = (const float*)matTrans;
+#else
 	const float* source = (const float*)worldMatrix;
+#endif
+
 	float* target = mData;
 	for (int i = 0; i < 16; ++i)
 	{

@@ -251,9 +251,6 @@
     <ClCompile Include="PX2TransformController.cpp">
       <Filter>Controllers</Filter>
     </ClCompile>
-    <ClCompile Include="PX2Texture2DMaterial.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
     <ClCompile Include="PX2Triangles.cpp">
       <Filter>SceneGraph</Filter>
     </ClCompile>
@@ -346,6 +343,15 @@
     </ClCompile>
     <ClCompile Include="Renderers\OpenGLES2Renderer\PX2OpenGLES2RenderTarget.cpp">
       <Filter>Renderers\OpenGLES2</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2StandardESMaterial_Default.cpp">
+      <Filter>LocalMaterials</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2StandardESMaterial_Specular.cpp">
+      <Filter>LocalMaterials</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Texture2DMaterial.cpp">
+      <Filter>LocalMaterials</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -603,9 +609,6 @@
     <ClInclude Include="PX2TransformController.hpp">
       <Filter>Controllers</Filter>
     </ClInclude>
-    <ClInclude Include="PX2Texture2DMaterial.hpp">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="PX2Triangles.hpp">
       <Filter>SceneGraph</Filter>
     </ClInclude>
@@ -702,6 +705,15 @@
     </ClInclude>
     <ClInclude Include="PX2OpenGLES2RendererInput.hpp">
       <Filter>Renderers\OpenGLES2</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2StandardESMaterial_Default.hpp">
+      <Filter>LocalMaterials</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2StandardESMaterial_Specular.hpp">
+      <Filter>LocalMaterials</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Texture2DMaterial.hpp">
+      <Filter>LocalMaterials</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

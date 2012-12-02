@@ -12,9 +12,7 @@ using namespace PX2;
 
 PdrMaterialPass::PdrMaterialPass (Renderer *renderer, const MaterialPass *pass)
 {
-	mProgramObject = glCreateProgram();
-
-	assertion(mProgramObject != 0, "glCreateProgram failed.");
+	mPass = pass;
 
 	VertexShader *vshader = pass->GetVertexShader();
 	PixelShader *pshader = pass->GetPixelShader();
@@ -25,8 +23,17 @@ PdrMaterialPass::PdrMaterialPass (Renderer *renderer, const MaterialPass *pass)
 	PdrVertexShader *pdrVS = renderer->GetResource(pass->GetVertexShader());
 	PdrPixelShader *pdrPS = renderer->GetResource(pass->GetPixelShader());
 
-	glAttachShader (mProgramObject, pdrVS->GetShader());
-	glAttachShader (mProgramObject, pdrPS->GetShader());
+	mProgramObject = glCreateProgram();
+	assertion(mProgramObject != 0, "glCreateProgram failed.");
+
+	GLint vShader = pdrVS->GetShader();
+	GLint pShader = pdrPS->GetShader();
+	PX2_GL_CHECK(glAttachShader (mProgramObject, vShader));
+	PX2_GL_CHECK(glAttachShader (mProgramObject, pShader));
+
+	glBindAttribLocation(mProgramObject, ALP_POSITION, "modelPosition");
+	glBindAttribLocation(mProgramObject, ALP_NORMAL, "modelNormal");
+	glBindAttribLocation(mProgramObject, ALP_TEXCOORD0, "modelTCoord0");
 
 	// Link the program
 	glLinkProgram (mProgramObject);
@@ -54,11 +61,43 @@ PdrMaterialPass::PdrMaterialPass (Renderer *renderer, const MaterialPass *pass)
 
 		glDeleteProgram(mProgramObject);
 	}
+	else
+	{
+		int vProfile = VertexShader::GetProfile();
+		const int vNumConstants = vshader->GetNumConstants();
+		for (int i=0; i<vNumConstants; ++i)
+		{
+			const std::string &name = vshader->GetConstantName(i);
+			int location = glGetUniformLocation(mProgramObject, name.c_str());
+			vshader->SetBaseRegister(vProfile, i, location);
+		}
+		const int numVTexs = vshader->GetNumSamplers();
+		for (int i=0; i<numVTexs; i++)
+		{
+			std::string sampleName = vshader->GetSamplerName(i);
+			int location = glGetUniformLocation(mProgramObject, sampleName.c_str());
+		}
+
+		int pProfile = PixelShader::GetProfile();
+		const int pNumConstants = pshader->GetNumConstants();
+		for (int i=0; i<pNumConstants; ++i)
+		{
+			const std::string &name = pshader->GetConstantName(i);
+			int location = glGetUniformLocation(mProgramObject, name.c_str());
+			pshader->SetBaseRegister(pProfile, i, location);
+		}
+		const int numPTexs = pshader->GetNumSamplers();
+		for (int i=0; i<numPTexs; i++)
+		{
+			std::string sampleName = pshader->GetSamplerName(i);
+			int location = glGetUniformLocation(mProgramObject, sampleName.c_str());
+		}
+	}
 }
 //----------------------------------------------------------------------------
 PdrMaterialPass::~PdrMaterialPass ()
 {
-	glDeleteProgram(mProgramObject);
+	PX2_GL_CHECK(glDeleteProgram(mProgramObject));
 }
 //----------------------------------------------------------------------------
 void PdrMaterialPass::Enable (Renderer* renderer)

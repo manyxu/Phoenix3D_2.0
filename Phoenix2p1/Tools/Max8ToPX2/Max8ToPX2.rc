@@ -13,13 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Chinese (P.R.C.) resources
+// 中文(简体，中国) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
-#ifdef _WIN32
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 #pragma code_page(936)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -53,7 +51,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_MAX8TOPX2_DIALOG, DIALOG
     BEGIN
@@ -106,7 +104,7 @@ BEGIN
     CONTROL         "自定义1",IDC_SPINNER_ENDFRAME,"SpinnerControl",WS_TABSTOP,209,105,12,11
     GROUPBOX        "",IDC_STATIC,6,0,109,121
     GROUPBOX        "",IDC_STATIC,124,0,110,35
-    GROUPBOX        "",IDC_STATIC,124,35,109,87
+    GROUPBOX        "",IDC_STATIC,124,35,109,86
     LTEXT           "Version:1.00",IDC_STATIC,7,179,42,8
     EDITTEXT        IDC_EDIT_SRCROOTDIR,48,128,159,14,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_BUTTON_SRC,212,128,18,14
@@ -117,7 +115,7 @@ BEGIN
     CONTROL         "Trangent&Binormal",IDC_CHECK_TANGENTBINORMAL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,29,57,71,10
 END
 
-#endif    // Chinese (P.R.C.) resources
+#endif    // 中文(简体，中国) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

@@ -16,10 +16,17 @@ PX2_IMPLEMENT_FACTORY(Scene);
 Scene::Scene ()
 {
 	mSceneNode = new0 Node();
+	mDefaultCameraActor = new0 CameraActor();
 }
 //----------------------------------------------------------------------------
 Scene::~Scene ()
 {
+	// make out of event space
+	for (int i=0; i<(int)mActors.size(); i++)
+		mActors[i]->GoOutFromEventWorld();
+
+	if (mDefaultCameraActor)
+		mDefaultCameraActor->GoOutFromEventWorld();
 }
 //-----------------------------------------------------------------------------
 void Scene::Update ()
@@ -174,6 +181,8 @@ Object* Scene::GetObjectByName (const std::string& name)
 		PX2_GET_OBJECT_BY_NAME(mActors[i], name, found);
 	}
 
+	PX2_GET_OBJECT_BY_NAME(mDefaultCameraActor, name, found);
+
 	return 0;
 }
 //----------------------------------------------------------------------------
@@ -189,6 +198,8 @@ void Scene::GetAllObjectsByName (const std::string& name,
 	{
 		PX2_GET_ALL_OBJECTS_BY_NAME(mActors[i], name, objects);
 	}
+
+	PX2_GET_ALL_OBJECTS_BY_NAME(mDefaultCameraActor, name, objects);
 }
 //----------------------------------------------------------------------------
 
@@ -219,6 +230,8 @@ void Scene::Load (InStream& source)
 		source.ReadPointerVV(numActors, &mActors[0]);
 	}
 
+	source.ReadPointer(mDefaultCameraActor);
+
 	PX2_END_DEBUG_STREAM_LOAD(Scene, source);
 }
 //----------------------------------------------------------------------------
@@ -237,6 +250,8 @@ void Scene::Link (InStream& source)
 			SetActor(i, mActors[i]);
 		}
 	}
+
+	source.ResolveLink(mDefaultCameraActor);
 }
 //----------------------------------------------------------------------------
 void Scene::PostLink ()
@@ -258,6 +273,8 @@ bool Scene::Register (OutStream& target) const
 				target.Register(mActors[i]);
 			}
 		}
+
+		target.Register(mDefaultCameraActor);
 
 		return true;
 	}
@@ -288,6 +305,8 @@ void Scene::Save (OutStream& target) const
 		}
 	}
 
+	target.WritePointer(mDefaultCameraActor);
+
 	PX2_END_DEBUG_STREAM_SAVE(Scene, target);
 }
 //----------------------------------------------------------------------------
@@ -300,6 +319,7 @@ int Scene::GetStreamingSize () const
 	int numActors = (int)mActors.size();
 	size += sizeof(numActors);
 	size += numActors*PX2_POINTERSIZE(mActors[0]);
+	size += PX2_POINTERSIZE(mDefaultCameraActor);
 
 	return size;
 }

@@ -91,6 +91,12 @@ namespace PX2
 		static bool Append (const std::string& filename, bool binaryFile,
 			int bufferSize, const char* buffer);
 
+		/// 获得可写路径
+		/**
+		* 在PC上为程序当前目录，在移动设备上由该设备API返回。
+		*/
+		static std::string GetWriteablePath ();
+
 	private:
 		FILE* mFile;
 		int mMode;

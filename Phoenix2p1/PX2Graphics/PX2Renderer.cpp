@@ -1357,6 +1357,8 @@ void Renderer::Draw (const Renderable* renderable)
 void Renderer::Draw (const Renderable* renderable,
 					 const MaterialInstance* instance)
 {
+	mCurRenderable = renderable;
+
 	if (!renderable)
 	{
 		assertion(false, "The renderable must exist.\n");

@@ -40,7 +40,8 @@ namespace PX2
 			PP_PS_1_1,
 			PP_PS_2_0,
 			PP_PS_3_0,
-			PP_ARBFP1
+			PP_ARBFP1,
+			PP_OPENGLES2
 		};
 
 		static void SetProfile (Profile profile);

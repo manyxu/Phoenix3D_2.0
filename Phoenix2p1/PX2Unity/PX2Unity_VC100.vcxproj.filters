@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="StringHelp">
-      <UniqueIdentifier>{0b98cc90-cec6-466c-954a-21206908ac46}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ResourceManager">
       <UniqueIdentifier>{c5c9c5f3-931c-433e-8729-18e719af82f8}</UniqueIdentifier>
     </Filter>
@@ -44,9 +41,6 @@
     </ClCompile>
     <ClCompile Include="TinyXML\tinyxmlparser.cpp">
       <Filter>XML\TinyXML</Filter>
-    </ClCompile>
-    <ClCompile Include="PX2StringHelp.cpp">
-      <Filter>StringHelp</Filter>
     </ClCompile>
     <ClCompile Include="PX2ResourceManager.cpp">
       <Filter>ResourceManager</Filter>
@@ -330,9 +324,6 @@
     <ClCompile Include="DevIL\PNG\pngset.c">
       <Filter>DevIL\PNG</Filter>
     </ClCompile>
-    <ClCompile Include="DevIL\PNG\pngtest.c">
-      <Filter>DevIL\PNG</Filter>
-    </ClCompile>
     <ClCompile Include="DevIL\PNG\pngtrans.c">
       <Filter>DevIL\PNG</Filter>
     </ClCompile>
@@ -403,9 +394,6 @@
     </ClInclude>
     <ClInclude Include="PX2Unity.hpp" />
     <ClInclude Include="PX2UnityPre.hpp" />
-    <ClInclude Include="PX2StringHelp.hpp">
-      <Filter>StringHelp</Filter>
-    </ClInclude>
     <ClInclude Include="PX2ResourceManager.hpp">
       <Filter>ResourceManager</Filter>
     </ClInclude>

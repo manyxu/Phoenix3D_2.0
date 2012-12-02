@@ -31,7 +31,14 @@ void VMatrixConstant::Update (const Renderable*, const Camera* camera)
 {
 	const HMatrix& viewMatrix = camera->GetViewMatrix();
 
+#ifdef PX2_USE_OPENGLES2
+	// you must trans on 0penGLES2
+	HMatrix matTrans = viewMatrix.Transpose();
+	const float *source = (const float*)matTrans;
+#else
 	const float* source = (const float*)viewMatrix;
+#endif
+
 	float* target = mData;
 	for (int i = 0; i < 16; ++i)
 	{

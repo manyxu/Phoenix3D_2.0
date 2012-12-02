@@ -38,14 +38,31 @@ int TriMesh::GetNumTriangles () const
 //----------------------------------------------------------------------------
 bool TriMesh::GetTriangle (int i, int& v0, int& v1, int& v2) const
 {
-	if (0 <= i && i < GetNumTriangles())
+	int elementSize = mIBuffer->GetElementSize();
+
+	if (4 == elementSize)
 	{
-		int* indices = 3*i + (int*)mIBuffer->GetData();
-		v0 = *indices++;
-		v1 = *indices++;
-		v2 = *indices;
-		return true;
+		if (0 <= i && i < GetNumTriangles())
+		{
+			int* indices = 3*i + (int*)mIBuffer->GetData();
+			v0 = *indices++;
+			v1 = *indices++;
+			v2 = *indices;
+			return true;
+		}
 	}
+	else if (2 == elementSize)
+	{
+		if (0 <= i && i < GetNumTriangles())
+		{
+			unsigned short* indices = 3*i + (unsigned short*)mIBuffer->GetData();
+			v0 = (int)(*indices++);
+			v1 = (int)(*indices++);
+			v2 = (int)(*indices);
+			return true;
+		}
+	}
+
 	return false;
 }
 //----------------------------------------------------------------------------

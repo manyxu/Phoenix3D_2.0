@@ -44,6 +44,17 @@ void ResTree::OnItemActivated(wxTreeEvent& event)
 	}
 	else if (resPath.find(".")!=std::string::npos)
 	{
+		PX2::Object* object = ResourceManager::GetSingleton().BlockLoad(
+			resPath.c_str());
+		if (object)
+		{
+			object->SetResourcePath(resPath);
+
+			EditSystem::GetSingleton().SetSelectedResource(object);
+			EditSystem::GetSingleton().SetSelectedResourceName(resPath);
+		}
+
+		EditSystem::GetSingleton().SetPreViewObject(object);
 	}
 }
 //-----------------------------------------------------------------------------
@@ -63,6 +74,17 @@ void ResTree::OnSelChanged(wxTreeEvent& event)
 	}
 	else if (resPath.find(".")!=std::string::npos)
 	{
+		PX2::Object* object = ResourceManager::GetSingleton().BlockLoad(
+			resPath.c_str());
+		if (object)
+		{
+			object->SetResourcePath(resPath);
+
+			EditSystem::GetSingleton().SetSelectedResource(object);
+			EditSystem::GetSingleton().SetSelectedResourceName(resPath);
+		}
+
+		EditSystem::GetSingleton().SetPreViewObject(object);
 	}
 }
 //-----------------------------------------------------------------------------

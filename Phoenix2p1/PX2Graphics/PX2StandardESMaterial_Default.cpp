@@ -22,14 +22,67 @@ using namespace PX2;
 PX2_IMPLEMENT_RTTI(PX2, Material, StandardESMaterial_Default);
 PX2_IMPLEMENT_STREAM(StandardESMaterial_Default);
 PX2_IMPLEMENT_FACTORY(StandardESMaterial_Default);
+PX2_IMPLEMENT_DEFAULT_NAMES(Material, StandardESMaterial_Default);
 
 //----------------------------------------------------------------------------
-StandardESMaterial_Default::StandardESMaterial_Default (const std::string &filename)
-	:
-Material(filename)
+StandardESMaterial_Default::StandardESMaterial_Default ()
 {
-	PixelShader* pshader = GetPixelShader(0, 0);
-	pshader->SetFilter(0, Shader::SF_LINEAR_LINEAR);
+	VertexShader* vshader = new0 VertexShader("PX2.StandardMaterial_Default",
+		3, 3, 6, 0, false);
+	vshader->SetInput(0, "modelPosition", Shader::VT_FLOAT3,
+		Shader::VS_POSITION);
+	vshader->SetInput(1, "modelNormal", Shader::VT_FLOAT3,
+		Shader::VS_NORMAL);
+	vshader->SetInput(2, "modelTCoord0", Shader::VT_FLOAT2,
+		Shader::VS_TEXCOORD0);
+
+	vshader->SetOutput(0, "clipPosition", Shader::VT_FLOAT4,
+		Shader::VS_POSITION);
+	vshader->SetOutput(1, "vertexTCoord0", Shader::VT_FLOAT2,
+		Shader::VS_TEXCOORD0);
+
+	vshader->SetOutput(2, "vertexTCoord1", Shader::VT_FLOAT4,
+		Shader::VS_TEXCOORD1);
+
+	vshader->SetConstant(0, "gPVWMatrix", 4);
+	vshader->SetConstant(1, "gShineEmissive", 1);
+	vshader->SetConstant(2, "gShineAmbient", 1);
+	vshader->SetConstant(3, "gShineDiffuse", 1);
+	vshader->SetConstant(4, "gLightColour", 1);
+	vshader->SetConstant(5, "gLightModelDirection", 1);
+	vshader->SetBaseRegisters(msVRegisters);
+	vshader->SetPrograms(msVPrograms);
+
+	PixelShader* pshader = new0 PixelShader("PX2.StandardMaterial_Default",
+		2, 1, 0, 1, false);
+	pshader->SetInput(0, "vertexTCoord0", Shader::VT_FLOAT2,
+		Shader::VS_TEXCOORD0);
+	pshader->SetInput(1, "vertexTCoord1", Shader::VT_FLOAT4,
+		Shader::VS_TEXCOORD1);
+
+	pshader->SetOutput(0, "pixelColor", Shader::VT_FLOAT4,
+		Shader::VS_COLOR0);
+
+	pshader->SetSampler(0, "gDiffuseSampler", Shader::ST_2D);
+	pshader->SetFilter(0, Shader::SF_LINEAR);
+	pshader->SetCoordinate(0, 0, Shader::SC_REPEAT);
+	pshader->SetCoordinate(0, 1, Shader::SC_REPEAT);
+	pshader->SetTextureUnits(msPTextureUnits);
+	pshader->SetPrograms(msPPrograms);
+
+	MaterialPass* pass = new0 MaterialPass();
+	pass->SetVertexShader(vshader);
+	pass->SetPixelShader(pshader);
+	pass->SetAlphaProperty(new0 AlphaProperty());
+	pass->SetCullProperty(new0 CullProperty());
+	pass->SetDepthProperty(new0 DepthProperty());
+	pass->SetOffsetProperty(new0 OffsetProperty());
+	pass->SetStencilProperty(new0 StencilProperty());
+	pass->SetWireProperty(new0 WireProperty());
+
+	MaterialTechnique* technique = new0 MaterialTechnique();
+	technique->InsertPass(pass);
+	InsertTechnique(technique);
 }
 //----------------------------------------------------------------------------
 StandardESMaterial_Default::~StandardESMaterial_Default ()
@@ -54,6 +107,8 @@ MaterialInstance* StandardESMaterial_Default::CreateInstance (
 		new0 ShineAmbientConstant(shine));
 	instance->SetVertexConstant(0, "gShineDiffuse",
 		new0 ShineDiffuseConstant(shine));
+	instance->SetVertexConstant(0, "gLightColour",
+		new0 LightDiffuseConstant(dirLight));
 	instance->SetVertexConstant(0, "gLightModelDirection",
 		new0 LightModelDVectorConstant(dirLight));
 
@@ -61,27 +116,6 @@ MaterialInstance* StandardESMaterial_Default::CreateInstance (
 	instance->SetPixelTexture(0, "gDiffuseSampler", diffTex);
 
 	return instance;
-}
-//----------------------------------------------------------------------------
-
-//----------------------------------------------------------------------------
-// Name support.
-//----------------------------------------------------------------------------
-Object* StandardESMaterial_Default::GetObjectByName (const std::string& name)
-{
-	Object* found = Material::GetObjectByName(name);
-	if (found)
-	{
-		return found;
-	}
-
-	return 0;
-}
-//----------------------------------------------------------------------------
-void StandardESMaterial_Default::GetAllObjectsByName (const std::string& name,
-	std::vector<Object*>& objects)
-{
-	Material::GetAllObjectsByName(name, objects);
 }
 //----------------------------------------------------------------------------
 
@@ -111,6 +145,14 @@ void StandardESMaterial_Default::Link (InStream& source)
 void StandardESMaterial_Default::PostLink ()
 {
 	Material::PostLink();
+
+	MaterialPass* pass = mTechniques[0]->GetPass(0);
+	VertexShader* vshader = pass->GetVertexShader();
+	PixelShader* pshader = pass->GetPixelShader();
+	vshader->SetBaseRegisters(msVRegisters);
+	vshader->SetPrograms(msVPrograms);
+	pshader->SetTextureUnits(msPTextureUnits);
+	pshader->SetPrograms(msPPrograms);
 }
 //----------------------------------------------------------------------------
 bool StandardESMaterial_Default::Register (OutStream& target) const
@@ -137,4 +179,177 @@ int StandardESMaterial_Default::GetStreamingSize () const
 	int size = Material::GetStreamingSize();
 	return size;
 }
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+// profile
+//----------------------------------------------------------------------------
+int StandardESMaterial_Default::msDx9VRegisters[6] =
+	{ 0, 4, 5, 6, 7, 8 };
+int StandardESMaterial_Default::msOglVRegisters[6] =
+	{ 1, 5, 6, 7, 8, 9 };
+int StandardESMaterial_Default::msOpenGLES2VRegisters[6] = 
+	{ 0, 0, 0, 0, 0, 0 };
+int* StandardESMaterial_Default::msVRegisters[Shader::MAX_PROFILES] =
+{
+	0,
+	msDx9VRegisters,
+	msDx9VRegisters,
+	msDx9VRegisters,
+	msOglVRegisters,
+	msOpenGLES2VRegisters
+};
+
+std::string StandardESMaterial_Default::msVPrograms[Shader::MAX_PROFILES] =
+{
+	// VP_NONE
+	"",
+
+	// VP_VS_1_1
+	"vs_1_1\n"
+	"def c9, 1.00000000, 0.00000000, 0, 0\n"
+	"dcl_position0 v0\n"
+	"dcl_texcoord0 v2\n"
+	"dcl_normal0 v1\n"
+	"mov r0.xyz, c7\n"
+	"mov r1.xyz, c7\n"
+	"mul r1.xyz, c5, r1\n"
+	"dp3 r0.w, v1, c8\n"
+	"mul r0.xyz, c6, r0\n"
+	"max r0.w, r0, c9.y\n"
+	"add r1.xyz, r1, c4\n"
+	"mad oT1.xyz, r0, r0.w, r1\n"
+	"mov r0.w, c9.x\n"
+	"mov r0.xyz, v0\n"
+	"dp4 oPos.w, r0, c3\n"
+	"dp4 oPos.z, r0, c2\n"
+	"dp4 oPos.y, r0, c1\n"
+	"dp4 oPos.x, r0, c0\n"
+	"mov oT0.xy, v2\n"
+	"mov oT1.w, c6\n",
+
+	// VP_VS_2_0
+	"vs_2_0\n"
+	"def c9, 1.00000000, 0.00000000, 0, 0\n"
+	"dcl_position0 v0\n"
+	"dcl_texcoord0 v2\n"
+	"dcl_normal0 v1\n"
+	"mov r0.xyz, c7\n"
+	"mov r1.xyz, c7\n"
+	"mul r1.xyz, c5, r1\n"
+	"dp3 r0.w, v1, c8\n"
+	"mul r0.xyz, c6, r0\n"
+	"max r0.w, r0, c9.y\n"
+	"add r1.xyz, r1, c4\n"
+	"mad oT1.xyz, r0, r0.w, r1\n"
+	"mov r0.w, c9.x\n"
+	"mov r0.xyz, v0\n"
+	"dp4 oPos.w, r0, c3\n"
+	"dp4 oPos.z, r0, c2\n"
+	"dp4 oPos.y, r0, c1\n"
+	"dp4 oPos.x, r0, c0\n"
+	"mov oT0.xy, v2\n"
+	"mov oT1.w, c6\n",
+
+	// VP_VS_3_0
+	"vs_3_0\n"
+	"dcl_position o0\n"
+	"dcl_texcoord0 o1\n"
+	"dcl_texcoord1 o2\n"
+	"def c9, 1.00000000, 0.00000000, 0, 0\n"
+	"dcl_position0 v0\n"
+	"dcl_texcoord0 v2\n"
+	"dcl_normal0 v1\n"
+	"mov r0.xyz, c7\n"
+	"mov r1.xyz, c7\n"
+	"mul r1.xyz, c5, r1\n"
+	"dp3 r0.w, v1, c8\n"
+	"mul r0.xyz, c6, r0\n"
+	"max r0.w, r0, c9.y\n"
+	"add r1.xyz, r1, c4\n"
+	"mad o2.xyz, r0, r0.w, r1\n"
+	"mov r0.w, c9.x\n"
+	"mov r0.xyz, v0\n"
+	"dp4 o0.w, r0, c3\n"
+	"dp4 o0.z, r0, c2\n"
+	"dp4 o0.y, r0, c1\n"
+	"dp4 o0.x, r0, c0\n"
+	"mov o1.xy, v2\n"
+	"mov o2.w, c6\n",
+
+	// VP_ARBVP1
+	"",
+
+	// vp_gles2
+	"uniform mat4 gPVWMatrix;\n"
+	"uniform vec4 gShineEmissive;\n"
+	"uniform vec4 gShineAmbient;\n"
+	"uniform vec4 gShineDiffuse;\n"
+	"uniform vec4 gLightColour;\n"
+	"uniform vec4 gLightModelDirection;\n"
+	"attribute vec3 modelPosition;\n"
+	"attribute vec3 modelNormal;\n"
+	"attribute vec2 modelTCoord0;\n"
+	"varying vec2 vertexTCoord0;\n"
+	"varying vec4 vertexTCoord1;\n"
+	"void main()\n"
+	"{\n"
+	"	gl_Position = gPVWMatrix*vec4(modelPosition, 1.0);\n"
+	"	vertexTCoord0 = modelTCoord0;\n"
+	"	vertexTCoord1.rgb = gShineEmissive.rgb"
+	"		+ gLightColour.rgb*gShineAmbient.rgb"
+	"		+ gLightColour.rgb*gShineDiffuse.rgb"
+	"		* max(0.0, dot(modelNormal, gLightModelDirection.rgb));\n"
+	"	vertexTCoord1.a = gShineDiffuse.a;\n"
+	"}\n"
+};
+
+int StandardESMaterial_Default::msAllPTextureUnits[1] = { 0 };
+int* StandardESMaterial_Default::msPTextureUnits[Shader::MAX_PROFILES] =
+{
+	0,
+	msAllPTextureUnits,
+	msAllPTextureUnits,
+	msAllPTextureUnits,
+	msAllPTextureUnits,
+	msAllPTextureUnits
+};
+
+std::string StandardESMaterial_Default::msPPrograms[Shader::MAX_PROFILES] =
+{
+	// PP_NONE
+	"",
+
+	// PP_PS_1_1
+	"",
+
+	// PP_PS_2_0
+	"ps_2_0\n"
+	"dcl_2d s0\n"
+	"dcl t0.xy\n"
+	"dcl t1\n"
+	"texld r0, t0, s0\n"
+	"mul r0, r0, t1\n"
+	"mov oC0, r0\n",
+
+	// PP_PS_3_0
+	"ps_3_0\n"
+	"dcl_2d s0\n"
+	"dcl_texcoord0 v0.xy\n"
+	"dcl_texcoord1 v1\n"
+	"texld r0, v0, s0\n"
+	"mul oC0, r0, v1\n",
+
+	// PP_ARBFP1
+	"",
+
+	// fp_gles2
+	"varying mediump vec2 vertexTCoord0;\n"
+	"varying mediump vec4 vertexTCoord1;\n"
+	"uniform sampler2D gDiffuseSampler;\n"
+	"void main()\n"
+	"{\n"
+	"	gl_FragColor = texture2D(gDiffuseSampler, vertexTCoord0)*vertexTCoord1;\n"
+	"}\n"
+};
 //----------------------------------------------------------------------------

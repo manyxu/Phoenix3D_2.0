@@ -7,9 +7,12 @@
 #include "PX2FileIO.hpp"
 #include "PX2Endian.hpp"
 #include "PX2Memory.hpp"
-
-// TODO.  Add the file handling for Macintosh.
 #include <sys/stat.h>
+#if defined(_WIN32) || defined(WIN32)
+#include <windows.h>
+#elif defined __ANDROID__
+#include "PX2JNI.hpp"
+#endif
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -400,5 +403,37 @@ bool FileIO::Append (const std::string& filename, bool binaryFile,
 	}
 
 	return true;
+}
+//----------------------------------------------------------------------------
+std::string FileIO::GetWriteablePath ()
+{
+#if defined(_WIN32) || defined(WIN32)
+
+	char full_path[_MAX_PATH + 1];
+	GetModuleFileName(NULL, full_path, _MAX_PATH + 1);
+	std::string ret((char*)full_path);
+	ret =  ret.substr(0, ret.rfind("\\") + 1);
+
+	return ret;
+
+#elif defined __ANDROID__
+	// the path is: /data/data/ + package name
+	std::string dir("/data/data/");
+	std::string temp = GetPackageNameJNI();
+
+	if (!temp.empty())
+	{
+		dir.append(temp).append("/");
+
+		return dir;
+	}
+	else
+	{
+		return "";
+	}
+
+	return temp;
+#endif
+
 }
 //----------------------------------------------------------------------------

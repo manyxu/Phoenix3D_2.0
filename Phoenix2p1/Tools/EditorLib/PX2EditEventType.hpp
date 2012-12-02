@@ -31,6 +31,9 @@ namespace PX2
 	PX2_EVENT(ClearSelectActor)
 	// Edit
 	PX2_EVENT(SetEditMode)
+	PX2_EVENT(SetPreView)
+	// Actor
+	PX2_EVENT(ActorTransformChanged)
 	PX2_DECLARE_EVENT_END(EditorEventSpace)
 
 }

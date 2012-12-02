@@ -96,6 +96,8 @@ PX2ShineSpecularConstant.cpp \
 PX2SkinController.cpp \
 PX2SpecializedIO.cpp \
 PX2StandardMaterial.cpp \
+PX2StandardESMaterial_Default.cpp \
+PX2StandardESMaterial_Specular.cpp \
 PX2StandardMesh.cpp \
 PX2StencilProperty.cpp \
 PX2SwitchNode.cpp \
@@ -122,11 +124,11 @@ PX2VWMatrixConstant.cpp \
 PX2WireProperty.cpp \
 PX2WMatrixConstant.cpp
 
-LOCAL_EXPORT_LDLIBS := -lGLESv2
-
-LOCAL_LDLIBS := -lGLESv1_CM -ldl -llog -lGLESv2
+LOCAL_EXPORT_LDLIBS := -llog -lGLESv2
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/..
+
+LOCAL_LDLIBS := -lGLESv2 -lEGL -llog 
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/.. \
 $(LOCAL_PATH)/Renderers/OpenGLES2Renderer/ \

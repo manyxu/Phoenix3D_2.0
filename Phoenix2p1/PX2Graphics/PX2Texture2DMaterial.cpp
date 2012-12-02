@@ -6,6 +6,8 @@
 
 #include "PX2Texture2DMaterial.hpp"
 #include "PX2PVWMatrixConstant.hpp"
+#include "PX2PMatrixConstant.hpp"
+#include "PX2WMatrixConstant.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, Material, Texture2DMaterial);
@@ -69,21 +71,20 @@ PixelShader* Texture2DMaterial::GetPixelShader () const
 	return mTechniques[0]->GetPass(0)->GetPixelShader();
 }
 //----------------------------------------------------------------------------
-MaterialInstance* Texture2DMaterial::CreateInstance (Texture2D* texture)
-const
+MaterialInstance* Texture2DMaterial::CreateInstance (Texture2D* texture) const
 {
 	MaterialInstance* instance = new0 MaterialInstance(this, 0);
-	instance->SetVertexConstant(0, 0, new0 PVWMatrixConstant());
-	instance->SetPixelTexture(0, 0, texture);
+	instance->SetVertexConstant(0, "PVWMatrix", new0 PVWMatrixConstant());
+	instance->SetPixelTexture(0, "BaseSampler", texture);
 
-	Shader::SamplerFilter filter = GetPixelShader()->GetFilter(0);
-	if (filter != Shader::SF_NEAREST && filter != Shader::SF_LINEAR
-		&&  !texture->HasMipmaps() && texture->GetFormat()!=Texture::TF_DXT1
-		&& texture->GetFormat()!=Texture::TF_DXT3 && texture->GetFormat()!=
-		Texture::TF_DXT5)
-	{
-		//texture->GenerateMipmaps();
-	}
+	//Shader::SamplerFilter filter = GetPixelShader()->GetFilter(0);
+	//if (filter != Shader::SF_NEAREST && filter != Shader::SF_LINEAR
+	//	&&  !texture->HasMipmaps() && texture->GetFormat()!=Texture::TF_DXT1
+	//	&& texture->GetFormat()!=Texture::TF_DXT3 && texture->GetFormat()!=
+	//	Texture::TF_DXT5)
+	//{
+	//	//texture->GenerateMipmaps();
+	//}
 
 	return instance;
 }
@@ -163,13 +164,15 @@ int Texture2DMaterial::GetStreamingSize () const
 //----------------------------------------------------------------------------
 int Texture2DMaterial::msDx9VRegisters[1] = { 0 };
 int Texture2DMaterial::msOglVRegisters[1] = { 1 };
+int Texture2DMaterial::msOpenGLES2VRegisters[1] = { 0 };
 int* Texture2DMaterial::msVRegisters[Shader::MAX_PROFILES] =
 {
 	0,
 	msDx9VRegisters,
 	msDx9VRegisters,
 	msDx9VRegisters,
-	msOglVRegisters
+	msOglVRegisters,
+	msOpenGLES2VRegisters
 };
 
 std::string Texture2DMaterial::msVPrograms[Shader::MAX_PROFILES] =
@@ -229,13 +232,25 @@ std::string Texture2DMaterial::msVPrograms[Shader::MAX_PROFILES] =
 	"DP4 result.position.y, R0, c[2];\n"
 	"DP4 result.position.x, R0, c[1];\n"
 	"MOV result.texcoord[0].xy, vertex.texcoord[0];\n"
-	"END\n"
+	"END\n",
+
+	// vp_gles2
+	"uniform highp mat4 PVWMatrix;"
+	"attribute highp vec3 modelPosition;\n"
+	"attribute mediump vec2 modelTCoord0;\n"
+	"varying mediump vec2 vertexTCoord0;\n"
+	"void main()\n"
+	"{\n"
+	"	gl_Position = PVWMatrix * vec4(modelPosition, 1.0);\n"
+	"	vertexTCoord0 = modelTCoord0;\n"
+	"}\n"
 };
 
 int Texture2DMaterial::msAllPTextureUnits[1] = { 0 };
 int* Texture2DMaterial::msPTextureUnits[Shader::MAX_PROFILES] =
 {
 	0,
+	msAllPTextureUnits,
 	msAllPTextureUnits,
 	msAllPTextureUnits,
 	msAllPTextureUnits,
@@ -269,6 +284,14 @@ std::string Texture2DMaterial::msPPrograms[Shader::MAX_PROFILES] =
 	// PP_ARBFP1
 	"!!ARBfp1.0\n"
 	"TEX result.color, fragment.texcoord[0], texture[0], 2D;\n"
-	"END\n"
+	"END\n",
+
+	// fp_gles2
+	"varying mediump vec2 vertexTCoord0;\n"
+	"uniform sampler2D BaseSampler;\n"
+	"void main()\n"
+	"{\n"
+	"	gl_FragColor = texture2D(BaseSampler, vertexTCoord0);\n"
+	"}\n"
 };
 //----------------------------------------------------------------------------

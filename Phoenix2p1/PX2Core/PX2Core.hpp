@@ -22,6 +22,7 @@
 #include "PX2Table.hpp"
 #include "PX2Tuple.hpp"
 #include "PX2DoubleChainList.hpp"
+#include "PX2FString.hpp"
 
 // Design
 #include "PX2Noncopyable.hpp"
@@ -31,7 +32,8 @@
 #pragma warning(pop)
 
 // Help
-#include "PX2Help.hpp"
+#include "PX2Environment.hpp"
+#include "PX2StringHelp.hpp"
 
 // IO
 #include "PX2BufferIO.hpp"

@@ -17,7 +17,10 @@ LogHandler(levels)
 FileLogHandler::~FileLogHandler ()
 {
 	if (mFile)
+	{
 		fclose(mFile);
+		mFile = 0;
+	}
 }
 //----------------------------------------------------------------------------
 bool FileLogHandler::Handle (const char *filename, int line,
@@ -29,7 +32,7 @@ bool FileLogHandler::Handle (const char *filename, int line,
 
 	if (mFile)
 	{
-		fprintf(mFile, "%s\n", str);
+		fprintf(mFile, "%s", str);
 		fflush(mFile);
 		
 		return true;

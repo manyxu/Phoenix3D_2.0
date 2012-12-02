@@ -4,9 +4,10 @@
 *
 */
 
-#ifndef __ANDROID__
-
+#ifdef __ANDROID__
+#include "PX2JNI.hpp"
 #include "PX2Assert.hpp"
+#include "PX2Log.hpp"
 using namespace PX2;
 using namespace std;
 
@@ -20,7 +21,7 @@ extern "C"
 	{
 		if (JAVAVM->GetEnv((void**)env, JNI_VERSION_1_4) != JNI_OK)
 		{
-			assertion(false, "Failed to get the environment using GetEnv()");
+			assertion(false, "Failed to get the environment using GetEnv_()");
 			return false;
 		}
 
@@ -41,7 +42,7 @@ extern "C"
 
 		if (!envTemp)
 		{
-			if (!GetEnv(&envTemp))
+			if (!GetEnv_(&envTemp))
 			{
 				return 0;
 			}
@@ -57,13 +58,13 @@ extern "C"
 		return ret;
 	}
 	//----------------------------------------------------------------------------
-	static bool GetStaticMethodInfo_(cocos2d::JNIMethodInfo &methodinfo, 
+	static bool GetStaticMethodInfo_(JNIMethodInfo &methodinfo, 
 		const char *className, const char *methodName, const char *paramCode)
 	{
 		jmethodID methodID = 0;
 		JNIEnv *envTemp = 0;
 
-		if (!GetEnv(&envTemp))
+		if (!GetEnv_(&envTemp))
 			return false;
 
 		jclass classID = GetClassID_(className, envTemp);
@@ -81,13 +82,13 @@ extern "C"
 		return true;
 	}
 	//----------------------------------------------------------------------------
-	static bool GetMethodInfo_(cocos2d::JNIMethodInfo &methodinfo,
+	static bool GetMethodInfo_(JNIMethodInfo &methodinfo,
 		const char *className, const char *methodName, const char *paramCode)
 	{
 		jmethodID methodID = 0;
 		JNIEnv *envTemp = 0;
 
-		if (!GetEnv(&envTemp))
+		if (!GetEnv_(&envTemp))
 			return false;
 
 		jclass classID = GetClassID_(className, envTemp);
@@ -110,7 +111,7 @@ extern "C"
 		JNIEnv *env = 0;
 
 		jboolean isCopy;
-		if (!GetEnv(&env))
+		if (!GetEnv_(&env))
 		{
 			return "";
 		}
@@ -163,5 +164,61 @@ string JNIHelper::JString2string(jstring str)
 	return JString2string_(str);
 }
 //----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+extern "C"
+{
+
+	const char *GetPackageNameJNI()
+	{
+		JNIMethodInfo t;
+
+		if (JNIHelper::GetStaticMethodInfo(t,
+			"phoenix3d/px2/library/PX2Activity",
+			"GetPX2PackageName",
+			"()Ljava/lang/String;"))
+		{
+			jstring jstr = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
+			t.env->DeleteLocalRef(t.classID);
+
+			std::string str = JNIHelper::JString2string(jstr);
+
+			t.env->DeleteLocalRef(jstr);
+
+			PX2_LOG_ENGINE("package name is %s\n", str.c_str());
+
+			return str.c_str();
+		}
+
+		return 0;
+	}
+
+	const char *GetCurrentLanguageJNI()
+	{
+		JNIMethodInfo t;
+
+		if (JNIHelper::GetStaticMethodInfo(t,
+			"phoenix3d/px2/library/PX2Activity",
+			"GetCurrentLanguage",
+			"()Ljava/lang/String;"))
+		{
+			jstring jstr = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
+			t.env->DeleteLocalRef(t.classID);
+
+			std::string str = JNIHelper::JString2string(jstr);
+
+			t.env->DeleteLocalRef(jstr);
+
+			PX2_LOG_ENGINE("language name %s\n", str.c_str());
+
+			return str.c_str();
+		}
+
+		return 0;
+	}
+
+}
+//----------------------------------------------------------------------------
+
 
 #endif

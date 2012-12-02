@@ -32,7 +32,6 @@ DevIL/PNG/pngrio.c \
 DevIL/PNG/pngrtran.c \
 DevIL/PNG/pngrutil.c \
 DevIL/PNG/pngset.c \
-DevIL/PNG/pngtest.c \
 DevIL/PNG/pngtrans.c \
 DevIL/PNG/pngwio.c \
 DevIL/PNG/pngwrite.c \
@@ -63,7 +62,6 @@ DevIL/il_bmp.c \
 DevIL/il_wbmp.c \
 DevIL/il_png.c \
 PX2ResourceManager.cpp \
-PX2StringHelp.cpp \
 TinyXML/tinystr.cpp \
 TinyXML/tinyxml.cpp \
 TinyXML/tinyxmlerror.cpp \

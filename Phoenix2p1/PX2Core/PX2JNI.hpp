@@ -15,7 +15,7 @@
 namespace PX2
 {
 
-	typedef struct JNIMethodInfo
+	struct JNIMethodInfo
 	{
 		JNIEnv *env;
 		jclass classID;
@@ -40,6 +40,12 @@ namespace PX2
 		static JavaVM *msJavaVM;
 	};
 
+}
+
+extern "C"
+{
+	extern const char* GetCurrentLanguageJNI();
+	extern const char* GetPackageNameJNI();
 }
 
 #endif

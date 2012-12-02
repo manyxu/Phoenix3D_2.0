@@ -18,7 +18,9 @@
 #include "PX2Mathematics.hpp"
 #include "PX2Graphics.hpp"
 #include "PX2Renderers.hpp"
+#include "PX2EventWorld.hpp"
 #include "PX2Unity.hpp"
+#include "PX2Game.hpp"
 
 namespace PX2
 {
@@ -36,8 +38,6 @@ namespace PX2
 		// system use
 		bool Initlize ();
 		bool Ternamate ();
-
-		// you overwrite these
 		virtual bool OnInitlize ();
 		virtual bool OnTernamate ();
 
@@ -56,13 +56,19 @@ namespace PX2
 		virtual int Main (int numArguments, char** arguments);
 
 	protected:
-		// 渲染性能衡量
+		virtual bool OnInitlizeApp () = 0;
+		virtual bool OnTernamateApp () = 0;
 		void ResetTime ();
 		void MeasureTime ();
 		void UpdateFrameCount ();
 		void DrawFrameRate (int x, int y, const Float4& color);
 		
 		// 渲染相关
+		// 窗口参数
+		std::string mWindowTitle;
+		int mXPosition, mYPosition, mWidth, mHeight;
+		bool mAllowResize;
+
 		Texture::Format mColorFormat;
 		Texture::Format mDepthStencilFormat;
 		int mNumMultisamples;
@@ -70,7 +76,10 @@ namespace PX2
 		Renderer* mRenderer;
 		CameraPtr mCamera;
 
+		EventWorld *mEventWorld;
 		GraphicsRoot *mRoot;
+		ResourceManager *mResMan;
+		GameManager *mGameMan;
 
 		double mLastTime, mAccumulatedTime, mFrameRate;
 		int mFrameCount, mAccumulatedFrameCount, mTimer, mMaxTimer;

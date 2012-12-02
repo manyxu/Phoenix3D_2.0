@@ -22,6 +22,18 @@ namespace PX2Editor
 			int height);
 		virtual ~MainFrame ();
 
+		void OnTimer (wxTimerEvent& event);
+		void OnNew (wxCommandEvent &e);
+		void OnOpen (wxCommandEvent &e);
+		void OnSave (wxCommandEvent &e);
+		void OnSaveAs (wxCommandEvent &e);
+		void OnExist (wxCommandEvent &e);
+		void OnEditSelect (wxCommandEvent& e);
+		void OnEditTranslate (wxCommandEvent& e);
+		void OnEditRolate (wxCommandEvent& e);
+		void OnEditScale (wxCommandEvent& e);
+		void OnGamePlay (wxCommandEvent& e);
+
 	protected:
 		DECLARE_EVENT_TABLE ()
 
@@ -29,6 +41,8 @@ namespace PX2Editor
 		void CreateMenu();
 		void CreateMainToolbar ();
 
+		bool mInited;
+		wxTimer mTimer;
 		wxAuiManager *mAuiManager;
 		wxToolBar* mMainToolbar;
 		RenderViewWindow *mRenderView;

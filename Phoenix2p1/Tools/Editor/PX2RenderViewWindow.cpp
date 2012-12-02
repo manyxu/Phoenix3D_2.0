@@ -7,11 +7,24 @@
 #include "PX2RenderViewWindow.hpp"
 #include "PX2EditorParams.hpp"
 #include "PX2ViewCtrlInstMan.hpp"
+#include "PX2EditEventType.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 
 #define ID_CTRLTIMER wxID_HIGHEST+3001
 #define ID_RENDERTIMER wxID_HIGHEST+3002
+#define ID_ADDACTOR_MODEL wxID_HIGHEST + 3101
+#define ID_ADDACTOR_EFFECT wxID_HIGHEST + 3102
+#define ID_ADDACTOR_LIGHT_AMBIENT wxID_HIGHEST +3103
+#define ID_ADDACTOR_LIGHT_DIRECTION wxID_HIGHEST + 3104
+#define ID_ADDACTOR_LIGHT_POINT wxID_HIGHEST + 3105
+#define ID_ADDACTOR_LIGHT_SPOT wxID_HIGHEST + 3106
+#define ID_ADDACTOR_SOUND wxID_HIGHEST + 3107
+#define ID_ADDACTOR_TRIGER wxID_HIGHEST + 3108
+#define ID_CREATE_BOX wxID_HIGHEST + 3109
+#define ID_CREATE_SPHERE wxID_HIGHEST + 3110
+#define ID_CLONE_INSTANCE wxID_HIGHEST + 3111
+#define ID_CLONE_DATA wxID_HIGHEST + 3112
 //----------------------------------------------------------------------------
 IMPLEMENT_DYNAMIC_CLASS(PX2Editor::RenderViewWindow, wxWindow)
 BEGIN_EVENT_TABLE(RenderViewWindow, wxWindow)
@@ -29,6 +42,14 @@ EVT_RIGHT_UP(RenderViewWindow::OnRightUp)
 EVT_MOTION(RenderViewWindow::OnMotion)
 EVT_ENTER_WINDOW(RenderViewWindow::OnEnterWindow)
 EVT_LEAVE_WINDOW(RenderViewWindow::OnLeaveWindow)
+EVT_MENU(ID_ADDACTOR_MODEL, RenderViewWindow::OnActorModel)
+EVT_MENU(ID_ADDACTOR_LIGHT_DIRECTION, RenderViewWindow::OnActorLight_Direction)
+EVT_MENU(ID_ADDACTOR_LIGHT_POINT, RenderViewWindow::OnActorLight_Point)
+EVT_MENU(ID_ADDACTOR_LIGHT_SPOT, RenderViewWindow::OnActorLight_Spot)
+EVT_MENU(ID_CREATE_BOX, RenderViewWindow::OnCreateBox)
+EVT_MENU(ID_CREATE_SPHERE, RenderViewWindow::OnCreateSphere)
+EVT_MENU(ID_CLONE_INSTANCE, RenderViewWindow::OnCloneInstance)
+EVT_MENU(ID_CLONE_DATA, RenderViewWindow::OnCloneData)
 END_EVENT_TABLE()
 //----------------------------------------------------------------------------
 RenderViewWindow::RenderViewWindow ()
@@ -51,7 +72,8 @@ RenderViewWindow::RenderViewWindow ()
 	mLeftDown(false),
 	mMiddleDown(false),
 	mRightDown(false),
-	mRightDownOnMotion(false)
+	mRightDownOnMotion(false),
+	mEditMenu(0)
 {
 }
 //----------------------------------------------------------------------------
@@ -75,7 +97,8 @@ RenderViewWindow::RenderViewWindow (wxWindow *parent)
 	mLeftDown(false),
 	mMiddleDown(false),
 	mRightDown(false),
-	mRightDownOnMotion(false)
+	mRightDownOnMotion(false),
+	mEditMenu(0)
 {
 	mBlack = Float4(0.0f, 0.0f, 0.0f, 1.0f);
 	mRed = Float4(1.0f, 0.0f, 0.0f, 1.0f);
@@ -86,6 +109,12 @@ RenderViewWindow::RenderViewWindow (wxWindow *parent)
 //----------------------------------------------------------------------------
 RenderViewWindow::~RenderViewWindow ()
 {
+	if (mEditMenu)
+	{
+		delete mEditMenu;
+		mEditMenu = 0;
+	}
+
 	if (mSceneNodeCtrl)
 	{
 		delete0(mSceneNodeCtrl);
@@ -132,8 +161,18 @@ bool RenderViewWindow::Initlize ()
 
 	mSceneNodeCtrl = new0 SceneNodeCtrl();
 	EventWorld::GetSingleton().ComeIn(mSceneNodeCtrl);
+	mCtrlScene = new0 Node();
+	mCtrlScene->AttachChild(mSceneNodeCtrl->GetCtrlsGroup());
+	mCtrlScene->Update();
 
 	SetViewType(VT_PERSPECTIVE);
+
+	CreateEditMenu();
+
+	EditSystem::GetSingleton().GetEditMap()->GetScene()->GetDefaultCameraActor()
+		->SetCamera(mCamera);
+	SetScene(EditSystem::GetSingleton().GetEditMap()->GetScene()
+		->GetSceneNode());
 
 	mInited = true;
 
@@ -163,6 +202,7 @@ void RenderViewWindow::SetViewType (ViewType viewType)
 
 	mRenderer->SetCamera(mCamera);
 	mGridCuller.SetCamera(mCamera);
+	mCtrlCuller.SetCamera(mCamera);
 	mCuller.SetCamera(mCamera);
 }
 //----------------------------------------------------------------------------
@@ -291,8 +331,13 @@ void RenderViewWindow::OnRightUp (wxMouseEvent& e)
 	}
 	else if (!mRightDownOnMotion)
 	{
-		if (EditSystem::GetSingleton().GetEditMode() == EditSystem::EM_SELECT)
+		if (EditSystem::GetSingleton().GetEditMode() == EditSystem::EM_SELECT
+			|| EditSystem::GetSingleton().GetEditMode() == EditSystem::EM_TRANSLATE
+			|| EditSystem::GetSingleton().GetEditMode() == EditSystem::EM_ROLATE
+			|| EditSystem::GetSingleton().GetEditMode() == EditSystem::EM_SCALE)
 		{
+			if (mEditMenu)
+				this->PopupMenu(mEditMenu, popupPos.x, popupPos.y);
 		}
 	}
 
@@ -320,6 +365,61 @@ void RenderViewWindow::OnMotion (wxMouseEvent& e)
 		->HandleMotion(this, e);
 
 	mLastMousePoint = point;
+}
+//----------------------------------------------------------------------------
+void RenderViewWindow::OnActorModel (wxCommandEvent& e)
+{
+	APoint pos = ViewCtrlInstMan::GetSingleton().GetCurViewCtrlInst()
+		->GetSelectPoint();
+	Object *obj = EditSystem::GetSingleton().GetSelectedResource();
+	Movable *mov = DynamicCast<Movable>(obj);
+	if (mov)
+	{
+		EditSystem::GetSingleton().GetEditMap()->AddModelActor(mov, pos);
+	}
+	else
+	{
+		wxMessageBox(PX2_LM.GetValue("Tip1"), PX2_LM.GetValue("Tip0"), wxOK);
+	}
+}
+//----------------------------------------------------------------------------
+void RenderViewWindow::OnActorLight_Direction (wxCommandEvent& e)
+{
+
+}
+//----------------------------------------------------------------------------
+void RenderViewWindow::OnActorLight_Point (wxCommandEvent& e)
+{
+
+}
+//----------------------------------------------------------------------------
+void RenderViewWindow::OnActorLight_Spot (wxCommandEvent& e)
+{
+
+}
+//----------------------------------------------------------------------------
+void RenderViewWindow::OnCreateBox (wxCommandEvent& e)
+{
+	APoint pos = ViewCtrlInstMan::GetSingleton().GetCurViewCtrlInst()
+		->GetSelectPoint();
+	EditSystem::GetSingleton().GetEditMap()->CreateBox(APoint::ORIGIN);
+}
+//----------------------------------------------------------------------------
+void RenderViewWindow::OnCreateSphere (wxCommandEvent& e)
+{
+	APoint pos = ViewCtrlInstMan::GetSingleton().GetCurViewCtrlInst()
+		->GetSelectPoint();
+	EditSystem::GetSingleton().GetEditMap()->CreateSphere(APoint::ORIGIN);
+}
+//----------------------------------------------------------------------------
+void RenderViewWindow::OnCloneInstance (wxCommandEvent& e)
+{
+
+}
+//----------------------------------------------------------------------------
+void RenderViewWindow::OnCloneData (wxCommandEvent& e)
+{
+
 }
 //----------------------------------------------------------------------------
 std::pair<float, float> RenderViewWindow::StartMouseDrag(wxMouseEvent& e)
@@ -366,15 +466,18 @@ void RenderViewWindow::EndMouseDrag(wxMouseEvent& e)
 {
 }
 //----------------------------------------------------------------------------
-void RenderViewWindow::Update (double detalTime)
+void RenderViewWindow::Update (double detalSeconds)
 {
 	if (!mInited)
 		return;
 
-	CamMoveUpdate(detalTime);
+	CamMoveUpdate(detalSeconds);
+
+	if (mCtrlScene)
+		mCtrlScene->Update();
 }
 //----------------------------------------------------------------------------
-void RenderViewWindow::CamMoveUpdate (double detalTime)
+void RenderViewWindow::CamMoveUpdate (double detalSeconds)
 {
 	if (!mActive)
 	{
@@ -386,11 +489,15 @@ void RenderViewWindow::CamMoveUpdate (double detalTime)
 	}
 
 	bool altDown = wxGetKeyState(WXK_ALT);
+	bool ctrlDown = wxGetKeyState(WXK_CONTROL);
 	bool shiftDown = wxGetKeyState(WXK_SHIFT);
 	bool wDown = wxGetKeyState((wxKeyCode)(_T('W')));
 	bool sDown = wxGetKeyState((wxKeyCode)(_T('S')));
 	bool aDown = wxGetKeyState((wxKeyCode)(_T('A')));
 	bool dDown = wxGetKeyState((wxKeyCode)(_T('D')));
+
+	if (ctrlDown)
+		return;
 
 	// cal move speed
 	float speedParam0 = (mCameraMoveSpeed/0.2f);
@@ -402,7 +509,7 @@ void RenderViewWindow::CamMoveUpdate (double detalTime)
 	else
 	{
 		float curSpeedTemp = mCurCameraMoveSpeed_W;
-		curSpeedTemp -= (float)detalTime * (speedParam0 + speedParam1*(float)detalTime);
+		curSpeedTemp -= (float)detalSeconds * (speedParam0 + speedParam1*(float)detalSeconds);
 		if (curSpeedTemp >= 0.0f)
 		{
 			mCurCameraMoveSpeed_W = curSpeedTemp;
@@ -420,7 +527,7 @@ void RenderViewWindow::CamMoveUpdate (double detalTime)
 	else
 	{
 		float curSpeedTemp = mCurCameraMoveSpeed_S;
-		curSpeedTemp -= (float)detalTime * (speedParam0 + speedParam1*(float)detalTime);
+		curSpeedTemp -= (float)detalSeconds * (speedParam0 + speedParam1*(float)detalSeconds);
 		if (curSpeedTemp > 0.0f)
 		{
 			mCurCameraMoveSpeed_S = curSpeedTemp;
@@ -438,7 +545,7 @@ void RenderViewWindow::CamMoveUpdate (double detalTime)
 	else
 	{
 		float curSpeedTemp = mCurCameraMoveSpeed_A;
-		curSpeedTemp -= (float)detalTime * (speedParam0 + speedParam1*(float)detalTime);
+		curSpeedTemp -= (float)detalSeconds * (speedParam0 + speedParam1*(float)detalSeconds);
 		if (curSpeedTemp > 0.0f)
 		{
 			mCurCameraMoveSpeed_A = curSpeedTemp;
@@ -456,7 +563,7 @@ void RenderViewWindow::CamMoveUpdate (double detalTime)
 	else
 	{
 		float curSpeedTemp = mCurCameraMoveSpeed_D;
-		curSpeedTemp -= (float)detalTime * (speedParam0 + speedParam1*(float)detalTime);
+		curSpeedTemp -= (float)detalSeconds * (speedParam0 + speedParam1*(float)detalSeconds);
 		if (curSpeedTemp > 0.0f)
 		{
 			mCurCameraMoveSpeed_D = curSpeedTemp;
@@ -468,10 +575,10 @@ void RenderViewWindow::CamMoveUpdate (double detalTime)
 	}
 
 	// move
-	float moveValue_W = mCurCameraMoveSpeed_W * (float)detalTime;
-	float moveValue_S = mCurCameraMoveSpeed_S * (float)detalTime;
-	float moveValue_A = mCurCameraMoveSpeed_A * (float)detalTime;
-	float moveValue_D = mCurCameraMoveSpeed_D * (float)detalTime;
+	float moveValue_W = mCurCameraMoveSpeed_W * (float)detalSeconds;
+	float moveValue_S = mCurCameraMoveSpeed_S * (float)detalSeconds;
+	float moveValue_A = mCurCameraMoveSpeed_A * (float)detalSeconds;
+	float moveValue_D = mCurCameraMoveSpeed_D * (float)detalSeconds;
 
 	if (shiftDown)
 	{
@@ -506,6 +613,11 @@ void RenderViewWindow::DrawScene ()
 		mGridCuller.ComputeVisibleSet(mGridScene);
 	}
 
+	if (mCtrlScene)
+	{
+		mCtrlCuller.ComputeVisibleSet(mCtrlScene);
+	}
+
 	if (mScene)
 	{
 		mCuller.ComputeVisibleSet(mScene);
@@ -519,10 +631,43 @@ void RenderViewWindow::DrawScene ()
 
 		mRenderer->Draw(mCuller.GetVisibleSet());
 
+		mRenderer->ClearDepthBuffer();
+		mRenderer->Draw(mCtrlCuller.GetVisibleSet().Sort());
+
 		mRenderer->PostDraw();
 
 		mRenderer->DisplayColorBuffer();
 	}
+}
+//----------------------------------------------------------------------------
+void RenderViewWindow::CreateEditMenu ()
+{
+	mEditMenu = new wxMenu();
+
+	//--
+	wxMenu *createMenu = new wxMenu();
+	mEditMenu->AppendSubMenu(createMenu, PX2_LM.GetValue("Create"));
+
+	createMenu->Append(ID_CREATE_BOX, PX2_LM.GetValue("Box"));
+	createMenu->Append(ID_CREATE_SPHERE, PX2_LM.GetValue("Sphere"));
+
+	//--
+	wxMenu *addActorMenu = new wxMenu();
+	mEditMenu->AppendSubMenu(addActorMenu, PX2_LM.GetValue("AddActor"));
+
+	addActorMenu->Append(ID_ADDACTOR_MODEL, PX2_LM.GetValue("AddActorModel"));
+	addActorMenu->Append(ID_ADDACTOR_EFFECT,PX2_LM.GetValue("AddActorEffect"));
+
+	wxMenu *addActorMenu_Light = new wxMenu();
+	addActorMenu->AppendSubMenu(addActorMenu_Light, PX2_LM.GetValue("AddActorLight"));
+	addActorMenu_Light->Append(ID_ADDACTOR_LIGHT_POINT, PX2_LM.GetValue("AddActorLightPoint"));
+	addActorMenu_Light->Append(ID_ADDACTOR_LIGHT_SPOT, PX2_LM.GetValue("AddActorLightSpot"));
+
+	//--
+	wxMenu *cloneMenu = new wxMenu();
+	cloneMenu->Append(ID_CLONE_INSTANCE, PX2_LM.GetValue("CloneInstance"));
+	cloneMenu->Append(ID_CLONE_DATA, PX2_LM.GetValue("CloneData"));
+	mEditMenu->AppendSubMenu(cloneMenu, PX2_LM.GetValue("Clone"));
 }
 //----------------------------------------------------------------------------
 void RenderViewWindow::CreateGridGeometry ()
@@ -703,5 +848,44 @@ void RenderViewWindow::RolateCamera (const float &horz, const float &vert)
 		mCamera->SetAxes(dVector, uVector, rVector);
 
 	}
+}
+//----------------------------------------------------------------------------
+void RenderViewWindow::DoEnter ()
+{
+}
+//----------------------------------------------------------------------------
+void RenderViewWindow::DoExecute (PX2::Event *event)
+{
+	if (!mInited)
+		return;
+
+	if (EditorEventSpace::IsEqual(event, EditorEventSpace::NewScene)
+		|| EditorEventSpace::IsEqual(event, EditorEventSpace::LoadedScene))
+	{
+		Scene *scene = EditSystem::GetSingleton().GetEditMap()->GetScene();
+		if (scene)
+		{
+			SetScene(scene->GetSceneNode());
+			scene->GetDefaultCameraActor()->SetCamera(mCamera);
+		}
+	}
+	else if (EditorEventSpace::IsEqual(event, EditorEventSpace::SetEditMode))
+	{
+		PX2Editor::EditSystem::EditMode mode = 
+			event->GetData<PX2Editor::EditSystem::EditMode>();
+
+		if (mode == PX2Editor::EditSystem::EM_SELECT)
+			mSceneNodeCtrl->SetCtrlType(SceneNodeCtrl::CT_SELECT);
+		if (mode == PX2Editor::EditSystem::EM_TRANSLATE)
+			mSceneNodeCtrl->SetCtrlType(SceneNodeCtrl::CT_TRANSLATE);
+		else if (mode == PX2Editor::EditSystem::EM_ROLATE)
+			mSceneNodeCtrl->SetCtrlType(SceneNodeCtrl::CT_ROLATE);
+		else if (mode == PX2Editor::EditSystem::EM_SCALE)
+			mSceneNodeCtrl->SetCtrlType(SceneNodeCtrl::CT_SCALE);
+	}
+}
+//----------------------------------------------------------------------------
+void RenderViewWindow::DoLeave ()
+{
 }
 //----------------------------------------------------------------------------

@@ -6,6 +6,7 @@
 
 #include "PX2OpenGLES2VertexFormat.hpp"
 #include "PX2OpenGLES2Mapping.hpp"
+#include "PX2Renderer.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -199,34 +200,23 @@ PdrVertexFormat::~PdrVertexFormat ()
 {
 }
 //----------------------------------------------------------------------------
-void PdrVertexFormat::Enable (Renderer*)
+void PdrVertexFormat::Enable (Renderer *renderer)
 {
+	const Renderable *renderable = renderer->mCurRenderable;
+	const VertexBuffer *vBuffer = renderable->GetVertexBuffer();
+
 	if (mHasPosition)
 	{
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, mPositionChannels, mPositionType, GL_FALSE, 
-			mStride, (char*)0 + mPositionOffset);
+		glVertexAttribPointer(ALP_POSITION, mPositionChannels, mPositionType, GL_FALSE, 
+			mStride, (const void*)mPositionOffset);
+		glEnableVertexAttribArray(ALP_POSITION);
 	}
 
 	if (mHasNormal)
 	{
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, mNormalChannels, mNormalType, GL_FALSE,
-			mStride, (char*)0 + mNormalOffset);
-	}
-
-	if (mHasTangent)
-	{
-		glEnableVertexAttribArray(14);
-		glVertexAttribPointer(14, mTangentChannels, mTangentType, GL_FALSE,
-			mStride, (char*)0 + mTangentOffset);
-	}
-
-	if (mHasBinormal)
-	{
-		glEnableVertexAttribArray(15);
-		glVertexAttribPointer(15, mBinormalChannels, mBinormalType,
-			GL_FALSE, mStride, (char*)0 + mBinormalOffset);
+		glVertexAttribPointer(ALP_NORMAL, mNormalChannels, mNormalType, GL_FALSE,
+			mStride, (const void*)mNormalOffset);
+		glEnableVertexAttribArray(ALP_NORMAL);
 	}
 
 	unsigned int unit;
@@ -234,34 +224,10 @@ void PdrVertexFormat::Enable (Renderer*)
 	{
 		if (mHasTCoord[unit])
 		{
-			glEnableVertexAttribArray(GL_TEXTURE0 + unit);
-			glVertexAttribPointer(GL_TEXTURE0 + unit, mBinormalChannels, mBinormalType,
-				GL_FALSE, mStride, (char*)0 + mBinormalOffset);
+			glVertexAttribPointer(ALP_TEXCOORD0 + unit, mTCoordChannels[unit], 
+				mTCoordType[unit], GL_FALSE, mStride, (const void*)mTCoordOffset[unit]);
+			glEnableVertexAttribArray(ALP_TEXCOORD0 + unit);
 		}
-	}
-
-	if (mHasColor[0])
-	{
-	}
-
-	if (mHasColor[1])
-	{
-	}
-
-	if (mHasBlendIndices)
-	{
-	}
-
-	if (mHasBlendWeight)
-	{
-	}
-
-	if (mHasFogCoord)
-	{
-	}
-
-	if (mHasPSize)
-	{
 	}
 }
 //----------------------------------------------------------------------------
@@ -269,47 +235,18 @@ void PdrVertexFormat::Disable (Renderer*)
 {
 	if (mHasPosition)
 	{
+		glDisableVertexAttribArray(ALP_POSITION);
 	}
 
 	if (mHasNormal)
 	{
-	}
-
-	if (mHasTangent)
-	{
-	}
-
-	if (mHasBinormal)
-	{
+		glDisableVertexAttribArray(ALP_NORMAL);
 	}
 
 	unsigned int unit;
 	for (unit = 0; unit < VertexFormat::AM_MAX_TCOORD_UNITS; ++unit)
 	{
-	}
-
-	if (mHasColor[0])
-	{
-	}
-
-	if (mHasColor[1])
-	{
-	}
-
-	if (mHasBlendIndices)
-	{
-	}
-
-	if (mHasBlendWeight)
-	{
-	}
-
-	if (mHasFogCoord)
-	{
-	}
-
-	if (mHasPSize)
-	{
+		glDisableVertexAttribArray(ALP_TEXCOORD0 + unit);
 	}
 }
 //----------------------------------------------------------------------------

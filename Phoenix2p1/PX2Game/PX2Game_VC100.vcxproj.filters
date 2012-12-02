@@ -13,6 +13,9 @@
     <Filter Include="Pick">
       <UniqueIdentifier>{03aa4138-81cf-4e34-94d6-b65d1cd61802}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{55d84b68-89f9-47fa-8c8b-385c429a6812}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PX2Actor.cpp">
@@ -26,6 +29,12 @@
     </ClCompile>
     <ClCompile Include="PX2ActorPicker.cpp">
       <Filter>Pick</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2GameManager.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2CameraActor.cpp">
+      <Filter>Actors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -46,6 +55,12 @@
     <ClInclude Include="PX2ActorPickRecord.hpp">
       <Filter>Pick</Filter>
     </ClInclude>
+    <ClInclude Include="PX2GameManager.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2CameraActor.hpp">
+      <Filter>Actors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PX2Netable.inl">
@@ -56,6 +71,12 @@
     </None>
     <None Include="PX2Scene.inl">
       <Filter>Scenes</Filter>
+    </None>
+    <None Include="PX2GameManager.inl">
+      <Filter>Game</Filter>
+    </None>
+    <None Include="PX2CameraActor.inl">
+      <Filter>Actors</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -15,12 +15,21 @@ ApplicationBase::EntryPoint ApplicationBase::msEntry = 0;
 //----------------------------------------------------------------------------
 ApplicationBase::ApplicationBase ()
 	:
-mClearColor(Float4(1.0f, 0.0f, 0.0f, 1.0f)),
+	mWindowTitle("Application"),
+	mXPosition(0),
+	mYPosition(0),
+	mWidth(800),
+	mHeight(600),
+	mAllowResize(true),
+	mClearColor(Float4(1.0f, 0.0f, 0.0f, 1.0f)),
 	mColorFormat(Texture::TF_A8R8G8B8),
 	mRenderer(0),
 	mDepthStencilFormat(Texture::TF_D24S8),
 	mNumMultisamples(0),
 	mRoot(0),
+	mEventWorld(0),
+	mResMan(0),
+	mGameMan(0),
 	mLastTime(-1.0),
 	mAccumulatedTime(0.0),
 	mFrameRate(0.0),
@@ -41,17 +50,31 @@ bool ApplicationBase::Initlize ()
 	Memory::Initialize();
 #endif
 
-	mRoot = new0 GraphicsRoot();
-	if (mRoot)
-		mRoot->Initlize();
+	LogInitlize();
+	//LogAddFileHandler("PX2Application_Log.txt", 1, LT_ENGINE|LT_INFO);
+	LoadAddOutputWindowHandler(1, LT_ENGINE|LT_INFO);
 
+	mResMan = new0 ResourceManager();
+
+	mEventWorld = new0 EventWorld();
+	PX2_UNUSED(mEventWorld);
+
+	mRoot = new0 GraphicsRoot();
+	mRoot->Initlize();
+
+	mGameMan = new0 GameManager();
+	mGameMan->LoadBoost("Data/boost.xml");
+	int width = mGameMan->GetBoostWidth();
+	int height = mGameMan->GetBoostHeight();
+	if (0!=width && 0!=height)
+	{
+		mWidth = width;
+		mHeight = height;
+	}
+
+	OnInitlizeApp();
 	OnInitlize();
 
-	return true;
-}
-//----------------------------------------------------------------------------
-bool ApplicationBase::OnInitlize ()
-{
 	return true;
 }
 //----------------------------------------------------------------------------
@@ -73,15 +96,44 @@ bool ApplicationBase::Ternamate ()
 {
 	OnTernamate();
 
-	if (mRoot)
-		mRoot->Terminate();
+	if (mResMan)
+	{
+		delete0(mResMan);
+		ResourceManager::Set(0);
+	}
 
-	delete0(mRoot);
+	if (mGameMan)
+	{
+		delete0(mGameMan);
+		GameManager::Set(0);
+	}
+
+	if (mRoot)
+	{
+		mRoot->Terminate();
+		delete0(mRoot);
+		GraphicsRoot::Set(0);
+	}
+
+	if (mEventWorld)
+	{
+		delete0(mEventWorld);
+		EventWorld::Set(0);
+	}
+
+	OnTernamateApp();
+
+	LogShutdown();
 
 #ifdef PX2_USE_MEMORY
-	Memory::Terminate("PX2Application_MemoryReport.txt");
+	Memory::Terminate("PX2Application_MemoryReport.txt", false);
 #endif
 
+	return true;
+}
+//----------------------------------------------------------------------------
+bool ApplicationBase::OnInitlize ()
+{
 	return true;
 }
 //----------------------------------------------------------------------------
@@ -89,6 +141,7 @@ bool ApplicationBase::OnTernamate ()
 {
 	return true;
 }
+//----------------------------------------------------------------------------
 int ApplicationBase::Main (int numArguments, char** arguments)
 {
 	return 1;

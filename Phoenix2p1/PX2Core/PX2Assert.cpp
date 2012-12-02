@@ -10,6 +10,8 @@
 
 #ifdef PX2_USE_ASSERT_WRITE_TO_OUTPUT_WINDOW
 #include <windows.h>
+#elif defined __ANDROID__
+#include <android/log.h>
 #endif
 
 #ifdef PX2_USE_ASSERT_WRITE_TO_MESSAGE_BOX

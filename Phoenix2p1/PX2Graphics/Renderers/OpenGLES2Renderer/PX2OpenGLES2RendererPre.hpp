@@ -15,8 +15,35 @@
 #define PX2OPENGLES2RENDERERPRE_HPP
 
 #include "PX2GraphicsPre.hpp"
+#include "PX2Assert.hpp"
 
 #include <GLES2/gl2.h>
 #include <EGL/egl.h>
+
+enum AttribLocationPos
+{
+	ALP_POSITION = 0,
+	ALP_NORMAL,
+	ALP_TEXCOORD0,
+	ALP_COLOR0,
+};
+
+#define PX2_GL_CHECK(x) \
+	x; \
+		{ \
+		GLenum glError = glGetError(); \
+		if(glError != GL_NO_ERROR) { \
+		assertion(false, "glGetError() = %i (0x%.8x) at line %i\n", glError, glError, __LINE__); \
+		} \
+		}
+
+#define PX2_EGL_CHECK(x) \
+	x; \
+	{ \
+	EGLint eglError = eglGetError(); \
+	if(eglError != EGL_SUCCESS) { \
+	assertion(false, "eglGetError() = %i (0x%.8x) at line %i\n", eglError, eglError, __LINE__); \
+	} \
+	}
 
 #endif

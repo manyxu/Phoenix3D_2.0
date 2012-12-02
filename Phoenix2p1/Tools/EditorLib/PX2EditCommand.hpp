@@ -59,7 +59,7 @@ namespace PX2Editor
 		PX2::ActorPtr mActor;
 	};
 
-	class EditCommandManager : public PX2::Singleton<EditCommandManager>
+	class EditCommandManager
 	{
 	public:
 		EditCommandManager ();

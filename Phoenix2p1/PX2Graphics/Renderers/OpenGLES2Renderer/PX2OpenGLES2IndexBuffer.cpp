@@ -10,12 +10,15 @@ using namespace PX2;
 
 //----------------------------------------------------------------------------
 PdrIndexBuffer::PdrIndexBuffer (Renderer*, const IndexBuffer* ibuffer)
+	:
+mBuffer(0)
 {
-	glGenBuffers(1, &mBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mBuffer);
+	PX2_GL_CHECK(glGenBuffers(1, &mBuffer));
 
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, ibuffer->GetNumBytes(),
-		ibuffer->GetData(), gOGLBufferUsage[ibuffer->GetUsage()]);
+	PX2_GL_CHECK(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mBuffer);)
+
+	PX2_GL_CHECK(glBufferData(GL_ELEMENT_ARRAY_BUFFER, ibuffer->GetNumBytes(),
+		ibuffer->GetData(), gOGLBufferUsage[ibuffer->GetUsage()]));
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }

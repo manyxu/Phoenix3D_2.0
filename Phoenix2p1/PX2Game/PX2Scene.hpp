@@ -10,6 +10,7 @@
 #include "PX2GamePre.hpp"
 #include "PX2Node.hpp"
 #include "PX2Actor.hpp"
+#include "PX2CameraActor.hpp"
 
 namespace PX2
 {
@@ -39,12 +40,15 @@ namespace PX2
 		Actor *GetActor (int i);
 		Actor *GetActor (PX2::Movable *object);
 
+		CameraActor *GetDefaultCameraActor ();
+
 	protected:
 		void Update ();
 
 		int mSceneID;
 		NodePtr mSceneNode;
 		std::vector<ActorPtr> mActors;
+		CameraActorPtr mDefaultCameraActor;
 	};
 
 	PX2_REGISTER_STREAM(Scene);

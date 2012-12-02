@@ -33,7 +33,7 @@ namespace PX2
 
 	public:
 		// 最大版本数量。如果你增加了新的版本，需要改变这个数值。
-		enum { MAX_PROFILES = 5 };
+		enum { MAX_PROFILES = 6 };
 
 		// 着色器程序输入和输出变量类型
 		enum VariableType

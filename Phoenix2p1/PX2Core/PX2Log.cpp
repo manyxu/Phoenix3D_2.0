@@ -4,10 +4,11 @@
 *
 */
 
-#include "PX2LogFileHandler.hpp"
 #include "PX2Log.hpp"
 #include "PX2Assert.hpp"
 #include "PX2Memory.hpp"
+#include "PX2LogFileHandler.hpp"
+#include "PX2LogOutputWindowHandler.hpp"
 
 namespace PX2
 {
@@ -45,11 +46,12 @@ bool LogInitlize ()
 	return true;
 }
 //----------------------------------------------------------------------------
-void LogRelease ()
+void LogShutdown ()
 {
 	for (int i=0; i<sNumHandlers; i++)
 	{
-		delete sHandlers[i];
+		delete0(sHandlers[i]);
+		sHandlers[i] = 0;
 	}
 }
 //----------------------------------------------------------------------------
@@ -76,7 +78,16 @@ int LogAddFileHandler (const char *filename, int line, unsigned int levels)
 {
 	PX2_UNUSED(line);
 
-	FileLogHandler *handler = new FileLogHandler(levels, filename);
+	FileLogHandler *handler = new0 FileLogHandler(levels, filename);
+
+	return LogAddHandler(handler);
+}
+//----------------------------------------------------------------------------
+int LoadAddOutputWindowHandler (int line, unsigned int levels)
+{
+	PX2_UNUSED(line);
+
+	OutputWindowHandler *handler = new0 OutputWindowHandler(levels);
 
 	return LogAddHandler(handler);
 }

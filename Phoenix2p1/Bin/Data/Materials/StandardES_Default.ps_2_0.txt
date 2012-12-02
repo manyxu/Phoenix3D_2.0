@@ -20,8 +20,8 @@ ps_2_0
 //semantic gLightColour
 //semantic gLightModelDirection
 //semantic gDiffuseSampler
-//var float4 vertexColor : $vin.COLOR : COL0 : 0 : 1
-//var float2 vertexTCoord0 : $vin.TEXCOORD0 : TEX0 : 1 : 1
+//var float2 vertexTCoord0 : $vin.TEXCOORD0 : TEX0 : 0 : 1
+//var float4 vertexTCoord1 : $vin.TEXCOORD1 : TEX1 : 1 : 1
 //var float4 pixelColor : $vout.COLOR : COL : 2 : 1
 //var float4x4 gWMatrix :  : , 4 : -1 : 0
 //var float4x4 gVMatrix :  : , 4 : -1 : 0
@@ -44,7 +44,7 @@ ps_2_0
 //default gLightModelDirection = -0.5 -0.5 -0.5
 dcl_2d s0
 dcl t0.xy
-dcl v0
+dcl t1
 texld r0, t0, s0
-mul r0, r0, v0
+mul r0, r0, t1
 mov oC0, r0

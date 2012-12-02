@@ -21,11 +21,15 @@ namespace PX2Editor
 		~EditMap ();
 
 		void NewScene ();
-		bool LoadScene (std::string pathname);
+		bool LoadScene (const char *pathname);
 		std::string GetLoadedScenePath () { return mLoadedScenePath; }
-		bool SaveScene (std::string pathname);
-		bool SaveSceneAs (std::string pathname);
+		bool SaveScene (const char *pathname);
+		bool SaveSceneAs (const char *pathname);
 		PX2::Scene *GetScene () { return mScene; }
+
+		void CreateBox (PX2::APoint pos);
+		void CreateSphere (PX2::APoint pos);
+		void AddModelActor ( PX2::Movable *mov, PX2::APoint pos);
 
 		void AddActor (PX2::Actor *actor);
 		void RemoveActor (PX2::Actor *actor);

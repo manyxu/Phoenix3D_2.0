@@ -28,7 +28,7 @@ namespace PX2
 	{
 	public:
 		PdrShader ();
-		~PdrShader ();
+		virtual ~PdrShader ();
 
 		GLuint GetShader () { return mShader; }
 

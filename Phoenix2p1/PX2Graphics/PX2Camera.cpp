@@ -345,8 +345,11 @@ mPreViewMatrix(HMatrix::ZERO),
 mPreViewIsIdentity(false),
 mPostProjectionMatrix(HMatrix::ZERO),
 mPostProjectionIsIdentity(false),
-mIsPerspective(false)
+mIsPerspective(false),
+mDepthType(msDefaultDepthType)
 {
+	mProjectionViewMatrix[mDepthType] = HMatrix::ZERO;
+
 	for (int i = 0; i < VF_QUANTITY; ++i)
 	{
 		mFrustum[i] = 0.0f;

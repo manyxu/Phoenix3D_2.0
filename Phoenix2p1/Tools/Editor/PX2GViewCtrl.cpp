@@ -32,8 +32,7 @@ GViewCtrl::~GViewCtrl()
 	}
 }
 //-----------------------------------------------------------------------------
-void GViewCtrl::HandleLeftDown (RenderViewWindow *win, 
-	wxMouseEvent &e)
+void GViewCtrl::HandleLeftDown (RenderViewWindow *win, wxMouseEvent &e)
 {
 	AttachToWindow(win);
 	StartMouseDrag(e);
@@ -42,9 +41,7 @@ void GViewCtrl::HandleLeftDown (RenderViewWindow *win,
 	wxPoint mousePoint = e.GetPosition();
 	wxSize size = win->GetSize();
 
-	PX2::Vector2f point(
-		(float)mousePoint.x/(float)size.x,
-		(float)mousePoint.y/(float)size.y);
+	PX2::Vector2f point((float)mousePoint.x, (float)mousePoint.y);
 
 	mAttachedCtrl->OnLeftMouseDown(win->GetRenderer(), point);
 
@@ -71,7 +68,7 @@ void GViewCtrl::HandleLeftUp (RenderViewWindow *win, wxMouseEvent &e)
 		{
 			if (mTransChanged)
 			{
-				EditCommandManager::GetSingleton().PushUnDo(mCommand);
+				EditSystem::GetSingleton().GetCM()->PushUnDo(mCommand);
 				mTransChanged = false;
 			}
 		}
@@ -154,35 +151,24 @@ void GViewCtrl::HandleMotion (RenderViewWindow *win, wxMouseEvent &e)
 
 	EditSystem::EditMode editMode = EditSystem::GetSingleton().GetEditMode();
 
-	if (mLeftDown)
+	if (editMode == EditSystem::EM_TRANSLATE 
+		|| editMode == EditSystem::EM_ROLATE
+		|| editMode == EditSystem::EM_SCALE)
 	{
-		if (editMode == EditSystem::EM_SELECT)
+		if (mAttachedCtrl)
+			mAttachedCtrl->OnMouseMove(mLeftDown,
+			win->GetRenderer(),
+			Vector2f((float)point.x, (float)point.y), 
+			Vector2f((float)mLastMousePoint.x, (float)mLastMousePoint.y));
+
+		if (mLeftDown)
 		{
-			if (mDragRangeSelect)
-			{
-				// 已经绘制过，翻转回去
-				DrawSelectBox(mLastMousePoint, mLastSelectEnd);
-			}
-
-			mLastSelectEnd = e.GetPosition();
-
-			mDragRangeSelect = true;
-
-			DrawSelectBox(mLastMousePoint, e.GetPosition());
-		}
-		else if (editMode == EditSystem::EM_TRANSLATE ||
-			editMode == EditSystem::EM_ROLATE ||
-			editMode == EditSystem::EM_SCALE)
-		{
-			if (mAttachedCtrl)
-				mAttachedCtrl->OnMouseMove(win->GetRenderer(),
-				diff.x*mPixelToWorld.first, -diff.y*mPixelToWorld.second);
-
 			mTransChanged = true;
 			mLastMousePoint = point;
 		}
 	}
-	else if (mMiddleDown)
+
+	if (mMiddleDown)
 	{
 		mWindow->PanCamera(diff.x*mPixelToWorld.first, 
 			diff.y*mPixelToWorld.second);

@@ -24,8 +24,8 @@ vs_1_1
 //var float3 modelNormal : $vin.NORMAL0 : ATTR1 : 1 : 1
 //var float2 modelTCoord0 : $vin.TEXCOORD0 : ATTR2 : 2 : 1
 //var float4 clipPosition : $vout.POSITION : HPOS : 3 : 1
-//var float4 vertexColor : $vout.COLOR0 : COL0 : 4 : 1
-//var float2 vertexTCoord0 : $vout.TEXCOORD0 : TEX0 : 5 : 1
+//var float2 vertexTCoord0 : $vout.TEXCOORD0 : TEX0 : 4 : 1
+//var float4 vertexTCoord1 : $vout.TEXCOORD1 : TEX1 : 5 : 1
 //var float4x4 gWMatrix :  : , 4 : -1 : 0
 //var float4x4 gVMatrix :  : , 4 : -1 : 0
 //var float4x4 gPMatrix :  : , 4 : -1 : 0
@@ -48,8 +48,8 @@ vs_1_1
 //default gLightModelDirection = -0.5 -0.5 -0.5
 def c9, 1.00000000, 0.00000000, 0, 0
 dcl_position0 v0
-dcl_normal0 v1
 dcl_texcoord0 v2
+dcl_normal0 v1
 mov r0.xyz, c7
 mov r1.xyz, c7
 mul r1.xyz, c5, r1
@@ -57,7 +57,7 @@ dp3 r0.w, v1, c8
 mul r0.xyz, c6, r0
 max r0.w, r0, c9.y
 add r1.xyz, r1, c4
-mad oD0.xyz, r0, r0.w, r1
+mad oT1.xyz, r0, r0.w, r1
 mov r0.w, c9.x
 mov r0.xyz, v0
 dp4 oPos.w, r0, c3
@@ -65,4 +65,4 @@ dp4 oPos.z, r0, c2
 dp4 oPos.y, r0, c1
 dp4 oPos.x, r0, c0
 mov oT0.xy, v2
-mov oD0.w, c6
+mov oT1.w, c6

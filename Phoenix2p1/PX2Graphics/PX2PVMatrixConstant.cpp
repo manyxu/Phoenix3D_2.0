@@ -31,7 +31,15 @@ void PVMatrixConstant::Update (const Renderable*, const Camera* camera)
 {
 	const HMatrix& projViewMatrix = camera->GetProjectionViewMatrix();
 
+
+#ifdef PX2_USE_OPENGLES2
+	// you must trans on 0penGLES2
+	HMatrix matTrans = projViewMatrix.Transpose();
+	const float *source = (const float*)matTrans;
+#else
 	const float* source = (const float*)projViewMatrix;
+#endif
+
 	float* target = mData;
 	for (int i = 0; i < 16; ++i)
 	{

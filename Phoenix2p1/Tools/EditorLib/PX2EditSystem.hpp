@@ -10,6 +10,7 @@
 #include "PX2EditorLibPre.hpp"
 #include "PX2EditMap.hpp"
 #include "PX2ActorSelection.hpp"
+#include "PX2EditCommand.hpp"
 
 namespace PX2Editor
 {
@@ -22,6 +23,9 @@ namespace PX2Editor
 
 		bool Initlize ();
 		bool Terminate ();
+		void Update (double detalSeconds);
+
+		EditCommandManager *GetCM ();
 
 		EditMap *GetEditMap ();
 		ActorSelection *GetSelection ();
@@ -38,11 +42,33 @@ namespace PX2Editor
 		void SetEditMode (EditMode mode);
 		EditMode GetEditMode ();
 
+		// PreView Object
+		void SetPreViewObject (PX2::Object *obj);
+		PX2::Object *GetPreViewObject ();
+
+		// Selected Resource
+		void SetSelectedResource (PX2::Object *obj);
+		void SetSelectedResourceName (std::string name);
+		PX2::Object *GetSelectedResource ();
+		std::string GetSelectedResourceName ();
+
+		PX2::TriMesh *GetXYPlane ();
+		PX2::TriMesh *GetXZPlane ();
+		PX2::TriMesh *GetYZPlane ();
+
 	protected:
+		EditCommandManager *mCM;
 		EditMap *mEditMap;
 		ActorSelection *mSelection;
 		PX2::NodePtr mHelpScene;
 		EditMode mEditMode;
+		PX2::ObjectPtr mPreViewObject;
+		PX2::ObjectPtr mSelectedResource;
+		std::string mSelectedResourceName;
+
+		PX2::TriMeshPtr mXYPlane;
+		PX2::TriMeshPtr mXZPlane;
+		PX2::TriMeshPtr mYZPlane;
 	};
 
 #include "PX2EditSystem.inl"

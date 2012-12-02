@@ -2,10 +2,12 @@
 	<technique name="T0">
 		<pass name="P0">
 			<vertexshader>
-				<var file="StandardES_Default.fx" entry="StandardES_Default"/>
+				<var type="cg" file="StandardES_Default.fx" entry="StandardES_Default"/>
+				<var type="gles2" file="StandardES_Default.vs_gles2.txt" entry="main"/>
 			</vertexshader>
 			<pixelshader>
-				<var file="StandardES_Default.fx" entry="StandardES_Default"/>
+				<var type="cg" file="StandardES_Default.fx" entry="StandardES_Default"/>
+				<var type="gles2" file="StandardES_Default.ps_gles2.txt" entry="main"/>
 			</pixelshader>
 		</pass>
 	</technique>

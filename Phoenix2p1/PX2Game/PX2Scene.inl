@@ -25,3 +25,8 @@ inline int Scene::GetActorQuantity ()
 	return (int)mActors.size();
 }
 //----------------------------------------------------------------------------
+inline CameraActor *Scene::GetDefaultCameraActor ()
+{
+	return mDefaultCameraActor;
+}
+//----------------------------------------------------------------------------

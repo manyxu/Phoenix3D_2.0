@@ -56,13 +56,36 @@ PdrVertexShader::~PdrVertexShader ()
 	glDeleteShader(mShader);
 }
 //----------------------------------------------------------------------------
-void PdrVertexShader::Enable (Renderer* renderer,
-							  const VertexShader* vshader, const ShaderParameters* parameters)
+void PdrVertexShader::Enable (Renderer* renderer, const VertexShader* vshader, 
+	const ShaderParameters* parameters)
 {
+	int profile = VertexShader::GetProfile();
+	const int numConstants = vshader->GetNumConstants();
+	for (int i=0; i<numConstants; ++i)
+	{
+		const int numRegisters = vshader->GetNumRegistersUsed(i);
+		float *data = parameters->GetConstant(i)->GetData();
+		int baseRegister = vshader->GetBaseRegister(profile, i);
+
+		if (4 == numRegisters)
+		{
+			glUniformMatrix4fv((GLuint)baseRegister, 1, false, (const GLfloat*)data);
+		}
+		else
+		{
+			glUniform4fv((GLuint)baseRegister, 1, data);
+		}
+	}
+
+	SetSamplerState(renderer, vshader, profile, parameters,
+		renderer->mData->mMaxVShaderImages, renderer->mData->mCurrentSS);
 }
 //----------------------------------------------------------------------------
-void PdrVertexShader::Disable (Renderer* renderer,
-							   const VertexShader* vshader, const ShaderParameters* parameters)
+void PdrVertexShader::Disable (Renderer* renderer, const VertexShader* vshader,
+	const ShaderParameters* parameters)
 {
+	int profile = VertexShader::GetProfile();
+	DisableTextures(renderer, vshader, profile, parameters,
+		renderer->mData->mMaxVShaderImages);
 }
 //----------------------------------------------------------------------------

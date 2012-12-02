@@ -13,7 +13,7 @@
 namespace PX2Editor
 {
 
-	class RenderViewWindow : public wxWindow
+	class RenderViewWindow : public wxWindow, public PX2::EventHandler
 	{
 	public:
 		RenderViewWindow ();
@@ -69,10 +69,23 @@ namespace PX2Editor
 		void OnRightUp (wxMouseEvent& e);
 		void OnMotion (wxMouseEvent& e);
 
+		void OnActorModel (wxCommandEvent& e);
+		void OnActorLight_Direction (wxCommandEvent& e);
+		void OnActorLight_Point (wxCommandEvent& e);
+		void OnActorLight_Spot (wxCommandEvent& e);
+		void OnCreateBox (wxCommandEvent& e);
+		void OnCreateSphere (wxCommandEvent& e);
+		void OnCloneInstance (wxCommandEvent& e);
+		void OnCloneData (wxCommandEvent& e);
+
 		void ZoomCamera (float zoom);
 		void PanCamera (const float &horz, const float &vert); //< 透视角度，上下左右移动，其他视角和MoveCamera一样
 		void MoveCamera (const float &horz, const float vert); //< 透视角度，沿着视线方向移动
 		void RolateCamera (const float &horz, const float &vert);
+
+		virtual void DoEnter ();
+		virtual void DoExecute (PX2::Event *event);
+		virtual void DoLeave ();
 
 public_internal:
 		std::pair<float, float> StartMouseDrag(wxMouseEvent& e);
@@ -83,10 +96,11 @@ public_internal:
 
 	protected:
 		DECLARE_EVENT_TABLE()
+		void CreateEditMenu ();
 		void CreateGridGeometry ();
 		void SetAxisPerspective ();
-		void Update (double detalTime); //< 秒
-		void CamMoveUpdate (double detalTime);
+		void Update (double detalSeconds);
+		void CamMoveUpdate (double detalSeconds);
 		void DrawScene ();
 		
 		bool mInited;
@@ -128,6 +142,9 @@ public_internal:
 		PX2::VertexBufferAccessor mGridAxisAssessor;
 		bool mShowGrid;
 
+		// Ctrl
+		PX2::Culler mCtrlCuller;
+		PX2::NodePtr mCtrlScene;
 		SceneNodeCtrl *mSceneNodeCtrl;
 
 		bool mActive;
@@ -137,6 +154,8 @@ public_internal:
 		bool mRightDownOnMotion;
 		wxPoint mLastMousePoint;
 
+		// View
+		wxMenu *mEditMenu;
 	};
 
 #include "PX2RenderViewWindow.inl"

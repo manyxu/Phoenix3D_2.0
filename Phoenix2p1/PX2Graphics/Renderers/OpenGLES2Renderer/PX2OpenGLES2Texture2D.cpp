@@ -10,6 +10,8 @@ using namespace PX2;
 
 //----------------------------------------------------------------------------
 PdrTexture2D::PdrTexture2D (Renderer*, const Texture2D* texture)
+	:
+mTexture(0)
 {
 	mInternalFormat = gOGLTextureInternalFormat[texture->GetFormat()];
 	mFormat = gOGLTextureFormat[texture->GetFormat()];
@@ -31,26 +33,26 @@ PdrTexture2D::PdrTexture2D (Renderer*, const Texture2D* texture)
 	}
 
 	// 创建和绑定
-	glGenTextures(1, &mTexture);
-	glBindTexture(GL_TEXTURE_2D, mTexture);
+	PX2_GL_CHECK(glGenTextures(1, &mTexture));
+	PX2_GL_CHECK(glBindTexture(GL_TEXTURE_2D, mTexture));
 
 	mIsCompressed = texture->IsCompressed();
 	if (mIsCompressed)
 	{
 		for (level = 0; level < mNumLevels; ++level)
 		{
-			glCompressedTexImage2D(GL_TEXTURE_2D, level, mInternalFormat,
+			PX2_GL_CHECK(glCompressedTexImage2D(GL_TEXTURE_2D, level, mInternalFormat,
 				mDimension[0][level], mDimension[1][level], 0,
-				mNumLevelBytes[level], texture->GetData(level));
+				mNumLevelBytes[level], texture->GetData(level)));
 		}
 	}
 	else
 	{
 		for (level = 0; level < mNumLevels; ++level)
 		{
-			glTexImage2D(GL_TEXTURE_2D, level, mInternalFormat,
+			PX2_GL_CHECK(glTexImage2D(GL_TEXTURE_2D, level, mInternalFormat,
 				mDimension[0][level], mDimension[1][level], 0, mFormat,
-				mType, texture->GetData(level));
+				mType, texture->GetData(level)));
 		}
 	}
 
@@ -59,7 +61,7 @@ PdrTexture2D::PdrTexture2D (Renderer*, const Texture2D* texture)
 //----------------------------------------------------------------------------
 PdrTexture2D::~PdrTexture2D ()
 {
-	glDeleteTextures(1, &mTexture);
+	PX2_GL_CHECK(glDeleteTextures(1, &mTexture));
 }
 //----------------------------------------------------------------------------
 void PdrTexture2D::Enable (Renderer*,int textureUnit)

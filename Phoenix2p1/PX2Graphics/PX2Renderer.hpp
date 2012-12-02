@@ -508,6 +508,7 @@ public_internal:
 		* 放在公有接口里，容许资源类进行访问。
 		*/
 		RendererData* mData;
+		const Renderable *mCurRenderable;
 
 		PdrVertexFormat* GetResource (const VertexFormat* vformat);
 		PdrVertexBuffer* GetResource (const VertexBuffer* vbuffer);

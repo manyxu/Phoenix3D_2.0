@@ -29,6 +29,8 @@ void ResTreeItem::SetRoot ()
 	mItemID = ResTree::GetSingleton().AddRoot("Data", 1);
 
 	BuildChild();
+
+	ResTree::GetSingleton().Expand(mItemID);
 }
 //-----------------------------------------------------------------------------
 void ResTreeItem::AddChild (ResTreeItem *item)

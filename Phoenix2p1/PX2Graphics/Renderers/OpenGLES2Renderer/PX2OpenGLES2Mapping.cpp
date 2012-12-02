@@ -244,10 +244,10 @@ namespace PX2
 	GLint gOGLWrapMode[Shader::SC_QUANTITY] =
 	{
 		NOT_SUPPORT,           // SC_NONE
-		NOT_SUPPORT,           // SC_CLAMP
+		GL_REPEAT,           // SC_CLAMP
 		GL_REPEAT,          // SC_REPEAT
 		GL_MIRRORED_REPEAT, // SC_MIRRORED_REPEAT
-		NOT_SUPPORT, // SC_CLAMP_BORDER
+		GL_REPEAT, // SC_CLAMP_BORDER
 		GL_CLAMP_TO_EDGE,   // SC_CLAMP_EDGE
 	};
 
@@ -257,7 +257,7 @@ namespace PX2
 		GL_POINTS,          // PT_POLYPOINT
 		GL_LINES,           // PT_POLYSEGMENTS_DISJOINT
 		GL_LINE_STRIP,      // PT_POLYSEGMENTS_CONTIGUOUS
-		0,                  // PT_TRIANGLES (not used)
+		GL_TRIANGLES,       // PT_TRIANGLES (not used)
 		GL_TRIANGLES,       // PT_TRIMESH
 		GL_TRIANGLE_STRIP,  // PT_TRISTRIP
 		GL_TRIANGLE_FAN     // PT_TRIFAN

@@ -22,7 +22,7 @@ namespace PX2
 	/// 日志类型
 	enum LogType
 	{
-		LT_CONFIG = 1,
+		LT_ENGINE = 1,
 		LT_INFO = 2,
 		LT_WARNING = 4,
 		LT_SEVERE = 8,
@@ -49,15 +49,18 @@ namespace PX2
 	 void LogShutdown ();
 	 int LogAddHandler (LogHandler *handler);
 	 int LogAddFileHandler (const char *filename, int line, unsigned int levels);
+	 int LoadAddOutputWindowHandler (int line, unsigned int levels);
 	 void LogSetCurParam (const char *filename, int line, unsigned int levels);
 	 void LogMessage (const char *format, ...);
+
 };
 
-#define PX2LOG_CONFIG		PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LOGL_CONFIG),		PX2::LogMessage
-#define PX2LOG_INFO			PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LOGL_INFO),		PX2::LogMessage
-#define PX2LOG_WARNING		PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LOGL_WARNING),		PX2::LogMessage
-#define PX2LOG_SEVERE		PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LOGL_SEVERE),		PX2::LogMessage
-#define PX2LOG_SEVEREMSG	PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LOGL_SEVEREMSG),	PX2::LogMessage
-#define PX2LOG_DUMP			PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LOGL_DUMP),		PX2::LogMessage
+#define PX2_LOG_ENGINE		PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_ENGINE),	PX2::LogMessage
+#define PX2_LOG_CONFIG		PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_CONFIG),	PX2::LogMessage
+#define PX2_LOG_INFO		PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_INFO),		PX2::LogMessage
+#define PX2_LOG_WARNING		PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_WARNING),	PX2::LogMessage
+#define PX2_LOG_SEVERE		PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_SEVERE),	PX2::LogMessage
+#define PX2_LOG_SEVEREMSG	PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_SEVEREMSG),	PX2::LogMessage
+#define PX2_LOG_DUMP		PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_DUMP),		PX2::LogMessage
 
 #endif

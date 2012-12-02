@@ -10,9 +10,17 @@ using namespace PX2;
 
 //----------------------------------------------------------------------------
 PdrVertexBuffer::PdrVertexBuffer (Renderer*, const VertexBuffer* vbuffer)
+	:
+mBuffer(0)
 {
-	glGenBuffers(1, &mBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, mBuffer);
+	PX2_GL_CHECK(glGenBuffers(1, &mBuffer));
+
+	PX2_GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, mBuffer));
+
+	int eleSize = vbuffer->GetElementSize();
+	int eleNum = vbuffer->GetNumElements();
+	int totalSize = eleSize * eleNum;
+	int numBytes = vbuffer->GetNumBytes();
 
 	glBufferData(GL_ARRAY_BUFFER, vbuffer->GetNumBytes(), vbuffer->GetData(),
 		gOGLBufferUsage[vbuffer->GetUsage()]);

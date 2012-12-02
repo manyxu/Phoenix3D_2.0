@@ -24,10 +24,23 @@ namespace PX2Editor
 		void SetObject (PX2::Object *obj);
 
 		void OnTimer (wxTimerEvent& event);
-		void OnPaint(wxPaintEvent& e);
+		void OnPaint (wxPaintEvent& e);
+		void OnSize (wxSizeEvent& e);
+
+		virtual void DoEnter ();
+		virtual void DoExecute (PX2::Event *event);
+		virtual void DoLeave ();
 
 public_internal:
-		void Initialize ();
+		void Initlize ();
+
+		enum PreViewType
+		{
+			PVT_NONE,
+			PVT_TEXTURE,
+			PVT_MODEL,
+			PVT_MAX_TYPE
+		};
 
 	protected:
 		DECLARE_EVENT_TABLE()
@@ -47,14 +60,14 @@ public_internal:
 		PX2::Float4 mBackGroundColor;
 		
 		int mWidth, mHeight;
-		PX2::CameraPtr mCamera;
+		PreViewType mPreViewType;
 		PX2::VertexFormatPtr mVFormat;
 		PX2::TriMeshPtr mScreenMesh;
 		PX2::Texture2DMaterialPtr mPreViewMaterial;
 		PX2::TexturePtr mPreViewTexture;
 		PX2::CameraPtr mPreViewTextureCamera;
-
 		PX2::MovablePtr mPreViewObject;
+		PX2::CameraPtr mCamera;
 
 		// Scene
 		PX2::Culler mCuller;

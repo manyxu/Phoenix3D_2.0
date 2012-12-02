@@ -108,7 +108,6 @@
     <ClCompile Include="DevIL\PNG\pngrtran.c" />
     <ClCompile Include="DevIL\PNG\pngrutil.c" />
     <ClCompile Include="DevIL\PNG\pngset.c" />
-    <ClCompile Include="DevIL\PNG\pngtest.c" />
     <ClCompile Include="DevIL\PNG\pngtrans.c" />
     <ClCompile Include="DevIL\PNG\pngwio.c" />
     <ClCompile Include="DevIL\PNG\pngwrite.c" />
@@ -132,7 +131,6 @@
     <ClCompile Include="PX2CSVParser.cpp" />
     <ClCompile Include="PX2LanguageManager.cpp" />
     <ClCompile Include="PX2ResourceManager.cpp" />
-    <ClCompile Include="PX2StringHelp.cpp" />
     <ClCompile Include="PX2XMLData.cpp" />
     <ClCompile Include="PX2XMLNode.cpp" />
     <ClCompile Include="TinyXML\tinystr.cpp" />
@@ -208,7 +206,6 @@
     <ClInclude Include="PX2CSVParser.hpp" />
     <ClInclude Include="PX2LanguageManager.hpp" />
     <ClInclude Include="PX2ResourceManager.hpp" />
-    <ClInclude Include="PX2StringHelp.hpp" />
     <ClInclude Include="PX2Unity.hpp" />
     <ClInclude Include="PX2UnityPre.hpp" />
     <ClInclude Include="PX2XMLData.hpp" />

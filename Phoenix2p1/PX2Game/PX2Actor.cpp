@@ -167,7 +167,8 @@ Netable(value),
 	mVisible(true),
 	mTransAlpha(1.0f),
 	mMovable(0),
-	mScale(APoint(1.0f, 1.0f, 1.0f))
+	mScale(APoint(1.0f, 1.0f, 1.0f)),
+	mShowHelpMovable(false)
 {
 }
 //----------------------------------------------------------------------------

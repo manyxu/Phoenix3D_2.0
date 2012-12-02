@@ -31,11 +31,13 @@
     <ClInclude Include="PX2Endian.hpp" />
     <ClInclude Include="PX2Environment.hpp" />
     <ClInclude Include="PX2FileIO.hpp" />
-    <ClInclude Include="PX2Help.hpp" />
+    <ClInclude Include="PX2FString.hpp" />
     <ClInclude Include="PX2InitTerm.hpp" />
     <ClInclude Include="PX2InStream.hpp" />
+    <ClInclude Include="PX2JNI.hpp" />
     <ClInclude Include="PX2Log.hpp" />
     <ClInclude Include="PX2LogFileHandler.hpp" />
+    <ClInclude Include="PX2LogOutputWindowHandler.hpp" />
     <ClInclude Include="PX2Memory.hpp" />
     <ClInclude Include="PX2MinHeap.hpp" />
     <ClInclude Include="PX2Mutex.hpp" />
@@ -49,6 +51,7 @@
     <ClInclude Include="PX2Singleton.hpp" />
     <ClInclude Include="PX2SmartPointer.hpp" />
     <ClInclude Include="PX2Stream.hpp" />
+    <ClInclude Include="PX2StringHelp.hpp" />
     <ClInclude Include="PX2Table.hpp" />
     <ClInclude Include="PX2Thread.hpp" />
     <ClInclude Include="PX2ThreadType.hpp" />
@@ -63,11 +66,13 @@
     <ClCompile Include="PX2Endian.cpp" />
     <ClCompile Include="PX2Environment.cpp" />
     <ClCompile Include="PX2FileIO.cpp" />
-    <ClCompile Include="PX2Help.cpp" />
+    <ClCompile Include="PX2FString.cpp" />
     <ClCompile Include="PX2InitTerm.cpp" />
     <ClCompile Include="PX2InStream.cpp" />
+    <ClCompile Include="PX2JNI.cpp" />
     <ClCompile Include="PX2Log.cpp" />
     <ClCompile Include="PX2LogFileHandler.cpp" />
+    <ClCompile Include="PX2LogOutputWindowHandler.cpp" />
     <ClCompile Include="PX2Memory.cpp" />
     <ClCompile Include="PX2Mutex.cpp" />
     <ClCompile Include="PX2Object.cpp" />
@@ -76,6 +81,7 @@
     <ClCompile Include="PX2ScopedCS.cpp" />
     <ClCompile Include="PX2SmartPointer.cpp" />
     <ClCompile Include="PX2Stream.cpp" />
+    <ClCompile Include="PX2StringHelp.cpp" />
     <ClCompile Include="PX2Thread.cpp" />
     <ClCompile Include="PX2Time.cpp" />
   </ItemGroup>

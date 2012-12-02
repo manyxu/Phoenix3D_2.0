@@ -24,6 +24,9 @@ CtrlsFactory::~CtrlsFactory ()
 //----------------------------------------------------------------------------
 PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 {
+	float radius = 0.065f;
+	float height = 0.35f;
+
 	// node
 	PX2::Node *node = new0 Node;
 	node->LocalTransform.SetUniformScale(2.0f);
@@ -47,13 +50,13 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 
 	vbaX.Position<Float3>(2) = Float3(0.5f, 0.0f, 0.0f);
 	vbaX.Position<Float3>(3) = Float3(0.5f, 0.5f, 0.0f);
-	vbaX.Color<Float4>(0, 2) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
-	vbaX.Color<Float4>(0, 3) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
+	vbaX.Color<Float4>(0, 2) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
+	vbaX.Color<Float4>(0, 3) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
 
 	vbaX.Position<Float3>(4) = Float3(0.5f, 0.0f, 0.0f);
 	vbaX.Position<Float3>(5) = Float3(0.5f, 0.0f, 0.5f);
-	vbaX.Color<Float4>(0, 4) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
-	vbaX.Color<Float4>(0, 5) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
+	vbaX.Color<Float4>(0, 4) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
+	vbaX.Color<Float4>(0, 5) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
 
 	Polysegment *polysegmentX = new0 PX2::Polysegment(mVertexFormat, vBufferX,
 		false);
@@ -61,7 +64,7 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 		VertexColor4Material::CreateUniqueInstance());
 	nodeX->AttachChild(polysegmentX);
 
-	TriMesh *meshX = stdMesh.Disk(3, 20, 0.1f);
+	TriMesh *meshX = stdMesh.Disk(3, 16, radius);
 	meshX->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
 	//meshX->GetMaterialInstance()->GetPass(0)->GetWireProperty()->Enabled = true;
 	meshX->LocalTransform.SetRotate(HMatrix().MakeRotation(AVector::UNIT_Y, 
@@ -71,11 +74,11 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 	vbaTemp.ApplyTo(mVertexFormat, vBufferTemp);
 	for (int i=0; i<vBufferTemp->GetNumElements(); i++)
 	{
-		vbaTemp.Color<Float4>(0, i) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
+		vbaTemp.Color<Float4>(0, i) = Float4(0.5f, 0.0f, 0.0f, 1.0f);
 	}
 	nodeX->AttachChild(meshX);
 
-	TriFan *fanX = stdMesh.Cone(20, 0.1f, 0.45f);
+	TriFan *fanX = stdMesh.Cone(16, radius, height);
 	fanX->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
 	//fanX->GetMaterialInstance()->GetPass(0)->GetWireProperty()->Enabled = true;
 	fanX->LocalTransform.SetRotate(HMatrix().MakeRotation(AVector::UNIT_Y, 
@@ -103,13 +106,13 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 
 	vbaY.Position<Float3>(2) = Float3(0.0f, 0.5f, 0.0f);
 	vbaY.Position<Float3>(3) = Float3(0.5f, 0.5f, 0.0f);
-	vbaY.Color<Float4>(0, 2) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
-	vbaY.Color<Float4>(0, 3) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
+	vbaY.Color<Float4>(0, 2) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
+	vbaY.Color<Float4>(0, 3) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
 
 	vbaY.Position<Float3>(4) = Float3(0.0f, 0.5f, 0.0f);
 	vbaY.Position<Float3>(5) = Float3(0.0f, 0.5f, 0.5f);
-	vbaY.Color<Float4>(0, 4) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
-	vbaY.Color<Float4>(0, 5) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
+	vbaY.Color<Float4>(0, 4) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
+	vbaY.Color<Float4>(0, 5) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
 
 	Polysegment *polysegmentY = new0 PX2::Polysegment(mVertexFormat, vBufferY,
 		false);
@@ -117,7 +120,7 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 		VertexColor4Material::CreateUniqueInstance());
 	nodeY->AttachChild(polysegmentY);
 
-	TriMesh *meshY = stdMesh.Disk(3, 20, 0.1f);
+	TriMesh *meshY = stdMesh.Disk(3, 16, radius);
 	meshY->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
 	//meshY->GetMaterialInstance()->GetPass(0)->GetWireProperty()->Enabled = true;
 	meshY->LocalTransform.SetRotate(HMatrix().MakeRotation(AVector::UNIT_X, 
@@ -127,11 +130,11 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 	vbaTemp.ApplyTo(mVertexFormat, vBufferTemp);
 	for (int i=0; i<vBufferTemp->GetNumElements(); i++)
 	{
-		vbaTemp.Color<Float4>(0, i) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
+		vbaTemp.Color<Float4>(0, i) = Float4(0.0f, 0.5f, 0.0f, 1.0f);
 	}
 	nodeY->AttachChild(meshY);
 
-	TriFan *fanY = stdMesh.Cone(20, 0.1f, 0.45f);
+	TriFan *fanY = stdMesh.Cone(16, radius, height);
 	fanY->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
 	//fanY->GetMaterialInstance()->GetPass(0)->GetWireProperty()->Enabled = true;
 	fanY->LocalTransform.SetRotate(HMatrix().MakeRotation(AVector::UNIT_X, 
@@ -159,13 +162,13 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 
 	vbaZ.Position<Float3>(2) = Float3(0.0f, 0.0f, 0.5f);
 	vbaZ.Position<Float3>(3) = Float3(0.5f, 0.0f, 0.5f);
-	vbaZ.Color<Float4>(0, 2) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
-	vbaZ.Color<Float4>(0, 3) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
+	vbaZ.Color<Float4>(0, 2) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
+	vbaZ.Color<Float4>(0, 3) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
 
 	vbaZ.Position<Float3>(4) = Float3(0.0f, 0.0f, 0.5f);
 	vbaZ.Position<Float3>(5) = Float3(0.0f, 0.5f, 0.5f);
-	vbaZ.Color<Float4>(0, 4) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
-	vbaZ.Color<Float4>(0, 5) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
+	vbaZ.Color<Float4>(0, 4) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
+	vbaZ.Color<Float4>(0, 5) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
 
 	Polysegment *polysegmentZ = new0 PX2::Polysegment(mVertexFormat, vBufferZ,
 		false);
@@ -173,7 +176,7 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 		VertexColor4Material::CreateUniqueInstance());
 	nodeZ->AttachChild(polysegmentZ);
 
-	TriMesh *meshZ = stdMesh.Disk(3, 20, 0.1f);
+	TriMesh *meshZ = stdMesh.Disk(3, 16, radius);
 	meshZ->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
 	//meshZ->GetMaterialInstance()->GetPass(0)->GetWireProperty()->Enabled = true;
 	meshZ->LocalTransform.SetTranslate(APoint(.0f, 0.0f, 1.125f));
@@ -187,7 +190,7 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 	}
 	nodeZ->AttachChild(meshZ);
 
-	TriFan *fanZ = stdMesh.Cone(20, 0.1f, 0.45f);
+	TriFan *fanZ = stdMesh.Cone(16, radius, height);
 	fanZ->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
 	//fanZ->GetMaterialInstance()->GetPass(0)->GetWireProperty()->Enabled = true;
 	fanZ->LocalTransform.SetTranslate(APoint(0.0f, 0.0f, 1.125f));
@@ -195,14 +198,72 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 	vbaTemp.ApplyTo(mVertexFormat, vBufferTemp);
 	for (int i=0; i<vBufferTemp->GetNumElements(); i++)
 	{
-		vbaTemp.Color<Float4>(0, i) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
+		vbaTemp.Color<Float4>(0, i) = Float4(0.0f, 0.0f, 0.5f, 1.0f);
 	}
 	nodeZ->AttachChild(fanZ);
+
+	// xy
+	PX2::Node *nodeXY = new0 Node;
+	nodeXY->SetName("Translate_XY");
+	TriMesh *meshXY = stdMesh.Rectangle(2, 2, 0.25f, 0.25f);
+	meshXY->LocalTransform.SetTranslate(APoint(0.25f, 0.25f, 0.0f));
+	VertexColor4Material *matXY = new0 VertexColor4Material();
+	matXY->GetAlphaProperty(0, 0)->BlendEnabled = true;
+	matXY->GetCullProperty(0, 0)->Enabled = false;
+	meshXY->SetMaterialInstance(matXY->CreateInstance());
+	vBufferTemp = meshXY->GetVertexBuffer();
+	vbaTemp.ApplyTo(mVertexFormat, vBufferTemp);
+	for (int i=0; i<vBufferTemp->GetNumElements(); i++)
+	{
+		vbaTemp.Color<Float4>(0, i) = Float4(1.0f, 1.0f, 0.0f, 0.0f);
+	}
+	nodeXY->AttachChild(meshXY);
+
+	// yz
+	PX2::Node *nodeYZ = new0 Node;
+	nodeYZ->SetName("Translate_YZ");
+	TriMesh *meshYZ = stdMesh.Rectangle(2, 2, 0.25f, 0.25f);
+	meshYZ->LocalTransform.SetRotate(HMatrix().MakeRotation(AVector::UNIT_Y, 
+		-Mathf::HALF_PI));
+	meshYZ->LocalTransform.SetTranslate(APoint(0.0f, 0.25f, 0.25f));
+	VertexColor4Material *matYZ = new0 VertexColor4Material();
+	matYZ->GetAlphaProperty(0, 0)->BlendEnabled = true;
+	matYZ->GetCullProperty(0, 0)->Enabled = false;
+	meshYZ->SetMaterialInstance(matYZ->CreateInstance());
+	vBufferTemp = meshYZ->GetVertexBuffer();
+	vbaTemp.ApplyTo(mVertexFormat, vBufferTemp);
+	for (int i=0; i<vBufferTemp->GetNumElements(); i++)
+	{
+		vbaTemp.Color<Float4>(0, i) = Float4(1.0f, 1.0f, 0.0f, 0.0f);
+	}
+	nodeYZ->AttachChild(meshYZ);
+
+	// xz
+	PX2::Node *nodeXZ = new0 Node;
+	nodeXZ->SetName("Translate_XZ");
+	TriMesh *meshXZ = stdMesh.Rectangle(2, 2, 0.25f, 0.25f);
+	meshXZ->LocalTransform.SetRotate(HMatrix().MakeRotation(AVector::UNIT_X, 
+		-Mathf::HALF_PI));
+		meshXZ->LocalTransform.SetTranslate(APoint(0.25f, 0.0f, 0.25f));
+	VertexColor4Material *matXZ = new0 VertexColor4Material();
+	matXZ->GetAlphaProperty(0, 0)->BlendEnabled = true;
+	matXZ->GetCullProperty(0, 0)->Enabled = false;
+	meshXZ->SetMaterialInstance(matXZ->CreateInstance());
+	vBufferTemp = meshXZ->GetVertexBuffer();
+	vbaTemp.ApplyTo(mVertexFormat, vBufferTemp);
+	for (int i=0; i<vBufferTemp->GetNumElements(); i++)
+	{
+		vbaTemp.Color<Float4>(0, i) = Float4(1.0f, 1.0f, 0.0f, 0.0f);
+	}
+	nodeXZ->AttachChild(meshXZ);
 
 	// XYZ
 	node->AttachChild(nodeX);
 	node->AttachChild(nodeY);
 	node->AttachChild(nodeZ);
+	node->AttachChild(nodeXY);
+	node->AttachChild(nodeYZ);
+	node->AttachChild(nodeXZ);
 
 	return node;
 }
@@ -825,6 +886,60 @@ PX2::Node *CtrlsFactory::CreateScaleCtrl_O ()
 	return node;
 }
 //----------------------------------------------------------------------------
+void CtrlsFactory::UpdateCtrlColor (PX2::Renderer *renderer,
+	PX2::Movable *mov, Float4 color)
+{
+	PX2::Node *node = DynamicCast<Node>(mov);
+
+	if (!node)
+		return;
+
+	for (int i=0; i<node->GetNumChildren(); i++)
+	{
+		PX2::Movable *child = node->GetChild(i);
+		PX2::Polysegment *poly = DynamicCast<Polysegment>(child);
+		if (poly)
+		{
+			VertexBuffer *vBuffer = poly->GetVertexBuffer();
+			VertexBufferAccessor vba(mVertexFormat, vBuffer);
+			for (int i=0; i<vBuffer->GetNumElements(); i++)
+			{
+				vba.Color<Float4>(0, i) = color;
+			}
+
+			renderer->Update(vBuffer);
+		}
+
+	}
+}
+//----------------------------------------------------------------------------
+void CtrlsFactory::UpdateCtrlColor1 (PX2::Renderer *renderer,
+	PX2::Movable *mov, PX2::Float4 color)
+{
+	PX2::Node *node = DynamicCast<Node>(mov);
+
+	if (!node)
+		return;
+
+	for (int i=0; i<node->GetNumChildren(); i++)
+	{
+		PX2::Movable *child = node->GetChild(i);
+		PX2::TriMesh *mesh = DynamicCast<TriMesh>(child);
+		if (mesh)
+		{
+			VertexBuffer *vBuffer = mesh->GetVertexBuffer();
+			VertexBufferAccessor vba(mVertexFormat, vBuffer);
+			for (int i=0; i<vBuffer->GetNumElements(); i++)
+			{
+				vba.Color<Float4>(0, i) = color;
+			}
+
+			renderer->Update(vBuffer);
+		}
+
+	}
+}
+//----------------------------------------------------------------------------
 SceneNodeCtrl::SceneNodeCtrl ()
 {
 	mOriginScale = 1.0f;
@@ -907,54 +1022,9 @@ void SceneNodeCtrl::OnLeftMouseDown (PX2::Renderer *renderer,
 	if (EditSystem::GetSingleton().GetEditMode() == EditSystem::EM_SELECT)
 		return;
 
-	APoint origin;
-	AVector direction;
+	DragType dt = GetDragType(renderer, point);
 
-	float x = renderer->GetWidth() * point.X();
-	float y = renderer->GetHeight() * (1.0f - point.Y());
-
-	renderer->GetPickRay((int)x, (int)y, origin, direction);
-
-	PX2::Picker picker;
-
-	PX2::Movable *ctrlX = GetCurrentCtrlX();
-	PX2::Movable *ctrlY = GetCurrentCtrlY();
-	PX2::Movable *ctrlZ = GetCurrentCtrlZ();
-	PX2::Movable *ctrlXYZ = GetCurrentCtrlXYZ();
-
-	bool xDrag = false;
-	bool yDrag = false;
-	bool zDrag = false;
-	bool xyzDrag = false;
-
-	GetCtrlsGroup()->Update();
-
-	picker.Execute(ctrlX, origin, direction, -Mathf::MAX_REAL, Mathf::MAX_REAL);
-	if ((int)picker.Records.size() > 0)
-		xDrag = true;
-
-	picker.Execute(ctrlY, origin, direction, -Mathf::MAX_REAL, Mathf::MAX_REAL);
-	if ((int)picker.Records.size() > 0)
-		yDrag = true;
-
-	picker.Execute(ctrlZ, origin, direction, -Mathf::MAX_REAL, Mathf::MAX_REAL);
-	if ((int)picker.Records.size() > 0)
-		zDrag = true;
-
-	picker.Execute(ctrlXYZ, origin, direction, -Mathf::MAX_REAL, Mathf::MAX_REAL);
-	if ((int)picker.Records.size() > 0)
-		xyzDrag = true;
-
-	if (xDrag)
-		SetDragType(DT_X);
-	else if (yDrag)
-		SetDragType(DT_Y);
-	else if (zDrag)
-		SetDragType(DT_Z);
-	else if (xyzDrag)
-		SetDragType(DT_XYZ);
-	else
-		SetDragType(DT_NONE);
+	SetDragType(dt);
 }
 //----------------------------------------------------------------------------
 void SceneNodeCtrl::OnLeftMouseUp (PX2::Renderer *renderer,
@@ -979,13 +1049,193 @@ void SceneNodeCtrl::OnMouseWheel (PX2::Renderer *renderer, float wheelDelta)
 	}
 	else
 	{
-		mCtrlsGroup->WorldTransform.SetUniformScale(diffLength*0.05f);
+//		mCtrlsGroup->WorldTransform.SetUniformScale(diffLength*0.05f);
 		mCtrlsGroup->Update();
 	}
 }
 //----------------------------------------------------------------------------
-void SceneNodeCtrl::OnMouseMove (PX2::Renderer *renderer, float x, float y)
+void SceneNodeCtrl::OnMouseMove (bool leftDown, PX2::Renderer *renderer,
+	PX2::Vector2f posNow, PX2::Vector2f posBefore)
 {
+	if (DT_NONE == mDragType)
+	{
+		CtrlsFactory factory;
+
+		DragType dt = GetDragType(renderer, posNow);
+		Movable *ctrlMov = 0;
+		Float4 colorRed = Float4(1.0f, 0.0f, 0.0f, 1.0f);
+		Float4 colorGreen = Float4(0.0f, 1.0f, 0.0f, 1.0f);
+		Float4 colorBlue = Float4(0.0f, 0.0f, 1.0f, 1.0f);
+		Float4 colorYellow = Float4(1.0f, 1.0f, 0.0f, 1.0f);
+		Float4 colorYellowAlpha = Float4(1.0f, 1.0f, 0.0f, 0.25f);
+		Float4 colorYellowNone = Float4(1.0f, 1.0f, 0.0f, 0.0f);
+
+		if (DT_X == dt)
+		{
+			ctrlMov = GetCurrentCtrlX();
+			factory.UpdateCtrlColor(renderer, ctrlMov, colorYellow);
+		}
+		else if (DT_Y == dt)
+		{
+			ctrlMov = GetCurrentCtrlY();
+			factory.UpdateCtrlColor(renderer, ctrlMov, colorYellow);
+		}
+		else if (DT_Z == dt)
+		{
+			ctrlMov = GetCurrentCtrlZ();
+			factory.UpdateCtrlColor(renderer, ctrlMov, colorYellow);
+		}
+		else if (DT_XY == dt)
+		{
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXY(), colorYellowAlpha);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlYZ(), colorYellowNone);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXZ(), colorYellowNone);
+		}
+		else if (DT_YZ == dt)
+		{
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlYZ(), colorYellowAlpha);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXY(), colorYellowNone);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXZ(), colorYellowNone);
+		}
+		else if (DT_XZ == dt)
+		{
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXZ(), colorYellowAlpha);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXY(), colorYellowNone);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlYZ(), colorYellowNone);
+		}
+		else if (DT_NONE == dt)
+		{
+			factory.UpdateCtrlColor(renderer, GetCurrentCtrlX(), colorRed);
+			factory.UpdateCtrlColor(renderer, GetCurrentCtrlY(), colorGreen);
+			factory.UpdateCtrlColor(renderer, GetCurrentCtrlZ(), colorBlue);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXY(), colorYellowNone);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlYZ(), colorYellowNone);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXZ(), colorYellowNone);
+		}
+
+	}
+
+	posNow.Y() = renderer->GetHeight() - posNow.Y();
+	posBefore.Y() = renderer->GetHeight() - posBefore.Y();
+
+	ActorSelection *selection = EditSystem::GetSingleton().GetSelection();
+	int actorNum = selection->GetActorQuantity();
+
+	if (0 == actorNum)
+		return;
+
+	if (DT_NONE == mDragType)
+		return;
+
+	// get pickPoint with the plane
+	TriMesh *meshHelp = EditSystem::GetSingleton().GetXYPlane();
+	if (DT_X == mDragType)
+	{
+		meshHelp = EditSystem::GetSingleton().GetXYPlane();
+	}
+	else if (DT_Y == mDragType)
+	{
+		meshHelp = EditSystem::GetSingleton().GetXYPlane();
+	}
+	else if (DT_Z == mDragType)
+	{
+		meshHelp = EditSystem::GetSingleton().GetXZPlane();
+	}
+	else if (DT_XY == mDragType)
+	{
+		meshHelp = EditSystem::GetSingleton().GetXYPlane();
+	}
+	else if (DT_YZ == mDragType)
+	{
+		meshHelp = EditSystem::GetSingleton().GetYZPlane();
+	}
+	else if (DT_XZ == mDragType)
+	{
+		meshHelp = EditSystem::GetSingleton().GetXZPlane();
+	}
+	meshHelp->WorldTransform.SetTranslate(GetPosition());
+
+	APoint rayOrigin_Now;
+	AVector rayDir_Now;
+	renderer->GetPickRay((int)posNow.X(), (int)posNow.Y(), 
+		rayOrigin_Now, rayDir_Now);
+
+	APoint rayOrigin_Before;
+	AVector rayDir_Before;
+	renderer->GetPickRay((int)posBefore.X(), (int)posBefore.Y(), 
+		rayOrigin_Before, rayDir_Before);
+
+	Picker pickerNow;
+	pickerNow.Execute(meshHelp, rayOrigin_Now, rayDir_Now, 0.0f,
+		Mathf::MAX_REAL);
+	float lengthNow = pickerNow.GetClosestToZero().T;
+	APoint positionNow(rayOrigin_Now + rayDir_Now*lengthNow);
+
+	Picker pickerOrigin;
+	pickerOrigin.Execute(meshHelp, rayOrigin_Before, rayDir_Before, 0.0f,
+		Mathf::MAX_REAL);
+	float lengthBefore = pickerOrigin.GetClosestToZero().T;
+	APoint positionBefore(rayOrigin_Before + rayDir_Before*lengthBefore);
+
+	if (pickerNow.Records.empty() || pickerOrigin.Records.empty())
+		return;
+
+	AVector transMoved = positionNow - positionBefore;
+
+	float transValue = 0.0f;
+	float transValue1 = 0.0f;
+	AVector transVec;
+
+	if (DT_X == mDragType)
+	{
+		transValue = transMoved.Dot(AVector::UNIT_X);
+		transVec = AVector::UNIT_X * transValue;
+	}
+	else if (DT_Y == mDragType)
+	{
+		transValue = transMoved.Dot(AVector::UNIT_Y);
+		transVec = AVector::UNIT_Y * transValue;
+	}
+	else if (DT_Z == mDragType)
+	{
+		transValue = transMoved.Dot(AVector::UNIT_Z);
+		transVec = AVector::UNIT_Z * transValue;
+	}
+	else if (DT_XY == mDragType)
+	{
+		transValue = transMoved.Dot(AVector::UNIT_X);
+		transValue1 = transMoved.Dot(AVector::UNIT_Y);
+		transVec = AVector::UNIT_X * transValue
+			+AVector::UNIT_Y * transValue1;
+	}
+	else if (DT_YZ == mDragType)
+	{
+		transValue = transMoved.Dot(AVector::UNIT_Y);
+		transValue1 = transMoved.Dot(AVector::UNIT_Z);
+		transVec = AVector::UNIT_Y * transValue
+			+AVector::UNIT_Z * transValue1;
+	}
+	else if (DT_XZ == mDragType)
+	{
+		transValue = transMoved.Dot(AVector::UNIT_X);
+		transValue1 = transMoved.Dot(AVector::UNIT_Z);
+		transVec = AVector::UNIT_X * transValue
+			+AVector::UNIT_Z * transValue1;
+	}
+
+	if (mCtrlType == CT_TRANSLATE)
+	{
+		EditSystem::GetSingleton().GetSelection()->Translate(transVec);
+
+		UpdateCtrlTrans();
+	}
+
+	Event *event = 0;
+	event = EditorEventSpace::CreateEventX(
+		EditorEventSpace::ActorTransformChanged);
+	EventWorld::GetSingleton().BroadcastingLocalEvent(event);
+
+	mCtrlsGroup->Update();
 }
 //----------------------------------------------------------------------------
 PX2::Movable *SceneNodeCtrl::GetCurrentCtrlX ()
@@ -1044,6 +1294,45 @@ PX2::Movable *SceneNodeCtrl::GetCurrentCtrlXYZ ()
 	return 0;
 }
 //----------------------------------------------------------------------------
+PX2::Movable *SceneNodeCtrl::GetCurrentCtrlXY ()
+{
+	int index = mCtrlsGroup->GetActiveChild();
+	Node *node = DynamicCast<Node>(mCtrlsGroup->GetChild(index));
+
+	if (node)
+	{
+		return node->GetChild(3);
+	}
+
+	return 0;
+}
+//----------------------------------------------------------------------------
+PX2::Movable *SceneNodeCtrl::GetCurrentCtrlYZ ()
+{
+	int index = mCtrlsGroup->GetActiveChild();
+	Node *node = DynamicCast<Node>(mCtrlsGroup->GetChild(index));
+
+	if (node)
+	{
+		return node->GetChild(4);
+	}
+
+	return 0;
+}
+//----------------------------------------------------------------------------
+PX2::Movable *SceneNodeCtrl::GetCurrentCtrlXZ ()
+{
+	int index = mCtrlsGroup->GetActiveChild();
+	Node *node = DynamicCast<Node>(mCtrlsGroup->GetChild(index));
+
+	if (node)
+	{
+		return node->GetChild(5);
+	}
+
+	return 0;
+}
+//----------------------------------------------------------------------------
 PX2::APoint SceneNodeCtrl::GetPosition()
 {
 	return mCtrlsGroup->WorldTransform.GetTranslate();
@@ -1082,6 +1371,35 @@ void SceneNodeCtrl::DoUpdate ()
 //----------------------------------------------------------------------------
 void SceneNodeCtrl::DoExecute (PX2::Event *event)
 {
+	if (EditorEventSpace::IsEqual(event,
+		EditorEventSpace::AddSelectActor))
+	{
+		UpdateCtrl();
+		UpdateCtrlTrans();
+	}
+	else if (EditorEventSpace::IsEqual(event,
+		EditorEventSpace::RemoveSelectActor))
+	{
+		UpdateCtrl();
+		UpdateCtrlTrans();
+	}
+	else if (EditorEventSpace::IsEqual(event,
+		EditorEventSpace::ClearSelectActor))
+	{
+		UpdateCtrl();
+	}
+	else if (EditorEventSpace::IsEqual(event,
+		EditorEventSpace::ActorTransformChanged))
+	{
+		UpdateCtrlTrans();
+	}
+	else if (EditorEventSpace::IsEqual(event,
+		EditorEventSpace::UnDo) || EditorEventSpace::IsEqual(event,
+		EditorEventSpace::ReDo))
+	{
+		UpdateCtrlTrans();
+		UpdateCtrl();
+	}
 }
 //----------------------------------------------------------------------------
 void SceneNodeCtrl::DoLeave ()
@@ -1091,11 +1409,237 @@ void SceneNodeCtrl::DoLeave ()
 //----------------------------------------------------------------------------
 void SceneNodeCtrl::UpdateCtrl ()
 {
+	int actorNum = EditSystem::GetSingleton().GetSelection()
+		->GetActorQuantity();
+
+	if (actorNum > 0)
+	{
+		if (mCtrlType == CT_SELECT)
+		{
+			mCtrlsGroup->SetActiveChild(6);
+		}
+		else if (mCtrlType == CT_TRANSLATE)
+		{
+			if (mLookType == LT_PERSPECTIVE)
+			{
+				mCtrlsGroup->SetActiveChild(0);
+				GetCurrentCtrlX()->Culling = Movable::CULL_DYNAMIC;
+				GetCurrentCtrlY()->Culling = Movable::CULL_DYNAMIC;
+				GetCurrentCtrlZ()->Culling = Movable::CULL_DYNAMIC;
+			}
+			else
+			{
+				mCtrlsGroup->SetActiveChild(3);
+				GetCurrentCtrlX()->Culling = Movable::CULL_DYNAMIC;
+				GetCurrentCtrlY()->Culling = Movable::CULL_DYNAMIC;
+				GetCurrentCtrlZ()->Culling = Movable::CULL_DYNAMIC;
+
+				if (mLookType == LT_TOP)
+				{
+					GetCurrentCtrlZ()->Culling = Movable::CULL_ALWAYS;
+				}
+				else if (mLookType == LT_FRONT)
+				{
+					GetCurrentCtrlY()->Culling = Movable::CULL_ALWAYS;
+				}
+				else if (mLookType == LT_LEFT)
+				{
+					GetCurrentCtrlX()->Culling = Movable::CULL_ALWAYS;
+				}
+			}
+		}
+		else if (mCtrlType == CT_ROLATE)
+		{
+			if (mLookType == LT_PERSPECTIVE)
+			{
+				mCtrlsGroup->SetActiveChild(1);
+				GetCurrentCtrlX()->Culling = Movable::CULL_DYNAMIC;
+				GetCurrentCtrlY()->Culling = Movable::CULL_DYNAMIC;
+				GetCurrentCtrlZ()->Culling = Movable::CULL_DYNAMIC;
+			}
+			else
+			{
+				mCtrlsGroup->SetActiveChild(4);
+				GetCurrentCtrlX()->Culling = Movable::CULL_DYNAMIC;
+				GetCurrentCtrlY()->Culling = Movable::CULL_DYNAMIC;
+				GetCurrentCtrlZ()->Culling = Movable::CULL_DYNAMIC;
+
+				if (mLookType == LT_TOP)
+				{
+					GetCurrentCtrlZ()->Culling = Movable::CULL_ALWAYS;
+				}
+				else if (mLookType == LT_FRONT)
+				{
+					GetCurrentCtrlY()->Culling = Movable::CULL_ALWAYS;
+				}
+				else if (mLookType == LT_LEFT)
+				{
+					GetCurrentCtrlX()->Culling = Movable::CULL_ALWAYS;
+				}
+			}
+		}
+		else if (mCtrlType == CT_SCALE)
+		{
+			if (mLookType == LT_PERSPECTIVE)
+			{
+				mCtrlsGroup->SetActiveChild(2);
+				GetCurrentCtrlX()->Culling = Movable::CULL_DYNAMIC;
+				GetCurrentCtrlY()->Culling = Movable::CULL_DYNAMIC;
+				GetCurrentCtrlZ()->Culling = Movable::CULL_DYNAMIC;
+			}
+			else
+			{
+				mCtrlsGroup->SetActiveChild(5);
+				GetCurrentCtrlX()->Culling = Movable::CULL_DYNAMIC;
+				GetCurrentCtrlY()->Culling = Movable::CULL_DYNAMIC;
+				GetCurrentCtrlZ()->Culling = Movable::CULL_DYNAMIC;
+
+				if (mLookType == LT_TOP)
+				{
+					GetCurrentCtrlZ()->Culling = Movable::CULL_ALWAYS;
+				}
+				else if (mLookType == LT_FRONT)
+				{
+					GetCurrentCtrlY()->Culling = Movable::CULL_ALWAYS;
+				}
+				else if (mLookType == LT_LEFT)
+				{
+					GetCurrentCtrlX()->Culling = Movable::CULL_ALWAYS;
+				}
+			}
+		}
+	}
+	else
+	{
+		mCtrlsGroup->SetActiveChild(6);
+	}
+
 	mCtrlsGroup->Update();
 }
 //----------------------------------------------------------------------------
 void SceneNodeCtrl::UpdateCtrlTrans ()
 {
+	ActorSelection *selection = EditSystem::GetSingleton().GetSelection();
+
+	int actorNum = selection->GetActorQuantity();
+
+	if (actorNum > 0)
+	{
+		APoint pos;
+
+		for (int i=0; i<actorNum; i++)
+		{
+			Actor *actor = selection->GetActor(i);
+			pos += actor->GetPosition();
+		}
+
+		pos /= (float)selection->GetActorQuantity();
+
+		mCtrlsGroup->WorldTransform.SetTranslate(pos);
+	}
+	else
+	{
+		mCtrlsGroup->SetActiveChild(6);
+	}
+
 	mCtrlsGroup->Update();
+}
+//----------------------------------------------------------------------------
+SceneNodeCtrl::DragType SceneNodeCtrl::GetDragType (PX2::Renderer *renderer,
+	const PX2::Vector2f &point)
+{
+	APoint origin;
+	AVector direction;
+
+	float x = point.X();
+	float y = renderer->GetHeight() - point.Y();
+
+	renderer->GetPickRay((int)x, (int)y, origin, direction);
+
+	PX2::Picker picker;
+
+	PX2::Movable *ctrlX = GetCurrentCtrlX();
+	PX2::Movable *ctrlY = GetCurrentCtrlY();
+	PX2::Movable *ctrlZ = GetCurrentCtrlZ();
+	PX2::Movable *ctrlXYZ = GetCurrentCtrlXYZ();
+	PX2::Movable *ctrlXY = GetCurrentCtrlXY();
+	PX2::Movable *ctrlYZ = GetCurrentCtrlYZ();
+	PX2::Movable *ctrlXZ = GetCurrentCtrlXZ();
+
+	bool xDrag = false;
+	bool yDrag = false;
+	bool zDrag = false;
+	bool xyzDrag = false;
+	bool xyDrag = false;
+	bool yzDrag = false;
+	bool xzDrag = false;
+
+	GetCtrlsGroup()->Update();
+
+	picker.Execute(ctrlX, origin, direction, -Mathf::MAX_REAL, Mathf::MAX_REAL);
+	if ((int)picker.Records.size() > 0)
+		xDrag = true;
+
+	picker.Execute(ctrlY, origin, direction, -Mathf::MAX_REAL, Mathf::MAX_REAL);
+	if ((int)picker.Records.size() > 0)
+		yDrag = true;
+
+	picker.Execute(ctrlZ, origin, direction, -Mathf::MAX_REAL, Mathf::MAX_REAL);
+	if ((int)picker.Records.size() > 0)
+		zDrag = true;
+
+	picker.Execute(ctrlXYZ, origin, direction, -Mathf::MAX_REAL, Mathf::MAX_REAL);
+	if ((int)picker.Records.size() > 0)
+		xyzDrag = true;
+
+	float maxLength = Mathf::MAX_REAL;
+	picker.Execute(ctrlXY, origin, direction, -Mathf::MAX_REAL, Mathf::MAX_REAL);
+	if ((int)picker.Records.size() > 0)
+	{
+		if (picker.GetClosestNonnegative().T < maxLength)
+		{
+			xyDrag = true;
+			maxLength = picker.GetClosestNonnegative().T;
+		}
+	}
+	else
+	{
+		picker.Execute(ctrlYZ, origin, direction, -Mathf::MAX_REAL, Mathf::MAX_REAL);
+		if ((int)picker.Records.size() > 0)
+		{
+			if (picker.GetClosestNonnegative().T < maxLength)
+			{
+				yzDrag = true;
+				maxLength = picker.GetClosestNonnegative().T;
+			}
+		}
+
+		picker.Execute(ctrlXZ, origin, direction, -Mathf::MAX_REAL, Mathf::MAX_REAL);
+		if ((int)picker.Records.size() > 0)
+		{
+			if (picker.GetClosestNonnegative().T < maxLength)
+			{
+				xzDrag = true;
+				maxLength = picker.GetClosestNonnegative().T;
+			}
+		}
+	}
+
+	if (xDrag)
+		return DT_X;
+	else if (yDrag)
+		return DT_Y;
+	else if (zDrag)
+		return DT_Z;
+	else if (xyzDrag)
+		return DT_XYZ;
+	else if (xyDrag)
+		return DT_XY;
+	else if (yzDrag)
+		return DT_YZ;
+	else if (xzDrag)
+		return DT_XZ;
+
+	return DT_NONE;
 }
 //----------------------------------------------------------------------------

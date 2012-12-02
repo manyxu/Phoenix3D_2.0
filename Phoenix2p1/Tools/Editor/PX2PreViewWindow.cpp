@@ -5,6 +5,7 @@
 */
 
 #include "PX2PreViewWindow.hpp"
+#include "PX2EditEventType.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 
@@ -18,19 +19,49 @@ BEGIN_EVENT_TABLE(PreViewWindow, wxWindow)
 END_EVENT_TABLE()
 //----------------------------------------------------------------------------
 PreViewWindow::PreViewWindow ()
-	:wxWindow(0, -1)
+	:wxWindow(0, -1),
+	mInited(false),
+	mPreViewType(PVT_NONE),
+	mRenderer(0)
 {
 }
 //----------------------------------------------------------------------------
 PreViewWindow::PreViewWindow (wxWindow *parent)
 	:
 wxWindow(parent, -1, wxDefaultPosition, wxSize(200, 150)),
-	mInited(false)
+	mInited(false),
+	mPreViewType(PVT_NONE),
+	mRenderer(0)
 {
 }
 //----------------------------------------------------------------------------
 PreViewWindow::~PreViewWindow ()
 {
+	if (mRenderer)
+	{
+		delete0(mRenderer);
+		mRenderer = 0;
+	}
+}
+//----------------------------------------------------------------------------
+void PreViewWindow::SetObject (PX2::Object *obj)
+{
+	if (!obj)
+	{
+		mPreViewType = PVT_NONE;
+		return;
+	}
+
+	Texture2DPtr d2Tex = DynamicCast<Texture2D>(obj);
+	if (d2Tex)
+	{
+		mPreViewType = PVT_TEXTURE;
+		SetTexture(d2Tex);
+	}
+	else
+	{	
+		mPreViewType = PVT_NONE;
+	}
 }
 //----------------------------------------------------------------------------
 void PreViewWindow::OnTimer (wxTimerEvent& event)
@@ -44,11 +75,37 @@ void PreViewWindow::OnPaint (wxPaintEvent& e)
 	wxPaintDC dc(this);
 }
 //----------------------------------------------------------------------------
-void PreViewWindow::Initialize ()
+void PreViewWindow::OnSize (wxSizeEvent& e)
 {
-	mPreViewTimer.SetOwner(this, ID_PREVIEWTIMERR);
-	mPreViewTimer.Start(50);
+	if (!mInited)
+		return;
 
+	wxSize sz = GetClientSize();
+	mWidth = sz.GetX();
+	mHeight = sz.GetY();
+	mRenderer->ResizeWindow(mWidth, mHeight);
+}
+//----------------------------------------------------------------------------
+void PreViewWindow::DoEnter ()
+{
+}
+//----------------------------------------------------------------------------
+void PreViewWindow::DoExecute (PX2::Event *event)
+{
+	if (EditorEventSpace::IsEqual(event, EditorEventSpace::SetPreView))
+	{
+		PX2::Object *obj = event->GetData<PX2::Object*>();
+		SetObject(obj);
+	}
+}
+//----------------------------------------------------------------------------
+void PreViewWindow::DoLeave ()
+{
+
+}
+//----------------------------------------------------------------------------
+void PreViewWindow::Initlize ()
+{
 	mWidth = 200;
 	mHeight = 150;
 	mColorFormat = Texture::TF_A8R8G8B8;
@@ -73,6 +130,11 @@ void PreViewWindow::Initialize ()
 	mScreenMesh = ScreenTarget::CreateRectangle(mVFormat, mWidth, mHeight,
 		0.0f, 1.0f, 0.0f, 1.0f, 0.0f);
 	mPreViewMaterial = new Texture2DMaterial();
+
+	mPreViewTimer.SetOwner(this, ID_PREVIEWTIMERR);
+	mPreViewTimer.Start(100);
+
+	mInited = true;
 }
 //----------------------------------------------------------------------------
 void PreViewWindow::SetTexture (PX2::Texture2D *texture)
@@ -97,5 +159,38 @@ void PreViewWindow::Update ()
 //----------------------------------------------------------------------------
 void PreViewWindow::DrawScene ()
 {
+	if (!mInited)
+		return;
+
+	if (PVT_TEXTURE == mPreViewType)
+	{
+		mRenderer->SetCamera(mPreViewTextureCamera);
+	}
+	else
+	{
+		mCuller.SetCamera(mCamera);
+		mRenderer->SetCamera(mCamera);
+		if (mScene)
+		{
+			mCuller.ComputeVisibleSet(mScene);
+		}
+	}
+
+	if (mRenderer->PreDraw())
+	{
+		mRenderer->ClearBuffers();
+
+		if (PVT_TEXTURE == mPreViewType)
+		{
+			mRenderer->Draw(mScreenMesh);
+		}
+		else
+		{
+			mRenderer->Draw(mCuller.GetVisibleSet().Sort());
+		}
+
+		mRenderer->PostDraw();
+		mRenderer->DisplayColorBuffer();
+	}
 }
 //----------------------------------------------------------------------------

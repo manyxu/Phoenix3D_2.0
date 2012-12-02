@@ -59,10 +59,32 @@ PdrPixelShader::~PdrPixelShader ()
 void PdrPixelShader::Enable (Renderer* renderer, const PixelShader* pshader,
 							 const ShaderParameters* parameters)
 {
+	int profile = PixelShader::GetProfile();
+	const int numConstants = pshader->GetNumConstants();
+	for (int i = 0; i < numConstants; ++i)
+	{
+		const int numRegisters = pshader->GetNumRegistersUsed(i);
+		const float* data = parameters->GetConstant(i)->GetData();
+		int baseRegister = pshader->GetBaseRegister(profile, i);
+
+		for (int j = 0; j < numRegisters; ++j)
+		{
+			glUniform4fv((GLuint)baseRegister, 1, data);
+
+			baseRegister++;
+			data += 4;
+		}
+	}
+
+	SetSamplerState(renderer, pshader, profile, parameters,
+		renderer->mData->mMaxPShaderImages, renderer->mData->mCurrentSS);
 }
 //----------------------------------------------------------------------------
 void PdrPixelShader::Disable (Renderer* renderer, const PixelShader* pshader,
 							  const ShaderParameters* parameters)
 {
+	int profile = VertexShader::GetProfile();
+	DisableTextures(renderer, pshader, profile, parameters,
+		renderer->mData->mMaxVShaderImages);
 }
 //----------------------------------------------------------------------------

@@ -23,13 +23,23 @@ namespace PX2
 		PX2_DECLARE_STREAM(StandardESMaterial_Default);
 
 	public:
-		StandardESMaterial_Default (const std::string &filename);
+		StandardESMaterial_Default ();
 		virtual ~StandardESMaterial_Default ();
 
 		MaterialInstance* CreateInstance (
 			PX2::Texture2D *diffTex,
 			PX2::Light *dirLight,
 			PX2::Shine* shine) const;
+
+	private:
+		static int msDx9VRegisters[6];
+		static int msOglVRegisters[6];
+		static int msOpenGLES2VRegisters[6];
+		static int* msVRegisters[Shader::MAX_PROFILES];
+		static std::string msVPrograms[Shader::MAX_PROFILES];
+		static int msAllPTextureUnits[1];
+		static int* msPTextureUnits[Shader::MAX_PROFILES];
+		static std::string msPPrograms[Shader::MAX_PROFILES];
 	};
 
 	PX2_REGISTER_STREAM(StandardESMaterial_Default);

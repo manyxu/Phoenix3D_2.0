@@ -329,7 +329,7 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 				memset(mtlName, 0, 256*sizeof(char));
 				sprintf(mtlName, "%s/%s", mSettings->DstRootDir, 
 					"Data/Materials/StandardES_Default.pxfx");
-				standardESMtl_D = new0 PX2::StandardESMaterial_Default(mtlName);
+				standardESMtl_D = new0 PX2::StandardESMaterial_Default();
 			}
 			else
 			{

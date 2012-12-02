@@ -38,7 +38,7 @@ Renderer::Renderer (RendererInput& input, int width, int height,
 
 	EGLint majorVersion;
 	EGLint minorVersion;
-	if (!eglInitialize(display, &majorVersion, &minorVersion))
+	if (EGL_FALSE == eglInitialize(display, &majorVersion, &minorVersion))
 	{
 		assertion(false, "");
 	}
@@ -51,17 +51,17 @@ Renderer::Renderer (RendererInput& input, int width, int height,
 
 	 const EGLint attribList[] =
 	 {
-		 EGL_LEVEL,                0,
-		 EGL_SURFACE_TYPE,         EGL_WINDOW_BIT,
-		 EGL_RENDERABLE_TYPE,      EGL_OPENGL_ES2_BIT,
-		 EGL_NATIVE_RENDERABLE,    EGL_FALSE,
-		 EGL_DEPTH_SIZE,           16,
-		 EGL_NONE,
+		 EGL_RED_SIZE, 8,
+		 EGL_GREEN_SIZE, 8,
+		 EGL_BLUE_SIZE, 8,
+		 EGL_DEPTH_SIZE, 16,
+		 EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+		 EGL_NONE
 	 };
 	 EGLConfig config;
 	 if (!eglChooseConfig(display, attribList, &config, 1, &numConfigs) )
 	 {
-		 assertion(false, "");
+		 assertion(false, "eglChooseConfig error.\n");
 	 }
 	 mData->mConfig = config;
 
@@ -86,6 +86,23 @@ Renderer::Renderer (RendererInput& input, int width, int height,
 	 }
 #endif
 
+	 VertexShader::SetProfile(VertexShader::VP_OPENGLES2);
+	 PixelShader::SetProfile(PixelShader::PP_OPENGLES2);
+
+	 GLint maxVertexAttribs;
+	 glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertexAttribs);
+	 assertion(maxVertexAttribs>=8, "attribs num must >=8.\n");
+
+	 mData->mMaxVShaderImages = 0;
+	 mData->mMaxPShaderImages = 0;
+	 mData->mMaxCombinedImages = 0;
+	 glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS,
+		 &mData->mMaxVShaderImages);
+	 glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS,
+		 &mData->mMaxPShaderImages);
+	 glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
+		 &mData->mMaxCombinedImages);
+
 	 // 设置缺省渲染状态和采样状态
 	 mData->mCurrentRS.Initialize(mDefaultAlphaProperty, mDefaultCullProperty,
 		 mDefaultDepthProperty, mDefaultOffsetProperty, mDefaultStencilProperty,
@@ -95,6 +112,14 @@ Renderer::Renderer (RendererInput& input, int width, int height,
 Renderer::~Renderer ()
 {
 	Terminate();
+
+#if defined(_WIN32) || defined(WIN32)
+	PX2_EGL_CHECK(eglMakeCurrent(mData->mDisplay, EGL_NO_SURFACE,
+		EGL_NO_SURFACE, EGL_NO_CONTEXT));
+	PX2_EGL_CHECK(eglDestroySurface(mData->mDisplay, mData->mSurface));
+	PX2_EGL_CHECK(eglDestroyContext(mData->mDisplay, mData->mSurface));
+	PX2_EGL_CHECK(eglTerminate(mData->mDisplay));
+#endif
 
 	if (mData)
 	{
@@ -157,17 +182,63 @@ void Renderer::UnbindAll (const MaterialPass *pass)
 void Renderer::Enable (const Renderable* renderable,
 					   const MaterialInstance* instance, int index)
 {
-	PX2_UNUSED(renderable);
-	PX2_UNUSED(instance);
-	PX2_UNUSED(index);
+	const MaterialPass* pass = instance->GetPass(index);
+
+	MaterialPassMap::iterator iter = mMaterialPasses.find(pass);
+	PdrMaterialPass *pdrMaterialPass;
+	if (iter != mMaterialPasses.end())
+	{
+		pdrMaterialPass = iter->second;
+	}
+	else
+	{
+		pdrMaterialPass = new0 PdrMaterialPass(this, pass);
+		mMaterialPasses[pass] = pdrMaterialPass;
+	}
+
+	ShaderParameters* vparams = instance->GetVertexParameters(index);
+	ShaderParameters* pparams = instance->GetPixelParameters(index);
+	VertexShader* vshader = pass->GetVertexShader();
+	PixelShader* pshader = pass->GetPixelShader();
+
+	// 更新着色器常量
+	vparams->UpdateConstants(renderable, mCamera);
+	pparams->UpdateConstants(renderable, mCamera);
+
+	// 设置渲染状态
+	SetAlphaProperty(pass->GetAlphaProperty());
+	SetCullProperty(pass->GetCullProperty());
+	SetDepthProperty(pass->GetDepthProperty());
+	SetOffsetProperty(pass->GetOffsetProperty());
+	SetStencilProperty(pass->GetStencilProperty());
+	SetWireProperty(pass->GetWireProperty());
+
+	// 激活着色器
+	pdrMaterialPass->Enable(this);
+	Enable(vshader, vparams);
+	Enable(pshader, pparams);
 }
 //----------------------------------------------------------------------------
 void Renderer::Disable (const Renderable* renderable,
 						const MaterialInstance* instance, int index)
 {
 	PX2_UNUSED(renderable);
-	PX2_UNUSED(instance);
-	PX2_UNUSED(index);
+
+	const MaterialPass* pass = instance->GetPass(index);
+	ShaderParameters* vparams = instance->GetVertexParameters(index);
+	ShaderParameters* pparams = instance->GetPixelParameters(index);
+	VertexShader* vshader = pass->GetVertexShader();
+	PixelShader* pshader = pass->GetPixelShader();
+
+	MaterialPassMap::iterator iter = mMaterialPasses.find(pass);
+	PdrMaterialPass *pdrMaterialPass;
+	if (iter != mMaterialPasses.end())
+	{
+		pdrMaterialPass = iter->second;
+		pdrMaterialPass->Disable(this);
+	}
+	Disable(vshader, vparams);
+	Disable(pshader, pparams);
 }
 //----------------------------------------------------------------------------
 
@@ -450,7 +521,7 @@ void Renderer::SetWireProperty (const WireProperty* wireState)
 			mData->mCurrentRS.mWireEnabled = true;
 
 			// assertion
-			assertion(false, "OpenglES2 doesn't support.");
+			//assertion(false, "OpenglES2 doesn't support.");
 		}
 	}
 	else
@@ -460,7 +531,7 @@ void Renderer::SetWireProperty (const WireProperty* wireState)
 			mData->mCurrentRS.mWireEnabled = false;
 
 			// assertion
-			assertion(false, "OpenglES2 doesn't support.");
+			//assertion(false, "OpenglES2 doesn't support.");
 		}
 	}
 }
@@ -549,10 +620,7 @@ void Renderer::ClearBuffers ()
 
 	glClearStencil((GLint)mClearStencil);
 
-	glClear(
-		GL_COLOR_BUFFER_BIT |
-		GL_DEPTH_BUFFER_BIT |
-		GL_STENCIL_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT |	GL_STENCIL_BUFFER_BIT);
 }
 //----------------------------------------------------------------------------
 void Renderer::ClearColorBuffer (int x, int y, int w, int h)
@@ -597,10 +665,7 @@ void Renderer::ClearBuffers (int x, int y, int w, int h)
 
 	glEnable(GL_SCISSOR_TEST);
 	glScissor(x, y, w, h);
-	glClear(
-		GL_COLOR_BUFFER_BIT |
-		GL_DEPTH_BUFFER_BIT |
-		GL_STENCIL_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT |	GL_STENCIL_BUFFER_BIT);
 	glDisable(GL_SCISSOR_TEST);
 }
 //----------------------------------------------------------------------------
@@ -668,7 +733,7 @@ void Renderer::Draw (int x, int y, const Float4& color,
 	//assertion(false, "OpenglES does't support.");
 }
 //----------------------------------------------------------------------------
-#ifdef TD_QUERY_PIXEL_COUNT
+#ifdef PX2_QUERY_PIXEL_COUNT
 
 #else
 	#define PX2_BEGIN_QUERY(query)
@@ -708,8 +773,8 @@ void Renderer::DrawPrimitive (const Renderable* visual)
 			PX2_BEGIN_QUERY(query);
 
 			// vertex data
-
-			glDrawElements(gOGLPrimitiveType[type], numIndices, indexType, indexData);
+			glDrawElements(gOGLPrimitiveType[type], numIndices, indexType,
+				indexData);
 
 			PX2_END_QUERY(query, numPixelsDrawn);
 		}

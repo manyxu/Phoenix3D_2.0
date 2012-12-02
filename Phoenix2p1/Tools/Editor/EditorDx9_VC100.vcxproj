@@ -22,6 +22,7 @@
     <ProjectGuid>{C8417D88-B08C-4725-9D64-B54ED08DE260}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Editor_VC100</RootNamespace>
+    <ProjectName>EditorDx9_VC100</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

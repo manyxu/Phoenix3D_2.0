@@ -106,6 +106,14 @@ void ActorSelection::Translate (PX2::AVector vec)
 	}
 }
 //----------------------------------------------------------------------------
+void ActorSelection::TranslateTo (PX2::APoint pos)
+{
+	for (int i=0; i<(int)mActors.size(); i++)
+	{
+		mActors[i]->SetPosition(pos);
+	}
+}
+//----------------------------------------------------------------------------
 void ActorSelection::AddRolate (PX2::AVector vec)
 {
 	for (int i=0; i<(int)mActors.size(); i++)

@@ -18,6 +18,8 @@ LRESULT CALLBACK MsWindowEventHandler (HWND handle, UINT message,
 		PostQuitMessage(0);
 		break;
 
+	case WM_SIZE:
+
 	default:
 		break;
 	}
@@ -27,13 +29,6 @@ LRESULT CALLBACK MsWindowEventHandler (HWND handle, UINT message,
 #endif
 //----------------------------------------------------------------------------
 Application::Application ()
-	:
-mWindowTitle("Application"),
-	mXPosition(0),
-	mYPosition(0),
-	mWidth(800),
-	mHeight(600),
-	mAllowResize(true)
 {
 }
 //----------------------------------------------------------------------------
@@ -103,10 +98,8 @@ int Application::Main (int numArguments, char** arguments)
 #endif
 //----------------------------------------------------------------------------
 #if defined(_WIN32) || defined(WIN32)
-bool Application::OnInitlize ()
+bool Application::OnInitlizeApp ()
 {
-	ApplicationBase::OnInitlize();
-
 	// === ´´½¨äÖÈ¾´°¿Ú ===
 
 	// ×¢²á´°¿ÚÀà
@@ -143,6 +136,30 @@ bool Application::OnInitlize ()
 		dwStyle, mXPosition, mYPosition,
 		rect.right - rect.left + 1, rect.bottom - rect.top + 1, 0, 0, 0, 0);
 
+	// ¾ÓÖÐ
+	RECT rcDesktop, rcWindow;
+	GetWindowRect(GetDesktopWindow(), &rcDesktop);
+
+	HWND hTaskBar = FindWindow(TEXT("Shell_TrayWnd"), NULL);
+	if (hTaskBar != NULL)
+	{
+		APPBARDATA abd;
+
+		abd.cbSize = sizeof(APPBARDATA);
+		abd.hWnd = hTaskBar;
+
+		SHAppBarMessage(ABM_GETTASKBARPOS, &abd);
+		SubtractRect(&rcDesktop, &rcDesktop, &abd.rc);
+	}
+	GetWindowRect(mhWnd, &rcWindow);
+	int offsetX = (rcDesktop.right - rcDesktop.left - (rcWindow.right - rcWindow.left)) / 2;
+	offsetX = (offsetX > 0) ? offsetX : rcDesktop.left;
+	int offsetY = (rcDesktop.bottom - rcDesktop.top - (rcWindow.bottom - rcWindow.top)) / 2;
+	offsetY = (offsetY > 0) ? offsetY : rcDesktop.top;
+	SetWindowPos(mhWnd, 0, offsetX, offsetY, 0, 0, SWP_NOCOPYBITS | SWP_NOSIZE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+	mXPosition = offsetX;
+	mYPosition = offsetY;
+
 	// === äÖÈ¾Æ÷ ===
 
 #ifdef PX2_USE_DX9
@@ -171,10 +188,8 @@ bool Application::OnInitlize ()
 #endif
 //----------------------------------------------------------------------------
 #ifdef __ANDROID__
-bool Application::OnInitlize ()
+bool Application::OnInitlizeApp ()
 {
-	ApplicationBase::OnInitlize();
-
 #ifdef PX2_USE_OPENGLES2
 	mRenderer = new0 Renderer(mInput, mWidth, mHeight,
 		mColorFormat, mDepthStencilFormat, mNumMultisamples);
@@ -190,10 +205,8 @@ bool Application::OnInitlize ()
 #endif
 //----------------------------------------------------------------------------
 #if defined(_WIN32) || defined(WIN32)
-bool Application::OnTernamate()
+bool Application::OnTernamateApp()
 {
-	ApplicationBase::OnTernamate();
-
 	mCamera = 0;
 
 	delete0(mRenderer);
@@ -206,7 +219,7 @@ bool Application::OnTernamate()
 #endif
 //----------------------------------------------------------------------------
 #ifdef __ANDROID__
-bool Application::OnTernamate()
+bool Application::OnTernamateApp()
 {
 	ApplicationBase::OnTernamate();
 

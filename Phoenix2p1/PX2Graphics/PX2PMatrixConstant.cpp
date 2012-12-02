@@ -31,7 +31,14 @@ void PMatrixConstant::Update (const Renderable*, const Camera* camera)
 {
 	const HMatrix& projMatrix = camera->GetProjectionMatrix();
 
+#ifdef PX2_USE_OPENGLES2
+	// you must trans on 0penGLES2
+	HMatrix matTrans = projMatrix.Transpose();
+	const float *source = (const float*)matTrans;
+#else
 	const float* source = (const float*)projMatrix;
+#endif
+
 	float* target = mData;
 	for (int i = 0; i < 16; ++i)
 	{

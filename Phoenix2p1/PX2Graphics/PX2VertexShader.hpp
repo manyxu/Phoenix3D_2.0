@@ -40,7 +40,8 @@ namespace PX2
 			VP_VS_1_1,
 			VP_VS_2_0,
 			VP_VS_3_0,
-			VP_ARBVP1
+			VP_ARBVP1,
+			VP_OPENGLES2,
 		};
 
 		static void SetProfile (Profile profile);

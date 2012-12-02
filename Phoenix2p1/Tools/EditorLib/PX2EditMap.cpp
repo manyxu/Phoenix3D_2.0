@@ -20,7 +20,7 @@ EditMap::EditMap ()
 	
 	mVertexFormat = VertexFormat::Create(3,
 		VertexFormat::AU_POSITION, VertexFormat::AT_FLOAT3, 0,
-		VertexFormat::AU_COLOR, VertexFormat::AT_FLOAT3, 0,
+		VertexFormat::AU_NORMAL, VertexFormat::AT_FLOAT3, 0,
 		VertexFormat::AU_TEXCOORD, VertexFormat::AT_FLOAT2, 0);
 }
 //----------------------------------------------------------------------------
@@ -34,18 +34,21 @@ EditMap::~EditMap ()
 //----------------------------------------------------------------------------
 void EditMap::NewScene ()
 {
+	mLoadedScenePath = "";
+	EditSystem::GetSingleton().GetCM()->Reset();
+
+	if (mScene)
+		mScene->GoOutFromEventWorld();
+
 	mScene = new0 Scene();
 	mScene->ComeInToEventWorld();
-
-	mLoadedScenePath = "";
-	EditCommandManager::GetSingleton().Reset();
 
 	Event *event = EditorEventSpace::CreateEventX(
 		EditorEventSpace::NewScene);
 	EventWorld::GetSingleton().BroadcastingLocalEvent(event);
 }
 //----------------------------------------------------------------------------
-bool EditMap::LoadScene (std::string pathname)
+bool EditMap::LoadScene (const char *pathname)
 {
 	InStream inStream;
 
@@ -58,6 +61,9 @@ bool EditMap::LoadScene (std::string pathname)
 		if (scene)
 		{
 			mLoadedScenePath = pathname;
+
+			if (mScene)
+				mScene->GoOutFromEventWorld();
 
 			mScene = scene;
 
@@ -74,7 +80,7 @@ bool EditMap::LoadScene (std::string pathname)
 	return false;
 }
 //----------------------------------------------------------------------------
-bool EditMap::SaveScene (std::string pathname)
+bool EditMap::SaveScene (const char *pathname)
 {
 	if (SaveSceneAs(pathname))
 	{
@@ -84,7 +90,7 @@ bool EditMap::SaveScene (std::string pathname)
 	return false;
 }
 //----------------------------------------------------------------------------
-bool EditMap::SaveSceneAs (std::string pathname)
+bool EditMap::SaveSceneAs (const char *pathname)
 {
 	if (!mScene)
 		return false;
@@ -103,6 +109,88 @@ bool EditMap::SaveSceneAs (std::string pathname)
 	}
 
 	return false;
+}
+//----------------------------------------------------------------------------
+void EditMap::CreateBox (PX2::APoint pos)
+{
+	PX2::Texture2D *tex = DynamicCast<PX2::Texture2D>(
+		ResourceManager::GetSingleton().BlockLoad("ToolRes/DefaultTexture.png"));
+	if (!tex)
+		return;
+
+	StandardMesh stdMesh(mVertexFormat);
+	TriMesh *mesh = stdMesh.Box(1, 1, 1);
+	mesh->SetName("NoName");
+
+	Texture2DMaterialPtr material = new0 Texture2DMaterial;
+	mesh->SetMaterialInstance(material->CreateInstance(tex));
+
+	ActorPtr actor = new0 Actor();
+	actor->SetName("NoName");
+	actor->SetMovable(mesh);
+	actor->SetPosition(pos);
+	actor->ComeInToEventWorld();
+
+	AddActor(actor);
+
+	Event *event = 0;
+	event = EditorEventSpace::CreateEventX
+		(EditorEventSpace::AddActor);
+	event->SetData<Actor*>(actor);
+	EventWorld::GetSingleton().BroadcastingLocalEvent(event);
+
+	ActorAddDeleteCommand *command = new0 ActorAddDeleteCommand(actor);
+	EditSystem::GetSingleton().GetCM()->PushUnDo(command);
+}
+//----------------------------------------------------------------------------
+void EditMap::CreateSphere (PX2::APoint pos)
+{
+	PX2::Texture2D *tex = DynamicCast<PX2::Texture2D>(
+		ResourceManager::GetSingleton().BlockLoad("ToolRes/DefaultTexture.png"));
+	if (!tex)
+		return;
+
+	StandardMesh stdMesh(mVertexFormat);
+	TriMesh *mesh = stdMesh.Sphere(16, 16, 1);
+	mesh->SetName("NoName");
+
+	Texture2DMaterialPtr material = new0 Texture2DMaterial;
+	mesh->SetMaterialInstance(material->CreateInstance(tex));
+
+	ActorPtr actor = new0 Actor();
+	actor->SetName("NoName");
+	actor->SetMovable(mesh);
+	actor->SetPosition(pos);
+	actor->ComeInToEventWorld();
+
+	AddActor(actor);
+
+	Event *event = 0;
+	event = EditorEventSpace::CreateEventX
+		(EditorEventSpace::AddActor);
+	event->SetData<Actor*>(actor);
+	EventWorld::GetSingleton().BroadcastingLocalEvent(event);
+
+	ActorAddDeleteCommand *command = new0 ActorAddDeleteCommand(actor);
+	EditSystem::GetSingleton().GetCM()->PushUnDo(command);
+}
+//----------------------------------------------------------------------------
+void EditMap::AddModelActor (PX2::Movable *mov, PX2::APoint pos)
+{
+	if (!mov)
+		return;
+
+	PX2::Actor *actor = new0 Actor();
+	actor->SetName(mov->GetName());
+	actor->SetMovable(mov);
+	actor->SetPosition(pos);
+	actor->ComeInToEventWorld();
+	AddActor(actor);
+
+	Event *event = 0;
+	event = EditorEventSpace::CreateEventX(EditorEventSpace::AddActor);
+	event->SetData<Actor*>(actor);
+	EventWorld::GetSingleton().BroadcastingLocalEvent(event);
 }
 //----------------------------------------------------------------------------
 void EditMap::AddActor (PX2::Actor *actor)

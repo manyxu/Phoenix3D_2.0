@@ -26,6 +26,11 @@ namespace PX2Editor
 		PX2::Node *CreateRolateCtrl_O ();
 		PX2::Node *CreateScaleCtrl_O ();
 
+		void UpdateCtrlColor (PX2::Renderer *renderer, PX2::Movable *mov, 
+			PX2::Float4 color);
+		void UpdateCtrlColor1 (PX2::Renderer *renderer, PX2::Movable *mov, 
+			PX2::Float4 color);
+
 	private:
 		PX2::VertexFormatPtr mVertexFormat;
 	};
@@ -87,13 +92,17 @@ namespace PX2Editor
 		void OnLeftMouseUp (PX2::Renderer *renderer,
 			const PX2::Vector2f &point);
 		void OnMouseWheel (PX2::Renderer *renderer, float wheelDelta);
-		void OnMouseMove (PX2::Renderer *renderer, float x, float y);
+		void OnMouseMove (bool leftDown, PX2::Renderer *renderer,
+			PX2::Vector2f posNow, PX2::Vector2f posBefore);
 
 		PX2::Node *GetCtrlsGroup () { return mCtrlsGroup; }
 		PX2::Movable *GetCurrentCtrlX ();
 		PX2::Movable *GetCurrentCtrlY ();
 		PX2::Movable *GetCurrentCtrlZ ();
 		PX2::Movable *GetCurrentCtrlXYZ ();
+		PX2::Movable *GetCurrentCtrlXY ();
+		PX2::Movable *GetCurrentCtrlYZ ();
+		PX2::Movable *GetCurrentCtrlXZ ();
 
 		PX2::APoint GetPosition();
 		PX2::AVector GetXDir ();
@@ -109,6 +118,8 @@ namespace PX2Editor
 	private:
 		void UpdateCtrl ();
 		void UpdateCtrlTrans ();
+		SceneNodeCtrl::DragType GetDragType (PX2::Renderer *renderer,
+			const PX2::Vector2f &point);
 
 		AxisMode mAxisMode;
 		LookType mLookType;

@@ -17,7 +17,6 @@
 #include "PX2CSVParser.hpp"
 #include "PX2LanguageManager.hpp"
 #include "PX2ResourceManager.hpp"
-#include "PX2StringHelp.hpp"
 #include "PX2XMLData.hpp"
 #include "PX2XMLNode.hpp"
 

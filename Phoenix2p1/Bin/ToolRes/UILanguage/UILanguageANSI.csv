@@ -22,3 +22,17 @@ Help,帮助,Help
 PreView,预览,PreView
 Asserts,资源,Asserts
 Inspector,属性,Inspector
+AddActor,添加角色,Add Actor
+AddActorModel,模型,Model
+AddActorEffect,特效,Effect
+AddActorLight,灯光,Light
+AddActorLightPoint,点光源,PointLight
+AddActorLightSpot,聚光灯,SpotLight
+Clone,复制,Clone
+CloneInstance,共享,Shallow
+CloneData,克隆,Deep
+Tip0,警告,Warning
+Tip1,请选择模型,Please select a model.
+Create,创建,Create
+Box,正方体,Box
+Sphere,球,Sphere

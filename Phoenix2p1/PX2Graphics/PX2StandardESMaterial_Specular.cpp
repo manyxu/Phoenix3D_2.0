@@ -58,6 +58,8 @@ MaterialInstance* StandardESMaterial_Specular::CreateInstance (
 		new0 ShineAmbientConstant(shine));
 	instance->SetVertexConstant(0, "gShineDiffuse",
 		new0 ShineDiffuseConstant(shine));
+	instance->SetVertexConstant(0, "gLightColour",
+		new0 LightDiffuseConstant(dirLight));
 	instance->SetVertexConstant(0, "gLightModelDirection",
 		new0 LightModelDVectorConstant(dirLight));
 
@@ -72,7 +74,7 @@ MaterialInstance* StandardESMaterial_Specular::CreateInstance (
 	ctrlFloat[3] = 0.0f;
 	ShaderFloat *ctrlShaderFloat = new0 ShaderFloat(1);
 	ctrlShaderFloat->SetRegister(0, (float*)&ctrlFloat);
-	instance->SetVertexConstant(0, "gControlFloat", ctrlShaderFloat);
+	instance->SetPixelConstant(0, "gControlFloat", ctrlShaderFloat);
 
 	return instance;
 }

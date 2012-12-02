@@ -17,9 +17,6 @@
     <ClInclude Include="PX2FileIO.hpp">
       <Filter>InputOutput</Filter>
     </ClInclude>
-    <ClInclude Include="PX2Help.hpp">
-      <Filter>Help</Filter>
-    </ClInclude>
     <ClInclude Include="PX2InStream.hpp">
       <Filter>InputOutput</Filter>
     </ClInclude>
@@ -102,6 +99,18 @@
     <ClInclude Include="PX2ConditionType.hpp">
       <Filter>Thread</Filter>
     </ClInclude>
+    <ClInclude Include="PX2LogOutputWindowHandler.hpp">
+      <Filter>Log</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2JNI.hpp">
+      <Filter>Android</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2FString.hpp">
+      <Filter>DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2StringHelp.hpp">
+      <Filter>Help</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PX2Assert.cpp">
@@ -112,9 +121,6 @@
     </ClCompile>
     <ClCompile Include="PX2FileIO.cpp">
       <Filter>InputOutput</Filter>
-    </ClCompile>
-    <ClCompile Include="PX2Help.cpp">
-      <Filter>Help</Filter>
     </ClCompile>
     <ClCompile Include="PX2InStream.cpp">
       <Filter>InputOutput</Filter>
@@ -170,6 +176,18 @@
     <ClCompile Include="PX2Condition.cpp">
       <Filter>Thread</Filter>
     </ClCompile>
+    <ClCompile Include="PX2LogOutputWindowHandler.cpp">
+      <Filter>Log</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2JNI.cpp">
+      <Filter>Android</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2StringHelp.cpp">
+      <Filter>Help</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2FString.cpp">
+      <Filter>DataTypes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="PX2DoubleChainList.inl">
@@ -183,9 +201,6 @@
     </None>
     <None Include="PX2BufferIO.inl">
       <Filter>InputOutput</Filter>
-    </None>
-    <None Include="PX2Memory.inl">
-      <Filter>ObjectSystem</Filter>
     </None>
     <None Include="PX2Object.inl">
       <Filter>ObjectSystem</Filter>
@@ -207,6 +222,9 @@
     </None>
     <None Include="PX2MinHeap.inl">
       <Filter>DataTypes</Filter>
+    </None>
+    <None Include="PX2Memory.inl">
+      <Filter>Memory</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -239,6 +257,9 @@
     </Filter>
     <Filter Include="Time">
       <UniqueIdentifier>{076330ca-bc25-489c-9d39-65e96028744f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Android">
+      <UniqueIdentifier>{0eb7825e-7b48-4027-8a21-a34c61c824fc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

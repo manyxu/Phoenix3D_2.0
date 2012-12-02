@@ -11,6 +11,8 @@ using namespace PX2Editor;
 using namespace PX2;
 
 //-----------------------------------------------------------------------------
+IMPLEMENT_APP(PX2Editor::EditorApp)
+//-----------------------------------------------------------------------------
 EditorApp::EditorApp ()
 {
 }
@@ -21,7 +23,11 @@ EditorApp::~EditorApp ()
 //-----------------------------------------------------------------------------
 bool EditorApp::OnInit ()
 {
-	EditSystem *editSystem = new EditSystem();
+#ifdef PX2_USE_MEMORY
+	Memory::Initialize();
+#endif
+
+	EditSystem *editSystem = new0 EditSystem();
 	if (editSystem)
 	{
 		editSystem->Initlize();
@@ -49,18 +55,6 @@ bool EditorApp::OnInit ()
 	return true;
 }
 //-----------------------------------------------------------------------------
-void EditorApp::AddHandlers()
-{
-	// supported images
-	wxImage::AddHandler(new wxPNGHandler());
-	wxImage::AddHandler(new wxGIFHandler());
-
-	// resource system
-	wxFileSystem::AddHandler(new wxArchiveFSHandler()); 
-	wxXmlResource::Get()->InitAllHandlers();
-	wxXmlResource::Get()->Load(wxT("ToolRes/wxFBP/*.xrc"));
-}
-//-----------------------------------------------------------------------------
 int EditorApp::OnExit()
 {
 	ViewCtrlInstMan *ctrlMan = ViewCtrlInstMan::GetSingletonPtr();
@@ -75,12 +69,27 @@ int EditorApp::OnExit()
 	{
 		editSystem->Terminate();
 
-		delete editSystem;
+		delete0(editSystem);
 
 		EditSystem::Set(0);
 	}
 
+#ifdef PX2_USE_MEMORY
+	Memory::Terminate("PX2Editor_MemoryReport.txt", false);
+#endif
+
 	return 0;
 }
 //-----------------------------------------------------------------------------
-IMPLEMENT_APP(PX2Editor::EditorApp)
+void EditorApp::AddHandlers()
+{
+	// supported images
+	wxImage::AddHandler(new wxPNGHandler());
+	wxImage::AddHandler(new wxGIFHandler());
+
+	// resource system
+	wxFileSystem::AddHandler(new wxArchiveFSHandler()); 
+	wxXmlResource::Get()->InitAllHandlers();
+	wxXmlResource::Get()->Load(wxT("ToolRes/wxFBP/*.xrc"));
+}
+//-----------------------------------------------------------------------------

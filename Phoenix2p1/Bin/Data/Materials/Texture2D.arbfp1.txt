@@ -1,0 +1,15 @@
+!!ARBfp1.0
+# cgc version 3.1.0010, build date Feb  8 2012
+# command line args: -profile arbfp1
+# source file: Texture2D.fx
+#vendor NVIDIA Corporation
+#version 3.1.0.10
+#profile arbfp1
+#program p_Texture2D
+#semantic BaseSampler
+#var float2 vertexTCoord : $vin.TEXCOORD0 : TEX0 : 0 : 1
+#var float4 pixelColor : $vout.COLOR : COL : 1 : 1
+#var sampler2D BaseSampler :  : texunit 0 : -1 : 1
+TEX result.color, fragment.texcoord[0], texture[0], 2D;
+END
+# 1 instructions, 0 R-regs

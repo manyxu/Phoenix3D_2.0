@@ -24,8 +24,8 @@
 #var float3 modelNormal : $vin.NORMAL : NORMAL : 1 : 1
 #var float2 modelTCoord0 : $vin.TEXCOORD0 : TEXCOORD0 : 2 : 1
 #var float4 clipPosition : $vout.POSITION : HPOS : 3 : 1
-#var float4 vertexColor : $vout.COLOR : COL0 : 4 : 1
-#var float2 vertexTCoord0 : $vout.TEXCOORD0 : TEX0 : 5 : 1
+#var float2 vertexTCoord0 : $vout.TEXCOORD0 : TEX0 : 4 : 1
+#var float4 vertexTCoord1 : $vout.TEXCOORD1 : TEX1 : 5 : 1
 #var float4x4 gWMatrix :  : , 4 : -1 : 0
 #var float4x4 gVMatrix :  : , 4 : -1 : 0
 #var float4x4 gPMatrix :  : , 4 : -1 : 0
@@ -57,7 +57,7 @@ DP3 R0.w, vertex.normal, c[9];
 MUL R0.xyz, R0, c[8];
 MAX R0.w, R0, c[0].y;
 ADD R1.xyz, R1, c[5];
-MAD result.color.xyz, R0, R0.w, R1;
+MAD result.texcoord[1].xyz, R0, R0.w, R1;
 MOV R0.w, c[0].x;
 MOV R0.xyz, vertex.position;
 DP4 result.position.w, R0, c[4];
@@ -65,6 +65,6 @@ DP4 result.position.z, R0, c[3];
 DP4 result.position.y, R0, c[2];
 DP4 result.position.x, R0, c[1];
 MOV result.texcoord[0].xy, vertex.texcoord[0];
-MOV result.color.w, c[7];
+MOV result.texcoord[1].w, c[7];
 END
 # 16 instructions, 2 R-regs

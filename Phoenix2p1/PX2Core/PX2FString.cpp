@@ -20,13 +20,19 @@ struct stShareString
 		RefCount = 1;
 		Str = 0;
 	}
+	~stShareString()
+	{
+		if (Str)
+			delete1<char>(Str);
+		Str = 0;
+	}
 
-	char *Str;
 	stShareString *Next;
 	volatile long RefCount;
 #ifdef _DEBUG
 	unsigned int HashValue;
 #endif
+	char *Str;
 };
 //----------------------------------------------------------------------------
 const int STR_HASH_BUFLEN = 513;
@@ -60,7 +66,7 @@ bool FString::Ternimate ()
 		while (0 != cur)
 		{
 			stShareString *next = cur->Next;
-			free(cur);
+			delete0(cur);
 			cur = next;
 		}
 	}
@@ -107,9 +113,9 @@ FStringHandle FString::Insert (const char *str, int length)
 
 	cur = new0 stShareString();
 	cur->RefCount = 1;
-	cur->Str = new1<char>(length+1);
 	cur->Next = sHashTable[i];
 	sHashTable[i] = cur;
+	cur->Str = new1<char>(length+1);
 
 #ifdef _DEBUG
 	cur->HashValue = StringHash(str, length);
@@ -122,6 +128,27 @@ FStringHandle FString::Insert (const char *str, int length)
 	return (FStringHandle)dstStr;
 }
 //----------------------------------------------------------------------------
+stShareString *GetCache (const char *str)
+{
+	unsigned int i = StringHash(str) % STR_HASH_BUFLEN;
+
+	ScopedCS sc(sTableMutex);
+
+	stShareString *cur = sHashTable[i];
+
+	while (cur != 0)
+	{
+		if(cur->Str == str)
+		{
+			return cur;
+		}
+
+		cur = cur->Next;
+	}
+
+	return 0;
+}
+//----------------------------------------------------------------------------
 void FString::AddRef (FStringHandle h)
 {
 	const char *str = Handler2Ptr(h);
@@ -130,7 +157,12 @@ void FString::AddRef (FStringHandle h)
 
 	ScopedCS sc(sRefMutex);
 
-	stShareString *cur = (stShareString*)h;
+	int temp = 0;
+#ifdef _DEBUG
+	temp = (int)sizeof(unsigned int);
+#endif
+
+	stShareString *cur = GetCache(str);
 
 #ifdef _DEBUG
 	assertion(cur->HashValue == StringHash(str),
@@ -148,7 +180,13 @@ void FString::Release (FStringHandle h)
 
 	ScopedCS sc(sRefMutex);
 
-	stShareString *cur = (stShareString*)h;
+	int temp = 0;
+#ifdef _DEBUG
+	temp = (int)sizeof(unsigned int);
+#endif
+
+	stShareString *cur = GetCache(str);
+
 #ifdef _DEBUG
 	assertion(cur->HashValue == StringHash(str),
 		"HashValue should be the same.");

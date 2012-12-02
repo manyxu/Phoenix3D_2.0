@@ -6,6 +6,8 @@
 
 #include "PX2GraphicsRoot.hpp"
 #include "PX2Environment.hpp"
+#include "PX2StringHelp.hpp"
+#include "PX2FString.hpp"
 using namespace PX2;
 
 std::string GraphicsRoot::PX2Path;
@@ -20,6 +22,9 @@ GraphicsRoot::~GraphicsRoot ()
 //----------------------------------------------------------------------------
 bool GraphicsRoot::Initlize ()
 {
+	StringHelp::Initlize();
+	FString::Initlize();
+
 	// 你需要创建PX2_PATH环境变量，应用程序依赖于此查找各种资源文件。
 	PX2Path = Environment::GetVariable("PX2_PATH");
 	//if (PX2Path == "")
@@ -40,12 +45,12 @@ bool GraphicsRoot::Initlize ()
 	Environment::InsertDirectory("/");
 
 	// Camera
-#ifdef PX2_USE_DX9
+#if defined (PX2_USE_DX9)
 	// DirectX使用深度在区间[0,1]内的矩阵。
 	Camera::SetDefaultDepthType(Camera::PM_DEPTH_ZERO_TO_ONE);
 #endif
 
-#ifdef PX2_USE_OPENGL
+#if defined(PX2_USE_OPENGL) || defined(PX2_USE_OPENGLES2)
 	// OpenGL使用深度在区间[-1,1]内的矩阵。
 	Camera::SetDefaultDepthType(Camera::PM_DEPTH_MINUS_ONE_TO_ONE);
 #endif
@@ -58,6 +63,8 @@ bool GraphicsRoot::Terminate ()
 	Environment::RemoveAllDirectories();
 
 	InitTerm::ExecuteTerminators();
+
+	FString::Ternimate();
 
 	return true;
 }

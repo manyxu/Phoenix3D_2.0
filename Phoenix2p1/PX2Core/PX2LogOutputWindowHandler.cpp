@@ -33,7 +33,7 @@ bool OutputWindowHandler::Handle (const char *filename, int line,
 #if defined(_WIN32) || defined(WIN32)
 	OutputDebugString(str);
 #elif defined __ANDROID__
-	__android_log_print(ANDROID_LOG_INFO, "phoenix3d.px2",  str);
+	__android_log_print(ANDROID_LOG_INFO, "phoenix3d.px2", str);
 #endif
 
 	return true;

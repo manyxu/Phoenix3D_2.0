@@ -26,6 +26,7 @@ namespace PX2Editor
 		void Clear ();
 
 		void Translate (PX2::AVector vec);
+		void TranslateTo (PX2::APoint pos);
 		void AddRolate (PX2::AVector vec);
 		void AddScale (PX2::AVector vec);
 
