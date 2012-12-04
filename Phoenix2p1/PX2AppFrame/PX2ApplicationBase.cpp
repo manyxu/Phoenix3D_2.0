@@ -54,6 +54,8 @@ bool ApplicationBase::Initlize ()
 	//LogAddFileHandler("PX2Application_Log.txt", 1, LT_ENGINE|LT_INFO);
 	LoadAddOutputWindowHandler(1, LT_ENGINE|LT_INFO);
 
+	PX2_LOG_INFO("Begin ApplicationBase::Initlize.\n");
+
 	mResMan = new0 ResourceManager();
 
 	mEventWorld = new0 EventWorld();
@@ -63,16 +65,19 @@ bool ApplicationBase::Initlize ()
 	mRoot->Initlize();
 
 	mGameMan = new0 GameManager();
-	mGameMan->LoadBoost("Data/boost.xml");
-	int width = mGameMan->GetBoostWidth();
-	int height = mGameMan->GetBoostHeight();
-	if (0!=width && 0!=height)
-	{
-		mWidth = width;
-		mHeight = height;
-	}
+	//mGameMan->LoadBoost("Data/boost.xml");
+	//int width = mGameMan->GetBoostWidth();
+	//int height = mGameMan->GetBoostHeight();
+	//if (0!=width && 0!=height)
+	//{
+	//	mWidth = width;
+	//	mHeight = height;
+	//}
 
+	PX2_LOG_INFO("Begin ApplicationBase::OnInitlizeApp.\n");
 	OnInitlizeApp();
+
+	PX2_LOG_INFO("Begin ApplicationBase::OnInitlize.\n");
 	OnInitlize();
 
 	return true;

@@ -25,8 +25,14 @@
     <Filter Include="DevIL\PNG">
       <UniqueIdentifier>{fd2d7aee-3838-4865-9722-de31313144ae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DevIL\ZLIB">
-      <UniqueIdentifier>{53c8f602-c88b-435e-8fd7-f5559cf39f46}</UniqueIdentifier>
+    <Filter Include="Android">
+      <UniqueIdentifier>{79487dbc-d9e9-4add-926b-a8e1836e701e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ZLib">
+      <UniqueIdentifier>{9a4c84ee-8d51-4aaf-b7ca-f9a282d0271f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ZLib\minzip">
+      <UniqueIdentifier>{15439039-4818-4296-8072-8d0793dfbdce}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -339,50 +345,59 @@
     <ClCompile Include="DevIL\PNG\pngwutil.c">
       <Filter>DevIL\PNG</Filter>
     </ClCompile>
-    <ClCompile Include="DevIL\ZLIB\adler32.c">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClCompile Include="ZLib\adler32.c">
+      <Filter>ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="DevIL\ZLIB\compress.c">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClCompile Include="ZLib\compress.c">
+      <Filter>ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="DevIL\ZLIB\crc32.c">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClCompile Include="ZLib\crc32.c">
+      <Filter>ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="DevIL\ZLIB\deflate.c">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClCompile Include="ZLib\deflate.c">
+      <Filter>ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="DevIL\ZLIB\gzclose.c">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClCompile Include="ZLib\gzclose.c">
+      <Filter>ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="DevIL\ZLIB\gzlib.c">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClCompile Include="ZLib\gzlib.c">
+      <Filter>ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="DevIL\ZLIB\gzread.c">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClCompile Include="ZLib\gzread.c">
+      <Filter>ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="DevIL\ZLIB\gzwrite.c">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClCompile Include="ZLib\gzwrite.c">
+      <Filter>ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="DevIL\ZLIB\infback.c">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClCompile Include="ZLib\infback.c">
+      <Filter>ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="DevIL\ZLIB\inffast.c">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClCompile Include="ZLib\inffast.c">
+      <Filter>ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="DevIL\ZLIB\inflate.c">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClCompile Include="ZLib\inflate.c">
+      <Filter>ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="DevIL\ZLIB\inftrees.c">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClCompile Include="ZLib\inftrees.c">
+      <Filter>ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="DevIL\ZLIB\trees.c">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClCompile Include="ZLib\trees.c">
+      <Filter>ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="DevIL\ZLIB\uncompr.c">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClCompile Include="ZLib\uncompr.c">
+      <Filter>ZLib</Filter>
     </ClCompile>
-    <ClCompile Include="DevIL\ZLIB\zutil.c">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClCompile Include="ZLib\zutil.c">
+      <Filter>ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="ZLib\minzip\ioapi.c">
+      <Filter>ZLib\minzip</Filter>
+    </ClCompile>
+    <ClCompile Include="ZLib\minzip\unzip.c">
+      <Filter>ZLib\minzip</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2JNI.cpp">
+      <Filter>Android</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -568,38 +583,47 @@
     <ClInclude Include="DevIL\PNG\pngstruct.h">
       <Filter>DevIL\PNG</Filter>
     </ClInclude>
-    <ClInclude Include="DevIL\ZLIB\crc32.h">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClInclude Include="ZLib\crc32.h">
+      <Filter>ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="DevIL\ZLIB\deflate.h">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClInclude Include="ZLib\deflate.h">
+      <Filter>ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="DevIL\ZLIB\gzguts.h">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClInclude Include="ZLib\gzguts.h">
+      <Filter>ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="DevIL\ZLIB\inffast.h">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClInclude Include="ZLib\inffast.h">
+      <Filter>ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="DevIL\ZLIB\inffixed.h">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClInclude Include="ZLib\inffixed.h">
+      <Filter>ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="DevIL\ZLIB\inflate.h">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClInclude Include="ZLib\inflate.h">
+      <Filter>ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="DevIL\ZLIB\inftrees.h">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClInclude Include="ZLib\inftrees.h">
+      <Filter>ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="DevIL\ZLIB\trees.h">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClInclude Include="ZLib\trees.h">
+      <Filter>ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="DevIL\ZLIB\zconf.h">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClInclude Include="ZLib\zconf.h">
+      <Filter>ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="DevIL\ZLIB\zlib.h">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClInclude Include="ZLib\zlib.h">
+      <Filter>ZLib</Filter>
     </ClInclude>
-    <ClInclude Include="DevIL\ZLIB\zutil.h">
-      <Filter>DevIL\ZLIB</Filter>
+    <ClInclude Include="ZLib\zutil.h">
+      <Filter>ZLib</Filter>
+    </ClInclude>
+    <ClInclude Include="ZLib\minzip\ioapi.h">
+      <Filter>ZLib\minzip</Filter>
+    </ClInclude>
+    <ClInclude Include="ZLib\minzip\unzip.h">
+      <Filter>ZLib\minzip</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2JNI.hpp">
+      <Filter>Android</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

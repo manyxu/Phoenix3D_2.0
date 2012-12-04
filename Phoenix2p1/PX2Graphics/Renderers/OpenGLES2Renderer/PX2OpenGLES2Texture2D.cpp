@@ -61,7 +61,7 @@ mTexture(0)
 //----------------------------------------------------------------------------
 PdrTexture2D::~PdrTexture2D ()
 {
-	PX2_GL_CHECK(glDeleteTextures(1, &mTexture));
+	glDeleteTextures(1, &mTexture);
 }
 //----------------------------------------------------------------------------
 void PdrTexture2D::Enable (Renderer*,int textureUnit)

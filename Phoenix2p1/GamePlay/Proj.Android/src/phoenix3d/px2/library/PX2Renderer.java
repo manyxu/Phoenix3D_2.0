@@ -3,6 +3,7 @@ package phoenix3d.px2.library;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 import android.opengl.GLSurfaceView;
+import phoenix3d.px2.library.PX2Natives;
 
 class PX2Renderer implements GLSurfaceView.Renderer
 {
@@ -24,7 +25,7 @@ class PX2Renderer implements GLSurfaceView.Renderer
     // -process begin
     public void onSurfaceCreated(GL10 gl, EGLConfig config)
     {
-    	nativeInit(screenWidth, screenHeight); 
+    	PX2Natives.nativeInit(screenWidth, screenHeight); 
     }
 
     public void onSurfaceChanged(GL10 gl, int width, int height) 
@@ -33,25 +34,18 @@ class PX2Renderer implements GLSurfaceView.Renderer
     
     public void handleOnPause()
     {
-    	nativeOnPause();
+    	PX2Natives.nativeOnPause();
     }
     
     public void handleOnResume()
     {
-    	nativeOnResume();
+    	PX2Natives.nativeOnResume();
     }
 
     public void onDrawFrame(GL10 gl)
     {
     	// draw
-    	nativeOdle();
-    }    
-  
+    	PX2Natives.nativeOdle();
+    }  
     // -process end
-    
-    private static native void nativeOdle();
-    private static native void nativeInit(int w, int h);
-    private static native void nativeOnPause();
-    private static native void nativeOnResume();
-    private static native void nativeTerm();
 }

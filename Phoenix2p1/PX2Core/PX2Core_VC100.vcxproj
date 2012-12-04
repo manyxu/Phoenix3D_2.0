@@ -34,7 +34,6 @@
     <ClInclude Include="PX2FString.hpp" />
     <ClInclude Include="PX2InitTerm.hpp" />
     <ClInclude Include="PX2InStream.hpp" />
-    <ClInclude Include="PX2JNI.hpp" />
     <ClInclude Include="PX2Log.hpp" />
     <ClInclude Include="PX2LogFileHandler.hpp" />
     <ClInclude Include="PX2LogOutputWindowHandler.hpp" />
@@ -69,7 +68,6 @@
     <ClCompile Include="PX2FString.cpp" />
     <ClCompile Include="PX2InitTerm.cpp" />
     <ClCompile Include="PX2InStream.cpp" />
-    <ClCompile Include="PX2JNI.cpp" />
     <ClCompile Include="PX2Log.cpp" />
     <ClCompile Include="PX2LogFileHandler.cpp" />
     <ClCompile Include="PX2LogOutputWindowHandler.cpp" />

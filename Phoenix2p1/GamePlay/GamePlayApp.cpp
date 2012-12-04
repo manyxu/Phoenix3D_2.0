@@ -83,6 +83,8 @@ void GamePlayApp::OnIdle ()
 //----------------------------------------------------------------------------
 void GamePlayApp::CreateScene ()
 {
+	PX2_LOG_INFO("Begin CreateScene.\n");
+
 	mRenderer->SetClearColor(Float4(0.5f, 0.5f, 0.0f, 1.0f));
 
 	mWireProperty = new0 WireProperty();
@@ -91,41 +93,46 @@ void GamePlayApp::CreateScene ()
 	mCullProperty->Enabled = false;
 
 	std::string mapName = GameManager::GetSingleton().GetMapName();
+	mapName = "test";
 	std::string fullMapName = "Data/maps/"+mapName+".pxof";
 
-	InStream inStream;
-	if (inStream.Load(fullMapName.c_str()))
+	Object *obj = ResourceManager::GetSingleton()
+		.BlockLoad(fullMapName.c_str());
+	Scene *scene = DynamicCast<Scene>(obj);
+	if (scene)
 	{
-		Object *object = inStream.GetObjectAt(0);
-		Scene *scene = DynamicCast<Scene>(object);
-		if (scene)
-		{
-			mScene = scene;
-			mSceneGraph = scene->GetSceneNode();
-			mCamera = scene->GetDefaultCameraActor()->GetCamera();
-			mRenderer->SetCamera(mCamera);
-			mCuller.SetCamera(mCamera);
-		}
-		else
-		{
-			mSceneGraph = new0 Node();
-			mSceneGraph->Update();
-			mCamera->SetFrustum(60.0f, ((float)mWidth)/(float)mHeight, 1.0f, 100.0f);
-			AVector camDVector(0.0f, 0.0f, 1.0f);
-			AVector camUVector(0.0f,1.0f,0.0f);
-			AVector camRVector = camDVector.Cross(camUVector);
-			APoint camPosition = APoint::ORIGIN -
-				2.0f*mSceneGraph->WorldBound.GetRadius()*camDVector;
-			mCamera->SetFrame(camPosition, camDVector, camUVector, camRVector);
+		PX2_LOG_INFO("Load scene successful.\n");
 
-			mCuller.SetCamera(mCamera);
-			mRenderer->SetCamera(mCamera);
-		}
+		mScene = scene;
+		mSceneGraph = scene->GetSceneNode();
+		mCamera = scene->GetDefaultCameraActor()->GetCamera();
+		mRenderer->SetCamera(mCamera);
+		mCuller.SetCamera(mCamera);
+	}
+	else
+	{
+		PX2_LOG_INFO("Load scene failed.\n");
+
+		mSceneGraph = new0 Node();
+		mSceneGraph->Update();
+		mCamera->SetFrustum(60.0f, ((float)mWidth)/(float)mHeight, 1.0f, 100.0f);
+		AVector camDVector(0.0f, 0.0f, 1.0f);
+		AVector camUVector(0.0f,1.0f,0.0f);
+		AVector camRVector = camDVector.Cross(camUVector);
+		APoint camPosition = APoint::ORIGIN -
+			2.0f*mSceneGraph->WorldBound.GetRadius()*camDVector;
+		mCamera->SetFrame(camPosition, camDVector, camUVector, camRVector);
+
+		mCuller.SetCamera(mCamera);
+		mRenderer->SetCamera(mCamera);
 	}
 
-	std::string writeablePath = FileIO::GetWriteablePath();
-	PX2_LOG_INFO("GamePlay writeablePath is %s\n", writeablePath.c_str());
-	PX2_LOG_INFO("CreateScene successful!\n");
+	//std::string writeablePath = ResourceManager::GetSingleton()
+	//	.GetWriteablePath();
+	//PX2_LOG_INFO("GamePlay writeablePath is %s\n", writeablePath.c_str());
+	//PX2_LOG_INFO("CreateScene successful!\n");
+
+	PX2_LOG_INFO("End CreateScene.\n");
 
 	mInited = true;
 }

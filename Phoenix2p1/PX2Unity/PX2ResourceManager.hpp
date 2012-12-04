@@ -19,6 +19,8 @@
 namespace PX2
 {
 
+	typedef unsigned long ResHandle;
+
 	class ResourceManager : public Singleton<ResourceManager>
 	{
 	public:
@@ -35,6 +37,24 @@ namespace PX2
 			LS_MAX_STATE
 		};
 
+		// 加载
+		Object *BlockLoad (const std::string &filename);
+		ResHandle BackgroundLoad (const std::string &filename);
+		Object *CheckRes (ResHandle handle);
+		LoadState GetResLoadState (ResHandle handle);
+
+		/// 获得可写路径
+		/**
+		* 在PC上为程序当前目录，在移动设备上由该设备API返回。
+		*/
+		std::string GetWriteablePath ();
+		static const std::string GetResourcePath ();
+
+		// 加载选项
+		void DDSKeepCompressed (bool keep=true);
+		bool IsDDSKeepCompressed ();
+
+public_internal:
 		struct LoadRecord
 		{
 			std::string Filename;
@@ -45,30 +65,20 @@ namespace PX2
 			unsigned int LastTouchedTime;
 		};
 
-		typedef unsigned long ResHandle;
-
-		// 加载
-		Object *BlockLoad (const std::string &filename);
-		ResHandle BackgroundLoad (const std::string &filename);
-		Object *CheckRes (ResHandle handle);
-		LoadState GetResLoadState (ResHandle handle);
-
-		// 回收
-		void GarbageCollect ();
-
-		// 加载选项
-		void DDSKeepCompressed (bool keep=true);
-		bool IsDDSKeepCompressed ();
-
-public_internal:
 		unsigned int RunLoadingThread ();
+		void GarbageCollect ();
+		
+		// 设置资源路径.在Android系统中，为apk所在目录
+		static void SetResourcePath (const std::string &resPath);
 
 	protected:
 		LoadRecord &InsertRecord (const std::string &filename);
-		void LoadTheRecord (LoadRecord &rec);
-		Object *LoadObject (const std::string &filename);
+		void _LoadTheRecord (LoadRecord &rec);
+		Object *_LoadObject (const std::string &filename);
 		Texture2D *LoadTextureFromOtherImagefile (const std::string &filename);
 		Texture2D *LoadTextureFromDDS (const std::string &filename);
+		bool GetFileDataFromZip (const std::string &packageName, 
+			const std::string &filename, int &bufferSize, char* &buffer);
 
 		void StartThread ();
 		
@@ -86,6 +96,9 @@ public_internal:
 
 		Mutex mResTableMutex;
 		ResTable mResTable;
+
+		bool mReadFromZip;
+		static std::string msResPath;
 
 		unsigned int mTimeCounter;
 	};

@@ -6,6 +6,7 @@
 
 #include "PX2GameManager.hpp"
 #include "PX2XMLData.hpp"
+#include "PX2ResourceManager.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -22,6 +23,8 @@ GameManager::~GameManager ()
 //----------------------------------------------------------------------------
 bool GameManager::LoadBoost (const char *filename)
 {
+
+
 	XMLData data;
 	if (data.LoadFile(filename))
 	{

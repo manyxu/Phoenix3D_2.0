@@ -7,21 +7,23 @@ LOCAL_MODULE := PX2Unity
 LOCAL_SRC_FILES := \
 PX2CSVParser.cpp \
 PX2LanguageManager.cpp \
-DevIL/ZLIB/adler32.c \
-DevIL/ZLIB/compress.c \
-DevIL/ZLIB/crc32.c \
-DevIL/ZLIB/deflate.c \
-DevIL/ZLIB/gzclose.c \
-DevIL/ZLIB/gzlib.c \
-DevIL/ZLIB/gzread.c \
-DevIL/ZLIB/gzwrite.c \
-DevIL/ZLIB/infback.c \
-DevIL/ZLIB/inffast.c \
-DevIL/ZLIB/inflate.c \
-DevIL/ZLIB/inftrees.c \
-DevIL/ZLIB/trees.c \
-DevIL/ZLIB/uncompr.c \
-DevIL/ZLIB/zutil.c \
+ZLib/adler32.c \
+ZLib/compress.c \
+ZLib/crc32.c \
+ZLib/deflate.c \
+ZLib/gzclose.c \
+ZLib/gzlib.c \
+ZLib/gzread.c \
+ZLib/gzwrite.c \
+ZLib/infback.c \
+ZLib/inffast.c \
+ZLib/inflate.c \
+ZLib/inftrees.c \
+ZLib/trees.c \
+ZLib/uncompr.c \
+ZLib/zutil.c \
+ZLib/minzip/ioapi.c \
+ZLib/minzip/unzip.c \
 DevIL/PNG/png.c \
 DevIL/PNG/pngerror.c \
 DevIL/PNG/pngget.c \
@@ -61,6 +63,7 @@ DevIL/il_utility.c \
 DevIL/il_bmp.c \
 DevIL/il_wbmp.c \
 DevIL/il_png.c \
+PX2JNI.cpp \
 PX2ResourceManager.cpp \
 TinyXML/tinystr.cpp \
 TinyXML/tinyxml.cpp \
@@ -74,7 +77,8 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/..
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/.. \
 $(LOCAL_PATH)/DevIL/IL/ \
 $(LOCAL_PATH)/DevIL/PNG/ \
-$(LOCAL_PATH)/DevIL/ZLIB/ \
+$(LOCAL_PATH)/ZLib/ \
+$(LOCAL_PATH)/ZLib/minzip/ \
 $(LOCAL_PATH)/DevIL/ \
 $(LOCAL_PATH)/TinyXML/ \
 $(PX2_ROOT)/PX2SDK/Include/ \
@@ -82,5 +86,6 @@ $(PX2_ROOT)/PX2SDK/Include/ \
 # define the macros          
 LOCAL_CFLAGS := -D__ANDROID__
 LOCAL_CFLAGS += -DIL_STATIC_LIB
+LOCAL_CFLAGS += -DIOAPI_NO_64
 
 include $(BUILD_STATIC_LIBRARY)

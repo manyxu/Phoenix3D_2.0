@@ -15,3 +15,13 @@ inline bool ResourceManager::IsDDSKeepCompressed ()
 	return mDDSKeepCompressed;
 }
 //----------------------------------------------------------------------------
+inline void ResourceManager::SetResourcePath (const std::string &resPath)
+{
+	msResPath = resPath;
+}
+//----------------------------------------------------------------------------
+inline const std::string ResourceManager::GetResourcePath ()
+{
+	return msResPath;
+}
+//----------------------------------------------------------------------------

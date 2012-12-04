@@ -29,6 +29,7 @@ namespace PX2
 		~XMLData ();
 
 		bool LoadFile (const std::string &fileName);
+		bool LoadBuffer (const char *buffer, int size);
 		bool SaveFile (const std::string &fileName);
 
 		XMLNode GetRootNode ();

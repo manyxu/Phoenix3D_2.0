@@ -11,6 +11,13 @@
 #include "IL/il.h"
 #include "IL/ilu.h"
 
+#include "unzip.h"
+#if defined(_WIN32) || defined(WIN32)
+#include <windows.h>
+#elif defined __ANDROID__
+#include "PX2JNI.hpp"
+#endif
+
 #pragma warning(disable : 4312)
 
 using namespace PX2;
@@ -39,12 +46,15 @@ static void* ThreadLoadFun (void *data)
 }
 #endif
 //----------------------------------------------------------------------------
+std::string ResourceManager::msResPath;
+//----------------------------------------------------------------------------
 ResourceManager::ResourceManager ()
 :
 mLoadingThread(0),
 mTimeCounter(0),
 mQuitLoading(false),
-mDDSKeepCompressed(true)
+mDDSKeepCompressed(true),
+mReadFromZip(false)
 {
 	// Init Devil
 	ilInit();
@@ -52,6 +62,31 @@ mDDSKeepCompressed(true)
 	ilEnable(IL_CONV_PAL);
 
 	StartThread();
+
+#if defined WIN32
+	if (msResPath.empty())
+	{
+		char full_path[_MAX_PATH + 1];
+		GetModuleFileName(NULL, full_path, _MAX_PATH + 1);
+		std::string ret((char*)full_path);
+		ret =  ret.substr(0, ret.rfind("\\") + 1);
+
+		msResPath = StringHelp::StandardisePath(ret);
+	}
+
+	FILE* inFile = 0;
+	inFile = fopen("Data", "rb");
+	if (inFile)
+	{
+		mReadFromZip = true;
+		fclose(inFile);
+		inFile = 0;
+	}
+	else
+	{
+		mReadFromZip = false;
+	}
+#endif
 }
 //----------------------------------------------------------------------------
 ResourceManager::~ResourceManager ()
@@ -80,12 +115,12 @@ Object *ResourceManager::BlockLoad (const std::string &filename)
 
 	LoadRecord &loadRec = InsertRecord(filename);
 
-	LoadTheRecord(loadRec);
+	_LoadTheRecord(loadRec);
 
 	return loadRec.Obj;
 }
 //----------------------------------------------------------------------------
-ResourceManager::ResHandle ResourceManager::BackgroundLoad (
+ResHandle ResourceManager::BackgroundLoad (
 	const std::string &filename)
 {
 	LoadRecord &rec = InsertRecord(filename);
@@ -125,6 +160,37 @@ ResourceManager::LoadState ResourceManager::GetResLoadState (ResHandle handle)
 	return rec.State;
 }
 //----------------------------------------------------------------------------
+std::string ResourceManager::GetWriteablePath ()
+{
+#if defined(_WIN32) || defined(WIN32)
+
+	char full_path[_MAX_PATH + 1];
+	GetModuleFileName(NULL, full_path, _MAX_PATH + 1);
+	std::string ret((char*)full_path);
+	ret =  ret.substr(0, ret.rfind("\\") + 1);
+
+	return ret;
+
+#elif defined __ANDROID__
+	// the path is: /data/data/ + package name
+	std::string dir("/data/data/");
+	std::string temp = GetPackageNameJNI();
+
+	if (!temp.empty())
+	{
+		dir.append(temp).append("/");
+
+		return dir;
+	}
+	else
+	{
+		return "";
+	}
+
+	return temp;
+#endif
+}
+//----------------------------------------------------------------------------
 void ResourceManager::GarbageCollect ()
 {
 
@@ -151,7 +217,7 @@ unsigned int ResourceManager::RunLoadingThread ()
 			mLoadingDeque.pop_front();
 		}
 
-		LoadTheRecord(*rec);
+		_LoadTheRecord(*rec);
 	}
 
 	return 0;
@@ -181,7 +247,7 @@ ResourceManager::LoadRecord &ResourceManager::InsertRecord (const std::string &f
 	return rRec;
 }
 //----------------------------------------------------------------------------
-void ResourceManager::LoadTheRecord (LoadRecord &rec)
+void ResourceManager::_LoadTheRecord (LoadRecord &rec)
 {
 	bool needLoad = false;
 	{
@@ -196,7 +262,7 @@ void ResourceManager::LoadTheRecord (LoadRecord &rec)
 
 	if (needLoad)
 	{
-		rec.Obj = LoadObject (rec.Filename);
+		rec.Obj = _LoadObject(rec.Filename);
 		rec.LastTouchedTime = mTimeCounter;
 		rec.State = LS_LOADED;
 	}
@@ -208,7 +274,7 @@ void ResourceManager::LoadTheRecord (LoadRecord &rec)
 	}
 }
 //----------------------------------------------------------------------------
-Object *ResourceManager::LoadObject (const std::string &filename)
+Object *ResourceManager::_LoadObject (const std::string &filename)
 {
 	Object *obj = 0;
 
@@ -256,12 +322,51 @@ Object *ResourceManager::LoadObject (const std::string &filename)
 		return obj;
 	}
 
-	// ÒýÇæÎÄ¼þ
 	InStream inStream;
 
-	if (inStream.Load(filename))
+	if (mReadFromZip)
 	{
-		obj = inStream.GetObjectAt(0);
+		int bufferSize = 0;
+		char *buffer = 0;
+
+		std::string packageName("Data");
+		std::string fullPackageName = msResPath + packageName;
+
+		if (GetFileDataFromZip(fullPackageName, filename, bufferSize, buffer))
+		{
+			inStream.Load1(bufferSize, buffer);
+			obj = inStream.GetObjectAt(0);
+		}
+	}
+	else
+	{
+#ifdef __ANDROID__
+		int bufferSize = 0;
+		char *buffer = 0;
+
+		std::string fullFilename = filename;
+		fullFilename.insert(0, "assets/");
+
+		PX2_LOG_INFO("msResPath: %s\n", msResPath.c_str());
+		PX2_LOG_INFO("fullFilename: %s\n", fullFilename.c_str());
+
+		if (GetFileDataFromZip(msResPath, fullFilename, bufferSize, buffer))
+		{
+			PX2_LOG_INFO("fullFilename: %s, suc.\n", fullFilename.c_str());
+
+			inStream.Load1(bufferSize, buffer);
+			obj = inStream.GetObjectAt(0);
+		}
+		else
+		{
+			PX2_LOG_INFO("fullFilename: %s, failed.\n", fullFilename.c_str());
+		}
+#else
+		if (inStream.Load(filename))
+		{
+			obj = inStream.GetObjectAt(0);
+		}
+#endif
 	}
 
 	return obj;
@@ -314,9 +419,25 @@ Texture2D *ResourceManager::LoadTextureFromOtherImagefile (
 
 	int bufferSize;
 	char* buffer = 0;
-	if (!FileIO::Load(filename, true, bufferSize, buffer))
+
+	if (mReadFromZip)
 	{
-		return 0;
+		std::string packageName("Data");
+		std::string fullPackageName = msResPath + packageName;
+#ifdef __ANDROID__
+		fullPackageName.insert(0, "assets/");
+#endif
+		if (!GetFileDataFromZip(fullPackageName, filename, bufferSize, buffer))
+		{
+			return 0;
+		}
+	}
+	else
+	{
+		if (!FileIO::Load(filename, true, bufferSize, buffer))
+		{
+			return 0;
+		}
 	}
 
 	ILboolean b = ilLoadL(type, buffer, bufferSize);
@@ -515,6 +636,10 @@ static void GetDescInfo (const DDSHeader &header, int &width, int &height,
 
 Texture2D *ResourceManager::LoadTextureFromDDS (const std::string &filename)
 {
+	assertion(false, "current not do this.");
+
+	return 0;
+
 	FILE* inFile;
 	inFile = fopen(filename.c_str(), "rb");
 
@@ -546,6 +671,70 @@ Texture2D *ResourceManager::LoadTextureFromDDS (const std::string &filename)
 
 	return texture;
 }
+//----------------------------------------------------------------------------
+bool ResourceManager::GetFileDataFromZip (const std::string &packageName,
+	const std::string &filename, int &bufferSize, char* &buffer)
+{
+	if (packageName.empty() || filename.empty())
+		return 0;
+
+	unzFile ufile = 0;
+
+	ufile = unzOpen(packageName.c_str());
+	if (!ufile)
+		return false;
+
+	if (UNZ_OK != unzLocateFile(ufile, filename.c_str(), 1))
+	{
+		assertion(false, "unzLocateFile failed.");
+
+		unzClose(ufile);
+		return false;
+	}
+
+	char filePathTemp[260];
+	unz_file_info fileInfo;
+	if (UNZ_OK != unzGetCurrentFileInfo(ufile, &fileInfo, filePathTemp,
+		sizeof(filePathTemp), 0, 0, 0, 0))
+	{
+		assertion(false, "unzGetCurrentFileInfo failed.");
+
+		unzClose(ufile);
+		return false;
+	}
+
+	if (UNZ_OK != unzOpenCurrentFile(ufile))
+	{
+		assertion(false, "unzOpenCurrentFile failed.");
+
+		unzClose(ufile);
+		return false;
+	}
+
+	buffer = new1<char>(fileInfo.uncompressed_size);
+	int readedSize = 0;
+	readedSize = unzReadCurrentFile(ufile, buffer, fileInfo.uncompressed_size);
+
+	if (0!=readedSize && (fileInfo.uncompressed_size!=readedSize))
+	{
+		assertion(false, "the file size is wrong.");
+
+		unzClose(ufile);
+
+		delete1<char>(buffer);
+		buffer = 0;
+
+		return false;
+	}
+
+	bufferSize = (int)fileInfo.uncompressed_size;
+
+	unzCloseCurrentFile(ufile);
+	unzClose(ufile);
+
+	return true;
+}
+//----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
 void ResourceManager::StartThread ()
 {

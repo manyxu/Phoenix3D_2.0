@@ -79,23 +79,17 @@ namespace PX2
 		bool Write (size_t itemSize, const void* datum);
 		bool Write (size_t itemSize, int numItems, const void* data);
 
-		// 将整个文件加载到buffer
+		// load to buffer
 		static bool Load (const std::string& filename, bool binaryFile,
 			int& bufferSize, char*& buffer);
 
-		// 将buffer保存到文件
+		// save buffer to file
 		static bool Save (const std::string& filename, bool binaryFile,
 			int bufferSize, const char* buffer);
 
-		// 将buffer附加到文件
+		// append buffer to file
 		static bool Append (const std::string& filename, bool binaryFile,
 			int bufferSize, const char* buffer);
-
-		/// 获得可写路径
-		/**
-		* 在PC上为程序当前目录，在移动设备上由该设备API返回。
-		*/
-		static std::string GetWriteablePath ();
 
 	private:
 		FILE* mFile;

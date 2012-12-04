@@ -11,11 +11,12 @@ import android.os.Bundle;
 import android.util.Log;
 import phoenix3d.px2.library.PX2GLView;
 import phoenix3d.px2.gameplay.R;
+import phoenix3d.px2.library.PX2Natives;
 
 public class PX2Activity extends Activity
 {	
-	protected PX2GLView mGLView;
-	private static String mPackageName;
+	 protected PX2GLView mGLView;
+	 private static String mPackageName;
 	
 	 protected void onCreate(Bundle savedInstanceState) 
 	 {
@@ -35,13 +36,14 @@ public class PX2Activity extends Activity
 		 }
 	 }
 	 
-	 public static String GetPX2PackageName ()
-	 {
+	public static String GetPX2PackageName ()
+	{
 		 return mPackageName;
-	 }
-	    
-	 protected void SetPX2PackageName (String packageName)
-	 {
+	}
+	
+	// called in PX2GamePalyActivity
+	protected void SetPX2PackageName (String packageName)
+	{
 		 mPackageName = packageName;
 		 
 		 String apkFilePath = "";
@@ -59,7 +61,12 @@ public class PX2Activity extends Activity
 	     }
 	     
 	     apkFilePath = appInfo.sourceDir;
-	     Log.w("PX2_apk_path", apkFilePath);
+	     Log.w("PX2_APK_PATH", apkFilePath);
+	     
+	     // set apkPath
+	     PX2Natives.nativeSetResourcePath(apkFilePath);
+	     
+	     Log.w("PX2_APK_PATH", "aaa");
 	}
 	 
 	private boolean DetectOpenGLES20() 

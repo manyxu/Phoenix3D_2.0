@@ -37,6 +37,10 @@ namespace PX2
 		void Load (int bufferSize, char* buffer,
 			int mode = BufferIO::BM_DEFAULT_READ);
 
+		bool Load1 (int bufferSize, char* buffer,
+			std::string version = "PX2_VERSION_1_0",
+			int mode = BufferIO::BM_DEFAULT_READ);
+
 		// 从文件读取对象。文件内部版本字符串会和参数version进行比较，如果字符串一致
 		// 对象被加载到列表。如果操作成功，函数返回真。
 		bool Load (const std::string& name,

@@ -14,11 +14,8 @@
     <ClInclude Include="PX2DayTime.hpp">
       <Filter>DataTypes</Filter>
     </ClInclude>
-    <ClInclude Include="PX2FileIO.hpp">
-      <Filter>InputOutput</Filter>
-    </ClInclude>
     <ClInclude Include="PX2InStream.hpp">
-      <Filter>InputOutput</Filter>
+      <Filter>IO</Filter>
     </ClInclude>
     <ClInclude Include="PX2Log.hpp">
       <Filter>Log</Filter>
@@ -33,10 +30,10 @@
       <Filter>Thread</Filter>
     </ClInclude>
     <ClInclude Include="PX2BufferIO.hpp">
-      <Filter>InputOutput</Filter>
+      <Filter>IO</Filter>
     </ClInclude>
     <ClInclude Include="PX2Endian.hpp">
-      <Filter>InputOutput</Filter>
+      <Filter>IO</Filter>
     </ClInclude>
     <ClInclude Include="PX2Memory.hpp">
       <Filter>Memory</Filter>
@@ -57,7 +54,7 @@
       <Filter>Memory</Filter>
     </ClInclude>
     <ClInclude Include="PX2OutStream.hpp">
-      <Filter>InputOutput</Filter>
+      <Filter>IO</Filter>
     </ClInclude>
     <ClInclude Include="PX2ScopedCS.hpp">
       <Filter>Thread</Filter>
@@ -78,16 +75,13 @@
       <Filter>DataTypes</Filter>
     </ClInclude>
     <ClInclude Include="PX2Stream.hpp">
-      <Filter>InputOutput</Filter>
+      <Filter>IO</Filter>
     </ClInclude>
     <ClInclude Include="PX2Thread.hpp">
       <Filter>Thread</Filter>
     </ClInclude>
     <ClInclude Include="PX2Environment.hpp">
       <Filter>Help</Filter>
-    </ClInclude>
-    <ClInclude Include="PX2InitTerm.hpp">
-      <Filter>InputOutput</Filter>
     </ClInclude>
     <ClInclude Include="PX2Singleton.hpp">
       <Filter>Design</Filter>
@@ -102,14 +96,17 @@
     <ClInclude Include="PX2LogOutputWindowHandler.hpp">
       <Filter>Log</Filter>
     </ClInclude>
-    <ClInclude Include="PX2JNI.hpp">
-      <Filter>Android</Filter>
-    </ClInclude>
     <ClInclude Include="PX2FString.hpp">
       <Filter>DataTypes</Filter>
     </ClInclude>
     <ClInclude Include="PX2StringHelp.hpp">
       <Filter>Help</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2FileIO.hpp">
+      <Filter>IO</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2InitTerm.hpp">
+      <Filter>ObjectSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -120,10 +117,10 @@
       <Filter>DataTypes</Filter>
     </ClCompile>
     <ClCompile Include="PX2FileIO.cpp">
-      <Filter>InputOutput</Filter>
+      <Filter>IO</Filter>
     </ClCompile>
     <ClCompile Include="PX2InStream.cpp">
-      <Filter>InputOutput</Filter>
+      <Filter>IO</Filter>
     </ClCompile>
     <ClCompile Include="PX2Log.cpp">
       <Filter>Log</Filter>
@@ -135,10 +132,10 @@
       <Filter>Thread</Filter>
     </ClCompile>
     <ClCompile Include="PX2BufferIO.cpp">
-      <Filter>InputOutput</Filter>
+      <Filter>IO</Filter>
     </ClCompile>
     <ClCompile Include="PX2Endian.cpp">
-      <Filter>InputOutput</Filter>
+      <Filter>IO</Filter>
     </ClCompile>
     <ClCompile Include="PX2Memory.cpp">
       <Filter>Memory</Filter>
@@ -153,7 +150,7 @@
       <Filter>Memory</Filter>
     </ClCompile>
     <ClCompile Include="PX2OutStream.cpp">
-      <Filter>InputOutput</Filter>
+      <Filter>IO</Filter>
     </ClCompile>
     <ClCompile Include="PX2ScopedCS.cpp">
       <Filter>Thread</Filter>
@@ -162,7 +159,7 @@
       <Filter>Time</Filter>
     </ClCompile>
     <ClCompile Include="PX2Stream.cpp">
-      <Filter>InputOutput</Filter>
+      <Filter>IO</Filter>
     </ClCompile>
     <ClCompile Include="PX2Thread.cpp">
       <Filter>Thread</Filter>
@@ -170,17 +167,11 @@
     <ClCompile Include="PX2Environment.cpp">
       <Filter>Help</Filter>
     </ClCompile>
-    <ClCompile Include="PX2InitTerm.cpp">
-      <Filter>InputOutput</Filter>
-    </ClCompile>
     <ClCompile Include="PX2Condition.cpp">
       <Filter>Thread</Filter>
     </ClCompile>
     <ClCompile Include="PX2LogOutputWindowHandler.cpp">
       <Filter>Log</Filter>
-    </ClCompile>
-    <ClCompile Include="PX2JNI.cpp">
-      <Filter>Android</Filter>
     </ClCompile>
     <ClCompile Include="PX2StringHelp.cpp">
       <Filter>Help</Filter>
@@ -188,19 +179,22 @@
     <ClCompile Include="PX2FString.cpp">
       <Filter>DataTypes</Filter>
     </ClCompile>
+    <ClCompile Include="PX2InitTerm.cpp">
+      <Filter>ObjectSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="PX2DoubleChainList.inl">
       <Filter>DataTypes</Filter>
     </None>
     <None Include="PX2FileIO.inl">
-      <Filter>InputOutput</Filter>
+      <Filter>IO</Filter>
     </None>
     <None Include="PX2InStream.inl">
-      <Filter>InputOutput</Filter>
+      <Filter>IO</Filter>
     </None>
     <None Include="PX2BufferIO.inl">
-      <Filter>InputOutput</Filter>
+      <Filter>IO</Filter>
     </None>
     <None Include="PX2Object.inl">
       <Filter>ObjectSystem</Filter>
@@ -212,7 +206,7 @@
       <Filter>Memory</Filter>
     </None>
     <None Include="PX2OutStream.inl">
-      <Filter>InputOutput</Filter>
+      <Filter>IO</Filter>
     </None>
     <None Include="PX2Table.inl">
       <Filter>DataTypes</Filter>
@@ -240,9 +234,6 @@
     <Filter Include="Design">
       <UniqueIdentifier>{07715a77-9952-4077-8ef5-0e1a171400d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="InputOutput">
-      <UniqueIdentifier>{92570a08-bff0-4a85-b026-43852064b551}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Log">
       <UniqueIdentifier>{64803637-5a88-4ceb-9eef-c7abcd9529c9}</UniqueIdentifier>
     </Filter>
@@ -258,8 +249,8 @@
     <Filter Include="Time">
       <UniqueIdentifier>{076330ca-bc25-489c-9d39-65e96028744f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Android">
-      <UniqueIdentifier>{0eb7825e-7b48-4027-8a21-a34c61c824fc}</UniqueIdentifier>
+    <Filter Include="IO">
+      <UniqueIdentifier>{92570a08-bff0-4a85-b026-43852064b551}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

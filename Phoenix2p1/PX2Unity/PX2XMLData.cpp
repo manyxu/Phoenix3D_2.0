@@ -34,6 +34,16 @@ bool XMLData::LoadFile (const string &fileName)
 	return mDocument->LoadFile(fileName.c_str());
 }
 //----------------------------------------------------------------------------
+bool XMLData::LoadBuffer (const char *buffer, int size)
+{
+	mDocument = new0 TiXmlDocument;
+
+	if (!mDocument)
+		return false;
+
+	return mDocument->LoadBuffer(buffer, size);
+}
+//----------------------------------------------------------------------------
 bool XMLData::SaveFile (const string &fileName)
 {
 	if (!mDocument)

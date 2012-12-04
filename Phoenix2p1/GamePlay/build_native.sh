@@ -16,12 +16,24 @@ fi
 
 GAMEPLAY_ANDROID_ROOT=$PX2_ROOT_LOCAL/GamePlay/Proj.Android
 
-# make sure assets is exist
+# assets
 if [ -d $GAMEPLAY_ANDROID_ROOT/assets ]; then
 	rm -rf $GAMEPLAY_ANDROID_ROOT/assets
 fi
 
 mkdir $GAMEPLAY_ANDROID_ROOT/assets
+mkdir $GAMEPLAY_ANDROID_ROOT/assets/Data
+
+for file in $PX2_ROOT_LOCAL/Bin/Data/*
+do
+if [ -d $file ]; then
+cp -rf $file $GAMEPLAY_ANDROID_ROOT/assets/Data
+fi
+
+if [ -f $file ]; then
+cp $file $GAMEPLAY_ANDROID_ROOT/assets/Data
+fi
+done
 
 # copy resources
 

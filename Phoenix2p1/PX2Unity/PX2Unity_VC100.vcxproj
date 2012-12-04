@@ -113,22 +113,8 @@
     <ClCompile Include="DevIL\PNG\pngwrite.c" />
     <ClCompile Include="DevIL\PNG\pngwtran.c" />
     <ClCompile Include="DevIL\PNG\pngwutil.c" />
-    <ClCompile Include="DevIL\ZLIB\adler32.c" />
-    <ClCompile Include="DevIL\ZLIB\compress.c" />
-    <ClCompile Include="DevIL\ZLIB\crc32.c" />
-    <ClCompile Include="DevIL\ZLIB\deflate.c" />
-    <ClCompile Include="DevIL\ZLIB\gzclose.c" />
-    <ClCompile Include="DevIL\ZLIB\gzlib.c" />
-    <ClCompile Include="DevIL\ZLIB\gzread.c" />
-    <ClCompile Include="DevIL\ZLIB\gzwrite.c" />
-    <ClCompile Include="DevIL\ZLIB\infback.c" />
-    <ClCompile Include="DevIL\ZLIB\inffast.c" />
-    <ClCompile Include="DevIL\ZLIB\inflate.c" />
-    <ClCompile Include="DevIL\ZLIB\inftrees.c" />
-    <ClCompile Include="DevIL\ZLIB\trees.c" />
-    <ClCompile Include="DevIL\ZLIB\uncompr.c" />
-    <ClCompile Include="DevIL\ZLIB\zutil.c" />
     <ClCompile Include="PX2CSVParser.cpp" />
+    <ClCompile Include="PX2JNI.cpp" />
     <ClCompile Include="PX2LanguageManager.cpp" />
     <ClCompile Include="PX2ResourceManager.cpp" />
     <ClCompile Include="PX2XMLData.cpp" />
@@ -137,6 +123,23 @@
     <ClCompile Include="TinyXML\tinyxml.cpp" />
     <ClCompile Include="TinyXML\tinyxmlerror.cpp" />
     <ClCompile Include="TinyXML\tinyxmlparser.cpp" />
+    <ClCompile Include="ZLib\adler32.c" />
+    <ClCompile Include="ZLib\compress.c" />
+    <ClCompile Include="ZLib\crc32.c" />
+    <ClCompile Include="ZLib\deflate.c" />
+    <ClCompile Include="ZLib\gzclose.c" />
+    <ClCompile Include="ZLib\gzlib.c" />
+    <ClCompile Include="ZLib\gzread.c" />
+    <ClCompile Include="ZLib\gzwrite.c" />
+    <ClCompile Include="ZLib\infback.c" />
+    <ClCompile Include="ZLib\inffast.c" />
+    <ClCompile Include="ZLib\inflate.c" />
+    <ClCompile Include="ZLib\inftrees.c" />
+    <ClCompile Include="ZLib\minzip\ioapi.c" />
+    <ClCompile Include="ZLib\minzip\unzip.c" />
+    <ClCompile Include="ZLib\trees.c" />
+    <ClCompile Include="ZLib\uncompr.c" />
+    <ClCompile Include="ZLib\zutil.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DevIL\altivec_common.h" />
@@ -192,18 +195,8 @@
     <ClInclude Include="DevIL\PNG\pnglibconf.h" />
     <ClInclude Include="DevIL\PNG\pngpriv.h" />
     <ClInclude Include="DevIL\PNG\pngstruct.h" />
-    <ClInclude Include="DevIL\ZLIB\crc32.h" />
-    <ClInclude Include="DevIL\ZLIB\deflate.h" />
-    <ClInclude Include="DevIL\ZLIB\gzguts.h" />
-    <ClInclude Include="DevIL\ZLIB\inffast.h" />
-    <ClInclude Include="DevIL\ZLIB\inffixed.h" />
-    <ClInclude Include="DevIL\ZLIB\inflate.h" />
-    <ClInclude Include="DevIL\ZLIB\inftrees.h" />
-    <ClInclude Include="DevIL\ZLIB\trees.h" />
-    <ClInclude Include="DevIL\ZLIB\zconf.h" />
-    <ClInclude Include="DevIL\ZLIB\zlib.h" />
-    <ClInclude Include="DevIL\ZLIB\zutil.h" />
     <ClInclude Include="PX2CSVParser.hpp" />
+    <ClInclude Include="PX2JNI.hpp" />
     <ClInclude Include="PX2LanguageManager.hpp" />
     <ClInclude Include="PX2ResourceManager.hpp" />
     <ClInclude Include="PX2Unity.hpp" />
@@ -212,6 +205,19 @@
     <ClInclude Include="PX2XMLNode.hpp" />
     <ClInclude Include="TinyXML\tinystr.h" />
     <ClInclude Include="TinyXML\tinyxml.h" />
+    <ClInclude Include="ZLib\crc32.h" />
+    <ClInclude Include="ZLib\deflate.h" />
+    <ClInclude Include="ZLib\gzguts.h" />
+    <ClInclude Include="ZLib\inffast.h" />
+    <ClInclude Include="ZLib\inffixed.h" />
+    <ClInclude Include="ZLib\inflate.h" />
+    <ClInclude Include="ZLib\inftrees.h" />
+    <ClInclude Include="ZLib\minzip\ioapi.h" />
+    <ClInclude Include="ZLib\minzip\unzip.h" />
+    <ClInclude Include="ZLib\trees.h" />
+    <ClInclude Include="ZLib\zconf.h" />
+    <ClInclude Include="ZLib\zlib.h" />
+    <ClInclude Include="ZLib\zutil.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PX2CSVParser.inl" />
@@ -292,7 +298,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;IL_STATIC_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\;.\DevIL;.\DevIL\ZLIB;.\DevIL\PNG;.\DevIL\JPEG;.\TinyXML;..\PX2SDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;.\DevIL;.\DevIL\PNG;.\DevIL\JPEG;.\ZLib;.\ZLib\minzip;.\TinyXML;..\PX2SDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -336,7 +342,7 @@ xcopy /DY "$(TargetPath)" ..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Con
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;IL_STATIC_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\;.\DevIL;.\DevIL\ZLIB;.\DevIL\PNG;.\DevIL\JPEG;.\TinyXML;..\PX2SDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;.\ZLib;.\ZLib\minzip;.\DevIL;.\DevIL\PNG;.\DevIL\JPEG;.\TinyXML;..\PX2SDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

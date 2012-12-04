@@ -920,6 +920,62 @@ void TiXmlDocument::operator=( const TiXmlDocument& copy )
 	copy.CopyTo( this );
 }
 
+bool TiXmlDocument::LoadBuffer(const char *buf, size_t length, TiXmlEncoding encoding)
+{
+	TIXML_STRING data;
+	data.reserve( length );
+
+	const char* lastPos = buf;
+	const char* p = buf;
+
+	while(p<buf+length) {
+		assert( p < (buf+length) );
+		if ( *p == 0xa ) {
+			// Newline character. No special rules for this. Append all the characters
+			// since the last string, and include the newline.
+			data.append( lastPos, (p-lastPos+1) );	// append, include the newline
+			++p;									// move past the newline
+			lastPos = p;							// and point to the new buffer (may be 0)
+			assert( p <= (buf+length) );
+		}
+		else if ( *p == 0xd ) {
+			// Carriage return. Append what we have so far, then
+			// handle moving forward in the buffer.
+			if ( (p-lastPos) > 0 ) {
+				data.append( lastPos, p-lastPos );	// do not add the CR
+			}
+			data += (char)0xa;						// a proper newline
+
+			if ( *(p+1) == 0xa ) {
+				// Carriage return - new line sequence
+				p += 2;
+				lastPos = p;
+				assert( p <= (buf+length) );
+			}
+			else {
+				// it was followed by something else...that is presumably characters again.
+				++p;
+				lastPos = p;
+				assert( p <= (buf+length) );
+			}
+		}
+		else {
+			++p;
+		}
+	}
+	// Handle any left over characters.
+	if ( p-lastPos ) {
+		data.append( lastPos, p-lastPos );
+	}		
+
+	Parse( data.c_str(), 0, encoding );
+
+	if (  Error() )
+		return false;
+	else
+		return true;
+}
+
 
 bool TiXmlDocument::LoadFile( TiXmlEncoding encoding )
 {

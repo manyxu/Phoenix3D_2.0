@@ -5,7 +5,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := PX2Core
 
 LOCAL_SRC_FILES := \
-PX2JNI.cpp \
 PX2Assert.cpp \
 PX2BufferIO.cpp \
 PX2DayTime.cpp \
