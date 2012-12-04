@@ -41,10 +41,10 @@ JNIEXPORT void JNICALL Java_phoenix3d_px2_library_PX2Natives_nativeOnResume
 
 /*
  * Class:     phoenix3d_px2_library_PX2Natives
- * Method:    nativeTerm
+ * Method:    nativeOnTerm
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_phoenix3d_px2_library_PX2Natives_nativeTerm
+JNIEXPORT void JNICALL Java_phoenix3d_px2_library_PX2Natives_nativeOnTerm
   (JNIEnv *, jclass);
 
 /*
