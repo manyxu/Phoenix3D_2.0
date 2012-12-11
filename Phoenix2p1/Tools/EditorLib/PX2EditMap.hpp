@@ -30,10 +30,14 @@ namespace PX2Editor
 		void CreateBox (PX2::APoint pos);
 		void CreateSphere (PX2::APoint pos);
 		void AddModelActor ( PX2::Movable *mov, PX2::APoint pos);
+		void CreateTerrain (std::string name, int terrainSize, int pageSize,
+			float gridSpacing);
 
 		void AddActor (PX2::Actor *actor);
 		void RemoveActor (PX2::Actor *actor);
-		void RemoveSelection ();
+
+		void CloneShare (PX2::Actor *actor, PX2::APoint pos);
+		void CloneData (PX2::Actor *actor, PX2::APoint pos);
 
 	protected:
 		PX2::ScenePtr mScene;

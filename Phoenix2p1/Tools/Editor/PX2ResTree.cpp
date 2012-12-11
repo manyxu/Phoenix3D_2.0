@@ -56,6 +56,8 @@ void ResTree::OnItemActivated(wxTreeEvent& event)
 
 		EditSystem::GetSingleton().SetPreViewObject(object);
 	}
+
+	Expand(item->GetItemID());
 }
 //-----------------------------------------------------------------------------
 void ResTree::OnSelChanged(wxTreeEvent& event)

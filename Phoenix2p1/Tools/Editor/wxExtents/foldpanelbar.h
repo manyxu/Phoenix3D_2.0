@@ -48,7 +48,7 @@ private:
 
 public:
     /** Constructor, usually not directly used by the developer. */
-    wxFoldPanel(wxFoldPanelItem *item)
+    wxFoldPanel(wxFoldPanelItem *item = 0)
         : m_item(item)
     {
     }

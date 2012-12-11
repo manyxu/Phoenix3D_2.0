@@ -43,6 +43,13 @@ namespace PX2
 		Object *CheckRes (ResHandle handle);
 		LoadState GetResLoadState (ResHandle handle);
 
+		/// 获得buffer,在Android中从apk中获取
+		/**
+		* 你需要负责使用delete1释放获得的buffer
+		*/
+		bool GetBuffer (const std::string &filename, int &bufferSize, 
+			char* &buffer);
+
 		/// 获得可写路径
 		/**
 		* 在PC上为程序当前目录，在移动设备上由该设备API返回。
@@ -75,6 +82,8 @@ public_internal:
 		LoadRecord &InsertRecord (const std::string &filename);
 		void _LoadTheRecord (LoadRecord &rec);
 		Object *_LoadObject (const std::string &filename);
+		bool _LoadBuffer (const std::string &filename, int &bufferSize,
+			char* &buffer);
 		Texture2D *LoadTextureFromOtherImagefile (const std::string &filename);
 		Texture2D *LoadTextureFromDDS (const std::string &filename);
 		bool GetFileDataFromZip (const std::string &packageName, 
@@ -102,6 +111,8 @@ public_internal:
 
 		unsigned int mTimeCounter;
 	};
+
+#define PX2_RM ResourceManager::GetSingleton()
 
 #include "PX2ResourceManager.inl"
 

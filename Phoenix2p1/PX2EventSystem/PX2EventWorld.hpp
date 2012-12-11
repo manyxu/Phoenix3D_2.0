@@ -53,9 +53,9 @@ namespace PX2
 		void BroadcastingNetEvent (Event* event);
 
 	private:
-		bool AddHandler (EventHandler* handler);
-		void RemoveHandler (EventHandler* handler);
-		void UpdateEvent (float detalTime);
+		bool _AddHandler (EventHandler* handler);
+		void _RemoveHandler (EventHandler* handler);
+		void _UpdateEvent (float detalTime);
 		void _BroadcastingEvent (Event* event);
 		void SwapEventList ();
 
@@ -64,6 +64,7 @@ namespace PX2
 
 		EventList* mNowEventList;
 		EventList* mNextEventList;
+		EventHandlerList mAddingHandlers;
 		EventHandlerList mHandlers;
 	};
 

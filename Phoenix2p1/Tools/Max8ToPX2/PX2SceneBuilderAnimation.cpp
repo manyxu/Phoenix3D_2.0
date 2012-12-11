@@ -59,12 +59,15 @@ void SceneBuilder::BuildKeyFrameController(INode *node, PX2::Movable *movable)
 	if (trnTiming.Active)
 	{
 		Control* ctl = tmCtl->GetPositionController();
-		IKeyControl* keyCtl = GetKeyControlInterface(ctl);
-		if (keyCtl)
+		if (ctl)
 		{
-			numTrnKeys = keyCtl->GetNumKeys();
-			GetTrnKeyInfo(numTrnKeys, ctl->ClassID(), keyCtl, trnTiming,
-				keyInfos);
+			IKeyControl* keyCtl = GetKeyControlInterface(ctl);
+			if (keyCtl)
+			{
+				numTrnKeys = keyCtl->GetNumKeys();
+				GetTrnKeyInfo(numTrnKeys, ctl->ClassID(), keyCtl, trnTiming,
+					keyInfos);
+			}
 		}
 	}
 
@@ -73,12 +76,15 @@ void SceneBuilder::BuildKeyFrameController(INode *node, PX2::Movable *movable)
 	if (rotTiming.Active)
 	{
 		Control *ctl = tmCtl->GetRotationController();
-		IKeyControl *keyCtl = GetKeyControlInterface(ctl);
-		if (keyCtl)
+		if (ctl)
 		{
-			numRotKeys = keyCtl->GetNumKeys();
-			GetRotKeyInfo(numRotKeys, ctl->ClassID(), keyCtl, rotTiming,
-				keyInfos);
+			IKeyControl *keyCtl = GetKeyControlInterface(ctl);
+			if (keyCtl)
+			{
+				numRotKeys = keyCtl->GetNumKeys();
+				GetRotKeyInfo(numRotKeys, ctl->ClassID(), keyCtl, rotTiming,
+					keyInfos);
+			}
 		}
 	}
 
@@ -87,12 +93,15 @@ void SceneBuilder::BuildKeyFrameController(INode *node, PX2::Movable *movable)
 	if (scaTiming.Active)
 	{
 		Control* ctl = tmCtl->GetScaleController();
-		IKeyControl* keyCtl = GetKeyControlInterface(ctl);
-		if (keyCtl)
+		if (ctl)
 		{
-			numScaKeys = keyCtl->GetNumKeys();
-			GetScaleKeyInfo(numScaKeys, ctl->ClassID(), keyCtl, scaTiming,
-				keyInfos);
+			IKeyControl* keyCtl = GetKeyControlInterface(ctl);
+			if (keyCtl)
+			{
+				numScaKeys = keyCtl->GetNumKeys();
+				GetScaleKeyInfo(numScaKeys, ctl->ClassID(), keyCtl, scaTiming,
+					keyInfos);
+			}
 		}
 	}
 
@@ -111,7 +120,7 @@ void SceneBuilder::BuildKeyFrameController(INode *node, PX2::Movable *movable)
 	// 初始化关键中控制器数组
 	PX2::KeyframeController *kfc = new0 PX2::KeyframeController
 		(0, numTrnKeys, numRotKeys, numScaKeys, movable->LocalTransform);
-	
+	kfc->Repeat = PX2::Controller::RT_WRAP;
 	PX2::APoint *tKey = kfc->GetTranslations();
 	float *tTime = kfc->GetTranslationTimes();
 
@@ -282,7 +291,7 @@ void SceneBuilder::BuildFrameController (INode *node, PX2::Movable *movable)
 		numRKeys, numSKeys, movable->LocalTransform);
 	kfc->MinTime = TicksToSec(mTimeStart - mTimeOffset);
 	kfc->MaxTime = TicksToSec(mTimeEnd - mTimeOffset);
-
+	kfc->Repeat = PX2::Controller::RT_WRAP;
 	PX2::APoint *tKey = kfc->GetTranslations();
 	float *tTime = kfc->GetTranslationTimes();
 	PX2::HQuaternion *rKey = kfc->GetRotations();
@@ -293,7 +302,7 @@ void SceneBuilder::BuildFrameController (INode *node, PX2::Movable *movable)
 	// t
 	for (int i=0; i<numTKeys; i++)
 	{
-		tTime[i] = TicksToSec(tTime[i] - mTimeOffset);
+		tTime[i] = TicksToSec(ttTime[i] - mTimeOffset);
 		tKey[i].X() = ttData[i][0];
 		tKey[i].Y() = ttData[i][1];
 		tKey[i].Z() = ttData[i][2];
@@ -302,7 +311,7 @@ void SceneBuilder::BuildFrameController (INode *node, PX2::Movable *movable)
 	// r
 	for (int i=0; i<numRKeys; i++)
 	{
-		rTime[i] = TicksToSec(rTime[i] - mTimeOffset);
+		rTime[i] = TicksToSec(rrTime[i] - mTimeOffset);
 		rKey[i].W() = rrData[i].w;
 		rKey[i].X() = -rrData[i].x;
 		rKey[i].Y() = -rrData[i].y;
@@ -312,7 +321,7 @@ void SceneBuilder::BuildFrameController (INode *node, PX2::Movable *movable)
 	// s
 	for (int i=0; i<numSKeys; i++)
 	{
-		sTime[i] = TicksToSec(sTime[i] - mTimeOffset);
+		sTime[i] = TicksToSec(ssTime[i] - mTimeOffset);
 		sKey[i] = ssData[i].x;
 	}
 

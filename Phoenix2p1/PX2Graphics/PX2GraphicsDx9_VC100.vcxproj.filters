@@ -708,7 +708,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="PX2GraphicsRoot.inl" />
     <None Include="PX2Bound.inl">
       <Filter>DataTypes</Filter>
     </None>

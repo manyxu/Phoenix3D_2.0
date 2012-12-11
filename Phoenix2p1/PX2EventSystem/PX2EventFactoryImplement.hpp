@@ -26,8 +26,8 @@ namespace PX2
 	class EventFactoryImplement
 	{
 	public:
-		EventFactoryImplement () {}
-		~EventFactoryImplement () {}
+		EventFactoryImplement ();
+		~EventFactoryImplement ();
 
 		// ÊÂ¼þ
 		Event* CreateEventX ();

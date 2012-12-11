@@ -22,6 +22,21 @@
     <Filter Include="Inspector">
       <UniqueIdentifier>{899cb4a9-b104-4df6-af55-19454f4a434a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Dlgs">
+      <UniqueIdentifier>{69826e89-a806-465c-b1c0-6cd8660cc159}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wxExtents\FlodPane">
+      <UniqueIdentifier>{773c2b41-f4dd-4c81-a275-b9f61becbc2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wxExtents\PropertyGrid">
+      <UniqueIdentifier>{9de758a9-8914-4400-a9bb-cd718b0182f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inspector\Model">
+      <UniqueIdentifier>{0310408a-7610-43aa-a4e6-af23d564539b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inspector\Terrain">
+      <UniqueIdentifier>{22b697c3-ec15-40b6-9288-8d63fa7f98f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PX2EditorApp.hpp">
@@ -56,15 +71,6 @@
     <ClInclude Include="PX2PreViewWindow.hpp">
       <Filter>PreView</Filter>
     </ClInclude>
-    <ClInclude Include="wxExtents\captionbar.h">
-      <Filter>wxExtents</Filter>
-    </ClInclude>
-    <ClInclude Include="wxExtents\foldpanelbar.h">
-      <Filter>wxExtents</Filter>
-    </ClInclude>
-    <ClInclude Include="wxExtents\foldpanelitem.h">
-      <Filter>wxExtents</Filter>
-    </ClInclude>
     <ClInclude Include="PX2InspectorWindow.hpp">
       <Filter>Inspector</Filter>
     </ClInclude>
@@ -73,6 +79,60 @@
     </ClInclude>
     <ClInclude Include="PX2ResTreeItem.hpp">
       <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2DlgTerainNew.hpp">
+      <Filter>Dlgs</Filter>
+    </ClInclude>
+    <ClInclude Include="wxExtents\captionbar.h">
+      <Filter>wxExtents\FlodPane</Filter>
+    </ClInclude>
+    <ClInclude Include="wxExtents\foldpanelbar.h">
+      <Filter>wxExtents\FlodPane</Filter>
+    </ClInclude>
+    <ClInclude Include="wxExtents\foldpanelitem.h">
+      <Filter>wxExtents\FlodPane</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2PropertyGrid.hpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2PropertyPage.hpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Property.hpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="wxPropertyExtend.hpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ActorTransProperty.hpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ObjectPropertyGrid.hpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ModelActorPropertyGrid.hpp">
+      <Filter>Inspector\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ModelActorInspector.hpp">
+      <Filter>Inspector\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2TerrainActorInspector.hpp">
+      <Filter>Inspector\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2TerrainActorPropertyGrid.hpp">
+      <Filter>Inspector\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2TerrainBrushPane.hpp">
+      <Filter>Inspector\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2TerrainHeightPane.hpp">
+      <Filter>Inspector\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2TerrainMaterialPane.hpp">
+      <Filter>Inspector\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2TerEditCtrl.hpp">
+      <Filter>ViewCtrl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -107,15 +167,6 @@
     <ClCompile Include="PX2PreViewWindow.cpp">
       <Filter>PreView</Filter>
     </ClCompile>
-    <ClCompile Include="wxExtents\captionbar.cpp">
-      <Filter>wxExtents</Filter>
-    </ClCompile>
-    <ClCompile Include="wxExtents\foldpanelbar.cpp">
-      <Filter>wxExtents</Filter>
-    </ClCompile>
-    <ClCompile Include="wxExtents\foldpanelitem.cpp">
-      <Filter>wxExtents</Filter>
-    </ClCompile>
     <ClCompile Include="PX2InspectorWindow.cpp">
       <Filter>Inspector</Filter>
     </ClCompile>
@@ -124,6 +175,60 @@
     </ClCompile>
     <ClCompile Include="PX2ResTreeItem.cpp">
       <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2DlgTerainNew.cpp">
+      <Filter>Dlgs</Filter>
+    </ClCompile>
+    <ClCompile Include="wxExtents\captionbar.cpp">
+      <Filter>wxExtents\FlodPane</Filter>
+    </ClCompile>
+    <ClCompile Include="wxExtents\foldpanelbar.cpp">
+      <Filter>wxExtents\FlodPane</Filter>
+    </ClCompile>
+    <ClCompile Include="wxExtents\foldpanelitem.cpp">
+      <Filter>wxExtents\FlodPane</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2PropertyGrid.cpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2PropertyPage.cpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Property.cpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="wxPropertyExtend.cpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ActorTransProperty.cpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ObjectPropertyGrid.cpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ModelActorPropertyGrid.cpp">
+      <Filter>Inspector\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ModelActorInspector.cpp">
+      <Filter>Inspector\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2TerrainActorInspector.cpp">
+      <Filter>Inspector\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2TerrainActorPropertyGrid.cpp">
+      <Filter>Inspector\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2TerrainBrushPane.cpp">
+      <Filter>Inspector\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2TerrainHeightPane.cpp">
+      <Filter>Inspector\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2TerrainMaterialPane.cpp">
+      <Filter>Inspector\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2TerEditCtrl.cpp">
+      <Filter>ViewCtrl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +239,9 @@
       <Filter>ViewCtrl</Filter>
     </None>
     <None Include="PX2ViewCtrlInstMan.inl">
+      <Filter>ViewCtrl</Filter>
+    </None>
+    <None Include="PX2ViewCtrl.inl">
       <Filter>ViewCtrl</Filter>
     </None>
   </ItemGroup>

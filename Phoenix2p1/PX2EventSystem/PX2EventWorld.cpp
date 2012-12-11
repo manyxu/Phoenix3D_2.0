@@ -65,9 +65,7 @@ void EventWorld::ComeIn (EventHandler *handler)
 	if (handler->IsInWorld(this))
 		return;
 
-	handler->Enter(this);
-
-	AddHandler(handler);
+	mAddingHandlers.push_back(handler);
 }
 //----------------------------------------------------------------------------
 void EventWorld::GoOut(EventHandler *handler)
@@ -82,12 +80,19 @@ void EventWorld::GoOut(EventHandler *handler)
 
 	handler->Leave();
 
-	RemoveHandler(handler);
+	_RemoveHandler(handler);
 }
 //----------------------------------------------------------------------------
 void EventWorld::Update (float detalTime)
 {
-	UpdateEvent(detalTime);
+	for (int i=0; i<(int)mAddingHandlers.size(); i++)
+	{
+		mAddingHandlers[i]->Enter(this);
+		_AddHandler(mAddingHandlers[i]);
+	}
+	mAddingHandlers.clear();
+
+	_UpdateEvent(detalTime);
 }
 //----------------------------------------------------------------------------
 void EventWorld::BroadcastingLocalEvent (Event* event)
@@ -105,14 +110,14 @@ void EventWorld::BroadcastingNetEvent (Event* event)
 	PX2_UNUSED(event);
 }
 //----------------------------------------------------------------------------
-bool EventWorld::AddHandler (EventHandler* handler)
+bool EventWorld::_AddHandler (EventHandler* handler)
 {
 	mHandlers.push_back(handler);
 
 	return true;
 }
 //----------------------------------------------------------------------------
-void EventWorld::RemoveHandler (EventHandler* handler)
+void EventWorld::_RemoveHandler (EventHandler* handler)
 {
 	EventHandlerList::iterator it = mHandlers.begin();
 
@@ -127,11 +132,14 @@ void EventWorld::RemoveHandler (EventHandler* handler)
 	}
 }
 //----------------------------------------------------------------------------
-void EventWorld::UpdateEvent (float detalTime)
+void EventWorld::_UpdateEvent (float detalTime)
 {
 	EventList::iterator itEvent=mNowEventList->begin();
 	for (;itEvent!=mNowEventList->end(); ++itEvent)
 	{
+		if (0 == *itEvent)
+			continue;
+
 		(*itEvent)->Update(detalTime);
 
 		// delay

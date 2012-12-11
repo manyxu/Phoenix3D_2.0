@@ -158,6 +158,9 @@ void EditCommandManager::PushUnDo (EditCommandPtr command)
 {
 	mUnDoCommands.push_back(command);
 
+	if ((int)mUnDoCommands.size() > 21)
+		mUnDoCommands.pop_front();
+
 	PX2::Event *event = EditorEventSpace::CreateEventX(
 		EditorEventSpace::PushUnDo);
 	EventWorld::GetSingleton().BroadcastingLocalEvent(event);

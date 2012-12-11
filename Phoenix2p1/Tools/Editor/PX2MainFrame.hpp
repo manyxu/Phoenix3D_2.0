@@ -28,10 +28,14 @@ namespace PX2Editor
 		void OnSave (wxCommandEvent &e);
 		void OnSaveAs (wxCommandEvent &e);
 		void OnExist (wxCommandEvent &e);
+		void OnUnDo (wxCommandEvent &e);
+		void OnReDo (wxCommandEvent &e);
 		void OnEditSelect (wxCommandEvent& e);
 		void OnEditTranslate (wxCommandEvent& e);
 		void OnEditRolate (wxCommandEvent& e);
 		void OnEditScale (wxCommandEvent& e);
+		void OnEditEdit (wxCommandEvent& e);
+		void OnTerrainNew (wxCommandEvent &e);
 		void OnGamePlay (wxCommandEvent& e);
 
 	protected:

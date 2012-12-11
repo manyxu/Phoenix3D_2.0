@@ -80,13 +80,9 @@ void ViewCtrlInstMan::SwitchCtrlInst (const std::string& typeName)
 
 		mCurViewCtrlInst->Activate();
 
-		if (oldInst && oldInst->GetInteractionMode() != IM_SELECT)
+		if (oldInst)
 		{
 			mCurViewCtrlInst->SetInteractionMode(oldInst->GetInteractionMode());
-		}
-		else
-		{
-			mCurViewCtrlInst->SetInteractionMode(IM_SELECT);
 		}
 	}
 }

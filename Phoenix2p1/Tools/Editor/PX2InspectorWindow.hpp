@@ -18,12 +18,20 @@ namespace PX2Editor
 		InspectorWindow (wxWindow *parent);
 		~InspectorWindow ();
 
+		void OnSize(wxSizeEvent& e);
+
 		virtual void DoEnter ();
 		virtual void DoExecute (PX2::Event *event);
 		virtual void DoLeave ();
 
 	protected:
 		DECLARE_EVENT_TABLE()
+		void ChangeToWindow (std::string str);
+		void SetActor (PX2::Actor *actor);
+
+		PX2::ActorPtr mActor;
+		std::string mCurWinStr;
+		wxWindow *mCurWindow;
 	};
 
 }

@@ -23,11 +23,19 @@ GameManager::~GameManager ()
 //----------------------------------------------------------------------------
 bool GameManager::LoadBoost (const char *filename)
 {
-
-
 	XMLData data;
-	if (data.LoadFile(filename))
+
+	int bufferSize = 0;
+	char *buffer = 0;
+	ResourceManager::GetSingleton().GetBuffer(filename, bufferSize, buffer);
+
+	if (!buffer || bufferSize==0)
+		return false;
+
+	if (data.LoadBuffer(buffer, bufferSize))
 	{
+		delete1<char>(buffer);
+
 		data.GetNodeByPath("Config.var").AttribToInt("width", mBoostWidth);
 		data.GetNodeByPath("Config.var").AttribToInt("height", mBoostHeight);
 		mMapName = data.GetNodeByPath("Play.var").AttributeToString("mapName");

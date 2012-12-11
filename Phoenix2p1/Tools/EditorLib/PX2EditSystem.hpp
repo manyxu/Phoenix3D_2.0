@@ -11,6 +11,7 @@
 #include "PX2EditMap.hpp"
 #include "PX2ActorSelection.hpp"
 #include "PX2EditCommand.hpp"
+#include "PX2TerrainEdit.hpp"
 
 namespace PX2Editor
 {
@@ -23,13 +24,16 @@ namespace PX2Editor
 
 		bool Initlize ();
 		bool Terminate ();
-		void Update (double detalSeconds);
+		void Update (double elapsedSeconds);
 
 		EditCommandManager *GetCM ();
-
+		TerrainEdit *GetTerrainEdit ();
 		EditMap *GetEditMap ();
 		ActorSelection *GetSelection ();
+		PX2::Node *GetHelpScene ();
 
+		void EnableSelectEdit (bool enable);
+		bool IsSelectEditEnable ();
 		enum EditMode
 		{
 			EM_NONE,
@@ -37,6 +41,7 @@ namespace PX2Editor
 			EM_TRANSLATE,
 			EM_ROLATE,
 			EM_SCALE,
+			EM_TERRAIN,
 			EM_MAX_MODE
 		};
 		void SetEditMode (EditMode mode);
@@ -58,9 +63,11 @@ namespace PX2Editor
 
 	protected:
 		EditCommandManager *mCM;
+		TerrainEdit *mTerrainEdit;
 		EditMap *mEditMap;
 		ActorSelection *mSelection;
 		PX2::NodePtr mHelpScene;
+		bool mSelectEditEnable;
 		EditMode mEditMode;
 		PX2::ObjectPtr mPreViewObject;
 		PX2::ObjectPtr mSelectedResource;

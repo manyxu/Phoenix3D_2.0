@@ -1,3 +1,4 @@
-MainFrame			1001
-RenderViewWindow	3001
-ResTree				4001
+MainFrame					1001
+RenderViewWindow			3001
+ResTree						4001
+ID_INS_TER_GRID				5001

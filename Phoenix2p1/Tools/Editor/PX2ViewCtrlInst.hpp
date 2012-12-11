@@ -15,11 +15,8 @@ namespace PX2Editor
 	/// 交互模式
 	enum InteractionMode
 	{
-		IM_NONE,
-		IM_SELECT,
-		IM_TRANSLATE,
-		IM_ROLATE,
-		IM_SCALE,
+		IM_GENERAL,
+		IM_TEREDIT,
 		IM_MAX_MODE
 	};
 
@@ -29,15 +26,6 @@ namespace PX2Editor
 		SM_REPLACE = 0,
 		SM_ADD = 1,
 		SM_SUBTRACT = 2
-	};
-
-	/// 角色操纵模式
-	enum ActorControlMode
-	{
-		ACM_SELECT,
-		ACM_TRANSLATE,
-		ACM_ROLATE,
-		ACM_SCALE
 	};
 
 	class RenderViewWindow;
@@ -76,14 +64,10 @@ namespace PX2Editor
 	protected:
 		virtual void SwitchPaneController (ViewCtrl *ctrl);
 
-		virtual void EnterSelectMode ();
-		virtual void ExitSelectMode ();
-		virtual void EnterTranslateMode ();
-		virtual void ExitTranslateMode ();
-		virtual void EnterRolateMode ();
-		virtual void ExitRolateMode ();
-		virtual void EnterScaleMode ();
-		virtual void ExitScaleMode ();
+		virtual void EnterGeneralMode ();
+		virtual void ExitGeneralMode ();
+		virtual void EnterTerEditMode ();
+		virtual void ExitTerEditMode ();
 
 		PX2::Ray3f mRay;
 		InteractionMode mInteractionMode;

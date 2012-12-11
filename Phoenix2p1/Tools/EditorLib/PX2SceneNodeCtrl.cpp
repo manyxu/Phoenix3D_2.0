@@ -45,18 +45,18 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 
 	vbaX.Position<Float3>(0) = Float3(0.25f, 0.0f, 0.0f);
 	vbaX.Position<Float3>(1) = Float3(1.125f, 0.0f, 0.0f);
-	vbaX.Color<Float4>(0, 0) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
-	vbaX.Color<Float4>(0, 1) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
+	vbaX.Color<Float4>(0, 0) = Float4::RED;
+	vbaX.Color<Float4>(0, 1) = Float4::RED;
 
 	vbaX.Position<Float3>(2) = Float3(0.5f, 0.0f, 0.0f);
 	vbaX.Position<Float3>(3) = Float3(0.5f, 0.5f, 0.0f);
-	vbaX.Color<Float4>(0, 2) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
-	vbaX.Color<Float4>(0, 3) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
+	vbaX.Color<Float4>(0, 2) = Float4::RED;
+	vbaX.Color<Float4>(0, 3) = Float4::RED;
 
 	vbaX.Position<Float3>(4) = Float3(0.5f, 0.0f, 0.0f);
 	vbaX.Position<Float3>(5) = Float3(0.5f, 0.0f, 0.5f);
-	vbaX.Color<Float4>(0, 4) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
-	vbaX.Color<Float4>(0, 5) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
+	vbaX.Color<Float4>(0, 4) = Float4::RED;
+	vbaX.Color<Float4>(0, 5) = Float4::RED;
 
 	Polysegment *polysegmentX = new0 PX2::Polysegment(mVertexFormat, vBufferX,
 		false);
@@ -66,7 +66,6 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 
 	TriMesh *meshX = stdMesh.Disk(3, 16, radius);
 	meshX->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
-	//meshX->GetMaterialInstance()->GetPass(0)->GetWireProperty()->Enabled = true;
 	meshX->LocalTransform.SetRotate(HMatrix().MakeRotation(AVector::UNIT_Y, 
 		-Mathf::HALF_PI));
 	meshX->LocalTransform.SetTranslate(APoint(1.125f, 0.0f, 0.0f));
@@ -80,7 +79,6 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 
 	TriFan *fanX = stdMesh.Cone(16, radius, height);
 	fanX->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
-	//fanX->GetMaterialInstance()->GetPass(0)->GetWireProperty()->Enabled = true;
 	fanX->LocalTransform.SetRotate(HMatrix().MakeRotation(AVector::UNIT_Y, 
 		Mathf::HALF_PI));
 	fanX->LocalTransform.SetTranslate(APoint(1.125f, 0.0f, 0.0f));
@@ -88,7 +86,7 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 	vbaTemp.ApplyTo(mVertexFormat, vBufferTemp);
 	for (int i=0; i<vBufferTemp->GetNumElements(); i++)
 	{
-		vbaTemp.Color<Float4>(0, i) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
+		vbaTemp.Color<Float4>(0, i) = Float4::RED;
 	}
 	nodeX->AttachChild(fanX);
 
@@ -101,18 +99,18 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 
 	vbaY.Position<Float3>(0) = Float3(0.0f, 0.25f, 0.0f);
 	vbaY.Position<Float3>(1) = Float3(0.0f, 1.125f, 0.0f);
-	vbaY.Color<Float4>(0, 0) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
-	vbaY.Color<Float4>(0, 1) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
+	vbaY.Color<Float4>(0, 0) = Float4::GREEN;
+	vbaY.Color<Float4>(0, 1) = Float4::GREEN;
 
 	vbaY.Position<Float3>(2) = Float3(0.0f, 0.5f, 0.0f);
 	vbaY.Position<Float3>(3) = Float3(0.5f, 0.5f, 0.0f);
-	vbaY.Color<Float4>(0, 2) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
-	vbaY.Color<Float4>(0, 3) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
+	vbaY.Color<Float4>(0, 2) = Float4::GREEN;
+	vbaY.Color<Float4>(0, 3) = Float4::GREEN;
 
 	vbaY.Position<Float3>(4) = Float3(0.0f, 0.5f, 0.0f);
 	vbaY.Position<Float3>(5) = Float3(0.0f, 0.5f, 0.5f);
-	vbaY.Color<Float4>(0, 4) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
-	vbaY.Color<Float4>(0, 5) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
+	vbaY.Color<Float4>(0, 4) = Float4::GREEN;
+	vbaY.Color<Float4>(0, 5) = Float4::GREEN;
 
 	Polysegment *polysegmentY = new0 PX2::Polysegment(mVertexFormat, vBufferY,
 		false);
@@ -122,7 +120,6 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 
 	TriMesh *meshY = stdMesh.Disk(3, 16, radius);
 	meshY->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
-	//meshY->GetMaterialInstance()->GetPass(0)->GetWireProperty()->Enabled = true;
 	meshY->LocalTransform.SetRotate(HMatrix().MakeRotation(AVector::UNIT_X, 
 		Mathf::HALF_PI));
 	meshY->LocalTransform.SetTranslate(APoint(0.0f, 1.125f, 0.0f));
@@ -136,7 +133,6 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 
 	TriFan *fanY = stdMesh.Cone(16, radius, height);
 	fanY->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
-	//fanY->GetMaterialInstance()->GetPass(0)->GetWireProperty()->Enabled = true;
 	fanY->LocalTransform.SetRotate(HMatrix().MakeRotation(AVector::UNIT_X, 
 		-Mathf::HALF_PI));
 	fanY->LocalTransform.SetTranslate(APoint(0.0f, 1.125f, 0.0f));
@@ -144,7 +140,7 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 	vbaTemp.ApplyTo(mVertexFormat, vBufferTemp);
 	for (int i=0; i<vBufferTemp->GetNumElements(); i++)
 	{
-		vbaTemp.Color<Float4>(0, i) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
+		vbaTemp.Color<Float4>(0, i) = Float4::GREEN;
 	}
 	nodeY->AttachChild(fanY);
 
@@ -157,18 +153,18 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 
 	vbaZ.Position<Float3>(0) = Float3(0.0f, 0.0f, 0.25f);
 	vbaZ.Position<Float3>(1) = Float3(0.0f, 0.0f, 1.125f);
-	vbaZ.Color<Float4>(0, 0) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
-	vbaZ.Color<Float4>(0, 1) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
+	vbaZ.Color<Float4>(0, 0) = Float4::BLUE;
+	vbaZ.Color<Float4>(0, 1) = Float4::BLUE;
 
 	vbaZ.Position<Float3>(2) = Float3(0.0f, 0.0f, 0.5f);
 	vbaZ.Position<Float3>(3) = Float3(0.5f, 0.0f, 0.5f);
-	vbaZ.Color<Float4>(0, 2) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
-	vbaZ.Color<Float4>(0, 3) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
+	vbaZ.Color<Float4>(0, 2) = Float4::BLUE;
+	vbaZ.Color<Float4>(0, 3) = Float4::BLUE;
 
 	vbaZ.Position<Float3>(4) = Float3(0.0f, 0.0f, 0.5f);
 	vbaZ.Position<Float3>(5) = Float3(0.0f, 0.5f, 0.5f);
-	vbaZ.Color<Float4>(0, 4) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
-	vbaZ.Color<Float4>(0, 5) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
+	vbaZ.Color<Float4>(0, 4) = Float4::BLUE;
+	vbaZ.Color<Float4>(0, 5) = Float4::BLUE;
 
 	Polysegment *polysegmentZ = new0 PX2::Polysegment(mVertexFormat, vBufferZ,
 		false);
@@ -178,7 +174,6 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 
 	TriMesh *meshZ = stdMesh.Disk(3, 16, radius);
 	meshZ->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
-	//meshZ->GetMaterialInstance()->GetPass(0)->GetWireProperty()->Enabled = true;
 	meshZ->LocalTransform.SetTranslate(APoint(.0f, 0.0f, 1.125f));
 	meshZ->LocalTransform.SetRotate(HMatrix().MakeRotation(AVector::UNIT_X, 
 		Mathf::PI));
@@ -186,19 +181,18 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 	vbaTemp.ApplyTo(mVertexFormat, vBufferTemp);
 	for (int i=0; i<vBufferTemp->GetNumElements(); i++)
 	{
-		vbaTemp.Color<Float4>(0, i) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
+		vbaTemp.Color<Float4>(0, i) = Float4(0.0f, 0.0f, 0.5f, 1.0f);
 	}
 	nodeZ->AttachChild(meshZ);
 
 	TriFan *fanZ = stdMesh.Cone(16, radius, height);
 	fanZ->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
-	//fanZ->GetMaterialInstance()->GetPass(0)->GetWireProperty()->Enabled = true;
 	fanZ->LocalTransform.SetTranslate(APoint(0.0f, 0.0f, 1.125f));
 	vBufferTemp = fanZ->GetVertexBuffer();
 	vbaTemp.ApplyTo(mVertexFormat, vBufferTemp);
 	for (int i=0; i<vBufferTemp->GetNumElements(); i++)
 	{
-		vbaTemp.Color<Float4>(0, i) = Float4(0.0f, 0.0f, 0.5f, 1.0f);
+		vbaTemp.Color<Float4>(0, i) = Float4::BLUE;
 	}
 	nodeZ->AttachChild(fanZ);
 
@@ -270,6 +264,11 @@ PX2::Node *CtrlsFactory::CreateTranslateCtrl_P ()
 //----------------------------------------------------------------------------
 PX2::Node *CtrlsFactory::CreateRolateCtrl_P ()
 {
+	int axisSamples = 4;
+	int radialSamples = 12;
+	float radial = 0.05f;
+	float height = radial*4.0f;	
+
 	// node
 	PX2::Node *node = new0 Node;
 	node->LocalTransform.SetUniformScale(2.0f);
@@ -283,16 +282,41 @@ PX2::Node *CtrlsFactory::CreateRolateCtrl_P ()
 	PX2::Node *nodeX = new0 Node;
 	nodeX->SetName("Rolate_X");
 
-	TriMesh *meshX = stdMesh.Torus(40, 10, 1.0f, 0.04f);
+	VertexBuffer *vBufferX = new0 VertexBuffer(6, mVertexFormat->GetStride());
+	VertexBufferAccessor vbaX(mVertexFormat, vBufferX);
+
+	vbaX.Position<Float3>(0) = Float3(0.25f, 0.0f, 0.0f);
+	vbaX.Position<Float3>(1) = Float3(1.125f, 0.0f, 0.0f);
+	vbaX.Color<Float4>(0, 0) = Float4::RED;
+	vbaX.Color<Float4>(0, 1) = Float4::RED;
+
+	vbaX.Position<Float3>(2) = Float3(0.5f, 0.0f, 0.0f);
+	vbaX.Position<Float3>(3) = Float3(0.5f, 0.5f, 0.0f);
+	vbaX.Color<Float4>(0, 2) = Float4::GREEN;
+	vbaX.Color<Float4>(0, 3) = Float4::GREEN;
+
+	vbaX.Position<Float3>(4) = Float3(0.5f, 0.0f, 0.0f);
+	vbaX.Position<Float3>(5) = Float3(0.5f, 0.0f, 0.5f);
+	vbaX.Color<Float4>(0, 4) = Float4::RED;
+	vbaX.Color<Float4>(0, 5) = Float4::RED;
+
+	Polysegment *polysegmentX = new0 PX2::Polysegment(mVertexFormat, vBufferX,
+		false);
+	polysegmentX->SetMaterialInstance(
+		VertexColor4Material::CreateUniqueInstance());
+	nodeX->AttachChild(polysegmentX);
+
+	TriMesh *meshX = stdMesh.Cylinder(axisSamples, radialSamples, radial,
+		height, false);
 	meshX->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
-	//meshX->GetMaterialInstance()->GetPass(0)->GetWireProperty()->Enabled = true;
-	meshX->LocalTransform.SetRotate(HMatrix().MakeRotation(AVector::UNIT_Y, 
-		-Mathf::HALF_PI));
+	meshX->LocalTransform.SetRotate(HMatrix().MakeRotation(AVector::UNIT_Y,
+		Mathf::HALF_PI));
+	meshX->LocalTransform.SetTranslate(APoint(1.125f, 0.0f, 0.0f));
 	vBufferTemp = meshX->GetVertexBuffer();
 	vbaTemp.ApplyTo(mVertexFormat, vBufferTemp);
 	for (int i=0; i<vBufferTemp->GetNumElements(); i++)
 	{
-		vbaTemp.Color<Float4>(0, i) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
+		vbaTemp.Color<Float4>(0, i) = Float4::RED;
 	}
 	nodeX->AttachChild(meshX);
 
@@ -300,11 +324,36 @@ PX2::Node *CtrlsFactory::CreateRolateCtrl_P ()
 	PX2::Node *nodeY = new0 PX2::Node;
 	nodeX->SetName("Rolate_Y");
 
-	TriMesh *meshY = stdMesh.Torus(40, 10, 1.0f, 0.04f);
+	VertexBuffer *vBufferY = new0 VertexBuffer(6, mVertexFormat->GetStride());
+	VertexBufferAccessor vbaY(mVertexFormat, vBufferY);
+
+	vbaY.Position<Float3>(0) = Float3(0.0f, 0.25f, 0.0f);
+	vbaY.Position<Float3>(1) = Float3(0.0f, 1.125f, 0.0f);
+	vbaY.Color<Float4>(0, 0) = Float4::GREEN;
+	vbaY.Color<Float4>(0, 1) = Float4::GREEN;
+
+	vbaY.Position<Float3>(2) = Float3(0.0f, 0.5f, 0.0f);
+	vbaY.Position<Float3>(3) = Float3(0.5f, 0.5f, 0.0f);
+	vbaY.Color<Float4>(0, 2) = Float4::GREEN;
+	vbaY.Color<Float4>(0, 3) = Float4::GREEN;
+
+	vbaY.Position<Float3>(4) = Float3(0.0f, 0.5f, 0.0f);
+	vbaY.Position<Float3>(5) = Float3(0.0f, 0.5f, 0.5f);
+	vbaY.Color<Float4>(0, 4) = Float4::GREEN;
+	vbaY.Color<Float4>(0, 5) = Float4::GREEN;
+
+	Polysegment *polysegmentY = new0 PX2::Polysegment(mVertexFormat, vBufferY,
+		false);
+	polysegmentY->SetMaterialInstance(
+		VertexColor4Material::CreateUniqueInstance());
+	nodeY->AttachChild(polysegmentY);
+
+	TriMesh *meshY = stdMesh.Cylinder(axisSamples, radialSamples, radial,
+		height, false);
 	meshY->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
-	//meshY->GetMaterialInstance()->GetPass(0)->GetWireProperty()->Enabled = true;
-	meshY->LocalTransform.SetRotate(HMatrix().MakeRotation(AVector::UNIT_X, 
+	meshY->LocalTransform.SetRotate(HMatrix().MakeRotation(AVector::UNIT_X,
 		Mathf::HALF_PI));
+	meshY->LocalTransform.SetTranslate(APoint(0.0f, 1.125f, 0.0f));
 	vBufferTemp = meshY->GetVertexBuffer();
 	vbaTemp.ApplyTo(mVertexFormat, vBufferTemp);
 	for (int i=0; i<vBufferTemp->GetNumElements(); i++)
@@ -317,16 +366,39 @@ PX2::Node *CtrlsFactory::CreateRolateCtrl_P ()
 	PX2::Node *nodeZ = new0 PX2::Node();
 	nodeX->SetName("Rolate_Z");
 
-	TriMesh *meshZ = stdMesh.Torus(40, 10, 1.0f, 0.04f);
+	VertexBuffer *vBufferZ = new0 VertexBuffer(6, mVertexFormat->GetStride());
+	VertexBufferAccessor vbaZ(mVertexFormat, vBufferZ);
+
+	vbaZ.Position<Float3>(0) = Float3(0.0f, 0.0f, 0.25f);
+	vbaZ.Position<Float3>(1) = Float3(0.0f, 0.0f, 1.125f);
+	vbaZ.Color<Float4>(0, 0) = Float4::BLUE;
+	vbaZ.Color<Float4>(0, 1) = Float4::BLUE;
+
+	vbaZ.Position<Float3>(2) = Float3(0.0f, 0.0f, 0.5f);
+	vbaZ.Position<Float3>(3) = Float3(0.5f, 0.0f, 0.5f);
+	vbaZ.Color<Float4>(0, 2) = Float4::BLUE;
+	vbaZ.Color<Float4>(0, 3) = Float4::BLUE;
+
+	vbaZ.Position<Float3>(4) = Float3(0.0f, 0.0f, 0.5f);
+	vbaZ.Position<Float3>(5) = Float3(0.0f, 0.5f, 0.5f);
+	vbaZ.Color<Float4>(0, 4) = Float4::BLUE;
+	vbaZ.Color<Float4>(0, 5) = Float4::BLUE;
+
+	Polysegment *polysegmentZ = new0 PX2::Polysegment(mVertexFormat, vBufferZ,
+		false);
+	polysegmentZ->SetMaterialInstance(
+		VertexColor4Material::CreateUniqueInstance());
+	nodeZ->AttachChild(polysegmentZ);
+
+	TriMesh *meshZ = stdMesh.Cylinder(axisSamples, radialSamples, radial, 
+		height, false);
 	meshZ->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
-	//meshZ->GetMaterialInstance()->GetPass(0)->GetWireProperty()->Enabled = true;
-	meshZ->LocalTransform.SetRotate(HMatrix().MakeRotation(AVector::UNIT_X, 
-		Mathf::PI));
+	meshZ->LocalTransform.SetTranslate(APoint(.0f, 0.0f, 1.125f));
 	vBufferTemp = meshZ->GetVertexBuffer();
 	vbaTemp.ApplyTo(mVertexFormat, vBufferTemp);
 	for (int i=0; i<vBufferTemp->GetNumElements(); i++)
 	{
-		vbaTemp.Color<Float4>(0, i) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
+		vbaTemp.Color<Float4>(0, i) = Float4::BLUE;
 	}
 	nodeZ->AttachChild(meshZ);
 
@@ -340,6 +412,8 @@ PX2::Node *CtrlsFactory::CreateRolateCtrl_P ()
 //----------------------------------------------------------------------------
 PX2::Node *CtrlsFactory::CreateScaleCtrl_P ()
 {
+	float boxSize = 0.05f;
+
 	// node
 	PX2::Node *node = new0 Node;
 	node->LocalTransform.SetUniformScale(2.0f);
@@ -358,18 +432,18 @@ PX2::Node *CtrlsFactory::CreateScaleCtrl_P ()
 
 	vbaX.Position<Float3>(0) = Float3(0.25f, 0.0f, 0.0f);
 	vbaX.Position<Float3>(1) = Float3(1.125f, 0.0f, 0.0f);
-	vbaX.Color<Float4>(0, 0) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
-	vbaX.Color<Float4>(0, 1) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
+	vbaX.Color<Float4>(0, 0) = Float4::RED;
+	vbaX.Color<Float4>(0, 1) = Float4::RED;
 
 	vbaX.Position<Float3>(2) = Float3(0.5f, 0.0f, 0.0f);
 	vbaX.Position<Float3>(3) = Float3(0.5f, 0.5f, 0.0f);
-	vbaX.Color<Float4>(0, 2) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
-	vbaX.Color<Float4>(0, 3) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
+	vbaX.Color<Float4>(0, 2) = Float4::RED;
+	vbaX.Color<Float4>(0, 3) = Float4::RED;
 
 	vbaX.Position<Float3>(4) = Float3(0.5f, 0.0f, 0.0f);
 	vbaX.Position<Float3>(5) = Float3(0.5f, 0.0f, 0.5f);
-	vbaX.Color<Float4>(0, 4) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
-	vbaX.Color<Float4>(0, 5) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
+	vbaX.Color<Float4>(0, 4) = Float4::RED;
+	vbaX.Color<Float4>(0, 5) = Float4::RED;
 
 	Polysegment *polysegmentX = new0 PX2::Polysegment(mVertexFormat, vBufferX,
 		false);
@@ -377,15 +451,14 @@ PX2::Node *CtrlsFactory::CreateScaleCtrl_P ()
 		VertexColor4Material::CreateUniqueInstance());
 	nodeX->AttachChild(polysegmentX);
 
-	TriMesh *meshX = stdMesh.Box(0.06f, 0.06f, 0.06f);
+	TriMesh *meshX = stdMesh.Box(boxSize, boxSize, boxSize);
 	meshX->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
-	//meshX->GetMaterialInstance()->GetPass(0)->GetWireProperty()->Enabled = true;
 	meshX->LocalTransform.SetTranslate(APoint(1.125f, 0.0f, 0.0f));
 	vBufferTemp = meshX->GetVertexBuffer();
 	vbaTemp.ApplyTo(mVertexFormat, vBufferTemp);
 	for (int i=0; i<vBufferTemp->GetNumElements(); i++)
 	{
-		vbaTemp.Color<Float4>(0, i) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
+		vbaTemp.Color<Float4>(0, i) = Float4::RED;
 	}
 	nodeX->AttachChild(meshX);
 
@@ -398,18 +471,18 @@ PX2::Node *CtrlsFactory::CreateScaleCtrl_P ()
 
 	vbaY.Position<Float3>(0) = Float3(0.0f, 0.25f, 0.0f);
 	vbaY.Position<Float3>(1) = Float3(0.0f, 1.125f, 0.0f);
-	vbaY.Color<Float4>(0, 0) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
-	vbaY.Color<Float4>(0, 1) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
+	vbaY.Color<Float4>(0, 0) = Float4::GREEN;
+	vbaY.Color<Float4>(0, 1) = Float4::GREEN;
 
 	vbaY.Position<Float3>(2) = Float3(0.0f, 0.5f, 0.0f);
 	vbaY.Position<Float3>(3) = Float3(0.5f, 0.5f, 0.0f);
-	vbaY.Color<Float4>(0, 2) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
-	vbaY.Color<Float4>(0, 3) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
+	vbaY.Color<Float4>(0, 2) = Float4::GREEN;
+	vbaY.Color<Float4>(0, 3) = Float4::GREEN;
 
 	vbaY.Position<Float3>(4) = Float3(0.0f, 0.5f, 0.0f);
 	vbaY.Position<Float3>(5) = Float3(0.0f, 0.5f, 0.5f);
-	vbaY.Color<Float4>(0, 4) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
-	vbaY.Color<Float4>(0, 5) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
+	vbaY.Color<Float4>(0, 4) = Float4::GREEN;
+	vbaY.Color<Float4>(0, 5) = Float4::GREEN;
 
 	Polysegment *polysegmentY = new0 PX2::Polysegment(mVertexFormat, vBufferY,
 		false);
@@ -417,15 +490,14 @@ PX2::Node *CtrlsFactory::CreateScaleCtrl_P ()
 		VertexColor4Material::CreateUniqueInstance());
 	nodeY->AttachChild(polysegmentY);
 
-	TriMesh *meshY = stdMesh.Box(0.06f, 0.06f, 0.06f);
+	TriMesh *meshY = stdMesh.Box(boxSize, boxSize, boxSize);
 	meshY->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
-	//meshY->GetMaterialInstance()->GetPass(0)->GetWireProperty()->Enabled = true;
 	meshY->LocalTransform.SetTranslate(APoint(0.0f, 1.125f, 0.0f));
 	vBufferTemp = meshY->GetVertexBuffer();
 	vbaTemp.ApplyTo(mVertexFormat, vBufferTemp);
 	for (int i=0; i<vBufferTemp->GetNumElements(); i++)
 	{
-		vbaTemp.Color<Float4>(0, i) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
+		vbaTemp.Color<Float4>(0, i) = Float4::GREEN;
 	}
 	nodeY->AttachChild(meshY);
 
@@ -438,18 +510,18 @@ PX2::Node *CtrlsFactory::CreateScaleCtrl_P ()
 
 	vbaZ.Position<Float3>(0) = Float3(0.0f, 0.0f, 0.25f);
 	vbaZ.Position<Float3>(1) = Float3(0.0f, 0.0f, 1.125f);
-	vbaZ.Color<Float4>(0, 0) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
-	vbaZ.Color<Float4>(0, 1) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
+	vbaZ.Color<Float4>(0, 0) = Float4::BLUE;
+	vbaZ.Color<Float4>(0, 1) = Float4::BLUE;
 
 	vbaZ.Position<Float3>(2) = Float3(0.0f, 0.0f, 0.5f);
 	vbaZ.Position<Float3>(3) = Float3(0.5f, 0.0f, 0.5f);
-	vbaZ.Color<Float4>(0, 2) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
-	vbaZ.Color<Float4>(0, 3) = Float4(1.0f, 0.0f, 0.0f, 1.0f);
+	vbaZ.Color<Float4>(0, 2) = Float4::BLUE;
+	vbaZ.Color<Float4>(0, 3) = Float4::BLUE;
 
 	vbaZ.Position<Float3>(4) = Float3(0.0f, 0.0f, 0.5f);
 	vbaZ.Position<Float3>(5) = Float3(0.0f, 0.5f, 0.5f);
-	vbaZ.Color<Float4>(0, 4) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
-	vbaZ.Color<Float4>(0, 5) = Float4(0.0f, 1.0f, 0.0f, 1.0f);
+	vbaZ.Color<Float4>(0, 4) = Float4::BLUE;
+	vbaZ.Color<Float4>(0, 5) = Float4::BLUE;
 
 	Polysegment *polysegmentZ = new0 PX2::Polysegment(mVertexFormat, vBufferZ,
 		false);
@@ -457,15 +529,14 @@ PX2::Node *CtrlsFactory::CreateScaleCtrl_P ()
 		VertexColor4Material::CreateUniqueInstance());
 	nodeZ->AttachChild(polysegmentZ);
 
-	TriMesh *meshZ = stdMesh.Box(0.06f, 0.06f, 0.06f);
+	TriMesh *meshZ = stdMesh.Box(boxSize, boxSize, boxSize);
 	meshZ->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
-	//meshZ->GetMaterialInstance()->GetPass(0)->GetWireProperty()->Enabled = true;
 	meshZ->LocalTransform.SetTranslate(APoint(.0f, 0.0f, 1.125f));
 	vBufferTemp = meshZ->GetVertexBuffer();
 	vbaTemp.ApplyTo(mVertexFormat, vBufferTemp);
 	for (int i=0; i<vBufferTemp->GetNumElements(); i++)
 	{
-		vbaTemp.Color<Float4>(0, i) = Float4(0.0f, 0.0f, 1.0f, 1.0f);
+		vbaTemp.Color<Float4>(0, i) = Float4::BLUE;
 	}
 	nodeZ->AttachChild(meshZ);
 
@@ -473,7 +544,7 @@ PX2::Node *CtrlsFactory::CreateScaleCtrl_P ()
 	PX2::Node *nodeXYZ = new0 PX2::Node();
 	nodeXYZ->SetName("Scale_XYZ");
 
-	TriMesh *meshXYZ = stdMesh.Box(0.06f, 0.06f, 0.06f);
+	TriMesh *meshXYZ = stdMesh.Box(boxSize, boxSize, boxSize);
 	meshXYZ->SetMaterialInstance(VertexColor4Material::CreateUniqueInstance());
 	vBufferTemp = meshXYZ->GetVertexBuffer();
 	vbaTemp.ApplyTo(mVertexFormat, vBufferTemp);
@@ -996,24 +1067,7 @@ void SceneNodeCtrl::SetCtrlType (SceneNodeCtrl::CtrlType type)
 //----------------------------------------------------------------------------
 void SceneNodeCtrl::SetDragType (DragType type)
 {
-	mDragType = type; 
-
-	if (type == DT_X)
-	{
-
-	}
-	else if (type == DT_Y)
-	{
-
-	}
-	else if (type == DT_Z)
-	{
-
-	}
-	else if (type == DT_NONE)
-	{
-
-	}
+	mDragType = type;
 }
 //----------------------------------------------------------------------------
 void SceneNodeCtrl::OnLeftMouseDown (PX2::Renderer *renderer,
@@ -1031,6 +1085,11 @@ void SceneNodeCtrl::OnLeftMouseUp (PX2::Renderer *renderer,
 	const PX2::Vector2f &point)
 {
 	SetDragType(DT_NONE);
+
+	Event *ent = EditorEventSpace::CreateEventX(
+		EditorEventSpace::SceneNodeDrag);
+	ent->SetData<int>(0);
+	EventWorld::GetSingleton().BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------
 void SceneNodeCtrl::OnMouseWheel (PX2::Renderer *renderer, float wheelDelta)
@@ -1049,7 +1108,12 @@ void SceneNodeCtrl::OnMouseWheel (PX2::Renderer *renderer, float wheelDelta)
 	}
 	else
 	{
-//		mCtrlsGroup->WorldTransform.SetUniformScale(diffLength*0.05f);
+		float scale = diffLength*0.04f;
+		if (scale == 0.0f)
+			scale = 0.0001f;
+		if (scale < 1.0f)
+			scale = 1.0f;
+		mCtrlsGroup->WorldTransform.SetUniformScale(scale);
 		mCtrlsGroup->Update();
 	}
 }
@@ -1057,75 +1121,99 @@ void SceneNodeCtrl::OnMouseWheel (PX2::Renderer *renderer, float wheelDelta)
 void SceneNodeCtrl::OnMouseMove (bool leftDown, PX2::Renderer *renderer,
 	PX2::Vector2f posNow, PX2::Vector2f posBefore)
 {
+	// 光标移动跟新
 	if (DT_NONE == mDragType)
 	{
 		CtrlsFactory factory;
 
 		DragType dt = GetDragType(renderer, posNow);
 		Movable *ctrlMov = 0;
-		Float4 colorRed = Float4(1.0f, 0.0f, 0.0f, 1.0f);
-		Float4 colorGreen = Float4(0.0f, 1.0f, 0.0f, 1.0f);
-		Float4 colorBlue = Float4(0.0f, 0.0f, 1.0f, 1.0f);
-		Float4 colorYellow = Float4(1.0f, 1.0f, 0.0f, 1.0f);
-		Float4 colorYellowAlpha = Float4(1.0f, 1.0f, 0.0f, 0.25f);
-		Float4 colorYellowNone = Float4(1.0f, 1.0f, 0.0f, 0.0f);
+		Float4 colorYellowAlpha = Float4(1.0f, 1.0f, 0.0f, 0.3f);
 
 		if (DT_X == dt)
 		{
 			ctrlMov = GetCurrentCtrlX();
-			factory.UpdateCtrlColor(renderer, ctrlMov, colorYellow);
+			factory.UpdateCtrlColor(renderer, ctrlMov, Float4::YELLOW);
 		}
 		else if (DT_Y == dt)
 		{
 			ctrlMov = GetCurrentCtrlY();
-			factory.UpdateCtrlColor(renderer, ctrlMov, colorYellow);
+			factory.UpdateCtrlColor(renderer, ctrlMov, Float4::YELLOW);
 		}
 		else if (DT_Z == dt)
 		{
 			ctrlMov = GetCurrentCtrlZ();
-			factory.UpdateCtrlColor(renderer, ctrlMov, colorYellow);
+			factory.UpdateCtrlColor(renderer, ctrlMov, Float4::YELLOW);
 		}
 		else if (DT_XY == dt)
 		{
 			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXY(), colorYellowAlpha);
-			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlYZ(), colorYellowNone);
-			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXZ(), colorYellowNone);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlYZ(), Float4::ZERO);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXZ(), Float4::ZERO);
 		}
 		else if (DT_YZ == dt)
 		{
 			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlYZ(), colorYellowAlpha);
-			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXY(), colorYellowNone);
-			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXZ(), colorYellowNone);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXY(), Float4::ZERO);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXZ(), Float4::ZERO);
 		}
 		else if (DT_XZ == dt)
 		{
 			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXZ(), colorYellowAlpha);
-			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXY(), colorYellowNone);
-			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlYZ(), colorYellowNone);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXY(), Float4::ZERO);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlYZ(), Float4::ZERO);
+		}
+		else if (DT_XYZ == dt)
+		{		
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXYZ(), Float4::YELLOW);
 		}
 		else if (DT_NONE == dt)
 		{
-			factory.UpdateCtrlColor(renderer, GetCurrentCtrlX(), colorRed);
-			factory.UpdateCtrlColor(renderer, GetCurrentCtrlY(), colorGreen);
-			factory.UpdateCtrlColor(renderer, GetCurrentCtrlZ(), colorBlue);
-			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXY(), colorYellowNone);
-			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlYZ(), colorYellowNone);
-			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXZ(), colorYellowNone);
+			factory.UpdateCtrlColor(renderer, GetCurrentCtrlX(), Float4::RED);
+			factory.UpdateCtrlColor(renderer, GetCurrentCtrlY(), Float4::GREEN);
+			factory.UpdateCtrlColor(renderer, GetCurrentCtrlZ(), Float4::BLUE);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXY(), Float4::ZERO);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlYZ(), Float4::ZERO);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXZ(), Float4::ZERO);
+			factory.UpdateCtrlColor1(renderer, GetCurrentCtrlXYZ(), Float4::WHITE);
 		}
 
+		if (DT_NONE == dt)
+		{
+			Event *ent = EditorEventSpace::CreateEventX(
+				EditorEventSpace::SceneNodeDrag);
+			ent->SetData<int>(0);
+			EventWorld::GetSingleton().BroadcastingLocalEvent(ent);
+		}
+		else
+		{
+			Event *ent = EditorEventSpace::CreateEventX(
+				EditorEventSpace::SceneNodeDrag);
+			ent->SetData<int>(1);
+			EventWorld::GetSingleton().BroadcastingLocalEvent(ent);
+		}
 	}
 
-	posNow.Y() = renderer->GetHeight() - posNow.Y();
-	posBefore.Y() = renderer->GetHeight() - posBefore.Y();
+	// Drag 更新
+	if (DT_NONE == mDragType)
+	{
+		return;
+	}
+	else
+	{
+		Event *ent = EditorEventSpace::CreateEventX(
+			EditorEventSpace::SceneNodeDrag);
+		ent->SetData<int>(1);
+		EventWorld::GetSingleton().BroadcastingLocalEvent(ent);
+	}
 
 	ActorSelection *selection = EditSystem::GetSingleton().GetSelection();
 	int actorNum = selection->GetActorQuantity();
-
 	if (0 == actorNum)
 		return;
 
-	if (DT_NONE == mDragType)
-		return;
+	posNow.Y() = renderer->GetHeight() - posNow.Y();
+	posBefore.Y() = renderer->GetHeight() - posBefore.Y();
 
 	// get pickPoint with the plane
 	TriMesh *meshHelp = EditSystem::GetSingleton().GetXYPlane();
@@ -1152,6 +1240,10 @@ void SceneNodeCtrl::OnMouseMove (bool leftDown, PX2::Renderer *renderer,
 	else if (DT_XZ == mDragType)
 	{
 		meshHelp = EditSystem::GetSingleton().GetXZPlane();
+	}
+	else if (DT_XYZ == mDragType)
+	{
+		meshHelp = EditSystem::GetSingleton().GetXYPlane();
 	}
 	meshHelp->WorldTransform.SetTranslate(GetPosition());
 
@@ -1181,25 +1273,42 @@ void SceneNodeCtrl::OnMouseMove (bool leftDown, PX2::Renderer *renderer,
 		return;
 
 	AVector transMoved = positionNow - positionBefore;
+	AVector transDir = transMoved;
+	transDir.Normalize();
 
 	float transValue = 0.0f;
 	float transValue1 = 0.0f;
 	AVector transVec;
+	AVector rolateVec;
 
 	if (DT_X == mDragType)
 	{
 		transValue = transMoved.Dot(AVector::UNIT_X);
 		transVec = AVector::UNIT_X * transValue;
+
+		rolateVec.X() = transMoved.Length() *(1.0f-Mathf::FAbs(transDir.Dot(AVector::UNIT_X)));
+
+		AVector vec = transDir.Cross(AVector::UNIT_X);
+		rolateVec.X() *= Mathf::Sign(vec.Z());
 	}
 	else if (DT_Y == mDragType)
 	{
 		transValue = transMoved.Dot(AVector::UNIT_Y);
 		transVec = AVector::UNIT_Y * transValue;
+
+		rolateVec.Y() = transMoved.Length() *(1.0f-Mathf::FAbs(transDir.Dot(AVector::UNIT_Y)));
+		
+		AVector vec = transDir.Cross(AVector::UNIT_Y);
+		rolateVec.Y() *= Mathf::Sign(vec.Z());
 	}
 	else if (DT_Z == mDragType)
 	{
 		transValue = transMoved.Dot(AVector::UNIT_Z);
 		transVec = AVector::UNIT_Z * transValue;
+
+		rolateVec.Z() = transMoved.Length() *(1.0f-Mathf::FAbs(transDir.Dot(AVector::UNIT_Z)));
+
+		rolateVec.Z() *= Mathf::Sign(posNow.X() - posBefore.X());
 	}
 	else if (DT_XY == mDragType)
 	{
@@ -1222,12 +1331,31 @@ void SceneNodeCtrl::OnMouseMove (bool leftDown, PX2::Renderer *renderer,
 		transVec = AVector::UNIT_X * transValue
 			+AVector::UNIT_Z * transValue1;
 	}
+	else if (DT_XYZ == mDragType)
+	{
+		float transValue0 = Mathf::FAbs(transMoved.Dot(AVector::UNIT_X));
+		float transValue1 = Mathf::FAbs(transMoved.Dot(AVector::UNIT_Y));
+		float transValue2 = Mathf::FAbs(transMoved.Dot(AVector::UNIT_Z));
 
-	if (mCtrlType == CT_TRANSLATE)
+		float trans = (transValue0 + transValue1 + transValue2)/3.0f;
+		trans *= Mathf::Sign(transMoved.Y());
+
+		transVec = AVector(trans, trans, trans);
+	}
+
+	if (CT_TRANSLATE == mCtrlType)
 	{
 		EditSystem::GetSingleton().GetSelection()->Translate(transVec);
 
 		UpdateCtrlTrans();
+	}
+	else if (CT_ROLATE == mCtrlType)
+	{
+		EditSystem::GetSingleton().GetSelection()->AddRolate(rolateVec);
+	}
+	else if (CT_SCALE == mCtrlType)
+	{
+		EditSystem::GetSingleton().GetSelection()->AddScale(transVec);
 	}
 
 	Event *event = 0;
@@ -1243,12 +1371,10 @@ PX2::Movable *SceneNodeCtrl::GetCurrentCtrlX ()
 	int index = mCtrlsGroup->GetActiveChild();
 	Node *node = DynamicCast<Node>(mCtrlsGroup->GetChild(index));
 
-	if (node)
-	{
-		return node->GetChild(0);
-	}
+	if (!node)
+		return 0;
 
-	return 0;
+	return node->GetChild(0);
 }
 //----------------------------------------------------------------------------
 PX2::Movable *SceneNodeCtrl::GetCurrentCtrlY ()
@@ -1256,12 +1382,10 @@ PX2::Movable *SceneNodeCtrl::GetCurrentCtrlY ()
 	int index = mCtrlsGroup->GetActiveChild();
 	Node *node = DynamicCast<Node>(mCtrlsGroup->GetChild(index));
 
-	if (node)
-	{
-		return node->GetChild(1);
-	}
-
-	return 0;
+	if (!node)
+		return 0;
+	
+	return node->GetChild(1);
 }
 //----------------------------------------------------------------------------
 PX2::Movable *SceneNodeCtrl::GetCurrentCtrlZ ()
@@ -1269,12 +1393,10 @@ PX2::Movable *SceneNodeCtrl::GetCurrentCtrlZ ()
 	int index = mCtrlsGroup->GetActiveChild();
 	Node *node = DynamicCast<Node>(mCtrlsGroup->GetChild(index));
 
-	if (node)
-	{
-		return node->GetChild(2);
-	}
+	if (!node)
+		return 0;
 
-	return 0;
+	return node->GetChild(2);
 }
 //----------------------------------------------------------------------------
 PX2::Movable *SceneNodeCtrl::GetCurrentCtrlXYZ ()
@@ -1477,6 +1599,8 @@ void SceneNodeCtrl::UpdateCtrl ()
 					GetCurrentCtrlX()->Culling = Movable::CULL_ALWAYS;
 				}
 			}
+
+			mCtrlsGroup->Update(0.0);
 		}
 		else if (mCtrlType == CT_SCALE)
 		{
@@ -1514,7 +1638,7 @@ void SceneNodeCtrl::UpdateCtrl ()
 		mCtrlsGroup->SetActiveChild(6);
 	}
 
-	mCtrlsGroup->Update();
+	mCtrlsGroup->Update(0.0);
 }
 //----------------------------------------------------------------------------
 void SceneNodeCtrl::UpdateCtrlTrans ()

@@ -31,9 +31,6 @@ namespace PX2
 		bool Initlize ();
 		bool Terminate ();
 
-		void SetCamera (Camera *camera);
-		PX2::Camera *GetCamera();
-
 		void AddLight (Light *light);
 		void RemoveLight (Light *light);
 		void ClearAllLights ();
@@ -45,8 +42,6 @@ namespace PX2
 		std::vector<LightPtr> mAllLights; // 保存放在场景中的所有灯光
 		static std::string PX2Path;
 	};
-
-#include "PX2GraphicsRoot.inl"
 
 }
 

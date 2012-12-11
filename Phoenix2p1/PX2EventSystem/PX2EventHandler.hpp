@@ -45,7 +45,6 @@ namespace PX2
 
 		// 重载,进行相应的消息处理
 		virtual void DoEnter ();
-		virtual void DoUpdate ();
 		virtual void DoExecute (Event *event);
 		virtual void DoLeave ();
 		

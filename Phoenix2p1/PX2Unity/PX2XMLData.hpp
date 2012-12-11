@@ -39,6 +39,9 @@ namespace PX2
 		XMLNode GetNodeByPath (const char *path);
 
 	private:
+		XMLData (const XMLData &);
+		XMLData &operator= (const XMLData &);
+
 		TiXmlDocument *mDocument;
 	};
 

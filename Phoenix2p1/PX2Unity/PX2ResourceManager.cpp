@@ -120,6 +120,17 @@ Object *ResourceManager::BlockLoad (const std::string &filename)
 	return loadRec.Obj;
 }
 //----------------------------------------------------------------------------
+bool ResourceManager::GetBuffer (const std::string &filename, int &bufferSize, 
+	char* &buffer)
+{
+	if (filename == "")
+	{
+		assertion(false, "filename must not be null");
+	}
+
+	return _LoadBuffer(filename, bufferSize, buffer);
+}
+//----------------------------------------------------------------------------
 ResHandle ResourceManager::BackgroundLoad (
 	const std::string &filename)
 {
@@ -292,7 +303,7 @@ Object *ResourceManager::_LoadObject (const std::string &filename)
 		obj = Texture2D::LoadPXtf(filename);
 		if (obj)
 		{
-			obj->SetResourcePath(outBaseName+"."+outExtention);
+			obj->SetResourcePath(filename);
 		}
 
 		return obj;
@@ -302,7 +313,7 @@ Object *ResourceManager::_LoadObject (const std::string &filename)
 		obj = LoadTextureFromDDS(filename);
 		if (obj)
 		{
-			obj->SetResourcePath(outBaseName+"."+outExtention);
+			obj->SetResourcePath(filename);
 		}
 
 		return obj;
@@ -316,7 +327,7 @@ Object *ResourceManager::_LoadObject (const std::string &filename)
 		obj = LoadTextureFromOtherImagefile(filename);
 		if (obj)
 		{
-			obj->SetResourcePath(outBaseName+"."+outExtention);
+			obj->SetResourcePath(filename);
 		}
 
 		return obj;
@@ -336,6 +347,8 @@ Object *ResourceManager::_LoadObject (const std::string &filename)
 		{
 			inStream.Load1(bufferSize, buffer);
 			obj = inStream.GetObjectAt(0);
+			delete1<char>(buffer);
+			bufferSize = 0;
 		}
 	}
 	else
@@ -356,6 +369,8 @@ Object *ResourceManager::_LoadObject (const std::string &filename)
 
 			inStream.Load1(bufferSize, buffer);
 			obj = inStream.GetObjectAt(0);
+			delete1<char>(buffer);
+			bufferSize = 0;
 		}
 		else
 		{
@@ -370,6 +385,39 @@ Object *ResourceManager::_LoadObject (const std::string &filename)
 	}
 
 	return obj;
+}
+//----------------------------------------------------------------------------
+bool ResourceManager::_LoadBuffer (const std::string &filename,
+	int &bufferSize, char* &buffer)
+{
+	if (mReadFromZip)
+	{
+		std::string packageName("Data");
+		std::string fullPackageName = msResPath + packageName;
+
+		return GetFileDataFromZip(fullPackageName, filename, bufferSize, buffer);
+	}
+	else
+	{
+#ifdef __ANDROID__
+		std::string fullFilename = filename;
+		fullFilename.insert(0, "assets/");
+
+		PX2_LOG_INFO("msResPath: %s\n", msResPath.c_str());
+		PX2_LOG_INFO("fullFilename: %s\n", fullFilename.c_str());
+
+		return GetFileDataFromZip(msResPath, fullFilename, bufferSize, buffer);
+#else
+		if (!FileIO::Load(filename, true, bufferSize, buffer))
+		{
+			return false;
+		}
+
+		return true;
+#endif
+	}
+
+	return false;
 }
 //----------------------------------------------------------------------------
 Texture2D *ResourceManager::LoadTextureFromOtherImagefile (

@@ -53,7 +53,7 @@ const TCHAR* PX2SceneExport::CopyrightMessage ()
 {   
 	// ∞Ê»®–≈œ¢
 	return
-		_T("Phoenix2, Inc. Copyright (c) 2009-2010. All Rights Reserved.");
+		_T("Phoenix, Inc. Copyright (c) 2009-2012. All Rights Reserved.");
 }
 //----------------------------------------------------------------------------
 const TCHAR* PX2SceneExport::OtherMessage1 () 

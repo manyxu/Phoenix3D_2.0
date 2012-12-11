@@ -24,6 +24,8 @@ namespace PX2Editor
 
 		void SetScene (PX2::Movable *scene);
 		PX2::Movable *GetScene ();
+		void SetHelpScene (PX2::Movable *scene);
+		PX2::Movable *GetHelpScene ();
 		PX2::Renderer *GetRenderer ();
 		PX2::Camera *GetCamera ();
 		SceneNodeCtrl *GetSceneNodeCtrl ();
@@ -75,7 +77,7 @@ namespace PX2Editor
 		void OnActorLight_Spot (wxCommandEvent& e);
 		void OnCreateBox (wxCommandEvent& e);
 		void OnCreateSphere (wxCommandEvent& e);
-		void OnCloneInstance (wxCommandEvent& e);
+		void OnCloneShare (wxCommandEvent& e);
 		void OnCloneData (wxCommandEvent& e);
 
 		void ZoomCamera (float zoom);
@@ -141,6 +143,10 @@ public_internal:
 		PX2::VertexBufferPtr mVBGridAxis;
 		PX2::VertexBufferAccessor mGridAxisAssessor;
 		bool mShowGrid;
+
+		// HelpScene
+		PX2::Culler mHelpCuller;
+		PX2::MovablePtr mHelpScene;
 
 		// Ctrl
 		PX2::Culler mCtrlCuller;

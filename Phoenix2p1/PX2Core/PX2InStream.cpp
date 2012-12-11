@@ -103,20 +103,17 @@ bool InStream::Load1 (int bufferSize, char* buffer, std::string version,
 	int length = (int)version.length();
 	if (bufferSize < length)
 	{
-		delete1(buffer);
 		return false;
 	}
 
 	if (strncmp(version.c_str(), buffer, length) != 0)
 	{
-		delete1(buffer);
 		return false;
 	}
 
 	bufferSize -= length;
 	Load(bufferSize, buffer + length, mode);
 
-	delete1(buffer);
 	return true;
 }
 //----------------------------------------------------------------------------

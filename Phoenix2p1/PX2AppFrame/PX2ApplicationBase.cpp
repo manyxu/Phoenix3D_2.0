@@ -65,14 +65,14 @@ bool ApplicationBase::Initlize ()
 	mRoot->Initlize();
 
 	mGameMan = new0 GameManager();
-	//mGameMan->LoadBoost("Data/boost.xml");
-	//int width = mGameMan->GetBoostWidth();
-	//int height = mGameMan->GetBoostHeight();
-	//if (0!=width && 0!=height)
-	//{
-	//	mWidth = width;
-	//	mHeight = height;
-	//}
+	mGameMan->LoadBoost("Data/boost.xml");
+	int width = mGameMan->GetBoostWidth();
+	int height = mGameMan->GetBoostHeight();
+	if (0!=width && 0!=height)
+	{
+		mWidth = width;
+		mHeight = height;
+	}
 
 	PX2_LOG_INFO("Begin ApplicationBase::OnInitlizeApp.\n");
 	OnInitlizeApp();

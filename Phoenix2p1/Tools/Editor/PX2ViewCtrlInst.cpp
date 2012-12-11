@@ -7,6 +7,7 @@
 #include "PX2ViewCtrlInst.hpp"
 #include "PX2ViewCtrl.hpp"
 #include "PX2GViewCtrl.hpp"
+#include "PX2TerEditCtrl.hpp"
 #include "PX2EditSystem.hpp"
 using namespace PX2Editor;
 using namespace PX2;
@@ -14,8 +15,10 @@ using namespace PX2;
 //-----------------------------------------------------------------------------
 ViewCtrlInst::ViewCtrlInst()
 	:
-mViewCtrl(0)
+mViewCtrl(0),
+mInteractionMode(IM_MAX_MODE)
 {
+	SetInteractionMode(IM_GENERAL);
 }
 //-----------------------------------------------------------------------------
 ViewCtrlInst::~ViewCtrlInst()
@@ -96,16 +99,31 @@ PX2::APoint ViewCtrlInst::CalculateSelectPoint (PX2::Renderer *renderer,
 
 	Scene *scene = EditSystem::GetSingleton().GetEditMap()->GetScene();
 
-	ActorPicker actorPicker;
+	ActorPicker actorPicker; 
 	actorPicker.Execute(scene, origin, direction, 0.0f, Mathf::MAX_REAL);
 
 	mSelectPoint = PX2::APoint::ORIGIN;
 
-	if (actorPicker.Records.size() > 0)
+	if ((int)actorPicker.Records.size() > 0)
 	{
 		const ActorPickRecord &record = actorPicker.GetClosestToZero();
 
 		mSelectPoint = origin + direction*record.T;
+	}
+	else
+	{
+		PX2::TriMesh *xyPlane = EditSystem::GetSingleton().GetXYPlane();
+		APoint pos = xyPlane->LocalTransform.GetTranslate();
+		pos.Z() = 0.0f;
+		xyPlane->LocalTransform.SetTranslate(pos);
+
+		Picker picker;
+		picker.Execute(xyPlane, origin,	direction, 0.0f, Mathf::MAX_REAL);
+		if ((int)picker.Records.size() > 0)
+		{
+			const PickRecord &rec = picker.GetClosestToZero();
+			mSelectPoint = origin + direction*rec.T;
+		}
 	}
 
 	return mSelectPoint;
@@ -123,17 +141,11 @@ void ViewCtrlInst::SetInteractionMode (InteractionMode im)
 
 	switch (mInteractionMode)
 	{
-	case IM_SELECT:
-		ExitSelectMode();
+	case IM_GENERAL:
+		ExitGeneralMode();
 		break;
-	case IM_TRANSLATE:
-		ExitTranslateMode();
-		break;
-	case IM_ROLATE:
-		ExitRolateMode();
-		break;
-	case IM_SCALE:
-		ExitScaleMode();
+	case IM_TEREDIT:
+		ExitTerEditMode();
 		break;
 	default:
 		break;
@@ -143,17 +155,11 @@ void ViewCtrlInst::SetInteractionMode (InteractionMode im)
 
 	switch (mInteractionMode)
 	{
-	case IM_SELECT:
-		EnterSelectMode();
+	case IM_GENERAL:
+		EnterGeneralMode();
 		break;
-	case IM_TRANSLATE:
-		EnterTranslateMode();
-		break;
-	case IM_ROLATE:
-		EnterRolateMode();
-		break;
-	case IM_SCALE:
-		EnterScaleMode();
+	case IM_TEREDIT:
+		EnterTerEditMode();
 		break;
 	default:
 		break;
@@ -163,97 +169,94 @@ void ViewCtrlInst::SetInteractionMode (InteractionMode im)
 void ViewCtrlInst::HandleLeftDown (RenderViewWindow *win, 
 	wxMouseEvent &e)
 {
-	mViewCtrl->HandleLeftDown(win, e);
+	if (mViewCtrl)
+		mViewCtrl->HandleLeftDown(win, e);
 }
 //-----------------------------------------------------------------------------
 void ViewCtrlInst::HandleLeftUp (RenderViewWindow *win,
 	wxMouseEvent &e)
 {
-	mViewCtrl->HandleLeftUp(win, e);
+	if (mViewCtrl)
+		mViewCtrl->HandleLeftUp(win, e);
 }
 //-----------------------------------------------------------------------------
 void ViewCtrlInst::HandleMiddleDown (RenderViewWindow *win,
 	wxMouseEvent &e)
 {
-	mViewCtrl->HandleMiddleDown(win, e);
+	if (mViewCtrl)
+		mViewCtrl->HandleMiddleDown(win, e);
 }
 //-----------------------------------------------------------------------------
 void ViewCtrlInst::HandleMiddleUp (RenderViewWindow *win, 
 	wxMouseEvent &e)
 {
-	mViewCtrl->HandleMiddleUp(win, e);
+	if (mViewCtrl)
+		mViewCtrl->HandleMiddleUp(win, e);
 }
 //-----------------------------------------------------------------------------
 void ViewCtrlInst::HandleMouseWheel (RenderViewWindow *win, 
 	wxMouseEvent &e)
 {
-	mViewCtrl->HandleMouseWheel(win, e);
+	if (mViewCtrl)
+		mViewCtrl->HandleMouseWheel(win, e);
 }
 //-----------------------------------------------------------------------------
 void ViewCtrlInst::HandleRightDown (RenderViewWindow *win,
 	wxMouseEvent &e)
 {
-	mViewCtrl->HandleRightDown(win, e);
+	if (mViewCtrl)
+		mViewCtrl->HandleRightDown(win, e);
 }
 //-----------------------------------------------------------------------------
 void ViewCtrlInst::HandleRightUp (RenderViewWindow *win, 
 	wxMouseEvent &e)
 {
-	mViewCtrl->HandleRightUp(win, e);
+	if (mViewCtrl)
+		mViewCtrl->HandleRightUp(win, e);
 }
 //-----------------------------------------------------------------------------
 void ViewCtrlInst::HandleMotion (RenderViewWindow *win, 
 	wxMouseEvent &e)
 {
-	mViewCtrl->HandleMotion(win, e);
+	if (mViewCtrl)
+		mViewCtrl->HandleMotion(win, e);
 }
 //-----------------------------------------------------------------------------
 void ViewCtrlInst::SwitchPaneController (ViewCtrl *ctrl)
 {
+	RenderViewWindow *win = 0;
+
 	if (mViewCtrl)
 	{
+		win = mViewCtrl->GetAttachedWindow();
+
 		delete0(mViewCtrl);
 		mViewCtrl = 0;
 	}
 
 	mViewCtrl = ctrl;
+
+	if (win && mViewCtrl)
+	{
+		mViewCtrl->AttachToWindow(win);
+	}
 }
 //-----------------------------------------------------------------------------
-void ViewCtrlInst::EnterSelectMode ()
+void  ViewCtrlInst::EnterGeneralMode ()
 {
 	SwitchPaneController(new0 GViewCtrl(this));
-
-	EditSystem::GetSingleton().SetEditMode(EditSystem::EM_SELECT);
 }
 //-----------------------------------------------------------------------------
-void ViewCtrlInst::ExitSelectMode ()
+void ViewCtrlInst::ExitGeneralMode ()
 {
 }
 //-----------------------------------------------------------------------------
-void ViewCtrlInst::EnterTranslateMode ()
+void ViewCtrlInst::EnterTerEditMode ()
 {
-	EditSystem::GetSingleton().SetEditMode(EditSystem::EM_TRANSLATE);
+	SwitchPaneController(new0 TerEditCtrl(this));
 }
 //-----------------------------------------------------------------------------
-void ViewCtrlInst::ExitTranslateMode ()
-{
-}
-//-----------------------------------------------------------------------------
-void ViewCtrlInst::EnterRolateMode ()
-{
-	EditSystem::GetSingleton().SetEditMode(EditSystem::EM_ROLATE);
-}
-//-----------------------------------------------------------------------------
-void ViewCtrlInst::ExitRolateMode ()
-{
-}
-//-----------------------------------------------------------------------------
-void ViewCtrlInst::EnterScaleMode ()
-{
-	EditSystem::GetSingleton().SetEditMode(EditSystem::EM_SCALE);
-}
-//-----------------------------------------------------------------------------
-void ViewCtrlInst::ExitScaleMode ()
+void ViewCtrlInst::ExitTerEditMode ()
 {
 }
 //-----------------------------------------------------------------------------

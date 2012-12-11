@@ -49,6 +49,11 @@ void Actor::SetScale (APoint &scale)
 {
 	mScale = scale;
 
+	if (0.0f==mScale.X() || 0.0f==mScale.Y() || 0.0f==mScale.Z())
+	{
+		mScale.X() = 0.0001f;
+	}
+
 	if (mMovable)
 	{
 		mMovable->WorldTransform.SetScale(scale);

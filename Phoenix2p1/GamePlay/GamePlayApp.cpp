@@ -56,13 +56,11 @@ void GamePlayApp::OnIdle ()
 	if (!mInited)
 		return;
 
-	mRenderer->SetCamera(mCamera);
-
 	MeasureTime();
 
 	if (mSceneGraph)
 	{
-		mSceneGraph->Update();
+		mSceneGraph->Update(GetTimeInSeconds());
 		mCuller.ComputeVisibleSet(mSceneGraph);
 	}
 
@@ -93,7 +91,6 @@ void GamePlayApp::CreateScene ()
 	mCullProperty->Enabled = false;
 
 	std::string mapName = GameManager::GetSingleton().GetMapName();
-	mapName = "test";
 	std::string fullMapName = "Data/maps/"+mapName+".pxof";
 
 	Object *obj = ResourceManager::GetSingleton()

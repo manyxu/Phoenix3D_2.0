@@ -5,6 +5,8 @@
 */
 
 #include "PX2Scene.hpp"
+#include "PX2GraphicsRoot.hpp"
+#include "PX2Interpolate.hpp"
 using namespace PX2;
 using namespace std;
 
@@ -17,6 +19,21 @@ Scene::Scene ()
 {
 	mSceneNode = new0 Node();
 	mDefaultCameraActor = new0 CameraActor();
+
+	mDefaultLight = new0 Light(Light::LT_DIRECTIONAL);
+	mDefaultLight->SetDirection(AVector(-1.0f, -1.0f, -1.0f));
+	mDefaultLight->Ambient = Float4(0.2f, 0.2f, 0.2f, 1.0f);
+	mDefaultLight->Diffuse = Float4(1.0f, 1.0f, 1.0f, 1.0f);
+	mDefaultLight->Specular = Float4(0.0f, 0.0f, 0.0f, 1.0f);
+
+	GraphicsRoot::GetSingleton().ClearAllLights();
+	GraphicsRoot::GetSingleton().AddLight(mDefaultLight);
+
+	mAmbientBlend = 0.0f;
+	mDefaultARActor = new0 AmbientRegionActor();
+	mDefaultARActor->SetName("DefaultAmibient");
+	mDefaultARActor->SetLight(mDefaultLight);
+	AddActor(mDefaultARActor);
 }
 //----------------------------------------------------------------------------
 Scene::~Scene ()
@@ -28,9 +45,45 @@ Scene::~Scene ()
 	if (mDefaultCameraActor)
 		mDefaultCameraActor->GoOutFromEventWorld();
 }
-//-----------------------------------------------------------------------------
-void Scene::Update ()
+//----------------------------------------------------------------------------
+static AVector AnglesToDirection(float angle0, float angle1)
 {
+	return AVector(-Mathf::Cos(angle1)*Mathf::Cos(angle0), 
+		-Mathf::Cos(angle1)*Mathf::Sin(angle0), -Mathf::Sin(angle1));
+}
+//-----------------------------------------------------------------------------
+void Scene::Update (double appSeconds, double elapsedSeconds)
+{
+	// Ambient
+	PX2::Light *light = mDefaultLight;
+
+	AmbientRegionActor *curARActor = mTwoAmbientRigion[1];
+	AmbientRegionActor *pastARActor = mTwoAmbientRigion[0];
+	curARActor = mDefaultARActor;
+	pastARActor = mDefaultARActor;
+
+	mAmbientBlend = 1.0f;
+	light->Ambient = Interpolate::LinearFloat4(
+		pastARActor->mAmbientColor, curARActor->mAmbientColor, 
+		mAmbientBlend);
+	light->Diffuse = Interpolate::LinearFloat4(
+		pastARActor->mDirLightDiffColor, curARActor->mDirLightDiffColor,
+		mAmbientBlend);
+	light->Specular = Interpolate::LinearFloat4(
+		pastARActor->mDirLightSpecColor, curARActor->mDirLightSpecColor,
+		mAmbientBlend);
+	float horAngle = Interpolate::LinearFloat(
+		pastARActor->mHorAngle, curARActor->mHorAngle,
+		mAmbientBlend);
+	float verAngle = Interpolate::LinearFloat(
+		pastARActor->mVerAngle, curARActor->mVerAngle,
+		mAmbientBlend);
+	AVector dir = AnglesToDirection(Mathf::DEG_TO_RAD*horAngle, 
+		Mathf::DEG_TO_RAD*verAngle);
+	light->SetDirection(dir);
+
+	// Scene
+	mSceneNode->Update(appSeconds);
 }
 //----------------------------------------------------------------------------
 void Scene::AddActor (Actor *actor)
@@ -42,6 +95,11 @@ void Scene::AddActor (Actor *actor)
 
 	if (IsActorIn(actor))
 		return;
+
+	if (actor->IsExactly(TerrainActor::TYPE))
+	{
+		mTerrainActor = DynamicCast<TerrainActor>(actor);
+	}
 
 	Movable *movable = actor->GetMovable();
 	if (movable)
@@ -155,6 +213,23 @@ Actor *Scene::GetActor (PX2::Movable *object)
 	{
 		if (object == mActors[i]->GetMovable())
 			return mActors[i];
+	}
+
+	return 0;
+}
+//----------------------------------------------------------------------------
+int Scene::GetARActorNum ()
+{
+	return (int)mARActors.size();
+}
+//----------------------------------------------------------------------------
+AmbientRegionActor *Scene::GetARActor (int i)
+{
+	assertion(i>=0&&i<(int)mARActors.size(), "i should be in right range.");
+
+	if (i>=0&&i<(int)mARActors.size())
+	{
+		return mARActors[i];
 	}
 
 	return 0;

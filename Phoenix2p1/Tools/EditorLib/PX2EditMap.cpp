@@ -114,7 +114,7 @@ bool EditMap::SaveSceneAs (const char *pathname)
 void EditMap::CreateBox (PX2::APoint pos)
 {
 	PX2::Texture2D *tex = DynamicCast<PX2::Texture2D>(
-		ResourceManager::GetSingleton().BlockLoad("ToolRes/DefaultTexture.png"));
+		ResourceManager::GetSingleton().BlockLoad("ToolRes/images/default.png"));
 	if (!tex)
 		return;
 
@@ -146,7 +146,7 @@ void EditMap::CreateBox (PX2::APoint pos)
 void EditMap::CreateSphere (PX2::APoint pos)
 {
 	PX2::Texture2D *tex = DynamicCast<PX2::Texture2D>(
-		ResourceManager::GetSingleton().BlockLoad("ToolRes/DefaultTexture.png"));
+		ResourceManager::GetSingleton().BlockLoad("ToolRes/images/default.png"));
 	if (!tex)
 		return;
 
@@ -180,9 +180,13 @@ void EditMap::AddModelActor (PX2::Movable *mov, PX2::APoint pos)
 	if (!mov)
 		return;
 
+	PX2::Node *node = new0 PX2::Node();
+	node->AttachChild(mov);
+	node->SetName(mov->GetName()+"Par");
+
 	PX2::Actor *actor = new0 Actor();
 	actor->SetName(mov->GetName());
-	actor->SetMovable(mov);
+	actor->SetMovable(node);
 	actor->SetPosition(pos);
 	actor->ComeInToEventWorld();
 	AddActor(actor);
@@ -191,6 +195,35 @@ void EditMap::AddModelActor (PX2::Movable *mov, PX2::APoint pos)
 	event = EditorEventSpace::CreateEventX(EditorEventSpace::AddActor);
 	event->SetData<Actor*>(actor);
 	EventWorld::GetSingleton().BroadcastingLocalEvent(event);
+}
+//----------------------------------------------------------------------------
+void EditMap::CreateTerrain (std::string name, int terrainSize, int pageSize,
+	float gridSpacing)
+{
+	TerrainActor *actor = new0 TerrainActor();
+	actor->SetName(name);
+
+	RawTerrain *rawTerrain = new0 RawTerrain();
+	rawTerrain->SetName(name);
+	rawTerrain->SetSize(pageSize);
+	int quantity = terrainSize/(pageSize-1);
+	rawTerrain->SetRowQuantity(quantity);
+	rawTerrain->SetColQuantity(quantity);
+	rawTerrain->SetSpacing(gridSpacing);
+	rawTerrain->AllocateRawTerrainPages();
+
+	actor->SetTerrain(rawTerrain);
+	actor->ComeInToEventWorld();
+
+	Event *event = EditorEventSpace::CreateEventX(
+		EditorEventSpace::CreateTerrain);
+	event->SetData<TerrainActor*>(actor);
+	EventWorld::GetSingleton().BroadcastingLocalEvent(event);
+
+	mScene->AddActor(actor);
+
+	ActorAddDeleteCommand *command = new0 ActorAddDeleteCommand(actor);
+	EditSystem::GetSingleton().GetCM()->PushUnDo(command);
 }
 //----------------------------------------------------------------------------
 void EditMap::AddActor (PX2::Actor *actor)
@@ -212,5 +245,26 @@ void EditMap::RemoveActor (PX2::Actor *actor)
 		(EditorEventSpace::RemoveActor);
 	event->SetData<Actor*>(actor);
 	EventWorld::GetSingleton().BroadcastingLocalEvent(event);
+}
+//----------------------------------------------------------------------------
+void EditMap::CloneShare (PX2::Actor *actor, PX2::APoint pos)
+{
+	Actor *act = new0 Actor();
+	*act = *actor;
+	act->GetMovable()->SetParent(0);
+
+	actor->SetPosition(pos);
+	AddActor(act);
+}
+//----------------------------------------------------------------------------
+void EditMap::CloneData (PX2::Actor *actor, PX2::APoint pos)
+{
+	Object *obj = actor->Copy("");
+	Actor *newActor = DynamicCast<Actor>(obj);
+	if (newActor)
+	{
+		newActor->SetPosition(pos);
+		AddActor(newActor);
+	}
 }
 //----------------------------------------------------------------------------

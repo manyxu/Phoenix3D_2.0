@@ -228,8 +228,6 @@ Object* Object::Copy (const std::string& uniqueNameAppend) const
 
 	if (uniqueNameAppend != "")
 	{
-		// The names of the input scene were copied as is.  Generate unique
-		// names for the output scene.
 		int numObjects = loadStream.GetNumObjects();
 		for (int i=0; i<numObjects; i++)
 		{
@@ -237,13 +235,6 @@ Object* Object::Copy (const std::string& uniqueNameAppend) const
 			std::string name = obj->GetName();
 			if (name.length() > 0)
 			{
-				// The object has a name.  Append a string to make the name
-				// unique.  TODO:  This code does not ensure that the
-				// appended name is some other name in the copied scene.  To
-				// do this would require building a set of names and verifying
-				// that the appended names are not in this set.  For now we
-				// think this is not worth the effort, but maybe later we can
-				// add code to do this.
 				name += uniqueNameAppend;
 				obj->SetName(name);
 			}

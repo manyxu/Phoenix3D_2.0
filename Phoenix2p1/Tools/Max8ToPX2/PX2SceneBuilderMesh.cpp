@@ -72,8 +72,8 @@ PX2::Movable *SceneBuilder::BuildMesh(INode *maxNode,
 	// maxName
 	char *maxName = maxNode->GetName();
 
-	// 如果只需要一个Truandot的Mesh表示Max的Mesh，直接将Truandot的Mesh链接到
-	// Truandot的场景图中；否则，创建一个"link"节点，将按照材质分割的子Mesh
+	// 如果只需要一个Phoenix的Mesh表示Max的Mesh，直接将Phoenix的Mesh链接到
+	// Phoenix的场景图中；否则，创建一个"link"节点，将按照材质分割的子Mesh
 	// 放在"link"下。
 	int i;
 	std::vector<UniMaterialMesh*> uMeshs;
@@ -366,9 +366,9 @@ void SceneBuilder::PackVertices (UniMaterialMesh* uniMesh, Mesh* maxMesh,
 		return;
 
 	// vMap要足够大，去容纳可能的j，这依赖于Stl::set递增插入元素
-	// vMap[k] == -1 表示max中的k顶点不在这个turandot网格中
+	// vMap[k] == -1 表示max中的k顶点不在这个Phoenix网格中
 	int indexMax = *vertexIndexs.rbegin();
-	int *vMap = new1<int>(indexMax+1);// max vertex index -> turandot vertex index
+	int *vMap = new1<int>(indexMax+1);// max vertex index -> Phoenix vertex index
 	memset(vMap, 0xFF, (indexMax+1)*sizeof(int));
 
 	uniMesh->VQuantity() = (int)vertexIndexs.size();
@@ -379,7 +379,7 @@ void SceneBuilder::PackVertices (UniMaterialMesh* uniMesh, Mesh* maxMesh,
 	for (i=0; i<(int)vertexIndexs.size(); i++, iter++)
 	{
 		j = *iter; // max vertex index
-		vMap[j] = i; // max vertex index -> turandot vertex index
+		vMap[j] = i; // max vertex index -> Phoenix vertex index
 
 		(uniMesh->VertexMap()[i])[0] = maxMesh->verts[j].x;
 		(uniMesh->VertexMap()[i])[1] = maxMesh->verts[j].y;

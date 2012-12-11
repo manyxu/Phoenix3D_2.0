@@ -14,8 +14,10 @@ using namespace PX2Editor;
 //----------------------------------------------------------------------------
 EditSystem::EditSystem ()
 	:
-mEditMode(EM_NONE),
+mEditMode(EM_SELECT),
+mSelectEditEnable(false),
 mCM(0),
+mTerrainEdit(0),
 mEditMap(0),
 mSelection(0)
 {
@@ -45,9 +47,11 @@ bool EditSystem::Initlize ()
 
 	mEditMap = new0 EditMap();
 	mCM = new0 EditCommandManager();
+	mTerrainEdit = new0 TerrainEdit();
 	mSelection = new0 ActorSelection();
 
 	mHelpScene = new0 Node();
+	mHelpScene->AttachChild(mTerrainEdit->GetBrush()->GetRenderable());
 
 	StandardMesh stdMesh(VertexFormat::Create(2,
 		VertexFormat::AU_POSITION, VertexFormat::AT_FLOAT3, 0,
@@ -78,6 +82,12 @@ bool EditSystem::Terminate ()
 	{
 		delete0(mSelection);
 		mSelection = 0;
+	}
+
+	if (mTerrainEdit)
+	{
+		delete0(mTerrainEdit);
+		mTerrainEdit = 0;
 	}
 
 	if (mCM)
@@ -114,17 +124,55 @@ bool EditSystem::Terminate ()
 	return true;
 }
 //----------------------------------------------------------------------------
-void EditSystem::Update (double detalSeconds)
+void EditSystem::Update (double elapsedSeconds)
 {
 	if (EventWorld::GetSingletonPtr())
-		EventWorld::GetSingleton().Update((float)detalSeconds);
+		EventWorld::GetSingleton().Update((float)elapsedSeconds);
 
-	GetEditMap()->GetScene()->GetSceneNode()->Update(0);
+	double appTime = GetTimeInSeconds();
+
+	if (mHelpScene)
+		mHelpScene->Update(appTime, false);
+
+	GetEditMap()->GetScene()->Update(appTime, elapsedSeconds);
+}
+//----------------------------------------------------------------------------
+void EditSystem::EnableSelectEdit (bool enable)
+{
+	if (false == enable)
+	{
+		mSelectEditEnable = enable;
+		SetEditMode(EM_SELECT);
+	}
+	else
+	{
+		int num = GetSelection()->GetActorQuantity();
+		if (1 == num)
+		{
+			Actor *actor = GetSelection()->GetActor(0);
+			TerrainActor *terActor = DynamicCast<TerrainActor>(actor);
+			if (terActor)
+			{
+				SetEditMode(EM_TERRAIN);
+			}
+
+			mSelectEditEnable = enable;
+		}
+	}
 }
 //----------------------------------------------------------------------------
 void EditSystem::SetEditMode (EditSystem::EditMode mode)
 {
 	mEditMode = mode;
+
+	if (mode == EM_TERRAIN)
+	{
+		GetTerrainEdit()->EnableEdit();
+	}
+	else
+	{
+		GetTerrainEdit()->DisableEdit();
+	}
 
 	Event *event = 0;
 	event = EditorEventSpace::CreateEventX(EditorEventSpace::SetEditMode);

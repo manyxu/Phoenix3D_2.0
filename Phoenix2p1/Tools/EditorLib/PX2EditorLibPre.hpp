@@ -14,6 +14,7 @@
 #include "PX2Renderers.hpp"
 #include "PX2EventSystem.hpp"
 #include "PX2Unity.hpp"
+#include "PX2Terrains.hpp"
 #include "PX2Game.hpp"
 
 #endif

@@ -99,7 +99,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>wxmsw29ud_aui.lib;wxmsw29ud_html.lib;wxmsw29ud_adv.lib;wxmsw29ud_core.lib;wxbase29ud_xml.lib;wxbase29ud.lib;wxmsw29ud_xrc.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;winmm.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;wininet.lib;PX2CoreD.lib;PX2MathermaticsD.lib;PX2GraphicsDx9D.lib;PX2EventSystemD.lib;PX2UnityD.lib;PX2GameD.lib;EditorLibD.lib;d3d9.lib;d3dx9.lib;dxerr.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wxmsw29ud_aui.lib;wxmsw29ud_html.lib;wxmsw29ud_adv.lib;wxmsw29ud_core.lib;wxbase29ud_xml.lib;wxbase29ud.lib;wxmsw29ud_xrc.lib;wxmsw29ud_propgrid.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;winmm.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;wininet.lib;PX2CoreD.lib;PX2MathermaticsD.lib;PX2GraphicsDx9D.lib;PX2EventSystemD.lib;PX2TerrainsD.lib;PX2UnityD.lib;PX2GameD.lib;EditorLibD.lib;d3d9.lib;d3dx9.lib;dxerr.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\ThirdPartiesLibs\wxWidgets-2.9.4\lib\vc_lib;..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration);..\..\ThirdPartiesLibs\Microsoft DirectX SDK (June 2010)\Lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -128,14 +128,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;PX2_USE_DX9;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\PX2SDK\Include;..\..\ThirdPartiesLibs\Microsoft DirectX SDK (June 2010)\Include;..\..\ThirdPartiesLibs\wxWidgets-2.9.4\include;..\..\ThirdPartiesLibs\wxWidgets-2.9.4\lib\vc_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;.\wxExtents;..\..\PX2SDK\Include;..\..\ThirdPartiesLibs\Microsoft DirectX SDK (June 2010)\Include;..\..\ThirdPartiesLibs\wxWidgets-2.9.4\include;..\..\ThirdPartiesLibs\wxWidgets-2.9.4\lib\vc_lib\mswud;%(AdditionalIncludeDirectories)onalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>wxmsw29u_aui.lib;wxmsw29u_html.lib;wxmsw29u_adv.lib;wxmsw29u_core.lib;wxbase29u_xml.lib;wxbase29u.lib;wxmsw29u_xrc.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;wxexpat.lib;winmm.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;wininet.lib;PX2Core.lib;PX2Mathermatics.lib;PX2GraphicsDx9.lib;PX2EventSystem.lib;PX2Unity.lib;PX2Game.lib;EditorLib.lib;d3d9.lib;d3dx9.lib;dxerr.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wxmsw29u_aui.lib;wxmsw29u_html.lib;wxmsw29u_adv.lib;wxmsw29u_core.lib;wxbase29u_xml.lib;wxbase29u.lib;wxmsw29u_xrc.lib;wxmsw29u_propgrid.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;wxexpat.lib;winmm.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;wininet.lib;PX2Core.lib;PX2Mathermatics.lib;PX2GraphicsDx9.lib;PX2Terrains.lib;PX2EventSystem.lib;PX2Unity.lib;PX2Game.lib;EditorLib.lib;d3d9.lib;d3dx9.lib;dxerr.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\ThirdPartiesLibs\wxWidgets-2.9.4\lib\vc_lib;..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration);..\..\ThirdPartiesLibs\Microsoft DirectX SDK (June 2010)\Lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -160,11 +160,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="PX2ActorTransProperty.hpp" />
+    <ClInclude Include="PX2DlgTerainNew.hpp" />
     <ClInclude Include="PX2InspectorWindow.hpp" />
+    <ClInclude Include="PX2ModelActorPropertyGrid.hpp" />
+    <ClInclude Include="PX2ModelActorInspector.hpp" />
     <ClInclude Include="PX2MultiViewCtrlInst.hpp" />
+    <ClInclude Include="PX2ObjectPropertyGrid.hpp" />
     <ClInclude Include="PX2PreViewWindow.hpp" />
+    <ClInclude Include="PX2Property.hpp" />
+    <ClInclude Include="PX2PropertyGrid.hpp" />
+    <ClInclude Include="PX2PropertyPage.hpp" />
     <ClInclude Include="PX2ResTree.hpp" />
     <ClInclude Include="PX2ResTreeItem.hpp" />
+    <ClInclude Include="PX2TerEditCtrl.hpp" />
+    <ClInclude Include="PX2TerrainActorInspector.hpp" />
+    <ClInclude Include="PX2TerrainActorPropertyGrid.hpp" />
+    <ClInclude Include="PX2TerrainBrushPane.hpp" />
+    <ClInclude Include="PX2TerrainHeightPane.hpp" />
+    <ClInclude Include="PX2TerrainMaterialPane.hpp" />
     <ClInclude Include="PX2ViewCtrlInst.hpp" />
     <ClInclude Include="PX2ViewCtrlInstMan.hpp" />
     <ClInclude Include="PX2DefViewCtrlInst.hpp" />
@@ -178,13 +192,28 @@
     <ClInclude Include="wxExtents\captionbar.h" />
     <ClInclude Include="wxExtents\foldpanelbar.h" />
     <ClInclude Include="wxExtents\foldpanelitem.h" />
+    <ClInclude Include="wxPropertyExtend.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="PX2ActorTransProperty.cpp" />
+    <ClCompile Include="PX2DlgTerainNew.cpp" />
     <ClCompile Include="PX2InspectorWindow.cpp" />
+    <ClCompile Include="PX2ModelActorPropertyGrid.cpp" />
+    <ClCompile Include="PX2ModelActorInspector.cpp" />
     <ClCompile Include="PX2MultiViewCtrlInst.cpp" />
+    <ClCompile Include="PX2ObjectPropertyGrid.cpp" />
     <ClCompile Include="PX2PreViewWindow.cpp" />
+    <ClCompile Include="PX2Property.cpp" />
+    <ClCompile Include="PX2PropertyGrid.cpp" />
+    <ClCompile Include="PX2PropertyPage.cpp" />
     <ClCompile Include="PX2ResTree.cpp" />
     <ClCompile Include="PX2ResTreeItem.cpp" />
+    <ClCompile Include="PX2TerEditCtrl.cpp" />
+    <ClCompile Include="PX2TerrainActorInspector.cpp" />
+    <ClCompile Include="PX2TerrainActorPropertyGrid.cpp" />
+    <ClCompile Include="PX2TerrainBrushPane.cpp" />
+    <ClCompile Include="PX2TerrainHeightPane.cpp" />
+    <ClCompile Include="PX2TerrainMaterialPane.cpp" />
     <ClCompile Include="PX2ViewCtrlInst.cpp" />
     <ClCompile Include="PX2ViewCtrlInstMan.cpp" />
     <ClCompile Include="PX2DefViewCtrlInst.cpp" />
@@ -197,8 +226,10 @@
     <ClCompile Include="wxExtents\captionbar.cpp" />
     <ClCompile Include="wxExtents\foldpanelbar.cpp" />
     <ClCompile Include="wxExtents\foldpanelitem.cpp" />
+    <ClCompile Include="wxPropertyExtend.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="PX2ViewCtrl.inl" />
     <None Include="PX2ViewCtrlInst.inl" />
     <None Include="PX2ViewCtrlInstMan.inl" />
     <None Include="PX2RenderViewWindow.inl" />

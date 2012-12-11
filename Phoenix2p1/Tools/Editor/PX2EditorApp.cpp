@@ -33,7 +33,7 @@ bool EditorApp::OnInit ()
 		editSystem->Initlize();
 	}
 
-	PX2_LM.Load("ToolRes/UILanguage/UILanguageANSI.csv");
+	PX2_LM.Load("ToolRes/language/language.csv");
 	PX2_LM.SetLanguage(0);
 
 	ViewCtrlInstMan *ctrlMan = new0 ViewCtrlInstMan();

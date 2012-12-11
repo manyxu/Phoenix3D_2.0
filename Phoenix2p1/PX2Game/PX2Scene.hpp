@@ -10,7 +10,9 @@
 #include "PX2GamePre.hpp"
 #include "PX2Node.hpp"
 #include "PX2Actor.hpp"
+#include "PX2TerrainActor.hpp"
 #include "PX2CameraActor.hpp"
+#include "PX2AmbientRegionActor.hpp"
 
 namespace PX2
 {
@@ -25,13 +27,13 @@ namespace PX2
 		Scene ();
 		virtual ~Scene ();
 
+		void Update (double appSeconds, double elapsedSeconds);
+
 		void SetSceneID (int id);
 		int GetSceneID ();
 
-		// 场景节点获取
 		PX2::Node *GetSceneNode ();
 
-		// 角色
 		void AddActor (Actor *actor);
 		bool RemoveActor (Actor *actor);
 		ActorPtr SetActor (int i, Actor* actor);
@@ -40,15 +42,28 @@ namespace PX2
 		Actor *GetActor (int i);
 		Actor *GetActor (PX2::Movable *object);
 
+		int GetARActorNum ();
+		AmbientRegionActor *GetARActor (int i);
+
+		TerrainActor *GetTerrainActor ();
+
+		PX2::Light *GetDefaultLight ();
 		CameraActor *GetDefaultCameraActor ();
+		AmbientRegionActor *GetDefaultARActor ();
 
 	protected:
-		void Update ();
-
 		int mSceneID;
 		NodePtr mSceneNode;
 		std::vector<ActorPtr> mActors;
+		TerrainActorPtr mTerrainActor;
+
+		float mAmbientBlend;
+		PX2::AmbientRigionActorPtr mTwoAmbientRigion[2];
+		std::vector<AmbientRigionActorPtr> mARActors;
+
+		PX2::LightPtr mDefaultLight;
 		CameraActorPtr mDefaultCameraActor;
+		PX2::AmbientRigionActorPtr mDefaultARActor;
 	};
 
 	PX2_REGISTER_STREAM(Scene);

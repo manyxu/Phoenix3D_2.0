@@ -274,7 +274,6 @@
     <None Include="PX2DlodNode.inl" />
     <None Include="PX2Float2Array.inl" />
     <None Include="PX2FloatArray.inl" />
-    <None Include="PX2GraphicsRoot.inl" />
     <None Include="PX2ImageProcessing.inl" />
     <None Include="PX2ImageProcessing2.inl" />
     <None Include="PX2IndexBuffer.inl" />

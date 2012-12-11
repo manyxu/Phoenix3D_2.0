@@ -25,8 +25,23 @@ inline int Scene::GetActorQuantity ()
 	return (int)mActors.size();
 }
 //----------------------------------------------------------------------------
+inline TerrainActor *Scene::GetTerrainActor ()
+{
+	return mTerrainActor;
+}
+//----------------------------------------------------------------------------
+inline PX2::Light *Scene::GetDefaultLight ()
+{
+	return mDefaultLight;
+}
+//----------------------------------------------------------------------------
 inline CameraActor *Scene::GetDefaultCameraActor ()
 {
 	return mDefaultCameraActor;
+}
+//----------------------------------------------------------------------------
+inline AmbientRegionActor *Scene::GetDefaultARActor ()
+{
+	return mDefaultARActor;
 }
 //----------------------------------------------------------------------------

@@ -29,20 +29,15 @@ namespace PX2
 		PX2_DECLARE_STREAM(SkinController);
 
 	public:
-		// Construction and destruction.  The numbers of vertices and bones are
-		// fixed for the lifetime of the object.
 		SkinController (int numVertices, int numBones);
 		virtual ~SkinController ();
 
-		// Member access.  After calling the constructor, you must set the data
-		// using these functions.
 		inline int GetNumVertices () const;
 		inline int GetNumBones () const;
 		inline Node** GetBones () const;
 		inline float** GetWeights () const;
 		inline APoint** GetOffsets () const;
 
-		// The animation update.  The application time is in milliseconds.
 		virtual bool Update (double applicationTime);
 
 	protected:

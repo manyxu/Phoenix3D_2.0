@@ -76,10 +76,6 @@ void EventHandler::DoEnter ()
 {
 }
 //----------------------------------------------------------------------------
-void EventHandler::DoUpdate ()
-{
-}
-//----------------------------------------------------------------------------
 void EventHandler::DoExecute (Event *event)
 {
 	PX2_UNUSED(event);

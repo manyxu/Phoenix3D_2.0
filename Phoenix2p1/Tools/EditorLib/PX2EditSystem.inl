@@ -5,9 +5,19 @@
 */
 
 //----------------------------------------------------------------------------
+inline PX2::Node *EditSystem::GetHelpScene ()
+{
+	return mHelpScene; 
+}
+//----------------------------------------------------------------------------
 inline EditCommandManager *EditSystem::GetCM ()
 {
 	return mCM;
+}
+//----------------------------------------------------------------------------
+inline TerrainEdit *EditSystem::GetTerrainEdit ()
+{
+	return mTerrainEdit;
 }
 //----------------------------------------------------------------------------
 inline EditMap *EditSystem::GetEditMap ()
@@ -18,6 +28,11 @@ inline EditMap *EditSystem::GetEditMap ()
 inline ActorSelection *EditSystem::GetSelection ()
 {
 	return mSelection;
+}
+//----------------------------------------------------------------------------
+inline bool EditSystem::IsSelectEditEnable ()
+{
+	return mSelectEditEnable;
 }
 //----------------------------------------------------------------------------
 inline EditSystem::EditMode EditSystem::GetEditMode ()

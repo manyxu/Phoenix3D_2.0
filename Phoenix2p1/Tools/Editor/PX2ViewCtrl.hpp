@@ -22,6 +22,9 @@ namespace PX2Editor
 		ViewCtrl (ViewCtrlInst *inst);
 		virtual ~ViewCtrl ();
 
+		virtual void AttachToWindow (RenderViewWindow *win);
+		RenderViewWindow *GetAttachedWindow();
+
 		virtual void HandleLeftDown (RenderViewWindow *win, wxMouseEvent &e);
 		virtual void HandleLeftUp (RenderViewWindow *win, wxMouseEvent &e);
 		virtual void HandleMiddleDown (RenderViewWindow *win, wxMouseEvent &e);
@@ -37,13 +40,14 @@ namespace PX2Editor
 	protected:
 		virtual void StartMouseDrag (wxMouseEvent &e);
 		virtual void EndMouseDrag (wxMouseEvent &e);
-		virtual void AttachToWindow (RenderViewWindow *win);
 
 		std::pair<float, float> mPixelToWorld;
 		wxPoint mLastMousePoint;
 		RenderViewWindow *mWindow;
 		ViewCtrlInst *mViewCtrlInst;
 	};
+
+#include "PX2ViewCtrl.inl"
 
 }
 

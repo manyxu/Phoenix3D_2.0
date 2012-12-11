@@ -74,6 +74,8 @@ namespace PX2
 		virtual void Save (OutStream& target) const;
 		virtual int GetStreamingSize () const;
 		Object* Copy (const std::string& uniqueNameAppend) const;
+		Object* ShareCopy (const std::string& uniqueNameAppend,
+			bool f=true, bool v=true, bool i=true, bool m=true);
 	protected:
 		// Constructor used by the loading system.
 		enum LoadConstructor { LC_LOADER };
@@ -87,8 +89,6 @@ namespace PX2
 		Object ();
 	public:
 		virtual ~Object ();
-
-		// TODO:  Allow copy constructors and assignment operators?
 	};
 
 	static bool gsStreamRegistered_Object = Object::RegisterFactory();

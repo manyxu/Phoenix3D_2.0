@@ -104,7 +104,7 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 		std::string resourcePath;
 
 		PX2::Shader::SamplerFilter filter = PX2::Shader::SF_LINEAR_LINEAR;
-		PX2::Shader::SamplerCoordinate uvCoord = PX2::Shader::SC_CLAMP;
+		PX2::Shader::SamplerCoordinate uvCoord = PX2::Shader::SC_REPEAT;
 		PX2_UNUSED(uvCoord);
 
 		if (stdMat2->MapEnabled(ID_DI))
@@ -318,17 +318,13 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 			char mtlName[256];
 			memset(mtlName, 0, 256*sizeof(char));
 			sprintf(mtlName, "%s/%s", mSettings->DstRootDir, 
-				"Data/Materials/Standard.pxfx");
+				"Data/mtls/Standard.pxfx");
 			standardMtl = new0 PX2::StandardMaterial(mtlName);
 		}
 		else if (outBaseName == "StandardES")
 		{
 			if (false == specEnable)
 			{
-				char mtlName[256];
-				memset(mtlName, 0, 256*sizeof(char));
-				sprintf(mtlName, "%s/%s", mSettings->DstRootDir, 
-					"Data/Materials/StandardES_Default.pxfx");
 				standardESMtl_D = new0 PX2::StandardESMaterial_Default();
 			}
 			else
@@ -336,7 +332,7 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 				char mtlName[256];
 				memset(mtlName, 0, 256*sizeof(char));
 				sprintf(mtlName, "%s/%s", mSettings->DstRootDir, 
-					"Data/Materials/StandardES_Specular.pxfx");
+					"Data/mtls/StandardES_Specular.pxfx");
 				standardESMtl_S = new0 PX2::StandardESMaterial_Specular(mtlName);
 			}
 		}

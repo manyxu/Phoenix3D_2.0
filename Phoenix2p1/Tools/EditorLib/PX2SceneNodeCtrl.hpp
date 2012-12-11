@@ -46,7 +46,6 @@ namespace PX2Editor
 			AM_WORLD,
 			AM_LOCAL
 		};
-
 		void SetAxisMode (AxisMode mode);
 		AxisMode GetAxisMode () { return mAxisMode; }
 
@@ -57,7 +56,6 @@ namespace PX2Editor
 			LT_LEFT,
 			LT_PERSPECTIVE
 		};
-
 		void SetLookType (LookType type);
 		LookType GetLookType () { return mLookType; }
 
@@ -68,7 +66,6 @@ namespace PX2Editor
 			CT_ROLATE,
 			CT_SCALE
 		};
-
 		void SetCtrlType (CtrlType type);
 		CtrlType GetCtrlType () { return mCtrlType; }
 
@@ -83,7 +80,6 @@ namespace PX2Editor
 			DT_YZ,
 			DT_XYZ
 		};
-
 		void SetDragType (DragType type);
 		DragType GetDragType () { return mDragType; }
 

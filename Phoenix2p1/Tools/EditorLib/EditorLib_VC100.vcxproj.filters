@@ -19,6 +19,9 @@
     <Filter Include="Map">
       <UniqueIdentifier>{6eedd465-afcf-4912-8dde-ca9bba99deb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TerrainEdit">
+      <UniqueIdentifier>{4bc48368-0c3f-48b7-be91-6efa104037b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PX2EditSystem.hpp">
@@ -41,6 +44,18 @@
     <ClInclude Include="PX2EditMap.hpp">
       <Filter>Map</Filter>
     </ClInclude>
+    <ClInclude Include="PX2TerrainProcess.hpp">
+      <Filter>TerrainEdit</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2TerrainBrush.hpp">
+      <Filter>TerrainEdit</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Brush.hpp">
+      <Filter>TerrainEdit</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2TerrainEdit.hpp">
+      <Filter>TerrainEdit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PX2EditSystem.cpp">
@@ -60,6 +75,18 @@
     </ClCompile>
     <ClCompile Include="PX2EditMap.cpp">
       <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2TerrainProcess.cpp">
+      <Filter>TerrainEdit</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2TerrainBrush.cpp">
+      <Filter>TerrainEdit</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Brush.cpp">
+      <Filter>TerrainEdit</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2TerrainEdit.cpp">
+      <Filter>TerrainEdit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -75,7 +75,7 @@ double Controller::GetControlTime (double applicationTime)
 			return MinTime + fractionTime*timeRange;
 		}
 
-		// Repeat == PX2_RT_CYCLE
+		// Repeat == RT_CYCLE
 		if (((int)integerTime) & 1)
 		{
 			// ºóÍË.

@@ -8,6 +8,7 @@
 #define PX2GAME_HPP
 
 #include "PX2Actor.hpp"
+#include "PX2TerrainActor.hpp"
 #include "PX2ActorPicker.hpp"
 #include "PX2ActorPickRecord.hpp"
 #include "PX2GameManager.hpp"

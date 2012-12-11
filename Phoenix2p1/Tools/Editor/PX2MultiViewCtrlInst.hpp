@@ -22,8 +22,7 @@ namespace PX2Editor
 		virtual void Activate();
 		virtual void DeActivate();
 	};
-
-
+	
 }
 
 #endif

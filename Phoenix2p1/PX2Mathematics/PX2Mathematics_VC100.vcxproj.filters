@@ -124,9 +124,6 @@
     <ClInclude Include="PX2Float3.hpp">
       <Filter>Base</Filter>
     </ClInclude>
-    <ClInclude Include="PX2Float4.hpp">
-      <Filter>Algebra</Filter>
-    </ClInclude>
     <ClInclude Include="PX2Matrix2.hpp">
       <Filter>Algebra</Filter>
     </ClInclude>
@@ -244,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="PX2GVector.hpp">
       <Filter>Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Float4.hpp">
+      <Filter>Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

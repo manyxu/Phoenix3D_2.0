@@ -30,6 +30,14 @@ namespace PX2
 
 		// ¸³Öµ
 		Float4& operator= (const Float4& tuple);
+
+		static const Float4 ZERO;   //< (0,0,0,0)
+		static const Float4 BLACK;	//< (0,0,0,1)
+		static const Float4 WHITE;	//< (1,1,1,1)
+		static const Float4 RED;	//< (1,0,0,1)
+		static const Float4 GREEN;  //< (0,1,0,1)
+		static const Float4 BLUE;	//< (0,0,1,1)
+		static const Float4 YELLOW; //< (1,1,0,1)
 	};
 
 }

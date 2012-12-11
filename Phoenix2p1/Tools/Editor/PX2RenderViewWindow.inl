@@ -15,6 +15,16 @@ inline PX2::Movable *RenderViewWindow::GetScene ()
 	return mScene;
 }
 //----------------------------------------------------------------------------
+inline void RenderViewWindow::SetHelpScene(PX2::Movable *scene)
+{
+	mHelpScene = scene;
+}
+//----------------------------------------------------------------------------
+inline PX2::Movable *RenderViewWindow::GetHelpScene ()
+{
+	return mHelpScene;
+}
+//----------------------------------------------------------------------------
 inline PX2::Renderer *RenderViewWindow::GetRenderer ()
 {
 	return mRenderer;

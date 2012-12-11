@@ -48,7 +48,7 @@ EVT_MENU(ID_ADDACTOR_LIGHT_POINT, RenderViewWindow::OnActorLight_Point)
 EVT_MENU(ID_ADDACTOR_LIGHT_SPOT, RenderViewWindow::OnActorLight_Spot)
 EVT_MENU(ID_CREATE_BOX, RenderViewWindow::OnCreateBox)
 EVT_MENU(ID_CREATE_SPHERE, RenderViewWindow::OnCreateSphere)
-EVT_MENU(ID_CLONE_INSTANCE, RenderViewWindow::OnCloneInstance)
+EVT_MENU(ID_CLONE_INSTANCE, RenderViewWindow::OnCloneShare)
 EVT_MENU(ID_CLONE_DATA, RenderViewWindow::OnCloneData)
 END_EVENT_TABLE()
 //----------------------------------------------------------------------------
@@ -173,6 +173,7 @@ bool RenderViewWindow::Initlize ()
 		->SetCamera(mCamera);
 	SetScene(EditSystem::GetSingleton().GetEditMap()->GetScene()
 		->GetSceneNode());
+	SetHelpScene(EditSystem::GetSingleton().GetHelpScene());
 
 	mInited = true;
 
@@ -204,10 +205,14 @@ void RenderViewWindow::SetViewType (ViewType viewType)
 	mGridCuller.SetCamera(mCamera);
 	mCtrlCuller.SetCamera(mCamera);
 	mCuller.SetCamera(mCamera);
+	mHelpCuller.SetCamera(mCamera);
 }
 //----------------------------------------------------------------------------
 void RenderViewWindow::OnTimer (wxTimerEvent& event)
 {
+	if (!mInited)
+		return;
+
 	int ival = event.GetInterval();
 	double dIval = ival/1000.0;
 
@@ -331,10 +336,11 @@ void RenderViewWindow::OnRightUp (wxMouseEvent& e)
 	}
 	else if (!mRightDownOnMotion)
 	{
-		if (EditSystem::GetSingleton().GetEditMode() == EditSystem::EM_SELECT
-			|| EditSystem::GetSingleton().GetEditMode() == EditSystem::EM_TRANSLATE
-			|| EditSystem::GetSingleton().GetEditMode() == EditSystem::EM_ROLATE
-			|| EditSystem::GetSingleton().GetEditMode() == EditSystem::EM_SCALE)
+		EditSystem::EditMode editMode = EditSystem::GetSingleton().GetEditMode();
+		if (editMode == EditSystem::EM_SELECT
+			|| editMode == EditSystem::EM_TRANSLATE
+			|| editMode == EditSystem::EM_ROLATE
+			|| editMode == EditSystem::EM_SCALE)
 		{
 			if (mEditMenu)
 				this->PopupMenu(mEditMenu, popupPos.x, popupPos.y);
@@ -402,24 +408,40 @@ void RenderViewWindow::OnCreateBox (wxCommandEvent& e)
 {
 	APoint pos = ViewCtrlInstMan::GetSingleton().GetCurViewCtrlInst()
 		->GetSelectPoint();
-	EditSystem::GetSingleton().GetEditMap()->CreateBox(APoint::ORIGIN);
+	EditSystem::GetSingleton().GetEditMap()->CreateBox(pos);
 }
 //----------------------------------------------------------------------------
 void RenderViewWindow::OnCreateSphere (wxCommandEvent& e)
 {
 	APoint pos = ViewCtrlInstMan::GetSingleton().GetCurViewCtrlInst()
 		->GetSelectPoint();
-	EditSystem::GetSingleton().GetEditMap()->CreateSphere(APoint::ORIGIN);
+	EditSystem::GetSingleton().GetEditMap()->CreateSphere(pos);
 }
 //----------------------------------------------------------------------------
-void RenderViewWindow::OnCloneInstance (wxCommandEvent& e)
+void RenderViewWindow::OnCloneShare (wxCommandEvent& e)
 {
-
+	Actor *actor = EditSystem::GetSingleton().GetSelection()->GetActor(0);
+	if (actor)
+	{
+		APoint pos = ViewCtrlInstMan::GetSingleton().GetCurViewCtrlInst()
+			->GetSelectPoint();
+		EditSystem::GetSingleton().GetEditMap()->CloneShare(actor, pos);
+	}
 }
 //----------------------------------------------------------------------------
 void RenderViewWindow::OnCloneData (wxCommandEvent& e)
 {
+	Actor *actor = EditSystem::GetSingleton().GetSelection()->GetActor(0);
+	if (actor)
+	{
+		APoint pos = ViewCtrlInstMan::GetSingleton().GetCurViewCtrlInst()
+			->GetSelectPoint();
+		EditSystem::GetSingleton().GetEditMap()->CloneData(actor, pos);
+	}
+	else
+	{
 
+	}
 }
 //----------------------------------------------------------------------------
 std::pair<float, float> RenderViewWindow::StartMouseDrag(wxMouseEvent& e)
@@ -618,9 +640,15 @@ void RenderViewWindow::DrawScene ()
 		mCtrlCuller.ComputeVisibleSet(mCtrlScene);
 	}
 
+	if (mHelpScene)
+	{
+		mHelpCuller.ComputeVisibleSet(mHelpScene);
+	}
+
 	if (mScene)
 	{
 		mCuller.ComputeVisibleSet(mScene);
+		mCuller.ComputeEnvironment();
 	}
 
 	if (mRenderer->PreDraw())
@@ -632,6 +660,7 @@ void RenderViewWindow::DrawScene ()
 		mRenderer->Draw(mCuller.GetVisibleSet());
 
 		mRenderer->ClearDepthBuffer();
+		mRenderer->Draw(mHelpCuller.GetVisibleSet());
 		mRenderer->Draw(mCtrlCuller.GetVisibleSet().Sort());
 
 		mRenderer->PostDraw();
@@ -868,6 +897,12 @@ void RenderViewWindow::DoExecute (PX2::Event *event)
 			SetScene(scene->GetSceneNode());
 			scene->GetDefaultCameraActor()->SetCamera(mCamera);
 		}
+
+		Movable *helpScene = EditSystem::GetSingleton().GetHelpScene();
+		if (helpScene)
+		{
+			SetHelpScene(helpScene);
+		}
 	}
 	else if (EditorEventSpace::IsEqual(event, EditorEventSpace::SetEditMode))
 	{
@@ -882,6 +917,18 @@ void RenderViewWindow::DoExecute (PX2::Event *event)
 			mSceneNodeCtrl->SetCtrlType(SceneNodeCtrl::CT_ROLATE);
 		else if (mode == PX2Editor::EditSystem::EM_SCALE)
 			mSceneNodeCtrl->SetCtrlType(SceneNodeCtrl::CT_SCALE);
+	}
+	else if (EditorEventSpace::IsEqual(event, EditorEventSpace::SceneNodeDrag))
+	{
+		int drag = event->GetData<int>();
+		if (1 == drag)
+		{
+			SetCursor(wxCursor(wxCURSOR_SIZING));
+		}
+		else if (0 == drag)
+		{
+			SetCursor(wxCursor(wxCURSOR_ARROW));
+		}
 	}
 }
 //----------------------------------------------------------------------------

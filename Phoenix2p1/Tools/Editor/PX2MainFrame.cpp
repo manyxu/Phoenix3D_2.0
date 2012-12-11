@@ -10,44 +10,54 @@
 #include "PX2ResTree.hpp"
 #include "PX2InspectorWindow.hpp"
 #include "PX2ViewCtrlInstMan.hpp"
+#include "PX2DlgTerainNew.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 
-#define ID_NEW wxID_HIGHEST + 1001
-#define ID_OPEN wxID_HIGHEST + 1002
-#define ID_CLOSE wxID_HIGHEST + 1003
-#define ID_SAVE wxID_HIGHEST + 1004
-#define ID_SAVEAS wxID_HIGHEST + 1005
-#define ID_EXIT wxID_HIGHEST + 1006
+#define ID_FILE_NEW wxID_HIGHEST + 1001
+#define ID_FILE_OPEN wxID_HIGHEST + 1002
+#define ID_FILE_CLOSE wxID_HIGHEST + 1003
+#define ID_FILE_SAVE wxID_HIGHEST + 1004
+#define ID_FILE_SAVEAS wxID_HIGHEST + 1005
+#define ID_FILE_EXIT wxID_HIGHEST + 1006
 
-#define ID_UNDO wxID_HIGHEST + 1101
-#define ID_REDO wxID_HIGHEST + 1102
-#define ID_COPY wxID_HIGHEST + 1103
-#define ID_CUT wxID_HIGHEST + 1104
-#define ID_PASTE wxID_HIGHEST + 1105
-#define ID_DELETE wxID_HIGHEST + 1106
-#define ID_SELECT wxID_HIGHEST + 1107
-#define ID_MOVE wxID_HIGHEST + 1108
-#define ID_ROLATE wxID_HIGHEST + 1109
-#define ID_SCALE wxID_HIGHEST + 1110
+#define ID_EDIT_UNDO wxID_HIGHEST + 1101
+#define ID_EDIT_REDO wxID_HIGHEST + 1102
+#define ID_EDIT_COPY wxID_HIGHEST + 1103
+#define ID_EDIT_CUT wxID_HIGHEST + 1104
+#define ID_EDIT_PASTE wxID_HIGHEST + 1105
+#define ID_EDIT_DELETE wxID_HIGHEST + 1106
+#define ID_EDIT_SELECT wxID_HIGHEST + 1107
+#define ID_EDIT_MOVE wxID_HIGHEST + 1108
+#define ID_EDIT_ROLATE wxID_HIGHEST + 1109
+#define ID_EDIT_SCALE wxID_HIGHEST + 1110
+#define ID_EDIT_EDIT wxID_HIGHEST + 1111
 
-#define ID_PLAYINEDITOR wxID_HIGHEST + 1201
-#define ID_PLAY wxID_HIGHEST + 1202
-#define ID_PLAYCONFIG wxID_HIGHEST + 1203
+#define ID_VIEW0_SCENE wxID_HIGHEST + 1201
+
+#define ID_TERRAIN_NEW wxID_HIGHEST + 1301
+
+#define ID_PLAYINEDITOR wxID_HIGHEST + 1401
+#define ID_PLAY wxID_HIGHEST + 1402
+#define ID_PLAYCONFIG wxID_HIGHEST + 1403
 
 #define ID_FRAMETIMER wxID_HIGHEST+1999
 //----------------------------------------------------------------------------
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_TIMER(ID_FRAMETIMER, MainFrame::OnTimer)
-	EVT_MENU(ID_NEW, MainFrame::OnNew)
-	EVT_MENU(ID_OPEN, MainFrame::OnOpen)
-	EVT_MENU(ID_SAVE, MainFrame::OnSave)
-	EVT_MENU(ID_SAVEAS, MainFrame::OnSaveAs)
-	EVT_MENU(ID_EXIT, MainFrame::OnExist)
-	EVT_MENU(ID_SELECT, MainFrame::OnEditSelect)
-	EVT_MENU(ID_MOVE, MainFrame::OnEditTranslate)
-	EVT_MENU(ID_ROLATE, MainFrame::OnEditRolate)
-	EVT_MENU(ID_SCALE, MainFrame::OnEditScale)
+	EVT_MENU(ID_FILE_NEW, MainFrame::OnNew)
+	EVT_MENU(ID_FILE_OPEN, MainFrame::OnOpen)
+	EVT_MENU(ID_FILE_SAVE, MainFrame::OnSave)
+	EVT_MENU(ID_FILE_SAVEAS, MainFrame::OnSaveAs)
+	EVT_MENU(ID_FILE_EXIT, MainFrame::OnExist)
+	EVT_MENU(ID_EDIT_UNDO, MainFrame::OnUnDo)
+	EVT_MENU(ID_EDIT_REDO, MainFrame::OnReDo)
+	EVT_MENU(ID_EDIT_SELECT, MainFrame::OnEditSelect)
+	EVT_MENU(ID_EDIT_MOVE, MainFrame::OnEditTranslate)
+	EVT_MENU(ID_EDIT_ROLATE, MainFrame::OnEditRolate)
+	EVT_MENU(ID_EDIT_SCALE, MainFrame::OnEditScale)
+	EVT_MENU(ID_EDIT_EDIT, MainFrame::OnEditEdit)
+	EVT_MENU(ID_TERRAIN_NEW, MainFrame::OnTerrainNew)
 	EVT_MENU(ID_PLAY, MainFrame::OnGamePlay)
 END_EVENT_TABLE();
 //----------------------------------------------------------------------------
@@ -95,12 +105,12 @@ void MainFrame::OnNew (wxCommandEvent &e)
 	mRenderView->SetScene(map->GetScene()->GetSceneNode());
 
 	ViewCtrlInstMan::GetSingleton().GetCurViewCtrlInst()
-		->SetInteractionMode(IM_SELECT);
+		->SetInteractionMode(IM_GENERAL);
 }
 //----------------------------------------------------------------------------
 void MainFrame::OnOpen (wxCommandEvent &e)
 {
-	wxFileDialog dlg(this,
+	wxFileDialog dlg(mRenderView,
 		wxT("Open Map"),
 		wxEmptyString,
 		wxEmptyString,
@@ -114,7 +124,7 @@ void MainFrame::OnOpen (wxCommandEvent &e)
 	}
 
 	ViewCtrlInstMan::GetSingleton().GetCurViewCtrlInst()
-		->SetInteractionMode(IM_SELECT);
+		->SetInteractionMode(IM_GENERAL);
 }
 //----------------------------------------------------------------------------
 void MainFrame::OnSave (wxCommandEvent &e)
@@ -127,7 +137,7 @@ void MainFrame::OnSave (wxCommandEvent &e)
 	}
 	else
 	{
-		wxFileDialog dlg(this,
+		wxFileDialog dlg(mRenderView,
 			wxT("Save Map"),
 			wxEmptyString,
 			wxEmptyString,
@@ -145,7 +155,7 @@ void MainFrame::OnSave (wxCommandEvent &e)
 //----------------------------------------------------------------------------
 void MainFrame::OnSaveAs (wxCommandEvent &e)
 {
-	wxFileDialog dlg(this,
+	wxFileDialog dlg(mRenderView,
 		wxT("Save Map"),
 		wxEmptyString,
 		wxEmptyString,
@@ -162,31 +172,69 @@ void MainFrame::OnSaveAs (wxCommandEvent &e)
 //----------------------------------------------------------------------------
 void MainFrame::OnExist (wxCommandEvent &e)
 {
-
+	//if (wxID_OK == wxMessageBox(PX2_LM.GetValue("Tip1"),
+	//	PX2_LM.GetValue("Tip0"), wxYES_NO))
+	//{
+	//}
+}
+//----------------------------------------------------------------------------
+void MainFrame::OnUnDo (wxCommandEvent &e)
+{
+	EditSystem::GetSingleton().GetCM()->UnDo();
+}
+//----------------------------------------------------------------------------
+void MainFrame::OnReDo (wxCommandEvent &e)
+{
+	EditSystem::GetSingleton().GetCM()->ReDo();
 }
 //----------------------------------------------------------------------------
 void MainFrame::OnEditSelect (wxCommandEvent& e)
 {
-	ViewCtrlInstMan::GetSingleton().GetCurViewCtrlInst()
-		->SetInteractionMode(IM_SELECT);
+	EditSystem::GetSingleton().SetEditMode(EditSystem::EM_SELECT);
 }
 //----------------------------------------------------------------------------
 void MainFrame::OnEditTranslate (wxCommandEvent& e)
 {
-	ViewCtrlInstMan::GetSingleton().GetCurViewCtrlInst()
-		->SetInteractionMode(IM_TRANSLATE);
+	EditSystem::GetSingleton().SetEditMode(EditSystem::EM_TRANSLATE);
 }
 //----------------------------------------------------------------------------
 void MainFrame::OnEditRolate (wxCommandEvent& e)
 {
-	ViewCtrlInstMan::GetSingleton().GetCurViewCtrlInst()
-		->SetInteractionMode(IM_ROLATE);
+	EditSystem::GetSingleton().SetEditMode(EditSystem::EM_ROLATE);
 }
 //----------------------------------------------------------------------------
 void MainFrame::OnEditScale (wxCommandEvent& e)
 {
-	ViewCtrlInstMan::GetSingleton().GetCurViewCtrlInst()
-		->SetInteractionMode(IM_SCALE);
+	EditSystem::GetSingleton().SetEditMode(EditSystem::EM_SCALE);
+}
+//----------------------------------------------------------------------------
+void MainFrame::OnEditEdit (wxCommandEvent& e)
+{
+	EditSystem::GetSingleton().EnableSelectEdit(!EditSystem::GetSingleton()
+		.IsSelectEditEnable());
+
+	EditSystem::EditMode mode = EditSystem::GetSingleton().GetEditMode();
+	if (EditSystem::EM_TERRAIN == mode)
+	{
+		ViewCtrlInstMan::GetSingleton().GetCurViewCtrlInst()
+			->SetInteractionMode(IM_TEREDIT);
+	}
+	else
+	{
+		ViewCtrlInstMan::GetSingleton().GetCurViewCtrlInst()
+			->SetInteractionMode(IM_GENERAL);
+	}
+}
+//----------------------------------------------------------------------------
+void MainFrame::OnTerrainNew (wxCommandEvent &e)
+{
+	DlgTerrainNew dlg(mRenderView);
+	if( dlg.ShowModal() == wxID_OK )
+	{
+		EditSystem::GetSingleton().GetEditMap()->CreateTerrain(
+			dlg.mValue_TerrainName, dlg.mValue_TerrainWidth,
+			dlg.mValue_PageWidth+1, dlg.mValue_GridSpace);
+	}
 }
 //----------------------------------------------------------------------------
 void MainFrame::OnGamePlay (wxCommandEvent& e)
@@ -233,6 +281,7 @@ bool MainFrame::Initlize ()
 	mAuiManager->AddPane(insp, wxAuiPaneInfo().Name(wxT("Inspector"))
 		.Caption(PX2_LM.GetValue("Inspector")).DefaultPane().Right()
 		.CloseButton(false).FloatingSize(220, 150).MinSize(220, 100));
+	EventWorld::GetSingleton().ComeIn(insp);
 
 	wxFileConfig config("PX2EditorConfig");
 	wxString Perspective;
@@ -254,35 +303,45 @@ bool MainFrame::Initlize ()
 void MainFrame::CreateMenu()
 {
 	wxMenuBar* menubar = new wxMenuBar();
-	wxMenu* mnu = new wxMenu();
-	menubar->Append(mnu, PX2_LM.GetValue("File"));
-	mnu->Append(ID_NEW, PX2_LM.GetValue("New")+wxT("\tCtrl-N"));
-	mnu->Append(ID_OPEN, PX2_LM.GetValue("Open")+wxT("\tCtrl-O"));
-	mnu->Append(ID_CLOSE, PX2_LM.GetValue("Close"));
-	mnu->AppendSeparator();
-	mnu->Append(ID_SAVE, PX2_LM.GetValue("Save")+wxT("\tCtrl-S"));
-	mnu->Append(ID_SAVEAS, PX2_LM.GetValue("SaveAs")+wxT("\tCtrl-A"));
-	mnu->AppendSeparator();
-	mnu->Append(ID_EXIT, PX2_LM.GetValue("Exist")+wxT("\tAlt-X"));
+	wxMenu* menu = new wxMenu();
+	menubar->Append(menu, PX2_LM.GetValue("File"));
+	menu->Append(ID_FILE_NEW, PX2_LM.GetValue("New")+wxT("\tCtrl-N"));
+	menu->Append(ID_FILE_OPEN, PX2_LM.GetValue("Open")+wxT("\tCtrl-O"));
+	menu->Append(ID_FILE_CLOSE, PX2_LM.GetValue("Close"));
+	menu->AppendSeparator();
+	menu->Append(ID_FILE_SAVE, PX2_LM.GetValue("Save")+wxT("\tCtrl-S"));
+	menu->Append(ID_FILE_SAVEAS, PX2_LM.GetValue("SaveAs")+wxT("\tCtrl-A"));
+	menu->AppendSeparator();
+	menu->Append(ID_FILE_EXIT, PX2_LM.GetValue("Exist")+wxT("\tAlt-X"));
 
-	mnu = new wxMenu();
-	menubar->Append(mnu, PX2_LM.GetValue("Edit"));
-	mnu->Append(ID_UNDO, PX2_LM.GetValue("Undo")+wxT("\tCtrl-Z"));
-	mnu->Append(ID_REDO, PX2_LM.GetValue("Redo")+wxT("\tCtrl-Y"));
-	mnu->AppendSeparator();
-	mnu->Append(ID_SELECT, PX2_LM.GetValue("Select")+wxT("\t1"));
-	mnu->Append(ID_MOVE, PX2_LM.GetValue("Move")+wxT("\t2"));
-	mnu->Append(ID_ROLATE, PX2_LM.GetValue("Rolate")+wxT("\t3"));
-	mnu->Append(ID_SCALE, PX2_LM.GetValue("Scale")+wxT("\t4"));
+	menu = new wxMenu();
+	menubar->Append(menu, PX2_LM.GetValue("Edit"));
+	menu->Append(ID_EDIT_UNDO, PX2_LM.GetValue("Undo")+wxT("\tCtrl-Z"));
+	menu->Append(ID_EDIT_REDO, PX2_LM.GetValue("Redo")+wxT("\tCtrl-Y"));
+	menu->AppendSeparator();
+	menu->Append(ID_EDIT_SELECT, PX2_LM.GetValue("Select")+wxT("\t1"));
+	menu->Append(ID_EDIT_MOVE, PX2_LM.GetValue("Move")+wxT("\t2"));
+	menu->Append(ID_EDIT_ROLATE, PX2_LM.GetValue("Rolate")+wxT("\t3"));
+	menu->Append(ID_EDIT_SCALE, PX2_LM.GetValue("Scale")+wxT("\t4"));
+	menu->AppendSeparator();
+	menu->Append(ID_EDIT_EDIT, PX2_LM.GetValue("Edit")+wxT("\tCtrl-E"));
 
-	mnu = new wxMenu();
-	menubar->Append(mnu, PX2_LM.GetValue("Game"));
-	mnu->Append(ID_PLAYINEDITOR, PX2_LM.GetValue("PlayInEditor"));
-	mnu->Append(ID_PLAY, PX2_LM.GetValue("Play")+wxT("\tCtrl-R"));
-	mnu->Append(ID_PLAYCONFIG, PX2_LM.GetValue("PlayConfig"));
+	menu = new wxMenu();
+	menubar->Append(menu, PX2_LM.GetValue("View"));
+	menu ->Append(ID_VIEW0_SCENE, PX2_LM.GetValue("Scene"));
 
-	mnu = new wxMenu();
-	menubar->Append(mnu, PX2_LM.GetValue("Help"));
+	menu = new wxMenu();
+	menubar->Append(menu, PX2_LM.GetValue("Terrain"));
+	menu->Append(ID_TERRAIN_NEW, PX2_LM.GetValue("TerrainNew"));
+
+	menu = new wxMenu();
+	menubar->Append(menu, PX2_LM.GetValue("Game"));
+	menu->Append(ID_PLAYINEDITOR, PX2_LM.GetValue("PlayInEditor"));
+	menu->Append(ID_PLAY, PX2_LM.GetValue("Play")+wxT("\tCtrl-R"));
+	menu->Append(ID_PLAYCONFIG, PX2_LM.GetValue("PlayConfig"));
+
+	menu = new wxMenu();
+	menubar->Append(menu, PX2_LM.GetValue("Help"));
 
 	SetMenuBar(menubar);
 }
@@ -293,46 +352,46 @@ void MainFrame::CreateMainToolbar ()
 		wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
 	mMainToolbar->SetToolBitmapSize(wxSize(16, 16));
 
-	mMainToolbar->AddTool(ID_NEW, _("New"), 
+	mMainToolbar->AddTool(ID_FILE_NEW, _("New"), 
 		wxBitmap( wxT("./ToolRes/Icons/page_world.png"), wxBITMAP_TYPE_PNG), 
 		wxNullBitmap, wxITEM_NORMAL, 
 		wxEmptyString, wxEmptyString );
 
-	mMainToolbar->AddTool(ID_OPEN, _("Open"), 
+	mMainToolbar->AddTool(ID_FILE_OPEN, _("Open"), 
 		wxBitmap( wxT("./ToolRes/Icons/folder_page.png"), wxBITMAP_TYPE_PNG), 
 		wxNullBitmap, wxITEM_NORMAL, 
 		wxEmptyString, wxEmptyString );
 
 	mMainToolbar->AddSeparator();
 
-	mMainToolbar->AddTool(ID_COPY, _("Copy"), 
+	mMainToolbar->AddTool(ID_EDIT_COPY, _("Copy"), 
 		wxBitmap( wxT("./ToolRes/Icons/page_copy.png"), wxBITMAP_TYPE_PNG), 
 		wxNullBitmap, wxITEM_NORMAL, 
 		wxEmptyString, wxEmptyString );
 
-	mMainToolbar->AddTool(ID_CUT, _("Cut"), 
+	mMainToolbar->AddTool(ID_EDIT_CUT, _("Cut"), 
 		wxBitmap( wxT("./ToolRes/Icons/cut.png"), wxBITMAP_TYPE_PNG), 
 		wxNullBitmap, wxITEM_NORMAL, 
 		wxEmptyString, wxEmptyString );
 
-	mMainToolbar->AddTool(ID_PASTE, _("Paste"), 
+	mMainToolbar->AddTool(ID_EDIT_PASTE, _("Paste"), 
 		wxBitmap( wxT("./ToolRes/Icons/page_paste.png"), wxBITMAP_TYPE_PNG), 
 		wxNullBitmap, wxITEM_NORMAL, 
 		wxEmptyString, wxEmptyString );
 
 	mMainToolbar->AddSeparator();
 
-	mMainToolbar->AddTool(ID_UNDO, _("Undo"), 
+	mMainToolbar->AddTool(ID_EDIT_UNDO, _("Undo"), 
 		wxBitmap( wxT("./ToolRes/Icons/arrow_turn_left.png"), wxBITMAP_TYPE_PNG), 
 		wxNullBitmap, wxITEM_NORMAL, 
 		wxEmptyString, wxEmptyString );
-	mMainToolbar->EnableTool(ID_UNDO, false);
+	mMainToolbar->EnableTool(ID_EDIT_UNDO, false);
 
-	mMainToolbar->AddTool(ID_REDO, _("Redo"), 
+	mMainToolbar->AddTool(ID_EDIT_REDO, _("Redo"), 
 		wxBitmap( wxT("./ToolRes/Icons/arrow_turn_right.png"), wxBITMAP_TYPE_PNG), 
 		wxNullBitmap, wxITEM_NORMAL, 
 		wxEmptyString, wxEmptyString );
-	mMainToolbar->EnableTool(ID_REDO, false);
+	mMainToolbar->EnableTool(ID_EDIT_REDO, false);
 
 	mMainToolbar->Realize();
 

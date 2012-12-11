@@ -34,6 +34,11 @@ namespace PX2
 	PX2_EVENT(SetPreView)
 	// Actor
 	PX2_EVENT(ActorTransformChanged)
+	// ActorEdit
+	PX2_EVENT(SceneNodeDrag) // data==1 drag; data==0 no drag
+	// Terrain
+	PX2_EVENT(CreateTerrain)
+	PX2_EVENT(SelectTerrainPage)
 	PX2_DECLARE_EVENT_END(EditorEventSpace)
 
 }

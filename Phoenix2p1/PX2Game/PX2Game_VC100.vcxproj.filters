@@ -36,6 +36,15 @@
     <ClCompile Include="PX2CameraActor.cpp">
       <Filter>Actors</Filter>
     </ClCompile>
+    <ClCompile Include="PX2TerrainActor.cpp">
+      <Filter>Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2AmbientRegionActor.cpp">
+      <Filter>Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2TriggerActor.cpp">
+      <Filter>Actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PX2GamePre.hpp" />
@@ -61,6 +70,15 @@
     <ClInclude Include="PX2CameraActor.hpp">
       <Filter>Actors</Filter>
     </ClInclude>
+    <ClInclude Include="PX2TerrainActor.hpp">
+      <Filter>Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2AmbientRegionActor.hpp">
+      <Filter>Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2TriggerActor.hpp">
+      <Filter>Actors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PX2Netable.inl">
@@ -76,6 +94,15 @@
       <Filter>Game</Filter>
     </None>
     <None Include="PX2CameraActor.inl">
+      <Filter>Actors</Filter>
+    </None>
+    <None Include="PX2TerrainActor.inl">
+      <Filter>Actors</Filter>
+    </None>
+    <None Include="PX2AmbientRegionActor.inl">
+      <Filter>Actors</Filter>
+    </None>
+    <None Include="PX2TriggerActor.inl">
       <Filter>Actors</Filter>
     </None>
   </ItemGroup>

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="PX2TerrainsPre.hpp" />
+    <ClInclude Include="PX2Terrain.hpp">
+      <Filter>Terrains</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2RawTerrainPage.hpp">
+      <Filter>Terrains</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2RawTerrain.hpp">
+      <Filter>Terrains</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Terrains.hpp" />
+    <ClInclude Include="PX2EditTerrainMaterial.hpp">
+      <Filter>Material</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PX2Terrain.cpp">
+      <Filter>Terrains</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2RawTerrainPage.cpp">
+      <Filter>Terrains</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2RawTerrain.cpp">
+      <Filter>Terrains</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EditTerrainMaterial.cpp">
+      <Filter>Material</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Material">
+      <UniqueIdentifier>{93fc8d6d-b17e-4b86-839e-8d2c15e13f12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Terrains">
+      <UniqueIdentifier>{4c89290d-b862-4af3-831d-e292a8bb3c22}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PX2Terrain.inl">
+      <Filter>Terrains</Filter>
+    </None>
+    <None Include="PX2RawTerrainPage.inl">
+      <Filter>Terrains</Filter>
+    </None>
+    <None Include="PX2RawTerrain.inl">
+      <Filter>Terrains</Filter>
+    </None>
+  </ItemGroup>
+</Project>

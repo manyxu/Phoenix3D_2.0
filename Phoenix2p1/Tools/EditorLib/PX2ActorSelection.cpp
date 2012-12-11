@@ -57,8 +57,6 @@ void ActorSelection::RemoveActor (PX2::Actor *actor)
 //----------------------------------------------------------------------------
 PX2::Actor *ActorSelection::GetActor (int i)
 {
-	assertion(0<=i&&i<(int)mActors.size(), "i should be in right range.");
-
 	if (0<=i&&i<(int)mActors.size())
 		return mActors[i];
 
@@ -130,6 +128,7 @@ void ActorSelection::AddScale (PX2::AVector vec)
 	{
 		APoint scale = mActors[i]->GetScale();
 		scale += vec;
+
 		mActors[i]->SetScale(scale);
 	}
 }

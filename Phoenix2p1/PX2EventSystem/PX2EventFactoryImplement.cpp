@@ -9,6 +9,16 @@
 using namespace PX2;
 
 //----------------------------------------------------------------------------
+EventFactoryImplement::EventFactoryImplement ()
+	:
+mEventQuantity(0)
+{
+}
+//----------------------------------------------------------------------------
+EventFactoryImplement::~EventFactoryImplement ()
+{
+}
+//----------------------------------------------------------------------------
 Event* EventFactoryImplement::CreateEventX ()
 {
 	return new0 Event();
