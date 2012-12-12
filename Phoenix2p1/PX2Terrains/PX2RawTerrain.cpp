@@ -329,7 +329,7 @@ void RawTerrain::Save (OutStream& target) const
 //----------------------------------------------------------------------------
 int RawTerrain::GetStreamingSize () const
 {
-	int size = Node::GetStreamingSize();
+	int size = Terrain::GetStreamingSize();
 	size += PX2_POINTERSIZE(mVFormat);
 	size += mNumRows*mNumCols*PX2_POINTERSIZE(mPages[0][0]);
 	size += PX2_POINTERSIZE(mShine);
