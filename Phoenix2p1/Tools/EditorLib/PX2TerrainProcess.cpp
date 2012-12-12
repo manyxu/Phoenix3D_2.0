@@ -228,7 +228,22 @@ void TerrainTextureProcess::Apply ()
 					add = -add;
 
 				int val = 0;
-				if (mSelectedLayerIndex == 1)
+				if (mSelectedLayerIndex == 0)
+				{
+					if (add > 0)
+					{
+						iR -= add/2;
+						iB -= add/2;
+						iG -= add/2;
+						iA -= add/2;
+
+						*r = PX2::Math<int>::Clamp(iR, 0, 255);
+						*b = PX2::Math<int>::Clamp(iB, 0, 255);
+						*g = PX2::Math<int>::Clamp(iG, 0, 255);
+						*a = PX2::Math<int>::Clamp(iA, 0, 255);
+					}
+				}
+				else if (mSelectedLayerIndex == 1)
 				{
 					val = (*r); //< ±ØÐëÊÇunsigned 
 					val += add;

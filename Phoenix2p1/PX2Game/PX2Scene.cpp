@@ -304,8 +304,11 @@ void Scene::Load (InStream& source)
 		mActors.resize(numActors);
 		source.ReadPointerVV(numActors, &mActors[0]);
 	}
+	source.ReadPointer(mTerrainActor);
 
+	source.ReadPointer(mDefaultLight);
 	source.ReadPointer(mDefaultCameraActor);
+	source.ReadPointer(mDefaultARActor);
 
 	PX2_END_DEBUG_STREAM_LOAD(Scene, source);
 }
@@ -325,8 +328,11 @@ void Scene::Link (InStream& source)
 			SetActor(i, mActors[i]);
 		}
 	}
+	source.ResolveLink(mTerrainActor);
 
+	source.ResolveLink(mDefaultLight);
 	source.ResolveLink(mDefaultCameraActor);
+	source.ResolveLink(mDefaultARActor);
 }
 //----------------------------------------------------------------------------
 void Scene::PostLink ()
@@ -348,8 +354,11 @@ bool Scene::Register (OutStream& target) const
 				target.Register(mActors[i]);
 			}
 		}
+		target.Register(mTerrainActor);
 
+		target.Register(mDefaultLight);
 		target.Register(mDefaultCameraActor);
+		target.Register(mDefaultARActor);
 
 		return true;
 	}
@@ -379,8 +388,11 @@ void Scene::Save (OutStream& target) const
 			target.WritePointer((Actor*)0);
 		}
 	}
+	target.WritePointer(mTerrainActor);
 
+	target.WritePointer(mDefaultLight);
 	target.WritePointer(mDefaultCameraActor);
+	target.WritePointer(mDefaultARActor);
 
 	PX2_END_DEBUG_STREAM_SAVE(Scene, target);
 }
@@ -394,7 +406,10 @@ int Scene::GetStreamingSize () const
 	int numActors = (int)mActors.size();
 	size += sizeof(numActors);
 	size += numActors*PX2_POINTERSIZE(mActors[0]);
+	size += PX2_POINTERSIZE(mTerrainActor);
+	size += PX2_POINTERSIZE(mDefaultLight);
 	size += PX2_POINTERSIZE(mDefaultCameraActor);
+	size += PX2_POINTERSIZE(mDefaultARActor);
 
 	return size;
 }

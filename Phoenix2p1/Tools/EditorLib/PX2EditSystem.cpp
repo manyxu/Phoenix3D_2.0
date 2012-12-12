@@ -124,6 +124,26 @@ bool EditSystem::Terminate ()
 	return true;
 }
 //----------------------------------------------------------------------------
+void EditSystem::Reset ()
+{
+	SetEditMode(EditSystem::EM_SELECT);
+
+	if (mTerrainEdit)
+	{
+		mTerrainEdit->DisableEdit();
+	}
+
+	if (mSelection)
+	{
+		mSelection->Clear();
+	}
+
+	if (mCM)
+	{
+		mCM->Clear();
+	}
+}
+//----------------------------------------------------------------------------
 void EditSystem::Update (double elapsedSeconds)
 {
 	if (EventWorld::GetSingletonPtr())

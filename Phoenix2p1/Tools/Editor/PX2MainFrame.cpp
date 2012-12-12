@@ -337,7 +337,7 @@ void MainFrame::CreateMenu()
 	menu = new wxMenu();
 	menubar->Append(menu, PX2_LM.GetValue("Game"));
 	menu->Append(ID_PLAYINEDITOR, PX2_LM.GetValue("PlayInEditor"));
-	menu->Append(ID_PLAY, PX2_LM.GetValue("Play")+wxT("\tCtrl-R"));
+	menu->Append(ID_PLAY, PX2_LM.GetValue("Play")+wxT("\tCtrl-G"));
 	menu->Append(ID_PLAYCONFIG, PX2_LM.GetValue("PlayConfig"));
 
 	menu = new wxMenu();

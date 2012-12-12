@@ -35,7 +35,7 @@ EditMap::~EditMap ()
 void EditMap::NewScene ()
 {
 	mLoadedScenePath = "";
-	EditSystem::GetSingleton().GetCM()->Reset();
+	EditSystem::GetSingleton().Reset();
 
 	if (mScene)
 		mScene->GoOutFromEventWorld();
@@ -60,6 +60,8 @@ bool EditMap::LoadScene (const char *pathname)
 
 		if (scene)
 		{
+			EditSystem::GetSingleton().Reset();
+
 			mLoadedScenePath = pathname;
 
 			if (mScene)
@@ -221,9 +223,6 @@ void EditMap::CreateTerrain (std::string name, int terrainSize, int pageSize,
 	EventWorld::GetSingleton().BroadcastingLocalEvent(event);
 
 	mScene->AddActor(actor);
-
-	ActorAddDeleteCommand *command = new0 ActorAddDeleteCommand(actor);
-	EditSystem::GetSingleton().GetCM()->PushUnDo(command);
 }
 //----------------------------------------------------------------------------
 void EditMap::AddActor (PX2::Actor *actor)

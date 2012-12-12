@@ -24,6 +24,7 @@ namespace PX2Editor
 
 		bool Initlize ();
 		bool Terminate ();
+		void Reset ();
 		void Update (double elapsedSeconds);
 
 		EditCommandManager *GetCM ();

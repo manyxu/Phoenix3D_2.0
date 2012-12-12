@@ -140,7 +140,7 @@ EditCommandManager::~EditCommandManager ()
 
 }
 //----------------------------------------------------------------------------
-void EditCommandManager::Reset ()
+void EditCommandManager::Clear ()
 {
 	mUnDoCommands.clear();
 	mReDoCommands.clear();

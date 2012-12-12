@@ -9,7 +9,7 @@ using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, Node, Terrain);
 PX2_IMPLEMENT_STREAM(Terrain);
-PX2_IMPLEMENT_FACTORY(Terrain);
+PX2_IMPLEMENT_ABSTRACT_FACTORY(Terrain);
 
 //----------------------------------------------------------------------------
 Terrain::~Terrain ()

@@ -65,7 +65,7 @@ namespace PX2Editor
 		EditCommandManager ();
 		~EditCommandManager ();
 
-		void Reset ();
+		void Clear ();
 
 		void PushUnDo (EditCommandPtr command);
 
