@@ -40,6 +40,11 @@ inline SceneNodeCtrl *RenderViewWindow::GetSceneNodeCtrl ()
 	return mSceneNodeCtrl;
 }
 //----------------------------------------------------------------------------
+inline BoundCtrl *RenderViewWindow::GetBoundCtrl ()
+{
+	return mBoundCtrl;
+}
+//----------------------------------------------------------------------------
 inline RenderViewWindow::ViewType RenderViewWindow::GetViewType ()
 {
 	return mViewType;

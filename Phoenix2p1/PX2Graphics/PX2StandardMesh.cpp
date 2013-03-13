@@ -5,6 +5,7 @@
 */
 
 #include "PX2StandardMesh.hpp"
+#include "PX2VertexColor4Material.hpp"
 #include "PX2Float2.hpp"
 using namespace PX2;
 
@@ -162,8 +163,8 @@ TriMesh* StandardMesh::Rectangle (int xSamples, int ySamples, float xExtent,
 	TransformData(vba);
 
 	// Generate indices.
-	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 4, mUsage);
-	int* indices = (int*)ibuffer->GetData();
+	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 2, mUsage);
+	unsigned short* indices = (unsigned short*)ibuffer->GetData();
 	for (i1 = 0; i1 < ySamples - 1; ++i1)
 	{
 		for (i0 = 0; i0 < xSamples - 1; ++i0)
@@ -259,8 +260,8 @@ TriMesh* StandardMesh::Disk (int shellSamples, int radialSamples,
 	TransformData(vba);
 
 	// Generate indices.
-	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 4, mUsage);
-	int* indices = (int*)ibuffer->GetData();
+	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 2, mUsage);
+	unsigned short* indices = (unsigned short*)ibuffer->GetData();
 	for (int r0 = rsm1, r1 = 0, t = 0; r1 < radialSamples; r0 = r1++)
 	{
 		indices[0] = 0;
@@ -351,8 +352,8 @@ TriMesh* StandardMesh::Box (float xExtent, float yExtent, float zExtent)
 	TransformData(vba);
 
 	// Generate indices (outside view).
-	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 4, mUsage);
-	int* indices = (int*)ibuffer->GetData();
+	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 2, mUsage);
+	unsigned short * indices = (unsigned short*)ibuffer->GetData();
 	indices[ 0] = 0;  indices[ 1] = 2;  indices[ 2] = 1;
 	indices[ 3] = 0;  indices[ 4] = 3;  indices[ 5] = 2;
 	indices[ 6] = 0;  indices[ 7] = 1;  indices[ 8] = 5;
@@ -497,8 +498,8 @@ TriMesh* StandardMesh::Cylinder (int axisSamples, int radialSamples,
 		TransformData(vba);
 
 		// Generate indices.
-		IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 4, mUsage);
-		int* indices = (int*)ibuffer->GetData();
+		IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 2, mUsage);
+		unsigned short* indices = (unsigned short*)ibuffer->GetData();
 		for (a = 0, aStart = 0; a < axisSamples-1; ++a)
 		{
 			int i0 = aStart;
@@ -764,8 +765,8 @@ TriMesh* StandardMesh::Sphere (int zSamples, int radialSamples,
 	TransformData(vba);
 
 	// Generate indices.
-	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 4, mUsage);
-	int* indices = (int*)ibuffer->GetData();
+	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 2, mUsage);
+	unsigned short* indices = (unsigned short*)ibuffer->GetData();
 	for (z = 0, zStart = 0; z < zsm3; ++z)
 	{
 		int i0 = zStart;
@@ -971,8 +972,8 @@ TriMesh* StandardMesh::Torus (int circleSamples, int radialSamples,
 	TransformData(vba);
 
 	// Generate indices.
-	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 4, mUsage);
-	int* indices = (int*)ibuffer->GetData();
+	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 2, mUsage);
+	unsigned short* indices = (unsigned short*)ibuffer->GetData();
 	int cStart = 0;
 	for (c = 0; c < circleSamples; ++c)
 	{
@@ -1072,8 +1073,8 @@ TriMesh* StandardMesh::Tetrahedron ()
 	TransformData(vba);
 
 	// Generate indices.
-	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 4, mUsage);
-	int* indices = (int*)ibuffer->GetData();
+	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 2, mUsage);
+	unsigned short* indices = (unsigned short*)ibuffer->GetData();
 	indices[ 0] = 0;  indices[ 1] = 1;  indices[ 2] = 2;
 	indices[ 3] = 0;  indices[ 4] = 2;  indices[ 5] = 3;
 	indices[ 6] = 0;  indices[ 7] = 3;  indices[ 8] = 1;
@@ -1116,8 +1117,8 @@ TriMesh* StandardMesh::Hexahedron ()
 	TransformData(vba);
 
 	// Generate indices.
-	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 4, mUsage);
-	int* indices = (int*)ibuffer->GetData();
+	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 2, mUsage);
+	unsigned short* indices = (unsigned short*)ibuffer->GetData();
 	indices[ 0] = 0;  indices[ 1] = 3;  indices[ 2] = 2;
 	indices[ 3] = 0;  indices[ 4] = 2;  indices[ 5] = 1;
 	indices[ 6] = 0;  indices[ 7] = 1;  indices[ 8] = 5;
@@ -1163,8 +1164,8 @@ TriMesh* StandardMesh::Octahedron ()
 	TransformData(vba);
 
 	// Generate indices.
-	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 4, mUsage);
-	int* indices = (int*)ibuffer->GetData();
+	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 2, mUsage);
+	unsigned short* indices = (unsigned short*)ibuffer->GetData();
 	indices[ 0] = 4;  indices[ 1] = 0;  indices[ 2] = 2;
 	indices[ 3] = 4;  indices[ 4] = 2;  indices[ 5] = 1;
 	indices[ 6] = 4;  indices[ 7] = 1;  indices[ 8] = 3;
@@ -1224,8 +1225,8 @@ TriMesh* StandardMesh::Dodecahedron ()
 	TransformData(vba);
 
 	// Generate indices.
-	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 4, mUsage);
-	int* indices = (int*)ibuffer->GetData();
+	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 2, mUsage);
+	unsigned short* indices = (unsigned short*)ibuffer->GetData();
 	indices[  0] =  0;  indices[  1] =  8;  indices[  2] =  9;
 	indices[  3] =  0;  indices[  4] =  9;  indices[  5] =  4;
 	indices[  6] =  0;  indices[  7] =  4;  indices[  8] = 16;
@@ -1306,8 +1307,8 @@ TriMesh* StandardMesh::Icosahedron ()
 	TransformData(vba);
 
 	// Generate indices.
-	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 4, mUsage);
-	int* indices = (int*)ibuffer->GetData();
+	IndexBuffer* ibuffer = new0 IndexBuffer(numIndices, 2, mUsage);
+	unsigned short* indices = (unsigned short*)ibuffer->GetData();
 	indices[ 0] =  0;  indices[ 1] =  8;  indices[ 2] =  4;
 	indices[ 3] =  0;  indices[ 4] =  5;  indices[ 5] = 10;
 	indices[ 6] =  2;  indices[ 7] =  4;  indices[ 8] =  9;
@@ -1454,6 +1455,35 @@ Polysegment *StandardMesh::Circle (float radius, int samples)
 	return segment;
 }
 //----------------------------------------------------------------------------
+Node *StandardMesh::CircleSphere (float radius, int samples, Float4 color0,
+	Float4 color1, Float4 color2, bool alpha)
+{
+	Node *node = new0 Node();
+
+	VertexColor4MaterialPtr mtl = new0 VertexColor4Material();
+	mtl->GetAlphaProperty(0, 0)->BlendEnabled = alpha;
+
+	SetVertexColor(color0);
+	Polysegment *poly0 = Circle(radius, samples);
+	poly0->SetMaterialInstance(mtl->CreateInstance());
+
+	SetVertexColor(color1);
+	Polysegment *poly1 = Circle(radius, samples);
+	poly1->LocalTransform.SetRotate(HMatrix().MakeRotation(AVector::UNIT_X, Mathf::HALF_PI));
+	poly1->SetMaterialInstance(mtl->CreateInstance());
+
+	SetVertexColor(color2);
+	Polysegment *poly2 = Circle(radius, samples);
+	poly2->LocalTransform.SetRotate(HMatrix().MakeRotation(AVector::UNIT_Y, Mathf::HALF_PI));
+	poly2->SetMaterialInstance(mtl->CreateInstance());
+
+	node->AttachChild(poly0);
+	node->AttachChild(poly1);
+	node->AttachChild(poly2);
+
+	return node;
+}
+//----------------------------------------------------------------------------
 void StandardMesh::TransformData (VertexBufferAccessor& vba)
 {
 	if (mTransform.IsIdentity())
@@ -1478,7 +1508,7 @@ void StandardMesh::TransformData (VertexBufferAccessor& vba)
 	}
 }
 //----------------------------------------------------------------------------
-void StandardMesh::ReverseTriangleOrder (int numTriangles, int* indices)
+void StandardMesh::ReverseTriangleOrder (int numTriangles, unsigned short* indices)
 {
 	for (int i = 0; i < numTriangles; ++i)
 	{ 

@@ -22,6 +22,7 @@ namespace PX2Editor
 		{
 			TPT_HEIGHT,
 			TPT_TEXTURE,
+			TPT_JUNGLER,
 			TPT_MAX_TYPE
 		};
 
@@ -101,6 +102,49 @@ namespace PX2Editor
 		TextureMode mTextureMode;
 		int mSelectedLayerIndex;
 		std::map<int, PX2::Texture2DPtr> mLayerTextures;
+	};
+
+	class TerrainJunglerProcess : public TerrainProcess
+	{
+	public:
+		TerrainJunglerProcess ();
+		virtual ~TerrainJunglerProcess ();
+
+		enum JunglerMode
+		{
+			JM_ADD,
+			JM_REDUCE,
+			JM_MAX_MODE
+		};
+		void SetJunglerMode (JunglerMode mode) { mMode = mode; }
+		JunglerMode GetJunglerMode () { return mMode; }
+
+		void SetUsingTexture (PX2::Texture2D *texture) 
+		{
+			if (texture && !texture->HasMipmaps())
+			{
+				texture->GenerateMipmaps();
+			}
+
+			mUsingTexture = texture; 
+		}
+		PX2::Texture2D *GetUsingTexture () { return mUsingTexture; }
+
+		void SetWidth (float width);
+		float GetWidth () { return mWidth; }
+		void SetHeight (float height);
+		float GetHeight () { return mHeight; }
+		void SetLower (float lower);
+		float GetLower () { return mLower; }
+
+		virtual void Apply ();
+
+	protected:
+		JunglerMode mMode;
+		PX2::Texture2DPtr mUsingTexture;
+		float mWidth;
+		float mHeight;
+		float mLower;
 	};
 
 }

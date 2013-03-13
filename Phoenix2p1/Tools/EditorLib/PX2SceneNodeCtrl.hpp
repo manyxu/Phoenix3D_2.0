@@ -26,6 +26,8 @@ namespace PX2Editor
 		PX2::Node *CreateRolateCtrl_O ();
 		PX2::Node *CreateScaleCtrl_O ();
 
+		PX2::Node *CreateBound ();
+
 		void UpdateCtrlColor (PX2::Renderer *renderer, PX2::Movable *mov, 
 			PX2::Float4 color);
 		void UpdateCtrlColor1 (PX2::Renderer *renderer, PX2::Movable *mov, 
@@ -107,7 +109,6 @@ namespace PX2Editor
 
 		// PX2 Event
 		virtual void DoEnter ();
-		virtual void DoUpdate ();
 		virtual void DoExecute (PX2::Event *event);
 		virtual void DoLeave ();
 
@@ -126,9 +127,36 @@ namespace PX2Editor
 		PX2::NodePtr mCtrl_O_Translate;
 		PX2::NodePtr mCtrl_O_Rolate;
 		PX2::NodePtr mCtrl_O_Scale;
+		PX2::NodePtr mCtrl_Bound;
 		PX2::SwitchNodePtr mCtrlsGroup;
 		float mOriginScale;
 		DragType mDragType;
+	};
+
+	class BoundCtrl : public PX2::EventHandler
+	{
+	public:
+		BoundCtrl ();
+		virtual ~BoundCtrl ();
+
+		PX2::Node *GetCtrlsGroup () { return mCtrlsGroup; }
+
+		void OnLeftMouseDown (PX2::Renderer *renderer,
+			const PX2::Vector2f &point);
+		void OnLeftMouseUp (PX2::Renderer *renderer,
+			const PX2::Vector2f &point);
+		void OnMouseMove (bool leftDown, PX2::Renderer *renderer, 
+			PX2::Vector2f posNow, PX2::Vector2f posBefore);
+
+		virtual void DoEnter ();
+		virtual void DoExecute (PX2::Event *event);
+		virtual void DoLeave ();
+
+		void UpdateCtrl();
+
+	protected:
+		PX2::SwitchNodePtr mCtrlsGroup;
+		PX2::NodePtr mBoundNode;
 	};
 
 }

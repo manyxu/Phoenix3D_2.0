@@ -69,10 +69,18 @@ void ObjectPropertyGrid::OnPropertyGridChange (wxPropertyGridEvent &event)
 //-----------------------------------------------------------------------------
 void ObjectPropertyGrid::OnPropertyGridChanging (wxPropertyGridEvent &event)
 {
+	PropertyGrid::OnPropertyGridChange(event);
+
+	Actor *actor = DynamicCast<Actor>(mObject);
+	if (actor)
+	{
+		actor->SetVisible(mObjectVisible);
+	}
 }
 //-----------------------------------------------------------------------------
 void ObjectPropertyGrid::OnPropertyGridSelect (wxPropertyGridEvent &event)
 {
+	PropertyGrid::OnPropertyGridSelect(event);
 }
 //-----------------------------------------------------------------------------
 void ObjectPropertyGrid::OnSize(wxSizeEvent &e)

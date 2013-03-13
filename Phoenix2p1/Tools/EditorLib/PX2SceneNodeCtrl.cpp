@@ -6,6 +6,7 @@
 
 #include "PX2SceneNodeCtrl.hpp"
 #include "PX2EditSystem.hpp"
+#include "PX2SkyActor.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 
@@ -957,6 +958,16 @@ PX2::Node *CtrlsFactory::CreateScaleCtrl_O ()
 	return node;
 }
 //----------------------------------------------------------------------------
+PX2::Node *CtrlsFactory::CreateBound ()
+{
+	StandardMesh stdMesh(mVertexFormat);
+	float alpha = 0.5f;
+	return stdMesh.CircleSphere(1.0f, 32, 
+		Float4(1.0f, 0.0f, 0.0f, alpha),
+		Float4(0.0f, 1.0f, 0.0f, alpha),
+		Float4(0.0f, 0.0f, 1.0f, alpha), true);
+}
+//----------------------------------------------------------------------------
 void CtrlsFactory::UpdateCtrlColor (PX2::Renderer *renderer,
 	PX2::Movable *mov, Float4 color)
 {
@@ -1022,7 +1033,7 @@ SceneNodeCtrl::SceneNodeCtrl ()
 	mCtrl_O_Translate = factory.CreateTranslateCtrl_O();
 	mCtrl_O_Rolate = factory.CreateRolateCtrl_O();
 	mCtrl_O_Scale = factory.CreateScaleCtrl_O();
-	PX2::Node *nodeEmpty = new0 PX2::Node();
+	PX2::NodePtr nodeEmpty = new0 PX2::Node();
 
 	mCtrlsGroup = new SwitchNode();
 	mCtrlsGroup->WorldTransformIsCurrent = true;
@@ -1121,7 +1132,7 @@ void SceneNodeCtrl::OnMouseWheel (PX2::Renderer *renderer, float wheelDelta)
 void SceneNodeCtrl::OnMouseMove (bool leftDown, PX2::Renderer *renderer,
 	PX2::Vector2f posNow, PX2::Vector2f posBefore)
 {
-	// 光标移动跟新
+	// 光标移动更新
 	if (DT_NONE == mDragType)
 	{
 		CtrlsFactory factory;
@@ -1207,9 +1218,9 @@ void SceneNodeCtrl::OnMouseMove (bool leftDown, PX2::Renderer *renderer,
 		EventWorld::GetSingleton().BroadcastingLocalEvent(ent);
 	}
 
-	ActorSelection *selection = EditSystem::GetSingleton().GetSelection();
-	int actorNum = selection->GetActorQuantity();
-	if (0 == actorNum)
+	ObjectSelection *selection = EditSystem::GetSingleton().GetSelection();
+	int objNum = selection->GetNumObjects();
+	if (0 == objNum)
 		return;
 
 	posNow.Y() = renderer->GetHeight() - posNow.Y();
@@ -1358,10 +1369,15 @@ void SceneNodeCtrl::OnMouseMove (bool leftDown, PX2::Renderer *renderer,
 		EditSystem::GetSingleton().GetSelection()->AddScale(transVec);
 	}
 
-	Event *event = 0;
-	event = EditorEventSpace::CreateEventX(
-		EditorEventSpace::ActorTransformChanged);
-	EventWorld::GetSingleton().BroadcastingLocalEvent(event);
+	Object *obj = EditSystem::GetSingleton().GetSelection()->GetObjectAt(0);
+	if (obj)
+	{
+		Event *event = 0;
+		event = EditorEventSpace::CreateEventX(
+			EditorEventSpace::ObjectTransformChanged);
+		event->SetData<Object*>(obj);
+		EventWorld::GetSingleton().BroadcastingLocalEvent(event);
+	}
 
 	mCtrlsGroup->Update();
 }
@@ -1486,32 +1502,27 @@ void SceneNodeCtrl::DoEnter ()
 
 }
 //----------------------------------------------------------------------------
-void SceneNodeCtrl::DoUpdate ()
-{
-
-}
-//----------------------------------------------------------------------------
 void SceneNodeCtrl::DoExecute (PX2::Event *event)
 {
 	if (EditorEventSpace::IsEqual(event,
-		EditorEventSpace::AddSelectActor))
+		EditorEventSpace::AddSelectObject))
 	{
 		UpdateCtrl();
 		UpdateCtrlTrans();
 	}
 	else if (EditorEventSpace::IsEqual(event,
-		EditorEventSpace::RemoveSelectActor))
+		EditorEventSpace::RemoveSelectObject))
 	{
 		UpdateCtrl();
 		UpdateCtrlTrans();
 	}
 	else if (EditorEventSpace::IsEqual(event,
-		EditorEventSpace::ClearSelectActor))
+		EditorEventSpace::ClearSelectObject))
 	{
 		UpdateCtrl();
 	}
 	else if (EditorEventSpace::IsEqual(event,
-		EditorEventSpace::ActorTransformChanged))
+		EditorEventSpace::ObjectTransformChanged))
 	{
 		UpdateCtrlTrans();
 	}
@@ -1532,7 +1543,7 @@ void SceneNodeCtrl::DoLeave ()
 void SceneNodeCtrl::UpdateCtrl ()
 {
 	int actorNum = EditSystem::GetSingleton().GetSelection()
-		->GetActorQuantity();
+		->GetNumObjects();
 
 	if (actorNum > 0)
 	{
@@ -1643,9 +1654,9 @@ void SceneNodeCtrl::UpdateCtrl ()
 //----------------------------------------------------------------------------
 void SceneNodeCtrl::UpdateCtrlTrans ()
 {
-	ActorSelection *selection = EditSystem::GetSingleton().GetSelection();
+	ObjectSelection *selection = EditSystem::GetSingleton().GetSelection();
 
-	int actorNum = selection->GetActorQuantity();
+	int actorNum = selection->GetNumObjects();
 
 	if (actorNum > 0)
 	{
@@ -1653,11 +1664,12 @@ void SceneNodeCtrl::UpdateCtrlTrans ()
 
 		for (int i=0; i<actorNum; i++)
 		{
-			Actor *actor = selection->GetActor(i);
-			pos += actor->GetPosition();
+			Actor *actor = DynamicCast<Actor>(selection->GetObjectAt(i));
+			if (actor)
+				pos += actor->GetPosition();
 		}
 
-		pos /= (float)selection->GetActorQuantity();
+		pos /= (float)selection->GetNumObjects();
 
 		mCtrlsGroup->WorldTransform.SetTranslate(pos);
 	}
@@ -1765,5 +1777,133 @@ SceneNodeCtrl::DragType SceneNodeCtrl::GetDragType (PX2::Renderer *renderer,
 		return DT_XZ;
 
 	return DT_NONE;
+}
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+//
+//----------------------------------------------------------------------------
+BoundCtrl::BoundCtrl ()
+{
+	CtrlsFactory factory;
+	mCtrlsGroup = new0 SwitchNode();
+	mCtrlsGroup->WorldTransformIsCurrent = true;
+	mBoundNode = factory.CreateBound();
+	mCtrlsGroup->AttachChild(mBoundNode);
+	mCtrlsGroup->AttachChild(new0 Node());
+}
+//----------------------------------------------------------------------------
+BoundCtrl::~BoundCtrl ()
+{
+
+}
+//----------------------------------------------------------------------------
+void BoundCtrl::DoEnter ()
+{
+
+}
+//----------------------------------------------------------------------------
+void BoundCtrl::DoExecute (PX2::Event *event)
+{
+	if (EditorEventSpace::IsEqual(event,
+		EditorEventSpace::AddSelectObject))
+	{
+		UpdateCtrl();
+	}
+	else if (EditorEventSpace::IsEqual(event,
+		EditorEventSpace::RemoveSelectObject))
+	{
+		UpdateCtrl();
+	}
+	else if (EditorEventSpace::IsEqual(event,
+		EditorEventSpace::ClearSelectObject))
+	{
+		UpdateCtrl();
+	}
+	else if (EditorEventSpace::IsEqual(event,
+		EditorEventSpace::ObjectTransformChanged))
+	{
+		UpdateCtrl();
+	}
+	else if (EditorEventSpace::IsEqual(event,
+		EditorEventSpace::UnDo) || EditorEventSpace::IsEqual(event,
+		EditorEventSpace::ReDo))
+	{
+		UpdateCtrl();
+	}
+}
+//----------------------------------------------------------------------------
+void BoundCtrl::DoLeave ()
+{
+
+}
+//----------------------------------------------------------------------------
+void BoundCtrl::OnLeftMouseDown (PX2::Renderer *renderer,
+	const PX2::Vector2f &point)
+{
+}
+//----------------------------------------------------------------------------
+void BoundCtrl::OnLeftMouseUp (PX2::Renderer *renderer, 
+	const PX2::Vector2f &point)
+{
+}
+//----------------------------------------------------------------------------
+void BoundCtrl::OnMouseMove (bool leftDown, PX2::Renderer *renderer,
+	PX2::Vector2f posNow, PX2::Vector2f posBefore)
+{
+}
+//----------------------------------------------------------------------------
+void BoundCtrl::UpdateCtrl()
+{
+	mCtrlsGroup->SetActiveChild(1);
+	
+	ObjectSelection *selection = EditSystem::GetSingleton().GetSelection();
+	int actorNum = selection->GetNumObjects();
+
+	APoint pos = APoint::ORIGIN;
+
+	if (actorNum > 0)
+	{
+		Bound bound;
+		int firstBound = true;
+
+		for (int i=0; i<actorNum; i++)
+		{
+			Actor *actor = DynamicCast<Actor>(selection->GetObjectAt(i));
+			SkyActor *skyActor = DynamicCast<SkyActor>(actor);
+			if (actor && !skyActor)
+			{
+				mCtrlsGroup->SetActiveChild(0);
+
+				Movable *mov = actor->GetMovable();
+				if (mov)
+				{
+					pos += mov->WorldTransform.GetTranslate();
+
+					if (firstBound)
+					{
+						bound = mov->WorldBound;
+						firstBound = false;
+					}
+					else
+					{
+						bound.GrowToContain(mov->WorldBound);
+					}
+				}
+			}
+		}
+
+		pos = pos/(float)actorNum;
+
+		float radius = bound.GetRadius();
+		mCtrlsGroup->WorldTransform.SetTranslate(bound.GetCenter());
+		if (0.0f == radius)
+		{
+			radius = 1.0f;
+		}
+		mCtrlsGroup->WorldTransform.SetUniformScale(radius);
+	}
+
+	mCtrlsGroup->Update(0);
 }
 //----------------------------------------------------------------------------

@@ -261,6 +261,7 @@ void Texture2D::GenerateNextMipmap (int width, int height, const char* texels,
 			{
 				rgba[j][c] = 0.25f*(rgba[base][c] + rgba[base + 1][c]
 				+ rgba[base + width][c] + rgba[base + width + 1][c]);
+				rgba[j][c] = rgba[base][c];
 			}
 		}
 	}

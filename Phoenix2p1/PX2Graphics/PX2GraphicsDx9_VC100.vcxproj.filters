@@ -347,6 +347,15 @@
     <ClCompile Include="PX2Transform.cpp">
       <Filter>SceneGraph</Filter>
     </ClCompile>
+    <ClCompile Include="PX2UserConstant.cpp">
+      <Filter>ShaderFloats</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2JunglerMaterial.cpp">
+      <Filter>LocalMaterials</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2InterpCurveTransCtrl.cpp">
+      <Filter>Controllers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PX2Graphics.hpp" />
@@ -706,6 +715,15 @@
     <ClInclude Include="PX2Transform.hpp">
       <Filter>SceneGraph</Filter>
     </ClInclude>
+    <ClInclude Include="PX2UserConstant.hpp">
+      <Filter>ShaderFloats</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2JunglerMaterial.hpp">
+      <Filter>LocalMaterials</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2InterpCurveTransCtrl.hpp">
+      <Filter>Controllers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PX2Bound.inl">
@@ -857,6 +875,10 @@
     </None>
     <None Include="PX2Transform.inl">
       <Filter>SceneGraph</Filter>
+    </None>
+    <None Include="PX2GraphicsRoot.inl" />
+    <None Include="PX2InterpCurveTransCtrl.inl">
+      <Filter>Controllers</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

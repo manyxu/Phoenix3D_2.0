@@ -233,7 +233,7 @@ bool FxCompiler::Compile (const std::string &XMLName)
 	}
 
 	string fileName = string(materialNode.AttributeToString("name")) + 
-		string(".pxfx");
+		string(".px2fx");
 
 	// ±£´æ
 	mCurMaterial->SavePX2fx(fileName);

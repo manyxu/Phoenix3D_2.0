@@ -1,0 +1,3 @@
+<Project Name="phoenix" Width="960" Height="640" Color0="0.000000" Color1="0.000000" Color2="0.000000" Color3="1.000000" IsShowProjectInfo="true" IsShowSceneBound="true" IsSceneWired="false" IsUIWired="false" UICameraPercent="1.300000" IsShowUI="true" IsShowUIRange="false" IsShowGrid="false">
+    <Scene Filename="E:\Phoenix3d\Phoenix2p1\Bin\Data\scenes\phoenix.px2scene" />
+</Project>

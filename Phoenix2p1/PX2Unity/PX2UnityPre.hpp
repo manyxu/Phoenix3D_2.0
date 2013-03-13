@@ -15,6 +15,7 @@
 #define PX2UNITYPRERE_HPP
 
 #include "PX2Core.hpp"
+#include "PX2Mathematics.hpp"
 #include "PX2Graphics.hpp"
 
 #endif

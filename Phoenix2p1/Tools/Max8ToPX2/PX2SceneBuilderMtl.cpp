@@ -194,7 +194,8 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 		bool reflectEnable = false;
 		PX2::TextureCubePtr reflectTex;
 		float reflectPower = 0.0f;
-		bool doubleSize = false;
+		bool doubleSide = false;
+		int blendMode = 2;
 
 		ParamBlockDesc2 *paramDesc = 0;
 		int numParam = 0;
@@ -240,7 +241,11 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 					ConvertFRGBAAttrib(paramBlock, i, parmName, color4);
 
 				// shine
-				if (parmName == "gShineEmissive")
+				if (parmName == "gBlendMode")
+				{
+					blendMode = intValue;
+				}
+				else if (parmName == "gShineEmissive")
 				{
 					shineStandard->Emissive = color4;
 				}
@@ -304,7 +309,7 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 				// other
 				else if (parmName == "gDoubleSide")
 				{
-					doubleSize = boolValue;
+					doubleSide = boolValue;
 				}
 			}
 		}
@@ -326,6 +331,23 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 			if (false == specEnable)
 			{
 				standardESMtl_D = new0 PX2::StandardESMaterial_Default();
+
+				if (0 == blendMode)
+				{
+					standardESMtl_D->GetAlphaProperty(0, 0)->BlendEnabled = false;
+					standardESMtl_D->GetAlphaProperty(0, 0)->CompareEnabled = false;
+				}
+				else if (1 == blendMode)
+				{
+					standardESMtl_D->GetAlphaProperty(0, 0)->BlendEnabled = true;
+				}
+				else if (2 == blendMode)
+				{
+					standardESMtl_D->GetAlphaProperty(0, 0)->BlendEnabled = false;
+					standardESMtl_D->GetAlphaProperty(0, 0)->CompareEnabled = true;
+					standardESMtl_D->GetAlphaProperty(0, 0)->Compare = PX2::AlphaProperty::CM_GEQUAL;
+					standardESMtl_D->GetAlphaProperty(0, 0)->Reference = 0.2f;
+				}
 			}
 			else
 			{
@@ -339,7 +361,7 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 
 		if (standardMtl && diffTex)
 		{
-			if (doubleSize)
+			if (doubleSide)
 			{
 				standardMtl->GetCullProperty(0, 0)->Enabled = false;
 			}
@@ -350,7 +372,7 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 		}
 		else if (standardESMtl_D && diffTex)
 		{
-			if (doubleSize)
+			if (doubleSide)
 			{
 				standardESMtl_D->GetCullProperty(0, 0)->Enabled = false;
 			}
@@ -359,7 +381,7 @@ void SceneBuilder::ConvertMaterial (Mtl &mtl, MtlTree &mtlTree)
 		}
 		else if (standardESMtl_S && diffTex && specTex)
 		{
-			if (doubleSize)
+			if (doubleSide)
 			{
 				standardESMtl_S->GetCullProperty(0, 0)->Enabled = false;
 			}

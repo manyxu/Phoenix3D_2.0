@@ -5,6 +5,26 @@
 */
 
 //----------------------------------------------------------------------------
+inline bool Terrain::IsUseSimpleMtl ()
+{
+	return mIsUseSimpleMtl;
+}
+//----------------------------------------------------------------------------
+inline EditTerrainMaterial *Terrain::GetEidtMaterial ()
+{
+	return mMtlEdit;
+}
+//----------------------------------------------------------------------------
+inline EditTerrainMaterial *Terrain::GetSimpleMaterial ()
+{
+	return mMtlSimple;
+}
+//----------------------------------------------------------------------------
+inline Shine *Terrain::GetShine ()
+{
+	return mShine;
+}
+//----------------------------------------------------------------------------
 inline int Terrain::GetRowQuantity () const
 {
 	return mNumRows;

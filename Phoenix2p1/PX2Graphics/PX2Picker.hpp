@@ -33,7 +33,7 @@ namespace PX2
 	class Picker
 	{
 	public:
-		Picker ();
+		Picker (bool isDoMovPickCall=false, int pickInfo=-1);
 		~Picker ();
 
 		/// 执行检测，将记录保存到Records中。
@@ -68,14 +68,15 @@ namespace PX2
 		std::vector<PickRecord> Records;
 
 	private:
-		void ExecuteRecursive (Movable *object);
-
+		void ExecuteRecursive (Movable *object, bool &hasMeshPicked);
+		int mPickInfo;
+		bool mIsDoMovPickCall;
 		APoint mOrigin;
 		AVector mDirection;
 		float mTMin, mTMax;
 
 		// 当Records没有元素时，这个表示无效的成员会被Get*函数返回。
-		static const PickRecord msInvalid;
+		static const PickRecord &GetInvalid();
 	};
 
 }

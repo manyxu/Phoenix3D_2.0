@@ -1,0 +1,51 @@
+// PX2UIPicBox.pkg
+
+	class UIPicBox : public TriMesh
+	{
+		UIPicBox (std::string filename = "Data/images/default.png");
+		virtual ~UIPicBox ();
+
+		enum PicBoxType
+		{
+			PBT_NORMAL,
+			PBT_NINE,
+			PBT_MAX_TYPE
+		};
+		void SetPicBoxType (PicBoxType type);
+		PicBoxType GetPicBoxType ();
+
+		void SetDynamic (bool dyn);
+		bool IsDynamic ();
+
+		// vertexs
+		void SetSize (float width, float height);
+		void SetSize (const Sizef &size);
+		const Sizef &GetSize () const;
+		void SetWidth (float width);
+		float GetWidth ();
+		void SetHeight (float height);
+		float GetHeight ();
+
+		void SetColor (Float3 color);
+		Float3 GetColor () const;
+		void SetAlpha (float alpha); //< 0-1
+		float GetAlpha () const;
+
+		// material
+		void SetTexture (Texture2D *tex);
+		void SetTexture (const std::string &filename);
+		void SetTexture (const std::string &texPackName, std::string eleName);
+		Texture2D *GetTexture ();
+		void SetDoubleSide (bool d);
+		bool IsDoubleSide ();
+
+		void SetTexCornorSize (float width, float height);
+		void SetTexCornorSize (const Sizef &size);
+		const Sizef &GetTexCornorSize ();
+		void SetTexCornerWidth (float width);
+		float GetTexCornerWidth ();
+		void SetTexCornerHeight (float height);
+		float GetTexCornerHeight ();
+	};
+	
+	typedef Pointer0<UIPicBox> UIPicBoxPtr;

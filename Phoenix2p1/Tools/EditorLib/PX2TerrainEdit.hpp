@@ -10,6 +10,7 @@
 #include "PX2EditorLibPre.hpp"
 #include "PX2TerrainBrush.hpp"
 #include "PX2TerrainProcess.hpp"
+#include "PX2LODTerrain.hpp"
 
 namespace PX2Editor
 {
@@ -25,6 +26,9 @@ namespace PX2Editor
 		void ShowPageLine (bool show);
 		bool IsPageLineShow ();
 
+		void UseLodTerrain (bool use);
+		bool IsUseLodTerrain ();
+
 		void SetEditType (TerrainProcess::TerProType type);
 		TerrainProcess::TerProType GetEditType ();
 
@@ -32,6 +36,7 @@ namespace PX2Editor
 
 		TerrainHeightProcess *GetHeightProcess () { return mHeightProcess; }
 		TerrainTextureProcess *GetTextureProcess () { return mTextureProcess; }
+		TerrainJunglerProcess *GetJunglerProcess () { return mJunglerProcess; }
 
 		PX2::Renderable *GetTerrainHelpGrid () { return mTerrainHelpGrid; }
 
@@ -40,14 +45,17 @@ namespace PX2Editor
 
 	protected:
 		void SetTerrain (PX2::RawTerrain *terrain);
+		PX2::LODTerrain *CreateLODTerrain (PX2::RawTerrain *rawTerrain);
 		void CreateTerrainHelpGrid ();
 		void DestoryTerrainHelpGrid ();
 
+		bool mIsUsingLodTerrain;
 		PX2::RawTerrainPtr mTerrain;
 		TerrainBrush *mBrush;
 		TerrainProcess *mActiveProcess;
 		TerrainHeightProcess *mHeightProcess;
 		TerrainTextureProcess *mTextureProcess;
+		TerrainJunglerProcess *mJunglerProcess;
 		PX2::RenderablePtr mTerrainHelpGrid;
 	};
 

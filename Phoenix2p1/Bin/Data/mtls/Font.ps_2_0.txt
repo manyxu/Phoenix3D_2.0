@@ -1,0 +1,66 @@
+ps_2_0
+// cgc version 3.1.0010, build date Feb  8 2012
+// command line args: -profile ps_2_0
+// source file: Font.fx
+//vendor NVIDIA Corporation
+//version 3.1.0.10
+//profile ps_2_0
+//program p_Font
+//semantic gWMatrix
+//semantic gVMatrix
+//semantic gPMatrix
+//semantic gPVWMatrix
+//semantic gVWMatrix
+//semantic gWIMatrix
+//semantic gVIMatrix
+//semantic gCameraModelPosition
+//semantic gCameraWorldPosition
+//semantic gCameraModelDVector
+//semantic gCameraWorldDVector
+//semantic gShineEmissive
+//semantic gShineAmbient
+//semantic gShineDiffuse
+//semantic gLightColour
+//semantic gLightModelDirection
+//semantic gLightWorldDirection
+//semantic gUser
+//semantic BaseSampler
+//var float4 vertexColor : $vin.COLOR : COL0 : 0 : 1
+//var float2 vertexTCoord : $vin.TEXCOORD0 : TEX0 : 1 : 1
+//var float4 pixelColor : $vout.COLOR : COL : 2 : 1
+//var float4x4 gWMatrix :  : , 4 : -1 : 0
+//var float4x4 gVMatrix :  : , 4 : -1 : 0
+//var float4x4 gPMatrix :  : , 4 : -1 : 0
+//var float4x4 gPVWMatrix :  : , 4 : -1 : 0
+//var float4x4 gVWMatrix :  : , 4 : -1 : 0
+//var float4x4 gWIMatrix :  : , 4 : -1 : 0
+//var float4x4 gVIMatrix :  : , 4 : -1 : 0
+//var float4 gCameraModelPosition :  :  : -1 : 0
+//var float4 gCameraWorldPosition :  :  : -1 : 0
+//var float4 gCameraModelDVector :  :  : -1 : 0
+//var float4 gCameraWorldDVector :  :  : -1 : 0
+//var float4 gShineEmissive :  :  : -1 : 0
+//var float4 gShineAmbient :  :  : -1 : 0
+//var float4 gShineDiffuse :  :  : -1 : 0
+//var float4 gLightColour :  :  : -1 : 0
+//var float4 gLightModelDirection :  :  : -1 : 0
+//var float4 gLightWorldDirection :  :  : -1 : 0
+//var float4 gUser :  :  : -1 : 0
+//var sampler2D BaseSampler :  : texunit 0 : -1 : 1
+//default gCameraModelPosition = 1 1 1 1
+//default gCameraWorldPosition = 1 1 1 1
+//default gCameraModelDVector = 1 1 1 1
+//default gCameraWorldDVector = 1 1 1 1
+//default gShineEmissive = 0 0 0 1
+//default gShineAmbient = 0.1 0.1 0.1 1
+//default gShineDiffuse = 0.47 0.47 0.47 1
+//default gLightColour = 0.30000001 0.30000001 0.30000001 1
+//default gLightModelDirection = -0.5 -0.5 -0.5 1
+//default gLightWorldDirection = -0.5 -0.5 -0.5 1
+//default gUser = 1 1 1 1
+dcl_2d s0
+dcl t0.xy
+dcl v0
+texld r0, t0, s0
+mul r0, r0, v0
+mov oC0, r0

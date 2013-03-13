@@ -36,12 +36,12 @@ void Actor::SetPosition (APoint &position)
 
 	if (mMovable)
 	{
-		mMovable->WorldTransform.SetTranslate(position);
+		mMovable->LocalTransform.SetTranslate(position);
 	}
 
 	if (mHelpMovable)
 	{
-		mHelpMovable->WorldTransform.SetTranslate(position);
+		mHelpMovable->LocalTransform.SetTranslate(position);
 	}
 }
 //----------------------------------------------------------------------------
@@ -56,7 +56,7 @@ void Actor::SetScale (APoint &scale)
 
 	if (mMovable)
 	{
-		mMovable->WorldTransform.SetScale(scale);
+		mMovable->LocalTransform.SetScale(scale);
 	}
 }
 //----------------------------------------------------------------------------
@@ -66,7 +66,7 @@ void Actor::SetRotation (APoint &rolate)
 
 	if (mMovable)
 	{
-		mMovable->WorldTransform.SetRotate(Matrix3f().MakeEulerXYZ(
+		mMovable->LocalTransform.SetRotate(Matrix3f().MakeEulerXYZ(
 			rolate.X(), rolate.Y(), rolate.Z()));
 	}
 }
@@ -91,18 +91,27 @@ void Actor::SetTransparent (float alpha)
 //----------------------------------------------------------------------------
 void Actor::SetMovable (Movable *movable)
 {
-	mMovable = movable;
-	mMovable->WorldTransformIsCurrent = true;
+	if (mScene && mMovable)
+	{
+		mScene->GetSceneNode()->DetachChild(mMovable);
+	}
 
-	mMovable->WorldTransform.SetScale(mScale);
-	mMovable->WorldTransform.SetRotate(Matrix3f().MakeEulerXYZ(
+	mMovable = movable;
+
+	mMovable->LocalTransform.SetScale(mScale);
+	mMovable->LocalTransform.SetRotate(Matrix3f().MakeEulerXYZ(
 		mRotation.X(), mRotation.Y(), mRotation.Z()));
-	mMovable->WorldTransform.SetTranslate(mPosition);
+	mMovable->LocalTransform.SetTranslate(mPosition);
 
 	if (!mVisible)
 		mMovable->Culling = Movable::CULL_ALWAYS;
 	else
 		mMovable->Culling = Movable::CULL_DYNAMIC;
+
+	if (mScene && mMovable)
+	{
+		mScene->GetSceneNode()->AttachChild(mMovable);
+	}
 }
 //----------------------------------------------------------------------------
 void Actor::ShowHelpMovable (bool show)
@@ -126,8 +135,7 @@ void Actor::SetHelpMovable (Movable *movable)
 {
 	mHelpMovable = movable;
 
-	mHelpMovable->WorldTransformIsCurrent = true;
-	mHelpMovable->WorldTransform.SetTranslate(mPosition);
+	mHelpMovable->LocalTransform.SetTranslate(mPosition);
 
 	if (!mVisible)
 		mHelpMovable->Culling = Movable::CULL_ALWAYS;
@@ -190,6 +198,8 @@ void Actor::Load (InStream& source)
 	source.ReadBool(mVisible);
 	source.Read(mTransAlpha);
 	source.ReadPointer(mMovable);
+	source.ReadPointer(mHelpMovable);
+	source.ReadBool(mShowHelpMovable);
 
 	PX2_END_DEBUG_STREAM_LOAD(Actor, source);
 }
@@ -199,6 +209,7 @@ void Actor::Link (InStream& source)
 	Netable::Link(source);
 
 	source.ResolveLink(mMovable);
+	source.ResolveLink(mHelpMovable);
 }
 //----------------------------------------------------------------------------
 void Actor::PostLink ()
@@ -211,6 +222,7 @@ bool Actor::Register (OutStream& target) const
 	if (Netable::Register(target))
 	{
 		target.Register(mMovable);
+		target.Register(mHelpMovable);
 
 		return true;
 	}
@@ -229,6 +241,8 @@ void Actor::Save (OutStream& target) const
 	target.WriteBool(mVisible);
 	target.Write(mTransAlpha);
 	target.WritePointer(mMovable);
+	target.WritePointer(mHelpMovable);
+	target.WriteBool(mShowHelpMovable);
 
 	PX2_END_DEBUG_STREAM_SAVE(Actor, target);
 }
@@ -242,6 +256,8 @@ int Actor::GetStreamingSize () const
 	size += PX2_BOOLSIZE(mVisible);
 	size += sizeof(mTransAlpha);
 	size += PX2_POINTERSIZE(mMovable);
+	size += PX2_POINTERSIZE(mHelpMovable);
+	size += PX2_BOOLSIZE(mShowHelpMovable);
 
 	return size;
 }

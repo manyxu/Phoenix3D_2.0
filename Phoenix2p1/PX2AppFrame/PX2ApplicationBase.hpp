@@ -1,32 +1,19 @@
 /*
-* Phoenix 3D 游戏引擎 Version 2.0
 *
-* Copyright (C) 2009-2011 http://www.Phoenix3d.org/
-*
-* 文件名称	：	PX2Application.hpp
-*
-* 版本		:	1.0 (2012/04/15)
-*
-* 作者		：	more
+* 文件名称	：	PX2ApplicationBase.hpp
 *
 */
 
 #ifndef PX2APPLICATIONBASE_HPP
 #define PX2APPLICATIONBASE_HPP
 
-#include "PX2Core.hpp"
-#include "PX2Mathematics.hpp"
-#include "PX2Graphics.hpp"
-#include "PX2Renderers.hpp"
-#include "PX2Terrains.hpp"
-#include "PX2EventWorld.hpp"
-#include "PX2Unity.hpp"
-#include "PX2Game.hpp"
+#include "PX2AppFramePre.hpp"
+#include "PX2ScriptEventHandler.hpp"
 
 namespace PX2
 {
 
-	class ApplicationBase
+	class ApplicationBase : public EventHandler
 	{
 	protected:
 		ApplicationBase ();
@@ -37,14 +24,26 @@ namespace PX2
 		static ApplicationBase* msApplication;
 
 		// system use
+		static bool IsInitlized ();
 		bool Initlize ();
 		bool Ternamate ();
 		virtual bool OnInitlize ();
 		virtual bool OnTernamate ();
 
+		virtual void WillEnterForeground ();
+		virtual void DidEnterBackground ();
+
+		void SetSize (int width, int height);
+		int GetWidth ();
+		int GetHeight ();
+
 		virtual void OnIdle ();
 		virtual bool OnResume();
 		virtual bool OnPause();
+
+		virtual void DoEnter ();
+		virtual void DoExecute (Event *event);
+		virtual void DoLeave ();
 
 		// Enteries
 		typedef bool (*AppInitlizeFun)();
@@ -59,11 +58,10 @@ namespace PX2
 	protected:
 		virtual bool OnInitlizeApp () = 0;
 		virtual bool OnTernamateApp () = 0;
-		void ResetTime ();
-		void MeasureTime ();
-		void UpdateFrameCount ();
-		void DrawFrameRate (int x, int y, const Float4& color);
-		
+		void DrawInfo (int x, int y);
+
+		static bool msIsInitlized;
+	
 		// 渲染相关
 		// 窗口参数
 		std::string mWindowTitle;
@@ -78,12 +76,28 @@ namespace PX2
 		CameraPtr mCamera;
 
 		EventWorld *mEventWorld;
+		InputEventAdapter *mInputEventAdapter;
 		GraphicsRoot *mRoot;
 		ResourceManager *mResMan;
+		ScriptManager *mScriptMan;
+		ScriptEventHandlerPtr mScriptEventHandler;
 		GameManager *mGameMan;
+		UIManager *mUIManager;
+		Project *mProject;
+		
+		float mApplicationTime;
+		float mLastApplicationTime;
+		bool mIsTimeInited;
+		float mElapsedTime;
 
-		double mLastTime, mAccumulatedTime, mFrameRate;
-		int mFrameCount, mAccumulatedFrameCount, mTimer, mMaxTimer;
+		UIStaticTextPtr mFrameText;
+		float mFrameRate;
+		int mNumFrames;
+		float mFrameTime;
+
+		UIStaticTextPtr mCurTotalMemory; // 兆
+		UIStaticTextPtr mMaxTotalMemory;
+		UIStaticTextPtr mDebugText;
 	};
 
 }

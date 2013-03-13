@@ -6,10 +6,11 @@
 
 #include "PX2ModelActorInspector.hpp"
 #include "PX2ModelActorPropertyGrid.hpp"
+#include "PX2LanguageManager.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 
-BEGIN_EVENT_TABLE(ModelActorInspector, wxWindow)
+BEGIN_EVENT_TABLE(ModelActorInspector, wxScrolledWindow)
 EVT_SIZE(ModelActorInspector::OnSize)
 END_EVENT_TABLE()
 //-----------------------------------------------------------------------------
@@ -20,14 +21,12 @@ wxScrolledWindow(parent),
 	mModelActorPropGrid(0),
 	mInitSized(false)
 {
-	mFoldPaneBar = new wxFoldPanelBar(this, wxID_ANY, 
-		wxDefaultPosition, wxDefaultSize, wxFPB_DEFAULT_STYLE|wxFPB_VERTICAL,
-		0);
+	mFoldPaneBar = new wxFoldPanelBar(this, wxID_ANY, wxDefaultPosition,
+		wxDefaultSize, wxFPB_DEFAULT_STYLE|wxFPB_VERTICAL, 0);
 }
 //-----------------------------------------------------------------------------
 ModelActorInspector::~ModelActorInspector ()
 {
-
 }
 //-----------------------------------------------------------------------------
 ModelActorInspector::ModelActorInspector ()

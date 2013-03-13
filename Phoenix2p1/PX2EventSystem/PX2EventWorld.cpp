@@ -87,8 +87,10 @@ void EventWorld::Update (float detalTime)
 {
 	for (int i=0; i<(int)mAddingHandlers.size(); i++)
 	{
-		mAddingHandlers[i]->Enter(this);
-		_AddHandler(mAddingHandlers[i]);
+		EventHandler *handler = mAddingHandlers[i];
+		handler->Enter(this);
+		int aa = 0;
+		_AddHandler(handler);
 	}
 	mAddingHandlers.clear();
 

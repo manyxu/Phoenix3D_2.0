@@ -5,6 +5,7 @@
 */
 
 #include "PX2TerrainHeightPane.hpp"
+#include "PX2EditSystem.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 

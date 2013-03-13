@@ -21,11 +21,16 @@ namespace PX2Editor
 		PropertyPage (PropertyGrid *parent, std::string name = "");
 		~PropertyPage ();
 
+		PropertyGrid *GetGrid () { return mParent; }
+
 		std::string GetName () { return mName; }
 
-		void AddProperty (std::string name, Property::PropertyType type,
-			void *data);
+		void Clear ();
+		Property *AddProperty (std::string name, Property::PropertyType type,
+			void *data, bool enable=true, const std::vector<std::string> *enums=0);
 		Property *GetProperty (std::string name);
+		bool HasProperty (wxPGProperty *prop);
+		void RemoveProperty (std::string name);
 
 		void OnPropertyGridChange (wxPropertyGridEvent &event);
 		void OnPropertyGridChanging (wxPropertyGridEvent &event);
@@ -35,6 +40,8 @@ namespace PX2Editor
 		std::string mName;
 
 public_internal:
+		void AddProperty (Property *prop);
+		
 		PropertyGrid *mParent;
 		std::vector<PropertyPtr> mProperties;
 		wxPropertyGridPage *mPage;

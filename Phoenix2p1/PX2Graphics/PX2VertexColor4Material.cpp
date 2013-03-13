@@ -20,7 +20,7 @@ VertexColor4Material::VertexColor4Material ()
 		2, 2, 1, 0, false);
 	vshader->SetInput(0, "modelPosition", Shader::VT_FLOAT3,
 		Shader::VS_POSITION);
-	vshader->SetInput(1, "modelColor", Shader::VT_FLOAT3,
+	vshader->SetInput(1, "modelColor0", Shader::VT_FLOAT3,
 		Shader::VS_COLOR0);
 	vshader->SetOutput(0, "clipPosition", Shader::VT_FLOAT4,
 		Shader::VS_POSITION);
@@ -131,13 +131,15 @@ int VertexColor4Material::GetStreamingSize () const
 //----------------------------------------------------------------------------
 int VertexColor4Material::msDx9VRegisters[1] = { 0 };
 int VertexColor4Material::msOglVRegisters[1] = { 1 };
+int VertexColor4Material::msOpenGLES2VRegisters[1] = { 1 };
 int* VertexColor4Material::msVRegisters[Shader::MAX_PROFILES] =
 {
 	0,
 	msDx9VRegisters,
 	msDx9VRegisters,
 	msDx9VRegisters,
-	msOglVRegisters
+	msOglVRegisters,
+	msOpenGLES2VRegisters
 };
 
 std::string VertexColor4Material::msVPrograms[Shader::MAX_PROFILES] =
@@ -197,7 +199,18 @@ std::string VertexColor4Material::msVPrograms[Shader::MAX_PROFILES] =
 	"DP4 result.position.y, R0, c[2];\n"
 	"DP4 result.position.x, R0, c[1];\n"
 	"MOV result.color, vertex.color;\n"
-	"END\n"
+	"END\n",
+
+	// vp_gles2
+	"uniform mat4 PVWMatrix;\n"
+	"attribute vec3 modelPosition;\n"
+	"attribute vec4 modelColor0;\n"
+	"varying vec4 vertexColor;\n"
+	"void main()\n"
+	"{\n"
+	"	gl_Position = PVWMatrix*vec4(modelPosition, 1.0);\n"
+	"	vertexColor = modelColor0;\n"
+	"}\n"
 };
 
 std::string VertexColor4Material::msPPrograms[Shader::MAX_PROFILES] =
@@ -222,6 +235,13 @@ std::string VertexColor4Material::msPPrograms[Shader::MAX_PROFILES] =
 	// PP_ARBFP1
 	"!!ARBfp1.0\n"
 	"MOV result.color, fragment.color.primary;\n"
-	"END\n"
+	"END\n",
+
+	// fp_gles2
+	"varying mediump vec4 vertexColor;\n"
+	"void main()\n"
+	"{\n"
+	"	gl_FragColor = vertexColor;\n"
+	"}\n"
 };
 //----------------------------------------------------------------------------

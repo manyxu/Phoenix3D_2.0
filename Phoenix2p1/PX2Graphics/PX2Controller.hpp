@@ -1,13 +1,6 @@
 /*
-* Phoenix 3D 游戏引擎 Version 2.0
-*
-* Copyright (C) 2009-2011 http://www.Phoenix3d.org/
 *
 * 文件名称	：	PX2Controller.hpp
-*
-* 版本		:	1.0 (2011/02/01)
-*
-* 作者		：	more
 *
 */
 
@@ -34,12 +27,15 @@ namespace PX2
 		virtual ~Controller ();
 
 		// 成员访问
-		inline Controlledable* GetObject () const;
-		inline void SetApplicationTime (double applicationTime);
-		inline double GetApplicationTime () const;
+		Controlledable* GetObject () const;
+		double GetApplicationTime () const;
 
 		// 动画更新，applicationTime是以毫秒作计算单位的
 		virtual bool Update (double applicationTime);
+		bool IsTimeInited ();
+		void Reset ();
+		double GetElapsedTime (); //< 获得帧流逝时间，在Update调用后调用
+		double GetRunTime ();
 
 		/// 动画更新类型
 		enum RepeatType
@@ -72,6 +68,10 @@ public_internal:
 
 		/// 以毫秒作单位的应用程序事件
 		double mApplicationTime;
+		double mLastApplicationTime;
+
+		bool mIsTimeInited;
+		double mInitedApplicationIime;
 	};
 
 	PX2_REGISTER_STREAM(Controller);

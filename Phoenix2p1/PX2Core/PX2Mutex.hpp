@@ -24,13 +24,14 @@ namespace PX2
 	class Mutex
 	{
 	public:
-		Mutex ();
+		Mutex (bool isRecursive=true);
 		~Mutex ();
 
 		void Enter ();
 		void Leave ();
 
 	private:
+		bool mIsRecursive;
 		MutexType mMutex;
 	};
 

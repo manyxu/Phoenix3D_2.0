@@ -1,6 +1,6 @@
 /*
 *
-* 文件名称	：	PX2Win32Application.cpp
+* 文件名称	：	PX2Application.cpp
 *
 */
 
@@ -19,7 +19,16 @@ LRESULT CALLBACK MsWindowEventHandler (HWND handle, UINT message,
 		break;
 
 	case WM_SIZE:
-
+		switch (wParam)
+		{
+		case SIZE_RESTORED:
+			ApplicationBase::msApplication->WillEnterForeground();
+			break;
+		case SIZE_MINIMIZED:
+			ApplicationBase::msApplication->DidEnterBackground();
+			break;
+		}
+		break;
 	default:
 		break;
 	}
@@ -30,6 +39,9 @@ LRESULT CALLBACK MsWindowEventHandler (HWND handle, UINT message,
 //----------------------------------------------------------------------------
 Application::Application ()
 {
+#if defined(_WIN32) || defined(WIN32)
+	mhWnd = 0;
+#endif
 }
 //----------------------------------------------------------------------------
 Application::~Application ()
@@ -89,6 +101,16 @@ int Application::Main (int numArguments, char** arguments)
 	return 0;
 }
 #endif
+//----------------------------------------------------------------------------
+void Application::OnIdle ()
+{
+	if (mInputEventAdapter)
+	{
+		mInputEventAdapter->Update();
+	}
+
+	ApplicationBase::OnIdle();
+}
 //----------------------------------------------------------------------------
 #if defined __ANDROID__
 int Application::Main (int numArguments, char** arguments)
@@ -160,6 +182,11 @@ bool Application::OnInitlizeApp ()
 	mXPosition = offsetX;
 	mYPosition = offsetY;
 
+	// === Input ===
+	mInputEventAdapter->AddParam((int)mhWnd);
+	mInputEventAdapter->Initlize();
+	mInputEventAdapter->GetInputManager()->SetSize(Sizef((float)mWidth, (float)mHeight));
+
 	// === 渲染器 ===
 
 #ifdef PX2_USE_DX9
@@ -182,6 +209,8 @@ bool Application::OnInitlizeApp ()
 
 	mCamera = new0 Camera();
 	mRenderer->SetCamera(mCamera);
+	mRoot->SetCamera(mCamera);
+	UIManager::GetSingleton().GetDefaultView()->SetRenderer(mRenderer);
 
 	return true;
 }
@@ -199,6 +228,8 @@ bool Application::OnInitlizeApp ()
 
 	mCamera = new0 Camera();
 	mRenderer->SetCamera(mCamera);
+	mRoot->SetCamera(mCamera);
+	UIManager::GetSingleton().GetDefaultView()->SetRenderer(mRenderer);
 
 	return true;
 }
@@ -209,11 +240,13 @@ bool Application::OnTernamateApp()
 {
 	mCamera = 0;
 
-	delete0(mRenderer);
+	if (mRenderer)
+	{
+		delete0(mRenderer);
 #ifdef PX2_USE_DX9
-	mInput.mDriver->Release();
+		mInput.mDriver->Release();
 #endif
-
+	}
 	return true;
 }
 #endif
@@ -225,7 +258,10 @@ bool Application::OnTernamateApp()
 
 	mCamera = 0;
 
-	delete0(mRenderer);
+	if (mRenderer)
+	{
+		delete0(mRenderer);
+	}
 
 	return true;
 }

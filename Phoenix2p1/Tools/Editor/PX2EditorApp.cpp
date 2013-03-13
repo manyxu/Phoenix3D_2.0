@@ -7,6 +7,8 @@
 #include "PX2EditorApp.hpp"
 #include "PX2MainFrame.hpp"
 #include "PX2ViewCtrlInstMan.hpp"
+#include "PX2EditSystem.hpp"
+#include "PX2LanguageManager.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 
@@ -23,6 +25,9 @@ EditorApp::~EditorApp ()
 //-----------------------------------------------------------------------------
 bool EditorApp::OnInit ()
 {
+	// srand
+	srand((int)GetTimeInMicroseconds());
+
 #ifdef PX2_USE_MEMORY
 	Memory::Initialize();
 #endif
@@ -37,7 +42,9 @@ bool EditorApp::OnInit ()
 	PX2_LM.SetLanguage(0);
 
 	ViewCtrlInstMan *ctrlMan = new0 ViewCtrlInstMan();
+	PX2_UNUSED(ctrlMan);
 
+	wxImage::AddHandler(new wxBMPHandler());
 	wxImage::AddHandler(new wxPNGHandler());
 	wxImage::AddHandler(new wxGIFHandler());
 
@@ -79,17 +86,5 @@ int EditorApp::OnExit()
 #endif
 
 	return 0;
-}
-//-----------------------------------------------------------------------------
-void EditorApp::AddHandlers()
-{
-	// supported images
-	wxImage::AddHandler(new wxPNGHandler());
-	wxImage::AddHandler(new wxGIFHandler());
-
-	// resource system
-	wxFileSystem::AddHandler(new wxArchiveFSHandler()); 
-	wxXmlResource::Get()->InitAllHandlers();
-	wxXmlResource::Get()->Load(wxT("ToolRes/wxFBP/*.xrc"));
 }
 //-----------------------------------------------------------------------------

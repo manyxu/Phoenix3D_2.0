@@ -22,12 +22,12 @@ namespace PX2
 		bool LoadBoost (const char *filename);
 		int GetBoostWidth () const;
 		int GetBoostHeight () const;
-		std::string GetMapName () const;
+		std::string GetProjectPath () const;
 
 	private:
 		int mBoostWidth;
 		int mBoostHeight;
-		std::string mMapName;
+		std::string mProjectPath;
 	};
 
 #include "PX2GameManager.inl"

@@ -25,6 +25,8 @@ ResTreeItem::~ResTreeItem ()
 //-----------------------------------------------------------------------------
 void ResTreeItem::SetRoot ()
 {
+	 ResTree::GetSingleton().DeleteAllItems();
+
 	mParent = 0;
 	mItemID = ResTree::GetSingleton().AddRoot("Data", 1);
 

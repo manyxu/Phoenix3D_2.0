@@ -1,0 +1,102 @@
+!!ARBvp1.0
+# cgc version 3.1.0010, build date Feb  8 2012
+# command line args: -profile arbvp1
+# source file: Jungler.fx
+#vendor NVIDIA Corporation
+#version 3.1.0.10
+#profile arbvp1
+#program v_Jungler
+#semantic gWMatrix
+#semantic gVMatrix
+#semantic gPMatrix
+#semantic gPVWMatrix
+#semantic gVWMatrix
+#semantic gWIMatrix
+#semantic gVIMatrix
+#semantic gCameraWorldPosition
+#semantic gShineEmissive
+#semantic gShineAmbient
+#semantic gShineDiffuse
+#semantic gLightColour
+#semantic gLightModelDirection
+#semantic gUser
+#semantic gDiffuseSampler
+#var float3 modelPosition : $vin.POSITION : POSITION : 0 : 1
+#var float3 modelNormal : $vin.NORMAL : NORMAL : 1 : 1
+#var float2 modelTCoord0 : $vin.TEXCOORD0 : TEXCOORD0 : 2 : 1
+#var float4 clipPosition : $vout.POSITION : HPOS : 3 : 1
+#var float2 vertexTCoord0 : $vout.TEXCOORD0 : TEX0 : 4 : 1
+#var float4 vertexTCoord1 : $vout.TEXCOORD1 : TEX1 : 5 : 1
+#var float4x4 gWMatrix :  : , 4 : -1 : 0
+#var float4x4 gVMatrix :  : , 4 : -1 : 0
+#var float4x4 gPMatrix :  : , 4 : -1 : 0
+#var float4x4 gPVWMatrix :  : c[1], 4 : -1 : 1
+#var float4x4 gVWMatrix :  : , 4 : -1 : 0
+#var float4x4 gWIMatrix :  : , 4 : -1 : 0
+#var float4x4 gVIMatrix :  : , 4 : -1 : 0
+#var float3 gCameraWorldPosition :  :  : -1 : 0
+#var float4 gShineEmissive :  : c[5] : -1 : 1
+#var float4 gShineAmbient :  : c[6] : -1 : 1
+#var float4 gShineDiffuse :  : c[7] : -1 : 1
+#var float4 gLightColour :  : c[8] : -1 : 1
+#var float3 gLightModelDirection :  : c[9] : -1 : 1
+#var float4 gUser :  : c[10] : -1 : 1
+#var sampler2D gDiffuseSampler :  :  : -1 : 0
+#const c[0] = 0.15915491 0.25 24.980801 -24.980801
+#const c[11] = 0 0.5 1 -1
+#const c[12] = -60.145809 60.145809 85.453789 -85.453789
+#const c[13] = -64.939346 64.939346 19.73921 -19.73921
+#const c[14] = -9 0.75 0.1
+#default gShineEmissive = 0 0 0 1
+#default gShineAmbient = 0.1 0.1 0.1 1
+#default gShineDiffuse = 0.47 0.47 0.47 1
+#default gLightColour = 0.30000001 0.30000001 0.30000001 1
+#default gLightModelDirection = -0.5 -0.5 -0.5
+#default gUser = 1 1 1 1
+PARAM c[15] = { { 0.15915491, 0.25, 24.980801, -24.980801 },
+		program.local[1..10],
+		{ 0, 0.5, 1, -1 },
+		{ -60.145809, 60.145809, 85.453789, -85.453789 },
+		{ -64.939346, 64.939346, 19.73921, -19.73921 },
+		{ -9, 0.75, 0.1 } };
+TEMP R0;
+TEMP R1;
+TEMP R2;
+ADD R0.x, c[10], c[10].y;
+ADD R0.x, R0, vertex.position.y;
+MAD R0.x, R0, c[0], -c[0].y;
+FRC R0.w, R0.x;
+ADD R0.xyz, -R0.w, c[11];
+MUL R0.xyz, R0, R0;
+MUL R1.xyz, R0, c[0].zwzw;
+ADD R1.xyz, R1, c[12].xyxw;
+MAD R1.xyz, R1, R0, c[12].zwzw;
+MAD R1.xyz, R1, R0, c[13].xyxw;
+MAD R1.xyz, R1, R0, c[13].zwzw;
+MAD R1.xyz, R1, R0, c[11].wzww;
+SLT R2.x, R0.w, c[0].y;
+SGE R2.yz, R0.w, c[14].xxyw;
+MOV R0.w, c[11].z;
+MOV R0.xz, R2;
+DP3 R0.y, R2, c[11].wzww;
+DP3 R0.x, R1, -R0;
+MUL R0.xyz, vertex.normal, R0.x;
+MUL R0.xyz, R0, vertex.texcoord[0].y;
+MAD R0.xyz, R0, c[14].z, vertex.position;
+MOV R1.xyz, c[7];
+DP4 result.position.w, R0, c[4];
+DP4 result.position.z, R0, c[3];
+DP4 result.position.y, R0, c[2];
+DP4 result.position.x, R0, c[1];
+MOV R0.xyz, c[6];
+DP3 R0.w, vertex.normal, -c[9];
+MUL R0.xyz, R0, c[8];
+ABS R0.w, R0;
+MUL R1.xyz, R1, c[8];
+ADD R0.xyz, R0, c[5];
+MAX R0.w, R0, c[11].x;
+MAD result.texcoord[1].xyz, R1, R0.w, R0;
+MOV result.texcoord[0].xy, vertex.texcoord[0];
+MOV result.texcoord[1].w, c[7];
+END
+# 36 instructions, 3 R-regs

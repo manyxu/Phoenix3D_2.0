@@ -5,7 +5,6 @@
 */
 
 #include "wxPropertyExtend.hpp"
-using namespace PX2Editor;
 
 //-----------------------------------------------------------------------------
 WX_PG_IMPLEMENT_VARIANT_DATA_DUMMY_EQ(APoint)

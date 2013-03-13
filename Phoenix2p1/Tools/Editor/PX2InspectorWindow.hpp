@@ -8,6 +8,7 @@
 #define PX2INSPECTORWINDOW_HPP
 
 #include "PX2EditorPre.hpp"
+#include "PX2Actor.hpp"
 
 namespace PX2Editor
 {
@@ -26,10 +27,10 @@ namespace PX2Editor
 
 	protected:
 		DECLARE_EVENT_TABLE()
-		void ChangeToWindow (std::string str);
-		void SetActor (PX2::Actor *actor);
+		void ChangeToWindow (std::string str, int userData=0);
+		void SetObject (PX2::Object *object);
 
-		PX2::ActorPtr mActor;
+		PX2::ObjectPtr mObject;
 		std::string mCurWinStr;
 		wxWindow *mCurWindow;
 	};

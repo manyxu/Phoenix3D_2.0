@@ -22,12 +22,12 @@ namespace PX2
 	/// 日志类型
 	enum LogType
 	{
-		LT_ENGINE = 1,
-		LT_INFO = 2,
-		LT_WARNING = 4,
-		LT_SEVERE = 8,
-		LT_SEVEREMSG = 16,
-		LT_DUMP = 32,
+		LT_INFO = 1,
+		LT_ERROR = 2,
+		LT_USER = 4,
+		LT_SERVER_INFO = 8,
+		LT_SERVER_ERROR = 16,
+		LT_SERVER_USER = 32,
 		LT_ALLLEVEL = 16-1
 	};
 
@@ -55,12 +55,11 @@ namespace PX2
 
 };
 
-#define PX2_LOG_ENGINE		PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_ENGINE),	PX2::LogMessage
-#define PX2_LOG_CONFIG		PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_CONFIG),	PX2::LogMessage
-#define PX2_LOG_INFO		PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_INFO),		PX2::LogMessage
-#define PX2_LOG_WARNING		PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_WARNING),	PX2::LogMessage
-#define PX2_LOG_SEVERE		PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_SEVERE),	PX2::LogMessage
-#define PX2_LOG_SEVEREMSG	PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_SEVEREMSG),	PX2::LogMessage
-#define PX2_LOG_DUMP		PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_DUMP),		PX2::LogMessage
+#define PX2_LOG_INFO			PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_INFO),			PX2::LogMessage
+#define PX2_LOG_ERROR			PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_ERROR),			PX2::LogMessage
+#define PX2_LOG_USER			PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_USER),			PX2::LogMessage
+#define PX2_LOG_SERVER_INFO		PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_SERVER_INFO),	PX2::LogMessage
+#define PX2_LOG_SERVER_ERROR	PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_SERVER_ERROR),	PX2::LogMessage
+#define PX2_LOG_SERVER_USER		PX2::LogSetCurParam(__FILE__, __LINE__, PX2::LT_SERVER_USER),	PX2::LogMessage
 
 #endif

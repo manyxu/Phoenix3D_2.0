@@ -9,6 +9,9 @@
 #include "PX2GViewCtrl.hpp"
 #include "PX2TerEditCtrl.hpp"
 #include "PX2EditSystem.hpp"
+#include "PX2ActorPicker.hpp"
+#include "PX2SkyActor.hpp"
+#include "PX2Project.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 
@@ -40,7 +43,13 @@ void ViewCtrlInst::DoSelection (PX2::Renderer *renderer,
 
 	renderer->GetPickRay((int)x, (int)y, origin, direction);
 
-	Scene *scene = EditSystem::GetSingleton().GetEditMap()->GetScene();
+	Scene *scene = 0;
+
+	if (Project::GetSingletonPtr())
+		scene = Project::GetSingleton().GetScene();
+
+	if (!scene)
+		return;
 
 	ActorPicker actorPicker;
 	actorPicker.Execute(scene, origin, direction, 0.0f, Mathf::MAX_REAL);
@@ -52,24 +61,24 @@ void ViewCtrlInst::DoSelection (PX2::Renderer *renderer,
 
 		if (mode == SM_REPLACE)
 		{
-			if (!EditSystem::GetSingleton().GetSelection()->IsActorIn(record.Intersected))
+			if (!EditSystem::GetSingleton().GetSelection()->IsObjectIn(record.Intersected))
 			{
 				EditSystem::GetSingleton().GetSelection()->Clear();
-				EditSystem::GetSingleton().GetSelection()->AddActor(record.Intersected);
+				EditSystem::GetSingleton().GetSelection()->AddObject(record.Intersected);
 			}
 		}
 		else if (mode == SM_ADD)
 		{
-			EditSystem::GetSingleton().GetSelection()->AddActor(record.Intersected);
+			EditSystem::GetSingleton().GetSelection()->AddObject(record.Intersected);
 		}
 		else if (mode == SM_SUBTRACT)
 		{
-			EditSystem::GetSingleton().GetSelection()->RemoveActor(record.Intersected);
+			EditSystem::GetSingleton().GetSelection()->RemoveObject(record.Intersected);
 		}
 	}
 	else
 	{
-		if (EditSystem::GetSingleton().GetSelection()->GetActorQuantity() > 0)
+		if (EditSystem::GetSingleton().GetSelection()->GetNumObjects() > 0)
 		{
 			if (mode == SM_REPLACE)
 			{
@@ -97,7 +106,13 @@ PX2::APoint ViewCtrlInst::CalculateSelectPoint (PX2::Renderer *renderer,
 
 	renderer->GetPickRay((int)x, (int)y, origin, direction);
 
-	Scene *scene = EditSystem::GetSingleton().GetEditMap()->GetScene();
+	Scene *scene = 0;
+
+	if (Project::GetSingletonPtr())
+		scene = Project::GetSingleton().GetScene();
+
+	if (!scene)
+		return mSelectPoint;
 
 	ActorPicker actorPicker; 
 	actorPicker.Execute(scene, origin, direction, 0.0f, Mathf::MAX_REAL);
@@ -108,7 +123,25 @@ PX2::APoint ViewCtrlInst::CalculateSelectPoint (PX2::Renderer *renderer,
 	{
 		const ActorPickRecord &record = actorPicker.GetClosestToZero();
 
-		mSelectPoint = origin + direction*record.T;
+		if (!record.Intersected->IsDerived(SkyActor::TYPE))
+		{
+			mSelectPoint = origin + direction*record.T;
+		}
+		else
+		{
+			PX2::TriMesh *xyPlane = EditSystem::GetSingleton().GetXYPlane();
+			APoint pos = xyPlane->LocalTransform.GetTranslate();
+			pos.Z() = 0.0f;
+			xyPlane->LocalTransform.SetTranslate(pos);
+
+			Picker picker;
+			picker.Execute(xyPlane, origin,	direction, 0.0f, Mathf::MAX_REAL);
+			if ((int)picker.Records.size() > 0)
+			{
+				const PickRecord &rec = picker.GetClosestToZero();
+				mSelectPoint = origin + direction*rec.T;
+			}
+		}
 	}
 	else
 	{

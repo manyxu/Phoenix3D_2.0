@@ -38,6 +38,8 @@ unsigned int LogHandler::GetLevels ()
 //----------------------------------------------------------------------------
 bool LogInitlize ()
 {
+	LogShutdown();
+
 	sFilename = 0;
 	sLine = 0;
 	sLogLevel = 0;

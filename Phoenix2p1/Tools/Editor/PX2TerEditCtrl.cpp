@@ -6,6 +6,8 @@
 
 #include "PX2TerEditCtrl.hpp"
 #include "PX2RenderViewWindow.hpp"
+#include "PX2EditSystem.hpp"
+#include "PX2Project.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 
@@ -122,7 +124,10 @@ void TerEditCtrl::HandleMotion (RenderViewWindow *win,
 
 	if (mLeftDown)
 	{
-		EditSystem::GetSingleton().GetTerrainEdit()->Apply();
+		// Jungler在鼠标移动中不处理Apply
+		if (TerrainProcess::TPT_JUNGLER != 
+			EditSystem::GetSingleton().GetTerrainEdit()->GetEditType())
+			EditSystem::GetSingleton().GetTerrainEdit()->Apply();
 	}
 	else if (mMiddleDown)
 	{
@@ -164,7 +169,11 @@ void TerEditCtrl::HandleMotion (RenderViewWindow *win,
 void TerEditCtrl::UpdateBrushPos (RenderViewWindow *win, 
 	wxMouseEvent &e)
 {
-	PX2::Scene *scene = EditSystem::GetSingleton().GetEditMap()->GetScene();
+	PX2::Scene *scene = 0;
+	
+	if (Project::GetSingletonPtr())
+		scene = Project::GetSingleton().GetScene();
+
 	if (!scene)
 		return;
 
@@ -172,7 +181,7 @@ void TerEditCtrl::UpdateBrushPos (RenderViewWindow *win,
 	if (!actor)
 		return;
 
-	PX2::RawTerrain *terrain = DynamicCast<RawTerrain>(actor->GetTerrain());
+	PX2::RawTerrain *terrain = actor->GetRawTerrain();
 	PX2::Movable *pickObject = 0;
 
 #ifdef _DEBUG

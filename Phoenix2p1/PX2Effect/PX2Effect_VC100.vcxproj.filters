@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="PX2Particle.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ParticleEmitter.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ParticleEmitterControl.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EffectModule.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EffectNode.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EM_P_SizeByAge.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EM_E_EmitRate.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EM_P_SizeInit.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EM_P_Accelerate.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EM_P_ColorInit.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EM_P_SpeedDirInit.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EM_P_ColorByAge.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EM_P_AccelerateDir.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EM_P_SpeedInit.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EM_P_LifeInit.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EM_P_AlphaInit.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EM_P_AlphaByAge.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EM_P_RotateSpeedInit.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EM_P_RotateSpeedByAge.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EM_P_FaceAxisInit.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EM_P_RotateDegreeInit.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EffectMaterial.cpp">
+      <Filter>Material</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EM_E_EmitterTranslate.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PX2EffectPre.hpp" />
+    <ClInclude Include="PX2TRecyclingArray.hpp">
+      <Filter>DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Particle.hpp">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ParticleEmitter.hpp">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ParticleEmitterControl.hpp">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2TRange.hpp">
+      <Filter>DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EffectModule.hpp">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Effect.hpp" />
+    <ClInclude Include="PX2EffectNode.hpp">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EM_P_SizeByAge.hpp">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EM_E_EmitRate.hpp">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EM_P_SizeInit.hpp">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EM_P_Accelerate.hpp">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EM_P_ColorInit.hpp">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EM_P_SpeedDirInit.hpp">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EM_P_ColorByAge.hpp">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EM_P_AccelerateDir.hpp">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EM_P_SpeedInit.hpp">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EM_P_LifeInit.hpp">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EM_P_AlphaInit.hpp">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EM_P_AlphaByAge.hpp">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EM_P_RotateSpeedInit.hpp">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EM_P_RotateSpeedByAge.hpp">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EM_P_FaceAxisInit.hpp">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EM_P_RotateDegreeInit.hpp">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EffectMaterial.hpp">
+      <Filter>Material</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EM_E_EmitterTranslate.hpp">
+      <Filter>Modules</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="DataTypes">
+      <UniqueIdentifier>{7c2d47ee-bf5b-46b8-8788-1e5b9318cd16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Material">
+      <UniqueIdentifier>{f521b697-80c0-45eb-ae40-a1304511a26e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules">
+      <UniqueIdentifier>{564b348d-eb4c-4637-9cfb-1813848ea34e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effect">
+      <UniqueIdentifier>{31ea9597-aa4c-4d7e-b0a5-db8519a5d854}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Particles">
+      <UniqueIdentifier>{7a514b65-3a79-4f92-aa39-933ccb4d54b7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PX2TRecyclingArray.inl">
+      <Filter>DataTypes</Filter>
+    </None>
+    <None Include="PX2TRange.inl">
+      <Filter>DataTypes</Filter>
+    </None>
+    <None Include="PX2ParticleEmitterControl.inl">
+      <Filter>Particles</Filter>
+    </None>
+    <None Include="PX2ParticleEmitter.inl">
+      <Filter>Particles</Filter>
+    </None>
+    <None Include="PX2EffectModule.inl">
+      <Filter>Modules</Filter>
+    </None>
+  </ItemGroup>
+</Project>

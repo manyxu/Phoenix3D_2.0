@@ -46,7 +46,7 @@ PdrTexture2D::PdrTexture2D (Renderer* renderer, const Texture2D* texture)
 		assertion(newSrc!=0, "new failed.");	
 		for (int i = 0; i < numElement; i++)
 		{
-			newSrc[newSrcBase    ] = srcData[SrcBase    ];  // R
+			newSrc[newSrcBase    ] = srcData[SrcBase    ];  // B
 			newSrc[newSrcBase + 1] = srcData[SrcBase + 1];	// G
 			newSrc[newSrcBase + 2] = srcData[SrcBase + 2];	// R
 			newSrc[newSrcBase + 3] = (unsigned char)charMax;// A
@@ -74,7 +74,7 @@ PdrTexture2D::PdrTexture2D (Renderer* renderer, const Texture2D* texture)
 	{
 		if (tdFormat == Texture::TF_R8G8B8)
 		{
-			unsigned char *src1 = 0;
+			unsigned char *src1 = newSrc;
 			int levelByte = 0;
 			int lastWidth = 0;
 			int lastHegiht = 0;
@@ -84,15 +84,13 @@ PdrTexture2D::PdrTexture2D (Renderer* renderer, const Texture2D* texture)
 				int curWidth = texture->GetDimension(0, level);
 				int curHegiht = texture->GetDimension(1, level);
 
-				src1 = newSrc + level*4*lastWidth*lastHegiht;
 				levelByte = 4*curWidth*curHegiht;
 
 				char* data = (char*)Lock(level, Buffer::BL_WRITE_ONLY);
 				memcpy(data, src1, levelByte);
 				Unlock(level);
 
-				lastWidth = texture->GetDimension(0, level);
-				lastHegiht = texture->GetDimension(1, level);
+				src1 += levelByte;
 			}
 
 			delete1(newSrc);

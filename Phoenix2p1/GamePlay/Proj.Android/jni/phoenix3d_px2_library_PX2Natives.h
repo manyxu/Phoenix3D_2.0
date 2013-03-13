@@ -55,6 +55,46 @@ JNIEXPORT void JNICALL Java_phoenix3d_px2_library_PX2Natives_nativeOnTerm
 JNIEXPORT void JNICALL Java_phoenix3d_px2_library_PX2Natives_nativeSetResourcePath
   (JNIEnv *, jclass, jstring);
 
+/*
+ * Class:     phoenix3d_px2_library_PX2Natives
+ * Method:    nativeTouchPressed
+ * Signature: (IFF)V
+ */
+JNIEXPORT void JNICALL Java_phoenix3d_px2_library_PX2Natives_nativeTouchPressed
+  (JNIEnv *, jclass, jint, jfloat, jfloat);
+
+/*
+ * Class:     phoenix3d_px2_library_PX2Natives
+ * Method:    nativeTouchReleased
+ * Signature: (IFF)V
+ */
+JNIEXPORT void JNICALL Java_phoenix3d_px2_library_PX2Natives_nativeTouchReleased
+  (JNIEnv *, jclass, jint, jfloat, jfloat);
+
+/*
+ * Class:     phoenix3d_px2_library_PX2Natives
+ * Method:    nativeTouchMoved
+ * Signature: ([I[F[F)V
+ */
+JNIEXPORT void JNICALL Java_phoenix3d_px2_library_PX2Natives_nativeTouchMoved
+  (JNIEnv *, jclass, jintArray, jfloatArray, jfloatArray);
+
+/*
+ * Class:     phoenix3d_px2_library_PX2Natives
+ * Method:    nativeTouchCancelled
+ * Signature: ([I[F[F)V
+ */
+JNIEXPORT void JNICALL Java_phoenix3d_px2_library_PX2Natives_nativeTouchCancelled
+  (JNIEnv *, jclass, jintArray, jfloatArray, jfloatArray);
+
+/*
+ * Class:     phoenix3d_px2_library_PX2Natives
+ * Method:    nativeKeyDown
+ * Signature: (I)Z
+ */
+JNIEXPORT jboolean JNICALL Java_phoenix3d_px2_library_PX2Natives_nativeKeyDown
+  (JNIEnv *, jclass, jint);
+
 #ifdef __cplusplus
 }
 #endif

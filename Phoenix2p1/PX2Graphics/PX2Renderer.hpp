@@ -299,7 +299,7 @@ namespace PX2
 		bool GetPickRay (int x, int y, APoint& origin, AVector& direction) const;
 		
 		/// 获得3d点在屏幕的坐标
-		Vector2f PointWorldToViewPort (APoint &point, bool *isInBack=0);
+		Vector2f PointWorldToViewPort (const APoint &point, bool *isInBack=0);
 
 		// 设置清空颜色，清空深度，清空模板值。
 		inline void SetClearColor (const Float4& clearColor);
@@ -341,6 +341,7 @@ namespace PX2
 		void Draw (const Renderable* renderable, const MaterialInstance* instance);
 
 	private:
+		static Mutex &GetMutex ();
 		// 释放所有与此渲染器相关的资源。(渲染器析构函数内会调用，无需现显式调
 		// 用资源释放函数)
 		void DestroyAllVertexFormats ();
@@ -353,6 +354,7 @@ namespace PX2
 		void DestroyAllRenderTargets ();
 		void DestroyAllVertexShaders ();
 		void DestroyAllPixelShaders ();
+		void DestroyAllMaterialPasses ();
 
 		// 渲染器构造参数
 		int mWidth;
@@ -421,7 +423,6 @@ namespace PX2
 		MaterialPassMap mMaterialPasses;
 
 		// 渲染器管理
-		static Mutex msMutex;
 		typedef std::set<Renderer*> RendererSet;
 		static RendererSet msRenderers;
 

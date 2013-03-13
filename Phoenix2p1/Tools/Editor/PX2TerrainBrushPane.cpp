@@ -5,6 +5,7 @@
 */
 
 #include "PX2TerrainBrushPane.hpp"
+#include "PX2EditSystem.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 

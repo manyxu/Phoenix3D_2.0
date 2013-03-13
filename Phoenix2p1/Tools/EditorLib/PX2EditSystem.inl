@@ -5,6 +5,16 @@
 */
 
 //----------------------------------------------------------------------------
+inline void EditSystem::SetShiftDown (bool down)
+{
+	mIsShiftDown = down;
+}
+//----------------------------------------------------------------------------
+inline bool EditSystem::IsShiftDown ()
+{
+	return mIsShiftDown;
+}
+//----------------------------------------------------------------------------
 inline PX2::Node *EditSystem::GetHelpScene ()
 {
 	return mHelpScene; 
@@ -20,12 +30,17 @@ inline TerrainEdit *EditSystem::GetTerrainEdit ()
 	return mTerrainEdit;
 }
 //----------------------------------------------------------------------------
+inline CurveEdit *EditSystem::GetCurveEdit()
+{
+	return mCurveEdit;
+}
+//----------------------------------------------------------------------------
 inline EditMap *EditSystem::GetEditMap ()
 {
 	return mEditMap;
 }
 //----------------------------------------------------------------------------
-inline ActorSelection *EditSystem::GetSelection ()
+inline ObjectSelection *EditSystem::GetSelection ()
 {
 	return mSelection;
 }

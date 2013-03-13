@@ -98,7 +98,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\ThirdPartiesLibs\Max8\lib;..\..\ThirdPartiesLibs\Microsoft DirectX SDK (June 2010)\Lib\x86;..\..\PX2SDK\Library\v100\Win32\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\ThirdPartiesLibs\Max8\lib;..\..\ThirdPartiesLibs\Microsoft DirectX SDK (June 2010)\Lib\x86;..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>paramblk2.lib;bmm.lib;core.lib;geom.lib;mesh.lib;maxutil.lib;comctl32.lib;d3d9.lib;d3dx9.lib;dxerr.lib;PX2CoreD.lib;PX2MathermaticsD.lib;PX2GraphicsDx9D.lib;PX2UnityD.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>Max8ToPX2.def</ModuleDefinitionFile>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
@@ -144,7 +144,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <ModuleDefinitionFile>Max8ToPX2.def</ModuleDefinitionFile>
       <AdditionalDependencies>paramblk2.lib;bmm.lib;core.lib;geom.lib;mesh.lib;maxutil.lib;comctl32.lib;d3d9.lib;d3dx9.lib;dxerr.lib;PX2Core.lib;PX2Mathermatics.lib;PX2GraphicsDx9.lib;PX2Unity.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\ThirdPartiesLibs\Max8\lib;..\..\ThirdPartiesLibs\Microsoft DirectX SDK (June 2010)\Lib\x86;..\..\PX2SDK\Library\v100\Win32\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\ThirdPartiesLibs\Max8\lib;..\..\ThirdPartiesLibs\Microsoft DirectX SDK (June 2010)\Lib\x86;..\..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

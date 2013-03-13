@@ -71,6 +71,39 @@ TriMesh* ScreenTarget::CreateRectangle (VertexFormat* vformat, int rtWidth,
 	return 0;
 }
 //----------------------------------------------------------------------------
+TriMesh *ScreenTarget::CreateRectangle (VertexFormat* vformat, 
+	float xMin,	float xMax, float yMin, float yMax, float zValue)
+{
+	if (!ValidFormat(vformat))
+		return 0;
+
+	Float2 tc0, tc1, tc2, tc3;
+	tc0 = Float2(0.0f, 0.0f);
+	tc1 = Float2(1.0f, 0.0f);
+	tc2 = Float2(1.0f, 1.0f);
+	tc3 = Float2(0.0f, 1.0f);
+
+	int vstride = vformat->GetStride();
+	VertexBuffer* vbuffer = new0 VertexBuffer(4, vstride);
+	VertexBufferAccessor vba(vformat, vbuffer);
+	vba.Position<Float3>(0) = Float3(xMin, yMin, zValue);
+	vba.Position<Float3>(1) = Float3(xMax, yMin, zValue);
+	vba.Position<Float3>(2) = Float3(xMax, yMax, zValue);
+	vba.Position<Float3>(3) = Float3(xMin, yMax, zValue);
+	vba.TCoord<Float2>(0, 0) = tc0;
+	vba.TCoord<Float2>(0, 1) = tc1;
+	vba.TCoord<Float2>(0, 2) = tc2;
+	vba.TCoord<Float2>(0, 3) = tc3;
+
+	// Îªsquare´´½¨IndexBuffer
+	IndexBuffer* ibuffer = new0 IndexBuffer(6, sizeof(int));
+	int* indices = (int*)ibuffer->GetData();
+	indices[0] = 0;  indices[1] = 1;  indices[2] = 2;
+	indices[3] = 0;  indices[4] = 2;  indices[5] = 3;
+
+	return new0 TriMesh(vformat, vbuffer, ibuffer);
+}
+//----------------------------------------------------------------------------
 bool ScreenTarget::CreatePositions (int rtWidth, int rtHeight, float xmin,
 									float xmax, float ymin, float ymax, float zValue, Float3* positions)
 {

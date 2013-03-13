@@ -100,6 +100,20 @@ MovablePtr Node::DetachChildAt (int i)
     return 0;
 }
 //----------------------------------------------------------------------------
+void Node::DetachAllChildren ()
+{
+	for (int i=0; i<(int)mChild.size(); i++)
+	{
+		 MovablePtr child = mChild[i];
+
+		 if (child)
+		 {
+			 child->SetParent(0);
+			 mChild[i] = 0;
+		 }
+	}
+}
+//----------------------------------------------------------------------------
 MovablePtr Node::SetChild (int i, Movable* child)
 {
     if (child)
@@ -143,6 +157,17 @@ MovablePtr Node::GetChild (int i)
         return mChild[i];
     }
     return 0;
+}
+//----------------------------------------------------------------------------
+void Node::OnNotPicked (int pickInfo)
+{
+	for (int i=0; i<(int)mChild.size(); i++)
+	{
+		if (mChild[i])
+		{
+			mChild[i]->OnNotPicked(pickInfo);
+		}
+	}
 }
 //----------------------------------------------------------------------------
 void Node::UpdateWorldData (double applicationTime)

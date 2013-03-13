@@ -38,7 +38,7 @@ bool GameManager::LoadBoost (const char *filename)
 
 		data.GetNodeByPath("Config.var").AttribToInt("width", mBoostWidth);
 		data.GetNodeByPath("Config.var").AttribToInt("height", mBoostHeight);
-		mMapName = data.GetNodeByPath("Play.var").AttributeToString("mapName");
+		mProjectPath = data.GetNodeByPath("Play.var").AttributeToString("projectPath");
 
 		return true;
 	}

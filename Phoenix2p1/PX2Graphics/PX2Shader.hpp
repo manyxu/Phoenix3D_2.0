@@ -158,7 +158,8 @@ namespace PX2
 		/**
 		* 这个类定义了shader，但是不没有包含着色器的常量参数和纹理参数。每个
 		* “shader实例”会定义具体常量参数和纹理参数，常量参数被放在
-		* MaterialInstance中。
+		* MaterialInstance中。profileOwner表示shader是不是从文件中加载的，如果
+		* 为false表示shader是写在代码中的。
 		*/
 		Shader ();
 		Shader (const std::string& programName, int numInputs, int numOutputs,

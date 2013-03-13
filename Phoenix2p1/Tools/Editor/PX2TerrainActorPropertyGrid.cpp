@@ -6,6 +6,9 @@
 
 #include "PX2TerrainActorPropertyGrid.hpp"
 #include "PX2ViewCtrlInstMan.hpp"
+#include "PX2TerrainActor.hpp"
+#include "PX2LanguageManager.hpp"
+#include "PX2EditSystem.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 
@@ -25,6 +28,8 @@ ObjectPropertyGrid (parent)
 	mPropertyGridType = PGT_TERRAINACTOR;
 	mEnableTerrainEdit = false;
 	mShowPageGridLine = false;
+	mLODPixelTolerance = 1.0f;
+	mIsCloseAssumption = false;
 }
 //-----------------------------------------------------------------------------
 TerrainActorPropertyGrid::~TerrainActorPropertyGrid ()
@@ -80,6 +85,31 @@ void TerrainActorPropertyGrid::OnPropertyGridChange (
 		bool show = event.GetValue();
 		EditSystem::GetSingleton().GetTerrainEdit()->ShowPageLine(show);
 	}
+	else if (event.GetPropertyName() == PX2_LM.GetValue("PixelTolerance"))
+	{
+		TerrainActor *terActor = DynamicCast<TerrainActor>(mObject);
+		if (terActor)
+		{
+			LODTerrain *lodTerran = terActor->GetLODTerrain();
+			if (lodTerran)
+			{
+				lodTerran->SetPixelTolerance(mLODPixelTolerance);
+			}
+		}
+
+	}
+	else if (event.GetPropertyName() == PX2_LM.GetValue("IsCloseAssumption"))
+	{
+		TerrainActor *terActor = DynamicCast<TerrainActor>(mObject);
+		if (terActor)
+		{
+			LODTerrain *lodTerran = terActor->GetLODTerrain();
+			if (lodTerran)
+			{
+				lodTerran->SetCloseAssumption(mIsCloseAssumption);
+			}
+		}
+	}
 }
 //-----------------------------------------------------------------------------
 void TerrainActorPropertyGrid::OnPropertyGridChanging (
@@ -131,6 +161,23 @@ void TerrainActorPropertyGrid::RefreshOnActor ()
 	Property *propShowPageLine = new0 Property(page, 
 		PX2_LM.GetValue("ShowPageLine"), Property::PT_BOOLCHECK, 
 		&mShowPageGridLine);
+
+	TerrainActor *terActor = DynamicCast<TerrainActor>(actor);
+	if (terActor)
+	{
+		LODTerrain *lodTerran = terActor->GetLODTerrain();
+		if (lodTerran)
+		{
+			mLODPixelTolerance = lodTerran->GetPixelTolerance();
+			mIsCloseAssumption = lodTerran->IsCloseAssumption();
+
+			page->AddProperty(PX2_LM.GetValue("LOD"), Property::PT_CATEGORY, 0);
+			Property *propPT = new0 Property(page, PX2_LM.GetValue("PixelTolerance"),
+				Property::PT_FLOAT, &mLODPixelTolerance);
+			Property *propAS = new0 Property(page, PX2_LM.GetValue("IsCloseAssumption"),
+				Property::PT_BOOLCHECK, &mIsCloseAssumption);
+		}
+	}
 
 	mPropGridManager->ExpandAll();
 }

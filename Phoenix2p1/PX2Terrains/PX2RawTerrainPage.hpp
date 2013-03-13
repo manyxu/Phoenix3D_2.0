@@ -8,14 +8,14 @@
 #define PX2RAWTERRAINPAGE_HPP
 
 #include "PX2TerrainsPre.hpp"
-#include "PX2TriMesh.hpp"
+#include "PX2TerrainPage.hpp"
 
 namespace PX2
 {
 
 	class EditTerrainMaterial;
 
-	class RawTerrainPage : public TriMesh
+	class RawTerrainPage : public TerrainPage
 	{
 		PX2_DECLARE_RTTI;
 		PX2_DECLARE_NAMES;
@@ -27,20 +27,6 @@ namespace PX2
 			const Float2& origin, float spacing);
 
 		virtual ~RawTerrainPage ();
-
-		// 高程访问
-		inline int GetSize () const;
-		inline const float* GetHeights () const;
-		inline const Float2& GetOrigin () const;
-		inline float GetMinElevation () const;
-		inline float GetMaxElevation () const;
-		inline float GetSpacing () const;
-
-		/// 获得高度
-		/**
-		* 如果方位不再地形页中，返回MAX_REAL
-		*/
-		float GetHeight (float x, float y) const;
 
 		/// 将顶点高度信息保存到高程数据mHeights中
 		/**
@@ -78,24 +64,14 @@ namespace PX2
 		Float2 GetUV3 ();
 		Float2 GetUV4 ();
 
-		void CreateInstancePerVertex (EditTerrainMaterial *material, Shine *shine);
-		void CreateInstancePerPixel (EditTerrainMaterial *material, Shine *shine);
+		void CreateEditMtlInstPerVertex (EditTerrainMaterial *material, Shine *shine);
+		void CreateSimpleMtlInstPerVertex (EditTerrainMaterial *material, Shine *shine);
 
 	protected:
 		virtual void UpdateWorldData (double applicationTime);
-		inline float GetX (int x) const;
-		inline float GetY (int y) const;
-		inline float GetHeight (int index) const;
-
-		// 高程参数及数据
-		int mSize, mSizeM1;
-		float* mHeights;
-		Float2 mOrigin;
-		float mSpacing;
-		float mInvSpacing;
 
 		PX2::LightPtr mDirLight; // 不用保存
-		MaterialInstancePtr mMaterialInstance;
+		MaterialInstancePtr mMtlInst;
 		Texture2DPtr mTextureDefault;
 		Texture2DPtr mTexture0;
 		Texture2DPtr mTextureAlpha;

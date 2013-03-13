@@ -8,6 +8,7 @@
 using namespace PX2;
 
 const Float4 Float4::ZERO(0.0f, 0.0f, 0.0f, 0.0f);
+const Float4 Float4::UNIT(1.0f, 1.0f, 1.0f, 1.0f);
 const Float4 Float4::BLACK(0.0f, 0.0f, 0.0f, 1.0f);
 const Float4 Float4::WHITE(1.0f, 1.0f, 1.0f, 1.0f);
 const Float4 Float4::RED(1.0f, 0.0f, 0.0f, 1.0f);

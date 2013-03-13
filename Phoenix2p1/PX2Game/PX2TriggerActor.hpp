@@ -22,7 +22,7 @@ namespace PX2
 
 	public:
 		TriggerActor ();
-		~TriggerActor ();
+		virtual ~TriggerActor ();
 
 		void Enable (bool enable);
 		bool IsEnable ();

@@ -144,6 +144,7 @@
 #include "PX2ShineDiffuseConstant.hpp"
 #include "PX2ShineEmissiveConstant.hpp"
 #include "PX2ShineSpecularConstant.hpp"
+#include "PX2UserConstant.hpp"
 #include "PX2VMatrixConstant.hpp"
 #include "PX2VWMatrixConstant.hpp"
 #include "PX2WMatrixConstant.hpp"

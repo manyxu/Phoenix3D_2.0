@@ -67,11 +67,11 @@ void TerrainBrush::SelectPage ()
 
 	Event *ent = EditorEventSpace::CreateEventX(
 		EditorEventSpace::SelectTerrainPage);
-	ent->SetData<PX2::RawTerrainPage*>(mSelectedTerrainPage);
+	ent->SetData<PX2::TerrainPage*>(mSelectedTerrainPage);
 	EventWorld::GetSingleton().BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------
-PX2::RawTerrainPage *TerrainBrush::GetSelectedPage ()
+PX2::TerrainPage *TerrainBrush::GetSelectedPage ()
 {
 	return mSelectedTerrainPage;
 }
@@ -97,11 +97,11 @@ void TerrainBrush::CalculateInfulencedInfo ()
 	point2 = APoint(mPos.X()+sizeScale, mPos.Y()+sizeScale, 0.0f);
 	point3 = APoint(mPos.X()-sizeScale, mPos.Y()+sizeScale, 0.0f);
 
-	RawTerrainPagePtr page  = mTerrain->GetCurrentPage(mPos.X(), mPos.Y());
-	RawTerrainPagePtr page0 = mTerrain->GetCurrentPage(point0.X(), point0.Y());
-	RawTerrainPagePtr page1 = mTerrain->GetCurrentPage(point1.X(), point1.Y());
-	RawTerrainPagePtr page2 = mTerrain->GetCurrentPage(point2.X(), point2.Y());
-	RawTerrainPagePtr page3 = mTerrain->GetCurrentPage(point3.X(), point3.Y());
+	TerrainPagePtr page  = mTerrain->GetCurrentPage(mPos.X(), mPos.Y());
+	TerrainPagePtr page0 = mTerrain->GetCurrentPage(point0.X(), point0.Y());
+	TerrainPagePtr page1 = mTerrain->GetCurrentPage(point1.X(), point1.Y());
+	TerrainPagePtr page2 = mTerrain->GetCurrentPage(point2.X(), point2.Y());
+	TerrainPagePtr page3 = mTerrain->GetCurrentPage(point3.X(), point3.Y());
 
 	if (page)
 	{
@@ -145,7 +145,7 @@ void TerrainBrush::CalculateInfulencedInfo ()
 
 		pInfo.VertexInfoList.clear();
 
-		RawTerrainPagePtr page = pInfo.InfulencedPage;
+		TerrainPagePtr page = pInfo.InfulencedPage;
 		VertexBufferPtr vBuffer = page->GetVertexBuffer();
 		VertexBufferAccessor vba;
 		vba.ApplyTo(page);

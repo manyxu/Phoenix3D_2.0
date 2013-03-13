@@ -23,7 +23,7 @@ PdrPixelShader::PdrPixelShader (Renderer*, const PixelShader* pshader)
 	assertion(mShader != 0, "mShader create failed.");
 
 	// Load the mShader source
-	glShaderSource(mShader, 1, &programText, NULL);
+	glShaderSource(mShader, 1, &programText, 0);
 
 	// Compile the mShader
 	glCompileShader(mShader);
@@ -53,7 +53,6 @@ PdrPixelShader::PdrPixelShader (Renderer*, const PixelShader* pshader)
 //----------------------------------------------------------------------------
 PdrPixelShader::~PdrPixelShader ()
 {
-	glDeleteShader(mShader);
 }
 //----------------------------------------------------------------------------
 void PdrPixelShader::Enable (Renderer* renderer, const PixelShader* pshader,

@@ -12,9 +12,7 @@
 #include "PX2Mathematics.hpp"
 #include "PX2Graphics.hpp"
 #include "PX2Renderers.hpp"
-#include "PX2Unity.hpp"
-#include "PX2Game.hpp"
-#include "PX2EditorLib.hpp"
+#include "PX2EventSystem.hpp"
 
 #pragma warning(push) 
 #pragma warning(disable : 4267)
@@ -47,6 +45,9 @@
 #include <wx/listctrl.h>
 #include <wx/textctrl.h>
 #include <wx/clrpicker.h>
+#include <wx/toolbar.h>
+#include <wx/dirdlg.h>
+#include <wx/filepicker.h>
 #include "wx/collpane.h"
 
 #pragma warning(pop)

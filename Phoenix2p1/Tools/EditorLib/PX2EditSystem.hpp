@@ -9,9 +9,10 @@
 
 #include "PX2EditorLibPre.hpp"
 #include "PX2EditMap.hpp"
-#include "PX2ActorSelection.hpp"
+#include "PX2ObjectSelection.hpp"
 #include "PX2EditCommand.hpp"
 #include "PX2TerrainEdit.hpp"
+#include "PX2CurveEdit.hpp"
 
 namespace PX2Editor
 {
@@ -27,11 +28,16 @@ namespace PX2Editor
 		void Reset ();
 		void Update (double elapsedSeconds);
 
+		void SetShiftDown (bool down);
+		bool IsShiftDown ();
+
 		EditCommandManager *GetCM ();
 		TerrainEdit *GetTerrainEdit ();
 		EditMap *GetEditMap ();
-		ActorSelection *GetSelection ();
+		CurveEdit *GetCurveEdit ();
+		ObjectSelection *GetSelection ();
 		PX2::Node *GetHelpScene ();
+		bool DeleteSelection ();
 
 		void EnableSelectEdit (bool enable);
 		bool IsSelectEditEnable ();
@@ -63,10 +69,12 @@ namespace PX2Editor
 		PX2::TriMesh *GetYZPlane ();
 
 	protected:
+		bool mIsShiftDown;
 		EditCommandManager *mCM;
 		TerrainEdit *mTerrainEdit;
+		CurveEdit *mCurveEdit;
 		EditMap *mEditMap;
-		ActorSelection *mSelection;
+		ObjectSelection *mSelection;
 		PX2::NodePtr mHelpScene;
 		bool mSelectEditEnable;
 		EditMode mEditMode;

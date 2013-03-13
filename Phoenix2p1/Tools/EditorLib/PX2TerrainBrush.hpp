@@ -9,6 +9,10 @@
 
 #include "PX2EditorLibPre.hpp"
 #include "PX2Brush.hpp"
+#include "PX2Terrain.hpp"
+#include "PX2TerrainPage.hpp"
+#include "PX2RawTerrain.hpp"
+#include "PX2RawTerrainPage.hpp"
 
 namespace PX2Editor
 {
@@ -40,7 +44,7 @@ namespace PX2Editor
 
 		}
 		bool CenterPage;
-		PX2::RawTerrainPagePtr InfulencedPage;
+		PX2::TerrainPagePtr InfulencedPage;
 		std::vector<VertexAffectInfo> VertexInfoList;
 
 		static float AverageHeight;
@@ -71,7 +75,7 @@ namespace PX2Editor
 		PX2::RawTerrain *GetTerrain () { return mTerrain; }
 
 		void SelectPage ();
-		PX2::RawTerrainPage *GetSelectedPage ();
+		PX2::TerrainPage *GetSelectedPage ();
 
 		void CalculateInfulencedInfo ();
 		std::vector<PageAffectInfo> &GetInfulencedInfo () { return mPageInfoList; }
@@ -80,7 +84,7 @@ namespace PX2Editor
 
 	protected:
 		PX2::RawTerrainPtr mTerrain;
-		PX2::RawTerrainPagePtr mSelectedTerrainPage;
+		PX2::TerrainPagePtr mSelectedTerrainPage;
 		InterplateMode mInterplateMode;
 		std::vector<PageAffectInfo> mPageInfoList;
 

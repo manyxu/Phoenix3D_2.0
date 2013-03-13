@@ -11,13 +11,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\PX2ToLua\PX2ToLua.cpp" />
     <ClCompile Include="PX2Main.cpp" />
     <ClCompile Include="PX2ApplicationBase.cpp" />
     <ClCompile Include="PX2Application.cpp" />
+    <ClCompile Include="PX2ScriptEventHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\PX2ToLua\PX2ToLua.hpp" />
     <ClInclude Include="PX2ApplicationBase.hpp" />
     <ClInclude Include="PX2Application.hpp" />
+    <ClInclude Include="PX2ScriptEventHandler.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{97D918C4-1A28-4D49-BDD5-A21605491E42}</ProjectGuid>
@@ -70,7 +74,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;PX2_USE_OPENGLES2;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\PX2SDK\Include;..\ThirdPartiesLibs\OGLES;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\PX2SDK\Include;..\PX2Unity\Lua;..\PX2Unity\ToLua;..\PX2ToLua;..\ThirdPartiesLibs\OGLES;..\ThirdPartiesLibs\pthread\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -93,7 +97,7 @@ xcopy /DY "$(TargetPath)" ..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Con
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;PX2_USE_OPENGLES2;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\PX2SDK\Include;..\ThirdPartiesLibs\OGLES;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\PX2SDK\Include;..\PX2Unity\Lua;..\PX2Unity\ToLua;..\PX2ToLua;..\ThirdPartiesLibs\OGLES;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

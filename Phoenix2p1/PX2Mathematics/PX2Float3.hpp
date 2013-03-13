@@ -30,6 +30,25 @@ namespace PX2
 
 		// ¸³Öµ
 		Float3& operator= (const Float3& tuple);
+
+		Float3 operator+ (const Float3& tuple) const;
+		Float3 operator- (const Float3& tuple) const;
+		Float3 operator* (float scalar) const;
+		Float3 operator/ (float scalar) const;
+		Float3& operator+= (const Float3& tuple);
+		Float3& operator-= (const Float3& tuple);
+		Float3& operator*= (float scalar);
+		Float3& operator/= (float scalar);
+		Float3& operator- ();
+
+		static const Float3 ZERO;   //< (0,0,0)
+		static const Float3 UNIT;	//< (1,1,1)
+		static const Float3 BLACK;	//< (0,0,0)
+		static const Float3 WHITE;	//< (1,1,1)
+		static const Float3 RED;	//< (1,0,0)
+		static const Float3 GREEN;  //< (0,1,0)
+		static const Float3 BLUE;	//< (0,0,1)
+		static const Float3 YELLOW; //< (1,1,0)
 	};
 
 }

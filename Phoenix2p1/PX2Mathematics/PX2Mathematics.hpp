@@ -36,6 +36,8 @@
 #include "PX2Float3.hpp"
 #include "PX2Float4.hpp"
 #include "PX2Math.hpp"
+#include "PX2Rect.hpp"
+#include "PX2Size.hpp"
 
 // CurvesSurfacesVolumes
 #include "PX2BezierCurve3.hpp"
@@ -49,6 +51,9 @@
 // Distance
 #include "PX2DistPoint3Circle3.hpp"
 #include "PX2Distance.hpp"
+
+// InterpCurve
+#include "PX2InterpCurve.hpp"
 
 // Intersection
 #include "PX2IntrBox3Frustum3.hpp"

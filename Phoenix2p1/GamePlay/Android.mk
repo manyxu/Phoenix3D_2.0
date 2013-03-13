@@ -10,7 +10,11 @@ LOCAL_WHOLE_STATIC_LIBRARIES := PX2Core
 LOCAL_WHOLE_STATIC_LIBRARIES += PX2Mathematics
 LOCAL_WHOLE_STATIC_LIBRARIES += PX2Graphics
 LOCAL_WHOLE_STATIC_LIBRARIES += PX2EventSystem
+LOCAL_WHOLE_STATIC_LIBRARIES += PX2Input
 LOCAL_WHOLE_STATIC_LIBRARIES += PX2Unity
+LOCAL_WHOLE_STATIC_LIBRARIES += PX2Terrains
+LOCAL_WHOLE_STATIC_LIBRARIES += PX2Effect
+LOCAL_WHOLE_STATIC_LIBRARIES += PX2UserInterface
 LOCAL_WHOLE_STATIC_LIBRARIES += PX2Game
 LOCAL_WHOLE_STATIC_LIBRARIES += PX2AppFrame
 
@@ -28,6 +32,10 @@ $(call import-module, PX2Core)
 $(call import-module, PX2Mathematics)
 $(call import-module, PX2Graphics)
 $(call import-module, PX2EventSystem)
+$(call import-module, PX2Input)
 $(call import-module, PX2Unity)
+$(call import-module, PX2Terrains)
+$(call import-module, PX2Effect)
+$(call import-module, PX2UserInterface)
 $(call import-module, PX2Game)
 $(call import-module, PX2AppFrame)

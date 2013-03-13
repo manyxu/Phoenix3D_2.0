@@ -5,11 +5,15 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := PX2Core
 
 LOCAL_SRC_FILES := \
+PX2AbstractObserver.cpp \
 PX2Assert.cpp \
+PX2Ascii.cpp \
 PX2BufferIO.cpp \
-PX2DayTime.cpp \
+PX2Condition.cpp \
+PX2DateTime.cpp \
 PX2Endian.cpp \
 PX2Environment.cpp \
+PX2Eventt.cpp \
 PX2FileIO.cpp \
 PX2FString.cpp \
 PX2InitTerm.cpp \
@@ -19,16 +23,28 @@ PX2LogFileHandler.cpp \
 PX2LogOutputWindowHandler.cpp \
 PX2Memory.cpp \
 PX2Mutex.cpp \
+PX2Notification.cpp \
+PX2NotificationCenter.cpp \
+PX2NotificationQueue.cpp \
 PX2Object.cpp \
 PX2OutStream.cpp \
 PX2Rtti.cpp \
+PX2Runnable.cpp \
 PX2ScopedCS.cpp \
+PX2Semaphore.cpp \
 PX2SmartPointer.cpp \
 PX2Stream.cpp \
 PX2StringHelp.cpp \
-PX2Condition.cpp \
+PX2Timer.cpp \
+PX2TimerManager.cpp \
+PX2TimerTask.cpp \
+PX2Timestamp.cpp \
 PX2Thread.cpp \
-PX2Time.cpp
+PX2ThreadLocal.cpp \
+PX2ThreadTarget.cpp \
+PX2Time.cpp \
+PX2TimedNotificationQueue.cpp \
+PX2Timespan.cpp
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/..
 

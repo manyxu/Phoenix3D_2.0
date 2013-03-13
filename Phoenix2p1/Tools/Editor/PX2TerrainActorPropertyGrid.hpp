@@ -42,6 +42,8 @@ namespace PX2Editor
 		std::string mActorType;
 		bool mEnableTerrainEdit;
 		bool mShowPageGridLine;
+		float mLODPixelTolerance;
+		bool mIsCloseAssumption;
 	};
 
 }

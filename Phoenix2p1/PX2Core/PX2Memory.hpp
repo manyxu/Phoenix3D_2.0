@@ -1,13 +1,6 @@
 /*
-* Phoenix 3D 引擎 Version 2.0
-*
-* Copyright (C) 2009-2011 http://www.Phoenix3d.org/
 *
 * 文件名称	：	PX2Memory.hpp
-*
-* 版本		:	1.0 (2011/01/29)
-*
-* 作者		：	more
 *
 */
 
@@ -37,6 +30,9 @@ namespace PX2
 			);
 
 		static void Terminate (const std::string& filename, bool alwaysReportFile=true);
+
+		static int64_t GetCurTotalBytes ();
+		static int64_t GetMaxTotalBytes ();
 
 public_internal:
 		inline Memory (const char* file, int line) : mFile(file), mLine(line) {}
@@ -86,7 +82,7 @@ private_internal:
 		static void* DefaultAllocator (size_t numBytes, const char* file,
 			int line);
 
-		static void DefaultDeallocator (void* memBlock, const char* file,
+		static void DefaultDeallocator (void* memBlock,	const char* file,
 			int line);
 
 		class Information
@@ -102,6 +98,9 @@ private_internal:
 				mFile(file),
 				mLine(line),
 				mUniqueID(++msUniqueID)
+			{
+			}
+			~Information ()
 			{
 			}
 
@@ -121,9 +120,14 @@ private_internal:
 
 		// msMutex被用来阻止同时访问msMap
 		static MemoryMap* msMap;
-		static Mutex msMutex;
+		static Mutex *msMutex;
 		static Allocator msAllocator;
 		static Deallocator msDeallocator;
+
+public_internal:
+		static void BeforeEraseInformation(void *data);
+		static int64_t msCurTotalBytes;
+		static int64_t msMaxTotalBytes;
 	};
 
 #include "PX2Memory.inl"

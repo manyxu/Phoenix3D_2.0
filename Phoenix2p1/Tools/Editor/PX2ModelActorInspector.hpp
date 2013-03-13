@@ -9,6 +9,7 @@
 
 #include "PX2EditorPre.hpp"
 #include "PX2ModelActorPropertyGrid.hpp"
+#include "PX2Actor.hpp"
 #include "foldpanelbar.h"
 
 namespace PX2Editor
@@ -33,6 +34,7 @@ namespace PX2Editor
 		wxFoldPanelBar *mFoldPaneBar;
 		ModelActorPropertyGrid *mModelActorPropGrid;
 	};
+
 }
 
 #endif

@@ -7,7 +7,11 @@
 #include "PX2EditSystem.hpp"
 #include "PX2EditEventType.hpp"
 #include "PX2EditMap.hpp"
-#include "PX2ActorSelection.hpp"
+#include "PX2ObjectSelection.hpp"
+#include "PX2ResourceManager.hpp"
+#include "PX2UIManager.hpp"
+#include "PX2Project.hpp"
+#include "PX2Actor.hpp"
 using namespace PX2;
 using namespace PX2Editor;
 
@@ -19,7 +23,9 @@ mSelectEditEnable(false),
 mCM(0),
 mTerrainEdit(0),
 mEditMap(0),
-mSelection(0)
+mCurveEdit(0),
+mSelection(0),
+mIsShiftDown(false)
 {
 }
 //----------------------------------------------------------------------------
@@ -45,10 +51,15 @@ bool EditSystem::Initlize ()
 	ResourceManager *resMan = new0 ResourceManager();
 	PX2_UNUSED(resMan);
 
+	UIManager *uiMan = new0 UIManager();
+	PX2_UNUSED(uiMan);
+	EventWorld::GetSingleton().ComeIn(uiMan);
+
 	mEditMap = new0 EditMap();
 	mCM = new0 EditCommandManager();
 	mTerrainEdit = new0 TerrainEdit();
-	mSelection = new0 ActorSelection();
+	mSelection = new0 ObjectSelection();
+	mCurveEdit = new0 CurveEdit();
 
 	mHelpScene = new0 Node();
 	mHelpScene->AttachChild(mTerrainEdit->GetBrush()->GetRenderable());
@@ -78,6 +89,12 @@ bool EditSystem::Terminate ()
 {
 	mHelpScene = 0;
 
+	if (mCurveEdit)
+	{
+		delete0(mCurveEdit);
+		mCurveEdit = 0;
+	}
+
 	if (mSelection)
 	{
 		delete0(mSelection);
@@ -102,10 +119,19 @@ bool EditSystem::Terminate ()
 		mEditMap = 0;
 	}
 
+	UIManager *uiMan = UIManager::GetSingletonPtr();
+	if (uiMan)
+	{
+		EventWorld::GetSingleton().GoOut(uiMan);
+		delete0(uiMan);
+		UIManager::Set(0);
+	}
+
 	ResourceManager *resMan = ResourceManager::GetSingletonPtr();
 	if (resMan)
 	{
 		delete0(resMan);
+		ResourceManager::Set(0);
 	}
 
 	GraphicsRoot *graphicsRoot = GraphicsRoot::GetSingletonPtr();
@@ -113,12 +139,14 @@ bool EditSystem::Terminate ()
 	{
 		graphicsRoot->Terminate();
 		delete0(graphicsRoot);
+		GraphicsRoot::Set(0);
 	}
 
 	EventWorld *entWorld = EventWorld::GetSingletonPtr();
 	if (entWorld)
 	{
 		delete0(entWorld);
+		EventWorld::Set(0);
 	}
 
 	return true;
@@ -151,10 +179,52 @@ void EditSystem::Update (double elapsedSeconds)
 
 	double appTime = GetTimeInSeconds();
 
+	UIView *view = UIManager::GetSingleton().GetDefaultView();
+	if (view)
+	{
+		view->Update(appTime, elapsedSeconds);
+	}
+
 	if (mHelpScene)
 		mHelpScene->Update(appTime, false);
 
-	GetEditMap()->GetScene()->Update(appTime, elapsedSeconds);
+	Scene *scene = 0;
+	if (!Project::GetSingletonPtr())
+		return;
+
+	scene = Project::GetSingleton().GetScene();
+	if (scene)
+	{
+		scene->Update(appTime, elapsedSeconds);
+	}
+}
+//----------------------------------------------------------------------------
+bool EditSystem::DeleteSelection ()
+{
+	bool deleted = false;
+
+	int numObjs = GetSelection()->GetNumObjects();
+	for (int i=0; i<numObjs; i++)
+	{
+		Object *obj = GetSelection()->GetObjectAt(i);
+		Actor *actor = DynamicCast<Actor>(obj);
+		if (actor)
+		{
+			GetEditMap()->RemoveActor(actor);
+			deleted = true;
+		}
+		else if (GetEditMap()->RemoveUI(obj))
+		{
+			deleted = true;
+		}
+	}
+
+	if (deleted)
+	{
+		GetSelection()->Clear();
+	}
+
+	return deleted;
 }
 //----------------------------------------------------------------------------
 void EditSystem::EnableSelectEdit (bool enable)
@@ -166,11 +236,11 @@ void EditSystem::EnableSelectEdit (bool enable)
 	}
 	else
 	{
-		int num = GetSelection()->GetActorQuantity();
+		int num = GetSelection()->GetNumObjects();
 		if (1 == num)
 		{
-			Actor *actor = GetSelection()->GetActor(0);
-			TerrainActor *terActor = DynamicCast<TerrainActor>(actor);
+			Object *obj = GetSelection()->GetObjectAt(0);
+			TerrainActor *terActor = DynamicCast<TerrainActor>(obj);
 			if (terActor)
 			{
 				SetEditMode(EM_TERRAIN);

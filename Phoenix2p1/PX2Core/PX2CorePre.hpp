@@ -136,8 +136,12 @@ typedef double				float64_t;
 #include <set>
 #include <stack>
 #include <string>
+#include <sstream>
 #include <utility>
 #include <vector>
+
+// int64
+#define PX2_HAVE_INT64 1
 
 // 用户自定义关键字
 #define public_internal public

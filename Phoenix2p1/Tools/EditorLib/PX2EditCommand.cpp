@@ -37,7 +37,7 @@ void EditCommand::OnReDo ()
 //----------------------------------------------------------------------------
 ActorTransCommand::ActorTransCommand ()
 {
-	int num = EditSystem::GetSingleton().GetSelection()->GetActorQuantity();
+	int num = EditSystem::GetSingleton().GetSelection()->GetNumObjects();
 	mActors.resize(num);
 	mPositions.resize(num);
 	mRotations.resize(num);
@@ -45,17 +45,27 @@ ActorTransCommand::ActorTransCommand ()
 
 	for (int i=0; i<num; i++)
 	{
-		ActorPtr actor = EditSystem::GetSingleton().GetSelection()->GetActor(i);
-		mActors[i] = actor;
-		mPositions[i] = actor->GetPosition();
-		mScales[i] = actor->GetScale();
-		mRotations[i] = actor->GetRotation();
+		Object *obj = EditSystem::GetSingleton().GetSelection()->GetObjectAt(i);
+		Actor *actor = DynamicCast<Actor>(obj);
+		if (actor)
+		{
+			mActors[i] = actor;
+			mPositions[i] = actor->GetPosition();
+			mScales[i] = actor->GetScale();
+			mRotations[i] = actor->GetRotation();
+		}
 	}
 }
 //----------------------------------------------------------------------------
 ActorTransCommand::~ActorTransCommand ()
 {
-
+	for (int i=0; i<(int)mActors.size(); i++)
+	{
+		if (mActors[i])
+		{
+			mActors[i]->GoOutFromEventWorld();
+		}
+	}
 }
 //----------------------------------------------------------------------------
 bool ActorTransCommand::operator== (const ActorTransCommand &command) const
@@ -113,7 +123,10 @@ ActorAddDeleteCommand::ActorAddDeleteCommand (PX2::Actor *actor)
 //----------------------------------------------------------------------------
 ActorAddDeleteCommand::~ActorAddDeleteCommand ()
 {
-
+	if (mActor)
+	{
+		mActor->GoOutFromEventWorld();
+	}
 }
 //----------------------------------------------------------------------------
 void ActorAddDeleteCommand::OnUnDo ()

@@ -30,6 +30,9 @@ namespace PX2
 
 		// ¸³Öµ
 		Float2& operator= (const Float2& tuple);
+
+		static const Float2 ZERO;   //< (0,0)
+		static const Float2 UNIT;	//< (1,1)
 	};
 
 }

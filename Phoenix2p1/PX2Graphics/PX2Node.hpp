@@ -37,7 +37,7 @@ namespace PX2
 		virtual ~Node ();
 
 		/// 获得孩子数量
-		inline int GetNumChildren () const;
+		int GetNumChildren () const;
 
 		/// 添加孩子节点
 		/** 
@@ -76,6 +76,8 @@ namespace PX2
 		*/
 		MovablePtr DetachChildAt (int i);
 
+		void DetachAllChildren ();
+
 		/// 设置索引为i处的孩子节点
 		/**
 		* 如果0 <= i < GetNumChildren()，返回之前在i处的孩子节点指针。如果i超出
@@ -89,6 +91,8 @@ namespace PX2
 		* 回null。
 		*/
 		MovablePtr GetChild (int i);
+
+		virtual void OnNotPicked (int pickInfo);
 
 	protected:
 		// 几何图形更新

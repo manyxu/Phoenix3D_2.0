@@ -34,31 +34,14 @@ namespace PX2
 		void SetSpacing (float spacing);
 		void AllocateRawTerrainPages ();
 
-		RawTerrainPage* GetPage (int row, int col);
-		RawTerrainPage* GetCurrentPage (float x, float y) const;
-		bool GetPageIndex (int &outRow, int &outCol, RawTerrainPage *page);
-		RawTerrainPagePtr ReplacePage (int row, int col, RawTerrainPage* newPage);
-
-		virtual float GetHeight (float x, float y) const;
-		virtual AVector GetNormal (float x, float y) const;
-
-		// mtl
-		EditTerrainMaterial *GetTerrainMaterial ();
-		Shine *GetShine ();
+		virtual void UseSimpleMtl (bool use);
 
 	protected:
 		void CreatePage (int row, int col);
-
-		VertexFormatPtr mVFormat;
-		RawTerrainPagePtr** mPages;
-
-		EditTerrainMaterialPtr mMaterial;
-		ShinePtr mShine;
 	};
 
 	PX2_REGISTER_STREAM(RawTerrain);
 	typedef Pointer0<RawTerrain> RawTerrainPtr;
-#include "PX2RawTerrain.inl"
 
 }
 

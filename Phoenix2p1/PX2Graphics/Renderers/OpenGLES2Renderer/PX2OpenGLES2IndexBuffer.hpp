@@ -35,6 +35,7 @@ namespace PX2
 
 	private:
 		GLuint mBuffer;
+		const IndexBuffer *mIBuffer;
 	};
 
 }

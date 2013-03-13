@@ -245,6 +245,15 @@
     <ClInclude Include="PX2Float4.hpp">
       <Filter>Base</Filter>
     </ClInclude>
+    <ClInclude Include="PX2InterpCurve.hpp">
+      <Filter>InterpCurve</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Rect.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Size.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PX2AVector.inl">
@@ -337,6 +346,15 @@
     <None Include="PX2GVector.inl">
       <Filter>Algebra</Filter>
     </None>
+    <None Include="PX2InterpCurve.inl">
+      <Filter>InterpCurve</Filter>
+    </None>
+    <None Include="PX2Rect.inl">
+      <Filter>Base</Filter>
+    </None>
+    <None Include="PX2Size.inl">
+      <Filter>Base</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -389,6 +407,9 @@
     </Filter>
     <Filter Include="CurvesSurfacesVolumes\Volumes">
       <UniqueIdentifier>{e19ab717-e9bd-4900-834c-e2be881fd378}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="InterpCurve">
+      <UniqueIdentifier>{2627e11d-0418-48b2-b652-8520c5529d0f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

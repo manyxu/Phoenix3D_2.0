@@ -11,11 +11,11 @@
 #include "PX2VertexBufferAccessor.hpp"
 using namespace PX2;
 
-const PickRecord Picker::msInvalid;
-
 //----------------------------------------------------------------------------
-Picker::Picker ()
+Picker::Picker (bool isDoMovPickCall, int pickInfo)
 :
+mIsDoMovPickCall(isDoMovPickCall),
+mPickInfo(pickInfo),
 mOrigin(APoint::ORIGIN),
 mDirection(AVector::ZERO),
 mTMin(0.0f),
@@ -46,14 +46,15 @@ void Picker::Execute (Movable* scene, const APoint& origin,
 	mTMin = tmin;
 	mTMax = tmax;
 	Records.clear();
-	ExecuteRecursive(scene);
+	bool hasMeshPicked = false;
+	ExecuteRecursive(scene, hasMeshPicked);
 }
 //----------------------------------------------------------------------------
 const PickRecord& Picker::GetClosestToZero () const
 {
 	if (Records.size() == 0)
 	{
-		return msInvalid;
+		return GetInvalid();
 	}
 
 	float closest = Mathf::FAbs(Records[0].T);
@@ -75,7 +76,7 @@ const PickRecord& Picker::GetClosestNonnegative () const
 {
 	if (Records.size() == 0)
 	{
-		return msInvalid;
+		return GetInvalid();
 	}
 
 	// 获得第一个非负的值
@@ -93,7 +94,7 @@ const PickRecord& Picker::GetClosestNonnegative () const
 	if (index == numRecords)
 	{
 		// 所有值都是负的
-		return msInvalid;
+		return GetInvalid();
 	}
 
 	for (int i = index + 1; i < numRecords; ++i)
@@ -111,7 +112,7 @@ const PickRecord& Picker::GetClosestNonpositive () const
 {
 	if (Records.size() == 0)
 	{
-		return msInvalid;
+		return GetInvalid();
 	}
 
 	float closest = -Mathf::MAX_REAL;
@@ -128,7 +129,7 @@ const PickRecord& Picker::GetClosestNonpositive () const
 	if (index == numRecords)
 	{
 		// All values are positive.
-		return msInvalid;
+		return GetInvalid();
 	}
 
 	for (int i = index + 1; i < numRecords; ++i)
@@ -142,13 +143,18 @@ const PickRecord& Picker::GetClosestNonpositive () const
 	return Records[index];
 }
 //----------------------------------------------------------------------------
-void Picker::ExecuteRecursive (Movable* object)
+void Picker::ExecuteRecursive (Movable* object, bool &hasMeshPicked)
 {
+	if (object)
+	{
+		if (object->Culling == Movable::CULL_ALWAYS)
+			return;
+	}
+
 	Triangles* mesh = DynamicCast<Triangles>(object);
 	if (mesh)
 	{
-		if (mesh->WorldBound.TestIntersection(mOrigin, mDirection, mTMin,
-			mTMax))
+		if (mesh->WorldBound.TestIntersection(mOrigin, mDirection, mTMin, mTMax))
 		{
 			// 将射线从世界坐标系转换到模型坐标系。
 			APoint ptmp = mesh->WorldTransform.Inverse()*mOrigin;
@@ -188,8 +194,19 @@ void Picker::ExecuteRecursive (Movable* object)
 					record.Bary[1] = calc.GetTriBary1();
 					record.Bary[2] = calc.GetTriBary2();
 					Records.push_back(record);
+
+					if (mIsDoMovPickCall)
+					{
+						hasMeshPicked = true;
+						mesh->OnPicked(mPickInfo);
+					}
 				}
 			}
+		}
+		else
+		{
+			if (mIsDoMovPickCall)
+				mesh->OnNotPicked(mPickInfo);
 		}
 		return;
 	}
@@ -200,14 +217,30 @@ void Picker::ExecuteRecursive (Movable* object)
 		int activeChild = switchNode->GetActiveChild();
 		if (activeChild != SwitchNode::SN_INVALID_CHILD)
 		{
-			if (switchNode->WorldBound.TestIntersection(mOrigin,
-				mDirection, mTMin, mTMax))
+			if (switchNode->WorldBound.TestIntersection(mOrigin, mDirection, mTMin, mTMax))
 			{
 				Movable* child = switchNode->GetChild(activeChild);
 				if (child)
 				{
-					ExecuteRecursive(child);
+					ExecuteRecursive(child, hasMeshPicked);
 				}
+
+				if (mIsDoMovPickCall)
+				{
+					if (hasMeshPicked)
+					{
+						switchNode->OnPicked(mPickInfo);
+					}
+					else
+					{
+						switchNode->OnNotPicked(mPickInfo);
+					}
+				}
+			}
+			else
+			{
+				if (mIsDoMovPickCall)
+					switchNode->OnNotPicked(mPickInfo);
 			}
 		}
 		return;
@@ -216,18 +249,40 @@ void Picker::ExecuteRecursive (Movable* object)
 	Node* node = DynamicCast<Node>(object);
 	if (node)
 	{
-		if (node->WorldBound.TestIntersection(mOrigin, mDirection, mTMin,
-			mTMax))
+		if (node->WorldBound.TestIntersection(mOrigin, mDirection, mTMin, mTMax))
 		{
 			for (int i = 0; i < node->GetNumChildren(); ++i)
 			{
 				Movable* child = node->GetChild(i);
 				if (child)
 				{
-					ExecuteRecursive(child);
+					ExecuteRecursive(child, hasMeshPicked);
+				}
+			}
+
+			if (mIsDoMovPickCall)
+			{
+				if (hasMeshPicked)
+				{
+					node->OnPicked(mPickInfo);
+				}
+				else
+				{
+					node->OnNotPicked(mPickInfo);
 				}
 			}
 		}
+		else
+		{
+			if (mIsDoMovPickCall)
+				node->OnNotPicked(mPickInfo);
+		}
 	}
+}
+//----------------------------------------------------------------------------
+const PickRecord &Picker::GetInvalid()
+{
+	static PickRecord pr;
+	return pr;
 }
 //----------------------------------------------------------------------------

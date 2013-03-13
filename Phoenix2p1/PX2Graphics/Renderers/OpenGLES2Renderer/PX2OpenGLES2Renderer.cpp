@@ -32,7 +32,7 @@ Renderer::Renderer (RendererInput& input, int width, int height,
 	EGLDisplay display = eglGetDisplay(input.mRendererDC);
 	if (display == EGL_NO_DISPLAY)
 	{
-		assertion(false, "");
+		assertion(false, "eglGetDisplay error.\n");
 	}
 	mData->mDisplay = display;
 
@@ -40,13 +40,13 @@ Renderer::Renderer (RendererInput& input, int width, int height,
 	EGLint minorVersion;
 	if (EGL_FALSE == eglInitialize(display, &majorVersion, &minorVersion))
 	{
-		assertion(false, "");
+		assertion(false, "eglInitialize error.\n");
 	}
 
 	 EGLint numConfigs;
 	 if (!eglGetConfigs(display, NULL, 0, &numConfigs) )
 	 {
-		 assertion(false, "");
+		 assertion(false, "eglGetConfigs error.\n");
 	 }
 
 	 const EGLint attribList[] =
@@ -55,7 +55,10 @@ Renderer::Renderer (RendererInput& input, int width, int height,
 		 EGL_GREEN_SIZE, 8,
 		 EGL_BLUE_SIZE, 8,
 		 EGL_DEPTH_SIZE, 16,
+		 EGL_STENCIL_SIZE, 8,
 		 EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+		 EGL_SAMPLE_BUFFERS, 1,
+		 EGL_SAMPLES, 2,
 		 EGL_NONE
 	 };
 	 EGLConfig config;
@@ -68,7 +71,7 @@ Renderer::Renderer (RendererInput& input, int width, int height,
 	 EGLSurface surface = eglCreateWindowSurface(display, config, mData->mWindowHandle, NULL);
 	 if (surface == EGL_NO_SURFACE)
 	 {
-		 assertion(false, "");
+		 assertion(false, "eglCreateWindowSurface error.\n");
 	 }
 	 mData->mSurface = surface;
 
@@ -82,7 +85,7 @@ Renderer::Renderer (RendererInput& input, int width, int height,
 
 	 if (!eglMakeCurrent(display, surface, surface, context))
 	 {
-		 assertion(false, "");
+		 assertion(false, "eglMakeCurrent error.\n");
 	 }
 #endif
 
@@ -111,13 +114,17 @@ Renderer::Renderer (RendererInput& input, int width, int height,
 //----------------------------------------------------------------------------
 Renderer::~Renderer ()
 {
+#if defined(_WIN32) || defined(WIN32)
+	PX2_EGL_CHECK(eglSwapBuffers(mData->mDisplay, mData->mSurface));
 	Terminate();
+#endif
 
 #if defined(_WIN32) || defined(WIN32)
+	PX2_EGL_CHECK(eglSwapBuffers(mData->mDisplay, mData->mSurface));
 	PX2_EGL_CHECK(eglMakeCurrent(mData->mDisplay, EGL_NO_SURFACE,
 		EGL_NO_SURFACE, EGL_NO_CONTEXT));
-	PX2_EGL_CHECK(eglDestroySurface(mData->mDisplay, mData->mSurface));
 	PX2_EGL_CHECK(eglDestroyContext(mData->mDisplay, mData->mSurface));
+	PX2_EGL_CHECK(eglDestroySurface(mData->mDisplay, mData->mSurface));
 	PX2_EGL_CHECK(eglTerminate(mData->mDisplay));
 #endif
 
@@ -140,7 +147,7 @@ void Renderer::Bind (const MaterialPass *pass)
 //----------------------------------------------------------------------------
 void Renderer::BindAll (const MaterialPass *pass)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -150,7 +157,7 @@ void Renderer::BindAll (const MaterialPass *pass)
 		renderer->Bind(pass);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const MaterialPass *pass)
@@ -166,7 +173,7 @@ void Renderer::Unbind (const MaterialPass *pass)
 //----------------------------------------------------------------------------
 void Renderer::UnbindAll (const MaterialPass *pass)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -176,7 +183,7 @@ void Renderer::UnbindAll (const MaterialPass *pass)
 		renderer->Unbind(pass);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Enable (const Renderable* renderable,
@@ -672,7 +679,7 @@ void Renderer::ClearBuffers (int x, int y, int w, int h)
 void Renderer::DisplayColorBuffer ()
 {
 #if defined(_WIN32) || defined(WIN32)
-	 eglSwapBuffers(mData->mDisplay, mData->mSurface);
+	 PX2_EGL_CHECK(eglSwapBuffers(mData->mDisplay, mData->mSurface));
 #endif
 }
 //----------------------------------------------------------------------------

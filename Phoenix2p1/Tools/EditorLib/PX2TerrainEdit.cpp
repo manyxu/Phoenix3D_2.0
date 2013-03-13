@@ -8,19 +8,23 @@
 #include "PX2EditEventType.hpp"
 #include "PX2EditSystem.hpp"
 #include "PX2TerrainEdit.hpp"
+#include "PX2Project.hpp"
 #include "PX2EditMap.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 
 TerrainEdit::TerrainEdit ()
 	:
-mTerrainHelpGrid(0)
+mTerrainHelpGrid(0),
+mIsUsingLodTerrain(0)
 {
 	mBrush = new0 TerrainBrush();
 	mHeightProcess = new0 TerrainHeightProcess();
 	mHeightProcess->SetBrush(mBrush);
 	mTextureProcess = new0 TerrainTextureProcess();
 	mTextureProcess->SetBrush(mBrush);
+	mJunglerProcess = new0 TerrainJunglerProcess();
+	mJunglerProcess->SetBrush(mBrush);
 	mActiveProcess = mHeightProcess;
 
 	SetEditType(TerrainProcess::TPT_HEIGHT);
@@ -34,20 +38,30 @@ TerrainEdit::~TerrainEdit ()
 	if (mTextureProcess)
 		delete0(mTextureProcess);
 
+	if (mJunglerProcess)
+		delete0(mJunglerProcess);
+
 	if (mBrush)
 		delete0(mBrush);
 }
 //----------------------------------------------------------------------------
 void TerrainEdit::EnableEdit ()
 {
-	EditMap *map = EditSystem::GetSingleton().GetEditMap();
-	TerrainActor *actor = map->GetScene()->GetTerrainActor();
+	if (IsUseLodTerrain())
+		return;
+
+	TerrainActor *actor = 0;
+
+	if (Project::GetSingletonPtr())
+	{
+		actor = Project::GetSingleton().GetScene()->GetTerrainActor();
+	}
 
 	if (actor)
 	{
 		mBrush->GetRenderable()->Culling = Renderable::CULL_DYNAMIC;
 
-		SetTerrain(DynamicCast<RawTerrain>(actor->GetTerrain()));
+		SetTerrain(DynamicCast<RawTerrain>(actor->GetRawTerrain()));
 	}
 	else
 	{
@@ -76,6 +90,41 @@ void TerrainEdit::ShowPageLine (bool show)
 	}
 }
 //----------------------------------------------------------------------------
+void TerrainEdit::UseLodTerrain (bool use)
+{
+	if (use)
+		DisableEdit();
+
+	Scene *scene = Project::GetSingleton().GetScene();
+	if (!scene)
+		return;
+
+	TerrainActor *terActor = scene->GetTerrainActor();
+	if (!terActor)
+		return;
+
+	LODTerrain *lodTerrain = CreateLODTerrain(terActor->GetRawTerrain());
+	terActor->SetLODTerrain(lodTerrain);
+
+	terActor->UseLod(use);
+}
+//----------------------------------------------------------------------------
+bool TerrainEdit::IsUseLodTerrain ()
+{
+	if (!Project::GetSingletonPtr())
+		return false;
+
+	Scene *scene = Project::GetSingleton().GetScene();
+	if (!scene)
+		return false;
+
+	TerrainActor *terActor = scene->GetTerrainActor();
+	if (!terActor)
+		return false;
+
+	return terActor->IsUseLod();
+}
+//----------------------------------------------------------------------------
 bool TerrainEdit::IsPageLineShow ()
 {
 	if (mTerrainHelpGrid)
@@ -97,6 +146,9 @@ void TerrainEdit::SetTerrain (RawTerrain *terrain)
 	if (mTextureProcess)
 		mTextureProcess->SetTerrain(terrain);
 
+	if (mJunglerProcess)
+		mJunglerProcess->SetTerrain(terrain);
+
 	if (mTerrain)
 	{
 		CreateTerrainHelpGrid();
@@ -105,6 +157,16 @@ void TerrainEdit::SetTerrain (RawTerrain *terrain)
 	{
 		DestoryTerrainHelpGrid();
 	}
+}
+//----------------------------------------------------------------------------
+LODTerrain *TerrainEdit::CreateLODTerrain (RawTerrain *rawTerrain)
+{
+	assertion(0!=rawTerrain, "rawTerrain must not be 0.\n");
+
+	LODTerrain *lodTer = new0 LODTerrain();
+	lodTer->CreateFromRawTerrain(rawTerrain);
+	
+	return lodTer;
 }
 //----------------------------------------------------------------------------
 void TerrainEdit::CreateTerrainHelpGrid ()
@@ -151,6 +213,8 @@ void TerrainEdit::SetEditType (TerrainProcess::TerProType type)
 		mActiveProcess = mHeightProcess;
 	else if (type == TerrainProcess::TPT_TEXTURE)
 		mActiveProcess = mTextureProcess;
+	else if (type == TerrainProcess::TPT_JUNGLER)
+		mActiveProcess = mJunglerProcess;
 }
 //----------------------------------------------------------------------------
 TerrainProcess::TerProType TerrainEdit::GetEditType ()

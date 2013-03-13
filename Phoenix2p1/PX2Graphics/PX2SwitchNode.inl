@@ -5,6 +5,11 @@
 */
 
 //----------------------------------------------------------------------------
+inline SwitchNode *SwitchNode::Create()
+{
+	return new0 SwitchNode();
+}
+//----------------------------------------------------------------------------
 inline void SwitchNode::SetActiveChild (int activeChild)
 {
     assertion(

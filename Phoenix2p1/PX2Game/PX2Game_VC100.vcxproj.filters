@@ -16,6 +16,9 @@
     <Filter Include="Game">
       <UniqueIdentifier>{55d84b68-89f9-47fa-8c8b-385c429a6812}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Project">
+      <UniqueIdentifier>{8459b5a1-e06a-4829-9bb7-94fbe85a76b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PX2Actor.cpp">
@@ -44,6 +47,15 @@
     </ClCompile>
     <ClCompile Include="PX2TriggerActor.cpp">
       <Filter>Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2SkyActor.cpp">
+      <Filter>Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EffectActor.cpp">
+      <Filter>Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Project.cpp">
+      <Filter>Project</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +91,15 @@
     <ClInclude Include="PX2TriggerActor.hpp">
       <Filter>Actors</Filter>
     </ClInclude>
+    <ClInclude Include="PX2SkyActor.hpp">
+      <Filter>Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EffectActor.hpp">
+      <Filter>Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Project.hpp">
+      <Filter>Project</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PX2Netable.inl">
@@ -104,6 +125,15 @@
     </None>
     <None Include="PX2TriggerActor.inl">
       <Filter>Actors</Filter>
+    </None>
+    <None Include="PX2SkyActor.inl">
+      <Filter>Actors</Filter>
+    </None>
+    <None Include="PX2EffectActor.inl">
+      <Filter>Actors</Filter>
+    </None>
+    <None Include="PX2Project.inl">
+      <Filter>Project</Filter>
     </None>
   </ItemGroup>
 </Project>

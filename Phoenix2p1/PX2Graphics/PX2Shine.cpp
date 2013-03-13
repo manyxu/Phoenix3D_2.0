@@ -35,7 +35,7 @@ Shine::Shine (LoadConstructor value)
 Object(value),
 Emissive(0.0f, 0.0f, 0.0f, 0.0f),
 Ambient(0.0f, 0.0f, 0.0f, 0.0f),
-Diffuse(0.0f, 0.0f, 0.0f, 0.0f),
+Diffuse(0.5f, 0.5f, 0.5f, 1.0f),
 Specular(0.0f, 0.0f, 0.0f, 0.0f)
 {
 }

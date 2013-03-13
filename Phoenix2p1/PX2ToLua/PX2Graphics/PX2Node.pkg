@@ -1,0 +1,23 @@
+// PX2Node.pkg
+
+	class Node : public Movable
+	{
+		Node ();
+		virtual ~Node ();
+
+		int GetNumChildren () const;
+
+		int AttachChild (Movable* child);
+
+		int DetachChild (Movable* child);
+
+		MovablePtr DetachChildAt (int i);
+
+		void DetachAllChildren ();
+
+		MovablePtr SetChild (int i, Movable* child);
+
+		MovablePtr GetChild (int i);
+
+		virtual void OnNotPicked (int pickInfo);
+	};

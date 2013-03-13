@@ -89,12 +89,14 @@ PX2Shader.cpp \
 PX2ShaderFloat.cpp \
 PX2ShaderParameters.cpp \
 PX2Shine.cpp \
+PX2UserConstant.cpp \
 PX2ShineAmbientConstant.cpp \
 PX2ShineDiffuseConstant.cpp \
 PX2ShineEmissiveConstant.cpp \
 PX2ShineSpecularConstant.cpp \
 PX2SkinController.cpp \
 PX2SpecializedIO.cpp \
+PX2JunglerMaterial.cpp \
 PX2StandardMaterial.cpp \
 PX2StandardESMaterial_Default.cpp \
 PX2StandardESMaterial_Specular.cpp \

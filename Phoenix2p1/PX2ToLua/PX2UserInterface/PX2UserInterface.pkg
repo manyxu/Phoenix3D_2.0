@@ -1,0 +1,10 @@
+// PX2UserInterface.pkg
+
+$pfile "PX2UserInterface/PX2UIPicBox.pkg"
+$pfile "PX2UserInterface/PX2UIAnimPicBox.pkg"
+$pfile "PX2UserInterface/PX2UIFrame.pkg"
+$pfile "PX2UserInterface/PX2UIButtonBase.pkg"
+$pfile "PX2UserInterface/PX2UIButton.pkg"
+$pfile "PX2UserInterface/PX2UIStaticText.pkg"
+$pfile "PX2UserInterface/PX2UIManager.pkg"
+$pfile "PX2UserInterface/PX2UIView.pkg"

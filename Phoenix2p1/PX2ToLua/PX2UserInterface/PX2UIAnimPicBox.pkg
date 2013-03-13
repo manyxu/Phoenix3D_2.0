@@ -1,0 +1,28 @@
+// PX2UIAnimPicBox.pkg
+
+	class UIAnimPicBox : public UIPicBox
+	{
+		UIAnimPicBox ();
+		virtual ~UIAnimPicBox ();
+
+		UIAnimPicBoxControl *GetAPBCtrl ();
+		
+		void Play ();
+
+		bool SetFrameTexPack (const std::string &filename);
+		const std::string &GetFrameTexPack () const;
+		bool AddFrameTex (const std::string &filename);
+
+		void ClearFrames();
+		int GetNumFrames ();
+
+		void SetIntervalTime (float seconds);
+		float GetIntervalTime ();
+
+		void SetActiveIndex (int index);
+		int GetActiveIndex ();
+		
+		Movable *GetAsMovable ();
+	};
+
+	typedef Pointer0<UIAnimPicBox> UIAnimPicBoxPtr;

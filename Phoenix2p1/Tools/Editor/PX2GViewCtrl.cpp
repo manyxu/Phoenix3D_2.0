@@ -19,6 +19,7 @@ ViewCtrl(inst),
 	mMiddleDown(false),
 	mDragRangeSelect(false),
 	mAttachedCtrl(0),
+	mBoundCtrl(0),
 	mSelectPen(new wxPen(*wxWHITE, 1, wxSOLID))
 {
 }
@@ -44,6 +45,7 @@ void GViewCtrl::HandleLeftDown (RenderViewWindow *win, wxMouseEvent &e)
 	PX2::Vector2f point((float)mousePoint.x, (float)mousePoint.y);
 
 	mAttachedCtrl->OnLeftMouseDown(win->GetRenderer(), point);
+	mBoundCtrl->OnLeftMouseDown(win->GetRenderer(), point);
 
 	if (mAttachedCtrl->GetDragType() == SceneNodeCtrl::DT_NONE)
 		FinishClickSelection(e);
@@ -81,6 +83,9 @@ void GViewCtrl::HandleLeftUp (RenderViewWindow *win, wxMouseEvent &e)
 
 	if (mAttachedCtrl)
 		mAttachedCtrl->OnLeftMouseUp(win->GetRenderer(), Vector2f::ZERO);
+
+	if (mBoundCtrl)
+		mBoundCtrl->OnLeftMouseUp(win->GetRenderer(), Vector2f::ZERO);
 }
 //-----------------------------------------------------------------------------
 void GViewCtrl::HandleMiddleDown(RenderViewWindow *win,
@@ -157,6 +162,12 @@ void GViewCtrl::HandleMotion (RenderViewWindow *win, wxMouseEvent &e)
 	{
 		if (mAttachedCtrl)
 			mAttachedCtrl->OnMouseMove(mLeftDown,
+			win->GetRenderer(),
+			Vector2f((float)point.x, (float)point.y), 
+			Vector2f((float)mLastMousePoint.x, (float)mLastMousePoint.y));
+
+		if (mBoundCtrl)
+			mBoundCtrl->OnMouseMove(mLeftDown,
 			win->GetRenderer(),
 			Vector2f((float)point.x, (float)point.y), 
 			Vector2f((float)mLastMousePoint.x, (float)mLastMousePoint.y));
@@ -345,6 +356,7 @@ void GViewCtrl::AttachToWindow (RenderViewWindow *win)
 	ViewCtrl::AttachToWindow(win);
 
 	mAttachedCtrl = win->GetSceneNodeCtrl();
+	mBoundCtrl = win->GetBoundCtrl();
 }
 //-----------------------------------------------------------------------------
 void GViewCtrl::RightGetSelectPoint (wxMouseEvent& e)

@@ -7,6 +7,7 @@
 #include "PX2ActorPicker.hpp"
 #include "PX2Scene.hpp"
 #include "PX2Picker.hpp"
+#include "PX2SkyActor.hpp"
 using namespace PX2;
 
 const ActorPickRecord ActorPicker::msInvalid;
@@ -43,6 +44,9 @@ void ActorPicker::Execute (Scene* scene, const APoint& origin,
 		assertion(actor!=0, "actor must exist.");
 
 		if (!actor->IsVisible())
+			continue;
+
+		if (actor->IsExactly(SkyActor::TYPE))
 			continue;
 
 		Picker picker;

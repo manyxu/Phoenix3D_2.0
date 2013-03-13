@@ -23,7 +23,10 @@ Phase(0.0),
 Frequency(1.0),
 Active(true),
 mObject(0),
-mApplicationTime(-Mathd::MAX_REAL)
+mApplicationTime(-Mathd::MAX_REAL),
+mLastApplicationTime(-Mathd::MAX_REAL),
+mIsTimeInited(false),
+mInitedApplicationIime(-Mathd::MAX_REAL)
 {
 }
 //----------------------------------------------------------------------------
@@ -33,12 +36,26 @@ Controller::~Controller ()
 //----------------------------------------------------------------------------
 bool Controller::Update (double applicationTime)
 {
+	if (!mIsTimeInited)
+	{
+		mInitedApplicationIime = applicationTime;
+		mApplicationTime = applicationTime;
+		mIsTimeInited = true;
+	}
+
+	mLastApplicationTime = mApplicationTime;
+
 	if (Active)
 	{
 		mApplicationTime = applicationTime;
 		return true;
 	}
 	return false;
+}
+//----------------------------------------------------------------------------
+void Controller::Reset ()
+{
+	mIsTimeInited = false;
 }
 //----------------------------------------------------------------------------
 void Controller::SetObject (Controlledable* object)
@@ -48,7 +65,8 @@ void Controller::SetObject (Controlledable* object)
 //----------------------------------------------------------------------------
 double Controller::GetControlTime (double applicationTime)
 {
-	double controlTime = Frequency*applicationTime + Phase;
+	double controlTime = Frequency*(applicationTime-mInitedApplicationIime)
+		+ Phase;
 
 	if (Repeat == RT_CLAMP)
 	{
@@ -123,7 +141,10 @@ Phase(0.0),
 Frequency(1.0),
 Active(true),
 mObject(0),
-mApplicationTime(-Mathd::MAX_REAL)
+mApplicationTime(-Mathd::MAX_REAL),
+mLastApplicationTime(-Mathd::MAX_REAL),
+mIsTimeInited(false),
+mInitedApplicationIime(-Mathd::MAX_REAL)
 {
 }
 //----------------------------------------------------------------------------

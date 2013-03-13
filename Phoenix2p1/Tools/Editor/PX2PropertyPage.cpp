@@ -27,11 +27,21 @@ PropertyPage::~PropertyPage ()
 	}
 }
 //-----------------------------------------------------------------------------
-void PropertyPage::AddProperty (std::string name, Property::PropertyType type,
-	void *data)
+void PropertyPage::Clear ()
 {
-	Property *prop = new0 Property(this, name, type, data);
-	PX2_UNUSED(prop);
+	for (int i=0; i<(int)mProperties.size(); i++)
+	{
+		EventWorld::GetSingleton().GoOut(mProperties[i]);
+	}
+	mProperties.clear();
+	mPage->Clear();
+}
+//-----------------------------------------------------------------------------
+Property *PropertyPage::AddProperty (std::string name, Property::PropertyType type,
+	void *data, bool enable, const std::vector<std::string> *enums)
+{
+	Property *prop = new0 Property(this, name, type, data, enable, enums);
+	return prop;
 }
 //-----------------------------------------------------------------------------
 Property *PropertyPage::GetProperty (std::string name)
@@ -45,6 +55,38 @@ Property *PropertyPage::GetProperty (std::string name)
 	return 0;
 }
 //-----------------------------------------------------------------------------
+bool PropertyPage::HasProperty (wxPGProperty *prop)
+{
+	for (int i=0; i<(int)mProperties.size(); i++)
+	{
+		if (prop == mProperties[i]->mProperty)
+			return true;
+	}
+
+	return false;
+}
+//-----------------------------------------------------------------------------
+void PropertyPage::AddProperty (Property *prop)
+{
+	mProperties.push_back(prop);
+}
+//-----------------------------------------------------------------------------
+void PropertyPage::RemoveProperty (std::string name)
+{
+	std::vector<PropertyPtr>::iterator it = mProperties.begin();
+	for (; it!=mProperties.end(); it++)
+	{
+		if ((*it)->GetName() == name)
+		{
+			mPage->DeleteProperty((*it)->GetWxProperty());
+			*it = 0;
+			mProperties.erase(it);
+
+			return;
+		}
+	}
+}
+//-----------------------------------------------------------------------------
 void PropertyPage::OnPropertyGridChange (wxPropertyGridEvent &event)
 {
 	for (int i=0; i<(int)mProperties.size(); i++)
@@ -55,7 +97,10 @@ void PropertyPage::OnPropertyGridChange (wxPropertyGridEvent &event)
 //-----------------------------------------------------------------------------
 void PropertyPage::OnPropertyGridChanging (wxPropertyGridEvent &event)
 {
-
+	for (int i=0; i<(int)mProperties.size(); i++)
+	{
+		mProperties[i]->OnChanging(event);
+	}
 }
 //-----------------------------------------------------------------------------
 void PropertyPage::OnPropertyGridSelect (wxPropertyGridEvent &event)

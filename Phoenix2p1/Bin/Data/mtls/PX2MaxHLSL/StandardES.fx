@@ -8,7 +8,12 @@ int gBlendMode
 	string UIType = "IntSpinner";
 	float UIMin = 0;
 	float UIMax = 4;	
->  = 0;
+> = 2;
+// ------------------------------------------- double side
+bool gDoubleSide 
+<
+	string UIName = "DoubleSide";
+> = false;
 // ------------------------------------------- diffuse
 texture gDiffuseTexture : DiffuseMap
 < 
@@ -116,24 +121,30 @@ PSOut PS(PSIn psIn)
 technique Default
 {
     pass P0 
-    {		
+    {	
 #if gBlendMode == 0
         AlphaBlendEnable = FALSE;
 #elif gBlendMode == 1
 		AlphaBlendEnable = TRUE;
 		SrcBlend = SRCALPHA;
 		DestBlend = INVSRCALPHA;
-		//ZWriteEnable = FALSE;
+		ZWriteEnable = FALSE;
 		AlphaTestEnable = TRUE;
-		AlphaRef = 178;
+		AlphaRef = 50;
 		AlphaFunc = GREATEREQUAL;
 #elif gBlendMode == 2
 		AlphaBlendEnable = FALSE;
 		AlphaTestEnable = TRUE;
-		AlphaRef = 178;
+		AlphaRef = 50;
 		AlphaFunc = GREATEREQUAL;
 #endif
-		CullMode = CW;
+
+#if gDoubleSide
+	CullMode = NONE;
+#elif gDoubleSide
+	CullMode = CW;
+#endif
+
 		VertexShader	= compile vs_2_0 VS();
 		PixelShader		= compile ps_2_0 PS();
     }

@@ -80,11 +80,6 @@ inline unsigned int Renderable::GetRenderUsage ()
 	return mRenderUsageBits;
 }
 //----------------------------------------------------------------------------
-inline void Renderable::SetRenderLayer (RenderLayer layer)
-{
-	mSortIndex = (layer<<16)|(mSortIndex&0xff00ffff);
-}
-//----------------------------------------------------------------------------
 inline void Renderable::SetTransparent (bool transparent)
 {
 	mSortIndex = (mSortIndex&0xffff0000)|(transparent?1:0);

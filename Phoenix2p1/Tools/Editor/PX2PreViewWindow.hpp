@@ -52,14 +52,14 @@ public_internal:
 
 		bool mInited;
 
+		int mWidth, mHeight;
 		PX2::RendererInput mInput;
 		PX2::Texture::Format mColorFormat;
 		PX2::Texture::Format mDepthStencilFormat;
 		int mNumMultisamples;
-		PX2::Renderer* mRenderer;
 		PX2::Float4 mBackGroundColor;
+		PX2::Renderer* mRenderer;
 		
-		int mWidth, mHeight;
 		PreViewType mPreViewType;
 		PX2::VertexFormatPtr mVFormat;
 		PX2::TriMeshPtr mScreenMesh;

@@ -24,11 +24,14 @@
     <ClInclude Include="PX2ActorPickRecord.hpp" />
     <ClInclude Include="PX2AmbientRegionActor.hpp" />
     <ClInclude Include="PX2CameraActor.hpp" />
+    <ClInclude Include="PX2EffectActor.hpp" />
     <ClInclude Include="PX2Game.hpp" />
     <ClInclude Include="PX2GameManager.hpp" />
     <ClInclude Include="PX2GamePre.hpp" />
     <ClInclude Include="PX2Netable.hpp" />
+    <ClInclude Include="PX2Project.hpp" />
     <ClInclude Include="PX2Scene.hpp" />
+    <ClInclude Include="PX2SkyActor.hpp" />
     <ClInclude Include="PX2TerrainActor.hpp" />
     <ClInclude Include="PX2TriggerActor.hpp" />
   </ItemGroup>
@@ -37,9 +40,12 @@
     <ClCompile Include="PX2ActorPicker.cpp" />
     <ClCompile Include="PX2AmbientRegionActor.cpp" />
     <ClCompile Include="PX2CameraActor.cpp" />
+    <ClCompile Include="PX2EffectActor.cpp" />
     <ClCompile Include="PX2GameManager.cpp" />
     <ClCompile Include="PX2Netable.cpp" />
+    <ClCompile Include="PX2Project.cpp" />
     <ClCompile Include="PX2Scene.cpp" />
+    <ClCompile Include="PX2SkyActor.cpp" />
     <ClCompile Include="PX2TerrainActor.cpp" />
     <ClCompile Include="PX2TriggerActor.cpp" />
   </ItemGroup>
@@ -47,9 +53,12 @@
     <None Include="PX2Actor.inl" />
     <None Include="PX2AmbientRegionActor.inl" />
     <None Include="PX2CameraActor.inl" />
+    <None Include="PX2EffectActor.inl" />
     <None Include="PX2GameManager.inl" />
     <None Include="PX2Netable.inl" />
+    <None Include="PX2Project.inl" />
     <None Include="PX2Scene.inl" />
+    <None Include="PX2SkyActor.inl" />
     <None Include="PX2TerrainActor.inl" />
     <None Include="PX2TriggerActor.inl" />
   </ItemGroup>
@@ -140,7 +149,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>\;..\PX2SDK\Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>\;..\PX2SDK\Include\;..\ThirdPartiesLibs\pthread\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

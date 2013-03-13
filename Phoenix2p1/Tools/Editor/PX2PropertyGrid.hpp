@@ -28,8 +28,16 @@ namespace PX2Editor
 			PGT_DEFAULT,
 			PGT_ACTOR,
 			PGT_TERRAINACTOR,
+			PGT_EFFECT,
 			PGT_LIGHTACTOR,
+			PGT_PROJSCENEUI,
 			PGT_TEXTURE,
+			PGT_SKYACTOR,
+			PGT_UIPICBOX,
+			PGT_UIANIMPICBOX,
+			PGT_UISTATICTEXT,
+			PGT_UIFRAME,
+			PGT_UIBUTTON,
 			PGT_MAX_TYPE
 		};
 
@@ -46,6 +54,7 @@ namespace PX2Editor
 		PropertyPage *AddPropertyPage (std::string name);
 		int GetPropertyPageNum () { return (int)mPages.size(); }
 		PropertyPage *GetPropertyPage (std::string name);
+		PropertyPage *GetPropertyPage (wxPGProperty *prop);
 		void RemovePropertyPage (std::string name);
 		void RemoveAll ();
 		void ActivatePropertyPage (std::string name);

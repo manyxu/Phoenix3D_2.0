@@ -18,6 +18,7 @@ mShader(0)
 //----------------------------------------------------------------------------
 PdrShader::~PdrShader ()
 {
+	glDeleteShader(mShader);
 }
 //----------------------------------------------------------------------------
 void PdrShader::SetSamplerState (Renderer* renderer, const Shader* shader,

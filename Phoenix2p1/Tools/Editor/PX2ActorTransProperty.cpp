@@ -5,6 +5,8 @@
 */
 
 #include "PX2ActorTransProperty.hpp"
+#include "PX2LanguageManager.hpp"
+#include "PX2EditSystem.hpp"
 #include "PX2PropertyPage.hpp"
 #include "wxPropertyExtend.hpp"
 using namespace PX2Editor;
@@ -56,7 +58,7 @@ void ActorTransProperty::OnChange (wxPropertyGridEvent &event)
 	wxPGProperty *id = event.GetProperty();
 	const wxString &name = event.GetPropertyName();
 	std::string stdName = std::string(name);
-	wxVariant variant = event.GetPropertyValue();
+	wxVariant variant = id->GetValue();
 
 	if (0 == id)
 		return;
@@ -84,7 +86,8 @@ void ActorTransProperty::OnChange (wxPropertyGridEvent &event)
 
 	Event *ent = 0;
 	ent = EditorEventSpace::CreateEventX(
-		EditorEventSpace::ActorTransformChanged);
+		EditorEventSpace::ObjectTransformChanged);
+	ent->SetData<Object*>(mActor);
 	EventWorld::GetSingleton().BroadcastingLocalEvent(ent);
 }
 //-----------------------------------------------------------------------------
@@ -94,25 +97,29 @@ void ActorTransProperty::DoEnter ()
 //-----------------------------------------------------------------------------
 void ActorTransProperty::DoExecute (PX2::Event *event)
 {
-	if (EditorEventSpace::IsEqual(event, EditorEventSpace::ActorTransformChanged))
+	if (EditorEventSpace::IsEqual(event, EditorEventSpace::ObjectTransformChanged))
 	{
-		APoint position = mActor->GetPosition();
-		APoint rotation = mActor->GetRotation();
-		APoint scale = mActor->GetScale();
+		Object *obj = event->GetData<Object*>();
+		if (obj == mActor)
+		{
+			APoint position = mActor->GetPosition();
+			APoint rotation = mActor->GetRotation();
+			APoint scale = mActor->GetScale();
 
-		wxVariant variant;
+			wxVariant variant;
 
-		variant.Clear();
-		variant << position;
-		mPropertyTranslate->SetValue(variant);
+			variant.Clear();
+			variant << position;
+			mPropertyTranslate->SetValue(variant);
 
-		variant.Clear();
-		variant << rotation;
-		mPropertyRotation->SetValue(variant);
+			variant.Clear();
+			variant << rotation;
+			mPropertyRotation->SetValue(variant);
 
-		variant.Clear();
-		variant << scale;
-		mPropertyScale->SetValue(variant);
+			variant.Clear();
+			variant << scale;
+			mPropertyScale->SetValue(variant);
+		}
 	}
 }
 //-----------------------------------------------------------------------------

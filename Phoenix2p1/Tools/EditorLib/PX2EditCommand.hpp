@@ -9,6 +9,7 @@
 
 #include "PX2EditorLibPre.hpp"
 #include "PX2EditEventType.hpp"
+#include "PX2Actor.hpp"
 
 namespace PX2Editor
 {

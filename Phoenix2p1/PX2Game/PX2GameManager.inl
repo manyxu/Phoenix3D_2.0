@@ -15,8 +15,8 @@ inline int GameManager::GetBoostHeight () const
 	return mBoostHeight;
 }
 //----------------------------------------------------------------------------
-inline std::string GameManager::GetMapName () const
+inline std::string GameManager::GetProjectPath () const
 {
-	return mMapName;
+	return mProjectPath;
 }
 //----------------------------------------------------------------------------

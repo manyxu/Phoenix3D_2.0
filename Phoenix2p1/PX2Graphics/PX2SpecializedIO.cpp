@@ -930,4 +930,880 @@ bool OutStream::WriteAggregateN (int numElements, const Vector3f* data)
 }
 //----------------------------------------------------------------------------
 
+//----------------------------------------------------------------------------
+// Sizef
+//----------------------------------------------------------------------------
+template <> 
+bool InStream::ReadAggregate (Sizef& datum)
+{
+	if (!Read(datum.Width))
+		return false;
+
+	if (!Read(datum.Height))
+		return false;
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool InStream::ReadAggregateVV (int numElements, Sizef *data)
+{
+	if (numElements > 0)
+	{
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!ReadAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//----------------------------------------------------------------------------
+template <>
+bool InStream::ReadAggregateVR (int numElements, Sizef *&data)
+{
+	if (numElements > 0)
+	{
+		data = new1<Sizef>(numElements);
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!ReadAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	else
+	{
+		data = 0;
+	}
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <>
+bool InStream::ReadAggregateRR (int &numElements, Sizef *&data)
+{
+	if (!Read(numElements))
+	{
+		return false;
+	}
+
+	if (numElements > 0)
+	{
+		data = new1<Sizef>(numElements);
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!ReadAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	else
+	{
+		data = 0;
+	}
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool OutStream::WriteAggregate (const Sizef& datum)
+{
+	if (!Write(datum.Width))
+		return false;
+
+	if (!Write(datum.Height))
+		return false;
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <>
+bool OutStream::WriteAggregateW (int numElements, const Sizef* data)
+{
+	if (!Write(numElements))
+	{
+		return false;
+	}
+
+	if (numElements > 0)
+	{
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!WriteAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool OutStream::WriteAggregateN (int numElements, const Sizef* data)
+{
+	if (numElements > 0)
+	{
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!WriteAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+// Rectf
+//----------------------------------------------------------------------------
+template <> 
+bool InStream::ReadAggregate (Rectf& datum)
+{
+	if (!Read(datum.Left))
+		return false;
+
+	if (!Read(datum.Bottom))
+		return false;
+
+	if (!Read(datum.Right))
+		return false;
+
+	if (!Read(datum.Top))
+		return false;
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool InStream::ReadAggregateVV (int numElements, Rectf *data)
+{
+	if (numElements > 0)
+	{
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!ReadAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//----------------------------------------------------------------------------
+template <>
+bool InStream::ReadAggregateVR (int numElements, Rectf *&data)
+{
+	if (numElements > 0)
+	{
+		data = new1<Rectf>(numElements);
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!ReadAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	else
+	{
+		data = 0;
+	}
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <>
+bool InStream::ReadAggregateRR (int &numElements, Rectf *&data)
+{
+	if (!Read(numElements))
+	{
+		return false;
+	}
+
+	if (numElements > 0)
+	{
+		data = new1<Rectf>(numElements);
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!ReadAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	else
+	{
+		data = 0;
+	}
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool OutStream::WriteAggregate (const Rectf& datum)
+{
+	if (!Write(datum.Left))
+		return false;
+
+	if (!Write(datum.Bottom))
+		return false;
+
+	if (!Write(datum.Right))
+		return false;
+
+	if (!Write(datum.Top))
+		return false;
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <>
+bool OutStream::WriteAggregateW (int numElements, const Rectf* data)
+{
+	if (!Write(numElements))
+	{
+		return false;
+	}
+
+	if (numElements > 0)
+	{
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!WriteAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool OutStream::WriteAggregateN (int numElements, const Rectf* data)
+{
+	if (numElements > 0)
+	{
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!WriteAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+// InterpCurvePointFloat
+//----------------------------------------------------------------------------
+template <>
+bool InStream::ReadAggregate (InterpCurvePointFloat& datum)
+{
+	if (!Read(datum.InVal))
+		return false;
+
+	if (!Read(datum.OutVal))
+		return false;
+
+	if (!Read(datum.ArriveTangent))
+		return false;
+
+	if (!Read(datum.LeaveTangent))
+		return false;
+
+	if (!ReadEnum(datum.InterpMode))
+		return false;
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <>
+bool InStream::ReadAggregateVV (int numElements, InterpCurvePointFloat* data)
+{
+	if (numElements > 0)
+	{
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!ReadAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//----------------------------------------------------------------------------
+template <>
+bool InStream::ReadAggregateVR (int numElements, InterpCurvePointFloat*& data)
+{
+	if (numElements > 0)
+	{
+		data = new1<InterpCurvePointFloat>(numElements);
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!ReadAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	else
+	{
+		data = 0;
+	}
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <>
+bool InStream::ReadAggregateRR (int& numElements, 
+	InterpCurvePointFloat*& data)
+{
+	if (!Read(numElements))
+	{
+		return false;
+	}
+
+	if (numElements > 0)
+	{
+		data = new1<InterpCurvePointFloat>(numElements);
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!ReadAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	else
+	{
+		data = 0;
+	}
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool OutStream::WriteAggregate (const InterpCurvePointFloat& datum)
+{
+	if (!Write(datum.InVal))
+		return false;
+
+	if (!Write(datum.OutVal))
+		return false;
+
+	if (!Write(datum.ArriveTangent))
+		return false;
+
+	if (!Write(datum.LeaveTangent))
+		return false;
+
+	if (!WriteEnum(datum.InterpMode))
+		return false;
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool OutStream::WriteAggregateW (int numElements, 
+	const InterpCurvePointFloat* data)
+{
+	if (!Write(numElements))
+	{
+		return false;
+	}
+
+	if (numElements > 0)
+	{
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!WriteAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool OutStream::WriteAggregateN (int numElements, 
+	const InterpCurvePointFloat* data)
+{
+	if (numElements > 0)
+	{
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!WriteAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+// InterpCurvePointFloat3
+//----------------------------------------------------------------------------
+template <>
+bool InStream::ReadAggregate (InterpCurvePointFloat3& datum)
+{
+	if (!Read(datum.InVal))
+		return false;
+
+	if (!ReadAggregate(datum.OutVal))
+		return false;
+
+	if (!ReadAggregate(datum.ArriveTangent))
+		return false;
+
+	if (!ReadAggregate(datum.LeaveTangent))
+		return false;
+
+	if (!ReadEnum(datum.InterpMode))
+		return false;
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <>
+bool InStream::ReadAggregateVV (int numElements,
+	InterpCurvePointFloat3* data)
+{
+	if (numElements > 0)
+	{
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!ReadAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//----------------------------------------------------------------------------
+template <>
+bool InStream::ReadAggregateVR (int numElements, 
+	InterpCurvePointFloat3*& data)
+{
+	if (numElements > 0)
+	{
+		data = new1<InterpCurvePointFloat3>(numElements);
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!ReadAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	else
+	{
+		data = 0;
+	}
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <>
+bool InStream::ReadAggregateRR (int& numElements, 
+	InterpCurvePointFloat3*& data)
+{
+	if (!Read(numElements))
+	{
+		return false;
+	}
+
+	if (numElements > 0)
+	{
+		data = new1<InterpCurvePointFloat3>(numElements);
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!ReadAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	else
+	{
+		data = 0;
+	}
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool OutStream::WriteAggregate (const InterpCurvePointFloat3& datum)
+{
+	if (!Write(datum.InVal))
+		return false;
+
+	if (!WriteAggregate(datum.OutVal))
+		return false;
+
+	if (!WriteAggregate(datum.ArriveTangent))
+		return false;
+
+	if (!WriteAggregate(datum.LeaveTangent))
+		return false;
+
+	if (!WriteEnum(datum.InterpMode))
+		return false;
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool OutStream::WriteAggregateW (int numElements,
+	const InterpCurvePointFloat3* data)
+{
+	if (!Write(numElements))
+	{
+		return false;
+	}
+
+	if (numElements > 0)
+	{
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!WriteAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool OutStream::WriteAggregateN (int numElements,
+	const InterpCurvePointFloat3* data)
+{
+	if (numElements > 0)
+	{
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!WriteAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+// InterpCurveFloat
+//----------------------------------------------------------------------------
+template <> 
+bool InStream::ReadAggregate (InterpCurveFloat& datum)
+{
+	int numPoints = 0;
+	if (!Read(numPoints))
+		return false;
+
+	if (numPoints > 0)
+	{
+		datum.Points.resize(numPoints);
+
+		for (int i=0; i<numPoints; i++)
+		{
+			if (!ReadAggregate(datum.Points[i]))
+				return false;
+		}
+	}
+
+	if (!ReadEnum(datum.InterpMethod))
+		return false;
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool InStream::ReadAggregateVV (int numElements, InterpCurveFloat* data)
+{
+	if (numElements > 0)
+	{
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!ReadAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool InStream::ReadAggregateVR (int numElements, InterpCurveFloat*& data)
+{
+	if (numElements > 0)
+	{
+		data = new1<InterpCurveFloat>(numElements);
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!ReadAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	else
+	{
+		data = 0;
+	}
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <>
+bool InStream::ReadAggregateRR (int& numElements, InterpCurveFloat*& data)
+{
+	if (!Read(numElements))
+	{
+		return false;
+	}
+
+	if (numElements > 0)
+	{
+		data = new1<InterpCurveFloat>(numElements);
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!ReadAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	else
+	{
+		data = 0;
+	}
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool OutStream::WriteAggregate (const InterpCurveFloat& datum)
+{
+	int numPoints = (int)datum.Points.size();
+
+	if (!Write(numPoints))
+		return false;
+
+	for (int i=0; i<numPoints; i++)
+	{
+		if (!WriteAggregate(datum.Points[i]))
+			return false;
+	}
+
+	if (!WriteEnum(datum.InterpMethod))
+		return false;
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool OutStream::WriteAggregateW (int numElements, const InterpCurveFloat* data)
+{
+	if (!Write(numElements))
+	{
+		return false;
+	}
+
+	if (numElements > 0)
+	{
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!WriteAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//----------------------------------------------------------------------------
+template <>
+bool OutStream::WriteAggregateN (int numElements, const InterpCurveFloat* data)
+{
+	if (numElements > 0)
+	{
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!WriteAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+// InterpCurveFloat3
+//----------------------------------------------------------------------------
+template <> 
+bool InStream::ReadAggregate (InterpCurveFloat3& datum)
+{
+	int numPoints = 0;
+	if (!Read(numPoints))
+		return false;
+
+	if (numPoints > 0)
+	{
+		datum.Points.resize(numPoints);
+
+		for (int i=0; i<numPoints; i++)
+		{
+			if (!ReadAggregate(datum.Points[i]))
+				return false;
+		}
+	}
+
+	if (!ReadEnum(datum.InterpMethod))
+		return false;
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool InStream::ReadAggregateVV (int numElements, InterpCurveFloat3* data)
+{
+	if (numElements > 0)
+	{
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!ReadAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool InStream::ReadAggregateVR (int numElements, InterpCurveFloat3*& data)
+{
+	if (numElements > 0)
+	{
+		data = new1<InterpCurveFloat3>(numElements);
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!ReadAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	else
+	{
+		data = 0;
+	}
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <>
+bool InStream::ReadAggregateRR (int& numElements, InterpCurveFloat3*& data)
+{
+	if (!Read(numElements))
+	{
+		return false;
+	}
+
+	if (numElements > 0)
+	{
+		data = new1<InterpCurveFloat3>(numElements);
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!ReadAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	else
+	{
+		data = 0;
+	}
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool OutStream::WriteAggregate (const InterpCurveFloat3& datum)
+{
+	int numPoints = (int)datum.Points.size();
+
+	if (!Write(numPoints))
+		return false;
+
+	for (int i=0; i<numPoints; i++)
+	{
+		if (!WriteAggregate(datum.Points[i]))
+			return false;
+	}
+
+	if (!WriteEnum(datum.InterpMethod))
+		return false;
+
+	return true;
+}
+//----------------------------------------------------------------------------
+template <> 
+bool OutStream::WriteAggregateW (int numElements, const InterpCurveFloat3* data)
+{
+	if (!Write(numElements))
+	{
+		return false;
+	}
+
+	if (numElements > 0)
+	{
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!WriteAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//----------------------------------------------------------------------------
+template <>
+bool OutStream::WriteAggregateN (int numElements, const InterpCurveFloat3* data)
+{
+	if (numElements > 0)
+	{
+		for (int i = 0; i < numElements; ++i)
+		{
+			if (!WriteAggregate(data[i]))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+//----------------------------------------------------------------------------
+
 }

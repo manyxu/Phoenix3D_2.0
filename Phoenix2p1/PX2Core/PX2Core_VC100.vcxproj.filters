@@ -11,9 +11,6 @@
     <ClInclude Include="PX2DoubleChainList.hpp">
       <Filter>DataTypes</Filter>
     </ClInclude>
-    <ClInclude Include="PX2DayTime.hpp">
-      <Filter>DataTypes</Filter>
-    </ClInclude>
     <ClInclude Include="PX2InStream.hpp">
       <Filter>IO</Filter>
     </ClInclude>
@@ -108,13 +105,76 @@
     <ClInclude Include="PX2InitTerm.hpp">
       <Filter>ObjectSystem</Filter>
     </ClInclude>
+    <ClInclude Include="PX2FixMemoryPool.hpp">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2TimerManager.hpp">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2CrashMiniDump.hpp">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2DateTime.hpp">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Timestamp.hpp">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Timespan.hpp">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2TimerTask.hpp">
+      <Filter>Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Timer.hpp">
+      <Filter>Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2TimedNotificationQueue.hpp">
+      <Filter>Notifications</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Notification.hpp">
+      <Filter>Notifications</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Runnable.hpp">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Eventt.hpp">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ThreadTarget.hpp">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Semaphore.hpp">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Ascii.hpp">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ThreadPool.hpp">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ThreadLocal.hpp">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2NotificationQueue.hpp">
+      <Filter>Notifications</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2NotificationCenter.hpp">
+      <Filter>Notifications</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2AbstractObserver.hpp">
+      <Filter>Notifications</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2NObserver.hpp">
+      <Filter>Notifications</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Observer.hpp">
+      <Filter>Notifications</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PX2Assert.cpp">
       <Filter>Assert</Filter>
-    </ClCompile>
-    <ClCompile Include="PX2DayTime.cpp">
-      <Filter>DataTypes</Filter>
     </ClCompile>
     <ClCompile Include="PX2FileIO.cpp">
       <Filter>IO</Filter>
@@ -182,6 +242,63 @@
     <ClCompile Include="PX2InitTerm.cpp">
       <Filter>ObjectSystem</Filter>
     </ClCompile>
+    <ClCompile Include="PX2TimerManager.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2CrashMiniDump.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2DateTime.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Timestamp.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Timespan.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2TimerTask.cpp">
+      <Filter>Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Timer.cpp">
+      <Filter>Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2TimedNotificationQueue.cpp">
+      <Filter>Notifications</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Notification.cpp">
+      <Filter>Notifications</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Runnable.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Eventt.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ThreadTarget.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Semaphore.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Ascii.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ThreadPool.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ThreadLocal.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2NotificationCenter.cpp">
+      <Filter>Notifications</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2NotificationQueue.cpp">
+      <Filter>Notifications</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2AbstractObserver.cpp">
+      <Filter>Notifications</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="PX2DoubleChainList.inl">
@@ -220,6 +337,33 @@
     <None Include="PX2Memory.inl">
       <Filter>Memory</Filter>
     </None>
+    <None Include="PX2FixMemoryPool.inl">
+      <Filter>Memory</Filter>
+    </None>
+    <None Include="PX2Thread.inl">
+      <Filter>Thread</Filter>
+    </None>
+    <None Include="PX2Timestamp.inl">
+      <Filter>Time</Filter>
+    </None>
+    <None Include="PX2DateTime.inl">
+      <Filter>Time</Filter>
+    </None>
+    <None Include="PX2Timespan.inl">
+      <Filter>Time</Filter>
+    </None>
+    <None Include="PX2TimerTask.inl">
+      <Filter>Timer</Filter>
+    </None>
+    <None Include="PX2Ascii.inl">
+      <Filter>Base</Filter>
+    </None>
+    <None Include="PX2NObserver.inl">
+      <Filter>Notifications</Filter>
+    </None>
+    <None Include="PX2Observer.inl">
+      <Filter>Notifications</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assert">
@@ -251,6 +395,15 @@
     </Filter>
     <Filter Include="IO">
       <UniqueIdentifier>{92570a08-bff0-4a85-b026-43852064b551}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Timer">
+      <UniqueIdentifier>{0b74f816-36e8-4ebf-a4e8-038d6327dbd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Notifications">
+      <UniqueIdentifier>{942fda35-45cb-4b69-8d78-575112d8b7a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base">
+      <UniqueIdentifier>{c428e79d-b776-422b-a116-396bd5c56ab1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

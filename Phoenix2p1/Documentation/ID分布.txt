@@ -2,3 +2,6 @@ MainFrame					1001
 RenderViewWindow			3001
 ResTree						4001
 ID_INS_TER_GRID				5001
+ActorsTree					5100
+CurveEdit					6001
+EffectNodePanel				6051

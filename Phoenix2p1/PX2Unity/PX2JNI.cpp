@@ -185,7 +185,7 @@ extern "C"
 
 			t.env->DeleteLocalRef(jstr);
 
-			PX2_LOG_ENGINE("package name is %s\n", str.c_str());
+			PX2_LOG_INFO("package name is %s\n", str.c_str());
 
 			return str.c_str();
 		}
@@ -209,7 +209,7 @@ extern "C"
 
 			t.env->DeleteLocalRef(jstr);
 
-			PX2_LOG_ENGINE("language name %s\n", str.c_str());
+			PX2_LOG_INFO("language name %s\n", str.c_str());
 
 			return str.c_str();
 		}

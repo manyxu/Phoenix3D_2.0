@@ -12,6 +12,8 @@
 #include "PX2TerrainBrushPane.hpp"
 #include "PX2TerrainHeightPane.hpp"
 #include "PX2TerrainMaterialPane.hpp"
+#include "PX2TerrainJunglerPane.hpp"
+#include "PX2TerrainActor.hpp"
 #include "foldpanelbar.h"
 
 namespace PX2Editor
@@ -44,6 +46,8 @@ namespace PX2Editor
 		wxFoldPanel mEditFold;
 		TerrainHeightPanel *mHeightPanel;
 		TerrainMaterialPanel *mMaterialPanel;
+		TerrainJunglerPanel *mJunglerPanel;
+
 		TerrainActorPropertyGrid *mTerrainActorPropGrid;
 		TerrainBrushPanel *mTerrainBrush;
 		wxBookCtrl *mEditBook;

@@ -5,41 +5,6 @@
 */
 
 //----------------------------------------------------------------------------
-inline int RawTerrainPage::GetSize () const
-{
-	return mSize;
-}
-//----------------------------------------------------------------------------
-inline const float* RawTerrainPage::GetHeights () const
-{
-	return mHeights;
-}
-//----------------------------------------------------------------------------
-inline const Float2& RawTerrainPage::GetOrigin () const
-{
-	return mOrigin;
-}
-//----------------------------------------------------------------------------
-inline float RawTerrainPage::GetSpacing () const
-{
-	return mSpacing;
-}
-//----------------------------------------------------------------------------
-inline float RawTerrainPage::GetX (int x) const
-{
-	return mOrigin[0] + mSpacing*(float)x;
-}
-//----------------------------------------------------------------------------
-inline float RawTerrainPage::GetY (int y) const
-{
-	return mOrigin[1] + mSpacing*(float)y;
-}
-//----------------------------------------------------------------------------
-inline float RawTerrainPage::GetHeight (int index) const
-{
-	return mHeights[index];
-}
-//----------------------------------------------------------------------------
 inline Texture2D *RawTerrainPage::GetTexture(int index)
 {
 	if (0 == index)

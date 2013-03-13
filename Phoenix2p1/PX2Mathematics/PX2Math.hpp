@@ -85,6 +85,78 @@ namespace PX2
 		static const Real SQRT_3;
 		static const Real INV_SQRT_3;
 	};
+	
+	template <class Real, class U>
+	Real Lerp ( const Real &a, const Real &b, const U &alpha)
+	{
+		return (Real)(a + (b-a)*alpha);
+	}
+
+	template <class Real, class U>
+	Real CubicInterp ( const Real &p0, const Real &t0, const Real &p1, const Real &t1,
+		const U &alpha)
+	{
+		const float A2 = alpha  * alpha;
+		const float A3 = A2 * alpha;
+
+		return (Real)(p0*((2*A3)-(3*A2)+1)) + t0*((A3-(2*A2)+alpha))
+			+ (t1*(A3-A2)) + (p1*((-2*A3)+(3*A2)));
+	}
+
+	template <class Real, class U>
+	Real CubicInterpDerivative (
+		const Real &p0, const Real &t0, const Real &p1, const Real &t1,
+		const U &alpha )
+	{
+		Real a = 6.f*p0 + 3.f*t0 + 3.f*t1 - 6.f*p1;
+		Real b = -6.f*p0 - 4.f*t0 - 2.f*t1 + 6.f*p1;
+		Real c = t0;
+
+		const float A2 = alpha  * alpha;
+
+		return (a * A2) + (b * alpha) + c;
+	}
+
+	template <class Real, class U> 
+	Real CubicInterpSecondDerivative (
+		const Real &p0, const Real &t0, const Real &p1, const Real &t1,
+		const U &alpha)
+	{
+		Real a = 12.f*p0 + 6.f*t0 + 6.f*t1 - 12.f*p1;
+		Real b = -6.f*p0 - 4.f*t0 - 2.f*t1 + 6.f*p1;
+
+		return (a * alpha) + b;
+	}
+
+	template< class Real, class U > void LegacyAutoCalcTangent( 
+		const Real& prevP, const Real& p, const Real& nextP,
+		const U& tension, Real& outTan )
+	{
+		outTan = 0.5f * (1.f - tension) * ( (p - prevP) + (nextP - p) );
+	}
+
+	template <class Real, class U>
+	void AutoCalcTangent (const Real &prevP, const Real &p, const Real &nextP,
+		const U &tension, Real &outTan)
+	{
+		outTan = (1.0f - tension) * ((p - prevP) + (nextP - p));
+	}
+
+	template <class Real>
+	void ComputeCurveTangent( float prevTime, const Real& prevPoint,
+		float curTime, const Real& curPoint,
+		float nextTime, const Real& nextPoint,
+		float tension,
+		bool wantClamping,
+		Real& outTangent )
+	{
+		AutoCalcTangent( prevPoint, curPoint, nextPoint, tension, outTangent );
+
+		float diff = (nextTime - prevTime);
+		const float prevToNextTimeDiff = diff>0.0001f ? diff : 0.0001f;
+
+		outTangent /= prevToNextTimeDiff;
+	}
 
 #include "PX2Math.inl"
 

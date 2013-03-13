@@ -29,6 +29,9 @@
 #include "PX2HQuaternion.hpp"
 #include "PX2Transform.hpp"
 #include "PX2Vector3.hpp"
+#include "PX2Size.hpp"
+#include "PX2Rect.hpp"
+#include "PX2InterpCurve.hpp"
 
 namespace PX2
 {
@@ -139,6 +142,61 @@ namespace PX2
 	template <> bool OutStream::WriteAggregate (const Vector3f&);
 	template <> bool OutStream::WriteAggregateW (int, const Vector3f*);
 	template <> bool OutStream::WriteAggregateN (int, const Vector3f*);
+
+	// Sizef
+	template <> bool InStream::ReadAggregate (Sizef&);
+	template <> bool InStream::ReadAggregateVV (int, Sizef*);
+	template <> bool InStream::ReadAggregateVR (int, Sizef*&);
+	template <> bool InStream::ReadAggregateRR (int&, Sizef*&);
+	template <> bool OutStream::WriteAggregate (const Sizef&);
+	template <> bool OutStream::WriteAggregateW (int, const Sizef*);
+	template <> bool OutStream::WriteAggregateN (int, const Sizef*);
+
+	// Rectf
+	template <> bool InStream::ReadAggregate (Rectf&);
+	template <> bool InStream::ReadAggregateVV (int, Rectf*);
+	template <> bool InStream::ReadAggregateVR (int, Rectf*&);
+	template <> bool InStream::ReadAggregateRR (int&, Rectf*&);
+	template <> bool OutStream::WriteAggregate (const Rectf&);
+	template <> bool OutStream::WriteAggregateW (int, const Rectf*);
+	template <> bool OutStream::WriteAggregateN (int, const Rectf*);
+
+	// InterpCurvePoint
+	template <> bool InStream::ReadAggregate (InterpCurvePointFloat&);
+	template <> bool InStream::ReadAggregateVV (int, InterpCurvePointFloat*);
+	template <> bool InStream::ReadAggregateVR (int, InterpCurvePointFloat*&);
+	template <> bool InStream::ReadAggregateRR (int&, InterpCurvePointFloat*&);
+	template <> bool OutStream::WriteAggregate (const InterpCurvePointFloat&);
+	template <> bool OutStream::WriteAggregateW (int, const InterpCurvePointFloat*);
+	template <> bool OutStream::WriteAggregateN (int, const InterpCurvePointFloat*);
+
+	// InterpCurvePoint3
+	template <> bool InStream::ReadAggregate (InterpCurvePointFloat3&);
+	template <> bool InStream::ReadAggregateVV (int, InterpCurvePointFloat3*);
+	template <> bool InStream::ReadAggregateVR (int, InterpCurvePointFloat3*&);
+	template <> bool InStream::ReadAggregateRR (int&, InterpCurvePointFloat3*&);
+	template <> bool OutStream::WriteAggregate (const InterpCurvePointFloat3&);
+	template <> bool OutStream::WriteAggregateW (int, const InterpCurvePointFloat3*);
+	template <> bool OutStream::WriteAggregateN (int, const InterpCurvePointFloat3*);
+
+	// InterpCurveFloat
+	template <> bool InStream::ReadAggregate (InterpCurveFloat&);
+	template <> bool InStream::ReadAggregateVV (int, InterpCurveFloat*);
+	template <> bool InStream::ReadAggregateVR (int, InterpCurveFloat*&);
+	template <> bool InStream::ReadAggregateRR (int&, InterpCurveFloat*&);
+	template <> bool OutStream::WriteAggregate (const InterpCurveFloat&);
+	template <> bool OutStream::WriteAggregateW (int, const InterpCurveFloat*);
+	template <> bool OutStream::WriteAggregateN (int, const InterpCurveFloat*);
+
+	// InterpCurveFloat3
+	template <> bool InStream::ReadAggregate (InterpCurveFloat3&);
+	template <> bool InStream::ReadAggregateVV (int, InterpCurveFloat3*);
+	template <> bool InStream::ReadAggregateVR (int, InterpCurveFloat3*&);
+	template <> bool InStream::ReadAggregateRR (int&, InterpCurveFloat3*&);
+	template <> bool OutStream::WriteAggregate (const InterpCurveFloat3&);
+	template <> bool OutStream::WriteAggregateW (int, const InterpCurveFloat3*);
+	template <> bool OutStream::WriteAggregateN (int, const InterpCurveFloat3*);
+
 }
 
 #endif

@@ -23,6 +23,7 @@ inline Renderable* VisibleSet::GetVisible (int i) const
 //----------------------------------------------------------------------------
 inline void VisibleSet::Clear ()
 {
-    mNumVisible = 0;
+	mVisible.clear();
+	mNumVisible = 0;
 }
 //----------------------------------------------------------------------------

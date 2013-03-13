@@ -12,6 +12,7 @@
 namespace PX2Editor
 {
 
+	class PropertyGrid;
 	class Property;
 
 	typedef void (*ButtonDownCallback)(Property *prop);
@@ -64,16 +65,23 @@ namespace PX2Editor
 			PT_FLOAT4,
 			PT_STRING,
 			PT_STRINGBUTTON,
+			PT_ENUM,
 			PT_TRANSFORMATION,
 			//
 			PT_ACTORTRANSFORMATION,
 			//
+			PT_EMFLOAT,
+			PT_EMFLOATRANGE,
+			PT_EMFLOAT3,
+			PT_EMFLOAT3RANGE,
 			PT_QUANTITY
 		};
 
 		Property (PropertyPage *parent, std::string name, PropertyType type,
-			void *data, bool enable=true);
+			void *data, bool enable=true, const std::vector<std::string> *enums=0);
 		virtual ~Property ();
+
+		PropertyPage *GetPage () { return mParent; }
 
 		void Enable (bool editable);
 		bool IsEnabled ();
@@ -90,6 +98,7 @@ namespace PX2Editor
 		void SetButtonDownCallback (ButtonDownCallback fun);
 
 		virtual void OnChange (wxPropertyGridEvent &event);
+		virtual void OnChanging (wxPropertyGridEvent &event);
 
 		virtual void DoEnter ();
 		virtual void DoExecute (PX2::Event *event);
@@ -109,9 +118,9 @@ public_internal:
 		PropertyPage *mParent;
 		wxPGProperty *mProperty;
 		bool mEnable;
-		static bool msRegisteredStrongButton;
-		wxStringButtonEditor *mStringButtonEditor;
+		wxPGEditor *mStringButtonEditor;
 		ButtonDownCallback mButtonDownCallback;
+		static int msStringButtonEditorNum;
 	};
 
 	typedef PX2::Pointer0<Property> PropertyPtr;

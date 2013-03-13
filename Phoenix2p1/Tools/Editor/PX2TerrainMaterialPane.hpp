@@ -26,6 +26,8 @@ namespace PX2Editor
 		void RefleshCtrls ();
 
 	protected:
+		DECLARE_EVENT_TABLE();
+
 		TerrainMaterialPanel ();
 		void OnColourChange (wxColourPickerEvent &e);
 
@@ -49,8 +51,6 @@ namespace PX2Editor
 		wxStaticBitmap *mLayerTexBitMap;
 
 		wxListBox *mLayerList;
-
-		DECLARE_EVENT_TABLE();
 	};
 
 }

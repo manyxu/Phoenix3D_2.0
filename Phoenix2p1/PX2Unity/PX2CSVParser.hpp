@@ -15,7 +15,7 @@ namespace PX2
 	class CSVParser
 	{
 	public:
-		CSVParser (std::istream &fin = std::cin, std::string sep = ",");
+		CSVParser (std::string sep = ",");
 		~CSVParser();
 
 		bool Open (const char *filename);

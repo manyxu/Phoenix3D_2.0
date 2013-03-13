@@ -5,6 +5,7 @@
 */
 
 #include "PX2TerrainProcess.hpp"
+#include "PX2EditSystem.hpp"
 
 #pragma warning(disable : 4310)
 
@@ -24,7 +25,6 @@ mTerProType(type)
 //----------------------------------------------------------------------------
 TerrainProcess::~TerrainProcess ()
 {
-
 }
 //----------------------------------------------------------------------------
 TerrainProcess::TerProType TerrainProcess::GetTerProType()
@@ -65,7 +65,7 @@ void TerrainHeightProcess::Apply ()
 	for (; it!=infos.end(); it++)
 	{
 		PageAffectInfo &info = *it;
-		RawTerrainPagePtr page = info.InfulencedPage;
+		TerrainPagePtr page = info.InfulencedPage;
 		int size = page->GetSize();
 		PX2_UNUSED(size);
 		VertexBufferPtr vBuffer = page->GetVertexBuffer();
@@ -80,15 +80,21 @@ void TerrainHeightProcess::Apply ()
 			Float3 &pos = vba.Position<Float3>(vertexIndex);
 			Float3 &normal = vba.Normal<Float3>(vertexIndex);
 
-			if (mHeightMode == HM_RAISE)
+			bool isShiftDown = EditSystem::GetSingleton().IsShiftDown();
+
+			HeightMode heightMode = mHeightMode;
+			if (isShiftDown)
+				heightMode = HM_SMOOTH;
+
+			if (heightMode == HM_RAISE)
 				pos[2] += strength * weight;
-			else if (mHeightMode == HM_LOWER)
+			else if (heightMode == HM_LOWER)
 				pos[2] -= strength * weight;
-			else if (mHeightMode == HM_FLATTEN)
+			else if (heightMode == HM_FLATTEN)
 			{
 				pos[2] = PageAffectInfo::AverageHeight;
 			}
-			else if (mHeightMode == HM_SMOOTH)
+			else if (heightMode == HM_SMOOTH)
 			{
 				if (weight <= 1.0f)
 				{
@@ -105,7 +111,7 @@ void TerrainHeightProcess::Apply ()
 					pos[2] = (height + heightL1 + heightR1 + heightD1 + HeightU1)/5.0f;
 				}
 			}
-			else if (mHeightMode == HM_ZERO)
+			else if (heightMode == HM_ZERO)
 			{
 				pos[2] = 0.0f;
 			}
@@ -127,7 +133,10 @@ void TerrainHeightProcess::Apply ()
 	{
 		PageAffectInfo &info = *it;
 
-		info.InfulencedPage->UpdateToHighField();
+		TerrainPage *page = info.InfulencedPage;
+		RawTerrainPage *rawPage = DynamicCast<RawTerrainPage>(page);
+		if (rawPage)
+			rawPage->UpdateToHighField();
 	}
 }
 //----------------------------------------------------------------------------
@@ -141,7 +150,6 @@ TerrainProcess(TerrainProcess::TPT_TEXTURE),
 mTextureMode(TM_INCREASE),
 mSelectedLayerIndex(0)
 {
-
 }
 //----------------------------------------------------------------------------
 TerrainTextureProcess::~TerrainTextureProcess ()
@@ -198,11 +206,17 @@ void TerrainTextureProcess::Apply ()
 	//	if (isCenter)
 		{
 			Texture2D *layerTex = GetSelectedLayerUsingTexture();
+			TerrainPage *page = it->InfulencedPage;
+			RawTerrainPage *rawPage = DynamicCast<RawTerrainPage>(page);
+			if (!rawPage)
+				return;
 
 			if (layerTex)
-				it->InfulencedPage->SetTexture(mSelectedLayerIndex, layerTex);
+			{
+				rawPage->SetTexture(mSelectedLayerIndex, layerTex);
+			}
 
-			Texture2D *tex = it->InfulencedPage->GetTextureAlpha();
+			Texture2D *tex = rawPage->GetTextureAlpha();
 			char *buffer = tex->GetData(0);
 
 			int width = tex->GetWidth();
@@ -213,7 +227,7 @@ void TerrainTextureProcess::Apply ()
 			for (int i=0; i<(int)it->VertexInfoList.size(); i++)
 			{
 				int index = it->VertexInfoList[i].Index;
-				unsigned char *b = (unsigned char*)&buffer[4*index  ]; // B
+				unsigned char *b = (unsigned char*)&buffer[4*index  ]; // B 必须是unsigned char
 				unsigned char *g = (unsigned char*)&buffer[4*index+1]; // G
 				unsigned char *r = (unsigned char*)&buffer[4*index+2]; // R
 				unsigned char *a = (unsigned char*)&buffer[4*index+3]; // A
@@ -245,7 +259,7 @@ void TerrainTextureProcess::Apply ()
 				}
 				else if (mSelectedLayerIndex == 1)
 				{
-					val = (*r); //< 必须是unsigned 
+					val = (*r);
 					val += add;
 					val = PX2::Math<int>::Clamp(val, 0, 255);
 					*r = val;
@@ -320,6 +334,60 @@ void TerrainTextureProcess::Apply ()
 
 			Renderer::UpdateAll(tex, 0);
 		}
+	}
+}
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+// TerrainJunglerProcess
+//----------------------------------------------------------------------------
+TerrainJunglerProcess::TerrainJunglerProcess ()
+	:
+TerrainProcess(TerrainProcess::TPT_JUNGLER),
+mMode(JM_ADD),
+mWidth(1.0f),
+mHeight(2.0f),
+mLower(0.0f)
+{
+}
+//----------------------------------------------------------------------------
+TerrainJunglerProcess::~TerrainJunglerProcess ()
+{
+}
+//----------------------------------------------------------------------------
+void TerrainJunglerProcess::SetWidth (float width)
+{
+	mWidth = width;
+}
+//----------------------------------------------------------------------------
+void TerrainJunglerProcess::SetHeight (float height)
+{
+	mHeight = height;
+}
+//----------------------------------------------------------------------------
+void TerrainJunglerProcess::SetLower (float lower)
+{
+	mLower = lower;
+}
+//----------------------------------------------------------------------------
+void TerrainJunglerProcess::Apply ()
+{
+	if (!mTerrain || !mUsingTexture)
+		return;
+
+	APoint pos = mBrush->GetPos();
+	float size = mBrush->GetSize();
+	float strength = mBrush->GetStrength();
+
+	if (JM_ADD == mMode)
+	{
+		mTerrain->AddJunglers(mUsingTexture, pos, size, 
+			(int)(strength*1000.0f), mWidth, mHeight, mLower);
+	}
+	else if (JM_REDUCE == mMode)
+	{
+		mTerrain->RemoveJunglers(mUsingTexture, pos, size, 
+			(int)(strength*1000.0f));
 	}
 }
 //----------------------------------------------------------------------------

@@ -7,7 +7,7 @@
 #include "PX2CSVParser.hpp"
 using namespace PX2;
 
-CSVParser::CSVParser (std::istream &fin, std::string sep)
+CSVParser::CSVParser (std::string sep)
 	:
 mFieldSep(sep),
 mColsNum(0)
@@ -55,7 +55,7 @@ int CSVParser::AdvQuoted (const std::string &line, std::string &fld, int i)
 		if (line[j] == '"' && line[++j] != '"')
 		{
 			int k = line.find_first_of(mFieldSep, j);
-			if (k>(int)line.length() || k==std::string::npos)    // no separator found
+			if (k>(int)line.length() || k==(int)std::string::npos)    // no separator found
 			{
 				k = line.length();
 			}
@@ -79,7 +79,7 @@ int CSVParser::AdvPlain (const std::string &line, std::string &fld, int i)
 
 	j = line.find_first_of(mFieldSep, i); 
 
-	if (j > (int)line.length() || j==std::string::npos)
+	if (j > (int)line.length() || j==(int)std::string::npos)
 		j = (int)line.length();
 
 	fld = std::string(line, i, j-i);

@@ -65,6 +65,7 @@
     <ClInclude Include="PX2Circle3.hpp" />
     <ClInclude Include="PX2ContSphere3.hpp" />
     <ClInclude Include="PX2ConvexPolygon2.hpp" />
+    <ClInclude Include="PX2InterpCurve.hpp" />
     <ClInclude Include="PX2Curve3.hpp" />
     <ClInclude Include="PX2Distance.hpp" />
     <ClInclude Include="PX2DistPoint3Circle3.hpp" />
@@ -95,7 +96,9 @@
     <ClInclude Include="PX2Matrix4.hpp" />
     <ClInclude Include="PX2Polygon2.hpp" />
     <ClInclude Include="PX2Ray3.hpp" />
+    <ClInclude Include="PX2Rect.hpp" />
     <ClInclude Include="PX2SingleCurve3.hpp" />
+    <ClInclude Include="PX2Size.hpp" />
     <ClInclude Include="PX2Sphere3.hpp" />
     <ClInclude Include="PX2Surface.hpp" />
     <ClInclude Include="PX2Triangle3.hpp" />
@@ -122,6 +125,7 @@
     <None Include="PX2HPoint.inl" />
     <None Include="PX2HQuaternion.inl" />
     <None Include="PX2Integer.inl" />
+    <None Include="PX2InterpCurve.inl" />
     <None Include="PX2Line3.inl" />
     <None Include="PX2Math.inl" />
     <None Include="PX2Matrix2.inl" />
@@ -129,6 +133,8 @@
     <None Include="PX2Matrix4.inl" />
     <None Include="PX2Polygon2.inl" />
     <None Include="PX2Ray3.inl" />
+    <None Include="PX2Rect.inl" />
+    <None Include="PX2Size.inl" />
     <None Include="PX2Sphere3.inl" />
     <None Include="PX2Triangle3.inl" />
     <None Include="PX2TriangleKey.inl" />
@@ -211,7 +217,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\PX2SDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\PX2SDK\Include;..\ThirdPartiesLibs\pthread\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

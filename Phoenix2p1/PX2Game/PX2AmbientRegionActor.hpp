@@ -21,7 +21,7 @@ namespace PX2
 
 	public:
 		AmbientRegionActor ();
-		~AmbientRegionActor ();
+		virtual ~AmbientRegionActor ();
 
 		void SetLight (Light *light);
 		Light *GetLight ();
@@ -29,11 +29,11 @@ namespace PX2
 		Float4 mAmbientColor;
 		Float4 mDirLightDiffColor;
 		Float4 mDirLightSpecColor;
+		float mDirLightIntensity;
 		float mHorAngle; // (0-360)
 		float mVerAngle; // (0-90)
 
 		virtual void DoEnter ();
-		virtual void DoUpdate ();
 		virtual void DoExecute (Event *event);
 		virtual void DoLeave ();
 

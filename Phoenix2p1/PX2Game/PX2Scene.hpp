@@ -42,6 +42,8 @@ namespace PX2
 		Actor *GetActor (int i);
 		Actor *GetActor (PX2::Movable *object);
 
+		void ShowHelpMovables (bool show);
+
 		int GetARActorNum ();
 		AmbientRegionActor *GetARActor (int i);
 

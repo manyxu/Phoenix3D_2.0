@@ -54,7 +54,6 @@
     <ClCompile Include="DevIL\il_jp2.c" />
     <ClCompile Include="DevIL\il_jpeg.c" />
     <ClCompile Include="DevIL\il_lif.c" />
-    <ClCompile Include="DevIL\il_main.c" />
     <ClCompile Include="DevIL\il_manip.c" />
     <ClCompile Include="DevIL\il_mdl.c" />
     <ClCompile Include="DevIL\il_mecel_portability.c" />
@@ -90,8 +89,6 @@
     <ClCompile Include="DevIL\il_tiff.c" />
     <ClCompile Include="DevIL\il_tpl.c" />
     <ClCompile Include="DevIL\il_utility.c" />
-    <ClCompile Include="DevIL\il_utx.c" />
-    <ClCompile Include="DevIL\il_utx.cpp" />
     <ClCompile Include="DevIL\il_vtf.c" />
     <ClCompile Include="DevIL\il_wal.c" />
     <ClCompile Include="DevIL\il_wbmp.c" />
@@ -113,16 +110,85 @@
     <ClCompile Include="DevIL\PNG\pngwrite.c" />
     <ClCompile Include="DevIL\PNG\pngwtran.c" />
     <ClCompile Include="DevIL\PNG\pngwutil.c" />
+    <ClCompile Include="FreeType\src\autofit\autofit.c" />
+    <ClCompile Include="FreeType\src\base\ftbase.c" />
+    <ClCompile Include="FreeType\src\base\ftbbox.c" />
+    <ClCompile Include="FreeType\src\base\ftbitmap.c" />
+    <ClCompile Include="FreeType\src\base\ftfstype.c" />
+    <ClCompile Include="FreeType\src\base\ftgasp.c" />
+    <ClCompile Include="FreeType\src\base\ftglyph.c" />
+    <ClCompile Include="FreeType\src\base\ftinit.c" />
+    <ClCompile Include="FreeType\src\base\ftlcdfil.c" />
+    <ClCompile Include="FreeType\src\base\ftstroke.c" />
+    <ClCompile Include="FreeType\src\base\ftsystem.c" />
+    <ClCompile Include="FreeType\src\base\fttype1.c" />
+    <ClCompile Include="FreeType\src\base\ftxf86.c" />
+    <ClCompile Include="FreeType\src\cff\cff.c" />
+    <ClCompile Include="FreeType\src\pshinter\pshinter.c" />
+    <ClCompile Include="FreeType\src\psnames\psnames.c" />
+    <ClCompile Include="FreeType\src\raster\raster.c" />
+    <ClCompile Include="FreeType\src\sfnt\sfnt.c" />
+    <ClCompile Include="FreeType\src\smooth\smooth.c" />
+    <ClCompile Include="FreeType\src\truetype\truetype.c" />
+    <ClCompile Include="Lua\lapi.c" />
+    <ClCompile Include="Lua\lauxlib.c" />
+    <ClCompile Include="Lua\lbaselib.c" />
+    <ClCompile Include="Lua\lcode.c" />
+    <ClCompile Include="Lua\ldblib.c" />
+    <ClCompile Include="Lua\ldebug.c" />
+    <ClCompile Include="Lua\ldo.c" />
+    <ClCompile Include="Lua\ldump.c" />
+    <ClCompile Include="Lua\lfunc.c" />
+    <ClCompile Include="Lua\lgc.c" />
+    <ClCompile Include="Lua\linit.c" />
+    <ClCompile Include="Lua\liolib.c" />
+    <ClCompile Include="Lua\llex.c" />
+    <ClCompile Include="Lua\lmathlib.c" />
+    <ClCompile Include="Lua\lmem.c" />
+    <ClCompile Include="Lua\loadlib.c" />
+    <ClCompile Include="Lua\lobject.c" />
+    <ClCompile Include="Lua\lopcodes.c" />
+    <ClCompile Include="Lua\loslib.c" />
+    <ClCompile Include="Lua\lparser.c" />
+    <ClCompile Include="Lua\lstate.c" />
+    <ClCompile Include="Lua\lstring.c" />
+    <ClCompile Include="Lua\lstrlib.c" />
+    <ClCompile Include="Lua\ltable.c" />
+    <ClCompile Include="Lua\ltablib.c" />
+    <ClCompile Include="Lua\ltm.c" />
+    <ClCompile Include="Lua\lundump.c" />
+    <ClCompile Include="Lua\lvm.c" />
+    <ClCompile Include="Lua\lzio.c" />
+    <ClCompile Include="Lua\print.c" />
+    <ClCompile Include="PX2CharCodingGBK.cpp" />
+    <ClCompile Include="PX2CharCodingUTF8.cpp" />
     <ClCompile Include="PX2CSVParser.cpp" />
+    <ClCompile Include="PX2Font.cpp" />
+    <ClCompile Include="PX2FontBitmapImpl.cpp" />
+    <ClCompile Include="PX2FontCommonImpl.cpp" />
+    <ClCompile Include="PX2FontGlyphMapFreeType.cpp" />
+    <ClCompile Include="PX2FontGlyphMapTrueType.cpp" />
+    <ClCompile Include="PX2FontManager.cpp" />
+    <ClCompile Include="PX2InputEventAdapter.cpp" />
+    <ClCompile Include="PX2InputEventListener.cpp" />
+    <ClCompile Include="PX2InputEvent.cpp" />
     <ClCompile Include="PX2JNI.cpp" />
     <ClCompile Include="PX2LanguageManager.cpp" />
+    <ClCompile Include="PX2LuaManager.cpp" />
     <ClCompile Include="PX2ResourceManager.cpp" />
+    <ClCompile Include="PX2ScriptManager.cpp" />
+    <ClCompile Include="PX2TexPackData.cpp" />
     <ClCompile Include="PX2XMLData.cpp" />
     <ClCompile Include="PX2XMLNode.cpp" />
     <ClCompile Include="TinyXML\tinystr.cpp" />
     <ClCompile Include="TinyXML\tinyxml.cpp" />
     <ClCompile Include="TinyXML\tinyxmlerror.cpp" />
     <ClCompile Include="TinyXML\tinyxmlparser.cpp" />
+    <ClCompile Include="ToLua\tolua_event.c" />
+    <ClCompile Include="ToLua\tolua_is.c" />
+    <ClCompile Include="ToLua\tolua_map.c" />
+    <ClCompile Include="ToLua\tolua_push.c" />
+    <ClCompile Include="ToLua\tolua_to.c" />
     <ClCompile Include="ZLib\adler32.c" />
     <ClCompile Include="ZLib\compress.c" />
     <ClCompile Include="ZLib\crc32.c" />
@@ -185,7 +251,6 @@
     <ClInclude Include="DevIL\il_stack.h" />
     <ClInclude Include="DevIL\il_states.h" />
     <ClInclude Include="DevIL\il_targa.h" />
-    <ClInclude Include="DevIL\il_utx.h" />
     <ClInclude Include="DevIL\il_vtf.h" />
     <ClInclude Include="DevIL\il_wdp.h" />
     <ClInclude Include="DevIL\PNG\png.h" />
@@ -195,9 +260,50 @@
     <ClInclude Include="DevIL\PNG\pnglibconf.h" />
     <ClInclude Include="DevIL\PNG\pngpriv.h" />
     <ClInclude Include="DevIL\PNG\pngstruct.h" />
+    <ClInclude Include="FreeType\include\ft2build.h" />
+    <ClInclude Include="Lua\lapi.h" />
+    <ClInclude Include="Lua\lauxlib.h" />
+    <ClInclude Include="Lua\lcode.h" />
+    <ClInclude Include="Lua\ldebug.h" />
+    <ClInclude Include="Lua\ldo.h" />
+    <ClInclude Include="Lua\lfunc.h" />
+    <ClInclude Include="Lua\lgc.h" />
+    <ClInclude Include="Lua\llex.h" />
+    <ClInclude Include="Lua\llimits.h" />
+    <ClInclude Include="Lua\lmem.h" />
+    <ClInclude Include="Lua\lobject.h" />
+    <ClInclude Include="Lua\lopcodes.h" />
+    <ClInclude Include="Lua\lparser.h" />
+    <ClInclude Include="Lua\lstate.h" />
+    <ClInclude Include="Lua\lstring.h" />
+    <ClInclude Include="Lua\ltable.h" />
+    <ClInclude Include="Lua\ltm.h" />
+    <ClInclude Include="Lua\lua.h" />
+    <ClInclude Include="Lua\luaconf.h" />
+    <ClInclude Include="Lua\lualib.h" />
+    <ClInclude Include="Lua\lundump.h" />
+    <ClInclude Include="Lua\lvm.h" />
+    <ClInclude Include="Lua\lzio.h" />
+    <ClInclude Include="PX2CharCoding.hpp" />
+    <ClInclude Include="PX2CharCodingGBK.hpp" />
+    <ClInclude Include="PX2CharCodingUTF8.hpp" />
     <ClInclude Include="PX2CSVParser.hpp" />
+    <ClInclude Include="PX2Font.hpp" />
+    <ClInclude Include="PX2FontBitmapImpl.hpp" />
+    <ClInclude Include="PX2FontCommonImpl.hpp" />
+    <ClInclude Include="PX2FontDefine.hpp" />
+    <ClInclude Include="PX2FontGlyphMap.hpp" />
+    <ClInclude Include="PX2FontGlyphMapFreeType.hpp" />
+    <ClInclude Include="PX2FontGlyphMapTrueType.hpp" />
+    <ClInclude Include="PX2FontManager.hpp" />
+    <ClInclude Include="PX2InputEventListener.hpp" />
+    <ClInclude Include="PX2InputEvent.hpp" />
+    <ClInclude Include="PX2InputEventAdapter.hpp" />
     <ClInclude Include="PX2JNI.hpp" />
     <ClInclude Include="PX2LanguageManager.hpp" />
+    <ClInclude Include="PX2LuaManager.hpp" />
+    <ClInclude Include="PX2ScriptManager.hpp" />
+    <ClInclude Include="PX2TexPackData.hpp" />
     <ClInclude Include="PX2ResourceManager.hpp" />
     <ClInclude Include="PX2Unity.hpp" />
     <ClInclude Include="PX2UnityPre.hpp" />
@@ -205,6 +311,8 @@
     <ClInclude Include="PX2XMLNode.hpp" />
     <ClInclude Include="TinyXML\tinystr.h" />
     <ClInclude Include="TinyXML\tinyxml.h" />
+    <ClInclude Include="ToLua\tolua++.h" />
+    <ClInclude Include="ToLua\tolua_event.h" />
     <ClInclude Include="ZLib\crc32.h" />
     <ClInclude Include="ZLib\deflate.h" />
     <ClInclude Include="ZLib\gzguts.h" />
@@ -220,8 +328,16 @@
     <ClInclude Include="ZLib\zutil.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Lua\Makefile" />
     <None Include="PX2CSVParser.inl" />
+    <None Include="PX2Font.inl" />
+    <None Include="PX2FontCommonImpl.inl" />
+    <None Include="PX2FontManager.inl" />
+    <None Include="PX2InputEventAdapter.inl" />
+    <None Include="PX2LuaManager.inl" />
     <None Include="PX2ResourceManager.inl" />
+    <None Include="PX2ScriptManager.inl" />
+    <None Include="PX2TexPackData.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{ABAB3D8F-DB63-47E6-966D-C4DF261E9E56}</ProjectGuid>
@@ -297,8 +413,8 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;IL_STATIC_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\;.\DevIL;.\DevIL\PNG;.\DevIL\JPEG;.\ZLib;.\ZLib\minzip;.\TinyXML;..\PX2SDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;IL_STATIC_LIB;FT2_BUILD_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\;.\DevIL;.\DevIL\PNG;.\ZLib;.\ZLib\minzip;.\TinyXML;..\PX2SDK\Include;.\FreeType\include;.\FreeType\include\freetype;.\FreeType\include\config;.\FreeType\include\internal;.\FreeType\src\base;.\FreeType\src\autofit;.\FreeType\src\cff;.\FreeType\src\pshinter;.\FreeType\src\psnames;.\FreeType\src\truetype;.\FreeType\src\smooth;.\FreeType\src\sfnt;.\FreeType\src\raster;.\Lua;.\ToLua;..\ThirdPartiesLibs\pthread\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -341,8 +457,8 @@ xcopy /DY "$(TargetPath)" ..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Con
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;IL_STATIC_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\;.\ZLib;.\ZLib\minzip;.\DevIL;.\DevIL\PNG;.\DevIL\JPEG;.\TinyXML;..\PX2SDK\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;IL_STATIC_LIB;FT2_BUILD_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\;.\DevIL;.\DevIL\PNG;.\ZLib;.\ZLib\minzip;.\TinyXML;..\PX2SDK\Include;.\FreeType\include;.\FreeType\include\freetype;.\FreeType\include\config;.\FreeType\include\internal;.\FreeType\src\base;.\FreeType\src\autofit;.\FreeType\src\cff;.\FreeType\src\pshinter;.\FreeType\src\psnames;.\FreeType\src\truetype;.\FreeType\src\smooth;.\FreeType\src\sfnt;.\FreeType\src\raster;.\Lua;.\ToLua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -25,8 +25,6 @@ namespace PX2Editor
 		virtual int OnExit();
 
 	protected:
-		void AddHandlers ();
-
 		MainFrame *mMainFrame;
 	};
 

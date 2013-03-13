@@ -114,21 +114,21 @@ static char s_DBCSBuffer[MAX_CONVERT];
 static wchar_t s_UnicodeBuffer[MAX_CONVERT];
 //----------------------------------------------------------------------------
 int StringHelp::UnicodeToAnsi (char *dest, int maxChar, const wchar_t *src,
-						  int srcChar)
+						  int numSrcChar)
 {
 #ifdef WIN32
 
 	int nchar;
 #ifdef _DEBUG
 	nchar = WideCharToMultiByte(CP_ACP, WC_SEPCHARS|WC_COMPOSITECHECK, src, 
-		srcChar, dest, 0, NULL, NULL );
+		numSrcChar, dest, 0, NULL, NULL );
 	assertion(nchar<maxChar, "");
 #endif
 	nchar = WideCharToMultiByte(
 		CP_ACP,
 		WC_SEPCHARS | WC_COMPOSITECHECK,
 		src,
-		srcChar,
+		numSrcChar,
 		dest,
 		maxChar,
 		NULL,
@@ -145,20 +145,20 @@ int StringHelp::UnicodeToAnsi (char *dest, int maxChar, const wchar_t *src,
 }
 //----------------------------------------------------------------------------
 int StringHelp::AnsiToUnicode (wchar_t *dest, int maxChar, const char *src, 
-						  int srcChar)
+						  int numSrcChar)
 {
 	#ifdef WIN32
 
 	int nchar;
 #ifdef _DEBUG
-	nchar = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, src, srcChar, dest, 0);
+	nchar = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, src, numSrcChar, dest, 0);
 	assertion(nchar<=maxChar, "");
 #endif
 	nchar = MultiByteToWideChar(
 		CP_ACP,
 		MB_PRECOMPOSED,
 		src,
-		srcChar,
+		numSrcChar,
 		dest,
 		maxChar);
 	assertion (nchar>0, "");
@@ -173,23 +173,130 @@ int StringHelp::AnsiToUnicode (wchar_t *dest, int maxChar, const char *src,
 #endif
 }
 //----------------------------------------------------------------------------
-const char *StringHelp::UnicodeToAnsi (const wchar_t *src, int srcChar)
+int StringHelp::UnicodeToUTF8 (char *dest, int maxChar, const wchar_t *src, 
+	int numSrcChar)
 {
-	StringHelp::UnicodeToAnsi(s_DBCSBuffer, MAX_CONVERT, src, srcChar);
+	unsigned char *destTemp = (unsigned char *)dest;
+	const wchar_t *cur = src;
+	int srcCount = numSrcChar<0 ? 2147483647 : numSrcChar;
+
+	while (*cur && srcCount>0)
+	{
+		srcCount--;
+		wchar_t c = *cur++;
+
+		if( c < 0x80 )
+		{
+			*destTemp++ = (unsigned char)c;
+		}
+		else if( c < 0x800 )
+		{
+			*destTemp++ = (c>>6) | 0xC0;
+			*destTemp++ = (c&0x3F) | 0x80;
+		}
+		else
+		{
+			*destTemp++ = (c>>12) | 0xE0;
+			*destTemp++ = ((c>>6)&0x3F) | 0x80;
+			*destTemp++ = (c&0x3F) | 0x80;
+		}
+	}
+	*destTemp++ = 0;
+
+	int nunChar = int((char *)destTemp - (char *)dest - 1);
+
+	assertion(nunChar<maxChar, "nunChar<maxChar\n");
+
+	return nunChar;
+}
+//----------------------------------------------------------------------------
+int StringHelp::UTF8ToUnicode (wchar_t *dest, int maxChar, const char *src, 
+	int numSrcChar)
+{
+	wchar_t *destTemp = dest;
+	const unsigned char *cur = (unsigned char *)src;
+	int srcCount = numSrcChar<0 ? 2147483647 : numSrcChar;
+
+	while( *cur && srcCount>0 )
+	{
+		srcCount--;
+		unsigned char head = *cur++;
+		unsigned char mask = 0x80;
+		wchar_t  c = 0;
+
+		int bitshift = 0;
+		if( head&mask )
+		{
+			mask >>= 1;
+			while( head&mask )
+			{
+				assert( *cur!=0 && srcCount>0 );
+				srcCount--;
+
+				mask >>= 1;
+				c = (c<<6) | (*cur++ & 0x3F);
+				bitshift += 6;
+			}
+		}
+
+		c |= (head&(mask-1)) << bitshift;
+		*destTemp++ = c;
+	}
+	*destTemp++ = 0;
+
+	int numChar = int((char *)destTemp - (char *)dest - 1);
+
+	assertion(numChar<maxChar, "nchar<maxChar");
+
+	return numChar;
+}
+//----------------------------------------------------------------------------
+const char *StringHelp::UnicodeToAnsi (const wchar_t *src, int numSrcChar)
+{
+	StringHelp::UnicodeToAnsi(s_DBCSBuffer, MAX_CONVERT, src, numSrcChar);
 	return s_DBCSBuffer;
 }
 //----------------------------------------------------------------------------
-wchar_t *StringHelp::AnsiToUnicode (const char *src, int srcChar)
+wchar_t *StringHelp::AnsiToUnicode (const char *src, int numSrcChar)
 {
-	StringHelp::AnsiToUnicode(s_UnicodeBuffer, MAX_CONVERT, src, srcChar);
+	StringHelp::AnsiToUnicode(s_UnicodeBuffer, MAX_CONVERT, src, numSrcChar);
 	return s_UnicodeBuffer;
 }
 //----------------------------------------------------------------------------
-std::string StringHelp::IntToString (int i)
+const size_t gStringHelpMaxConvert = 4096*2;
+static char gsStringHelpDBCSBuffer[gStringHelpMaxConvert];
+static wchar_t gsStringHelpUnicodeBuffer[gStringHelpMaxConvert];
+//----------------------------------------------------------------------------
+const char *StringHelp::UnicodeToUTF8( const wchar_t *src, int numSrcChar)
+{
+	UnicodeToUTF8(gsStringHelpDBCSBuffer, gStringHelpMaxConvert, src,
+		numSrcChar);
+
+	return gsStringHelpDBCSBuffer;
+}
+//----------------------------------------------------------------------------
+const wchar_t *StringHelp::UTF8ToUnicode( const char *src, int numSrcChar)
+{
+	UTF8ToUnicode(gsStringHelpUnicodeBuffer, gStringHelpMaxConvert, src, 
+		numSrcChar);
+
+	return gsStringHelpUnicodeBuffer;
+}
+//----------------------------------------------------------------------------
+std::string StringHelp::IntToString (int val)
 {
 	static char c[10];
 	string str;
-	sprintf(c, "%d", i);
+	sprintf(c, "%d", val);
+	str = c;
+	return str;
+}
+//----------------------------------------------------------------------------
+std::string StringHelp::FloatToString (float val)
+{
+	static char c[10];
+	string str;
+	sprintf(c, "%.2f", val);
 	str = c;
 	return str;
 }

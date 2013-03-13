@@ -9,6 +9,8 @@
 
 #include "PX2Actor.hpp"
 #include "PX2Terrain.hpp"
+#include "PX2RawTerrain.hpp"
+#include "PX2LODTerrain.hpp"
 
 namespace PX2
 {
@@ -23,15 +25,23 @@ namespace PX2
 		TerrainActor ();
 		virtual ~TerrainActor ();
 
-		void SetTerrain (Terrain *terrain);
-		Terrain *GetTerrain ();
+		void UseLod (bool use);
+		bool IsUseLod ();
+
+		void SetRawTerrain (RawTerrain *rawTerrain);
+		RawTerrain *GetRawTerrain ();
+
+		void SetLODTerrain (LODTerrain *terrain);
+		LODTerrain *GetLODTerrain ();
 
 		virtual void DoEnter ();
 		virtual void DoExecute (Event *event);
 		virtual void DoLeave ();
 
 	protected:
-		TerrainPtr mTerrain;
+		bool mIsUseLOD;
+		RawTerrainPtr mRawTerrain;
+		LODTerrainPtr mLODTerrain;
 	};
 
 	PX2_REGISTER_STREAM(TerrainActor);

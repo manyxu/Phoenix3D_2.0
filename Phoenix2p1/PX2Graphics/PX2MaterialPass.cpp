@@ -5,6 +5,7 @@
 */
 
 #include "PX2MaterialPass.hpp"
+#include "PX2Renderer.hpp"
 using namespace PX2;
 
 PX2_IMPLEMENT_RTTI(PX2, Object, MaterialPass);
@@ -18,6 +19,7 @@ MaterialPass::MaterialPass ()
 //----------------------------------------------------------------------------
 MaterialPass::~MaterialPass ()
 {
+	Renderer::UnbindAll(this);
 }
 //----------------------------------------------------------------------------
 

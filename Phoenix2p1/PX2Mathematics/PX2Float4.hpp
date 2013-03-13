@@ -32,6 +32,7 @@ namespace PX2
 		Float4& operator= (const Float4& tuple);
 
 		static const Float4 ZERO;   //< (0,0,0,0)
+		static const Float4 UNIT;	//< (1,1,1,1)
 		static const Float4 BLACK;	//< (0,0,0,1)
 		static const Float4 WHITE;	//< (1,1,1,1)
 		static const Float4 RED;	//< (1,0,0,1)

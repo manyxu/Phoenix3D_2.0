@@ -9,11 +9,13 @@
 #include "PX2Light.hpp"
 #include "PX2GraphicsRoot.hpp"
 #include "PX2StandardMaterial.hpp"
+#include "PX2StandardESMaterial_Default.hpp"
 #include "PX2LightAmbientConstant.hpp"
 #include "PX2LightDiffuseConstant.hpp"
 #include "PX2LightSpecularConstant.hpp"
 #include "PX2LightAttenuationConstant.hpp"
 #include "PX2LightModelDVectorConstant.hpp"
+#include "PX2JunglerMaterial.hpp"
 using namespace PX2;
 
 //----------------------------------------------------------------------------
@@ -204,17 +206,50 @@ void Culler::ComputeEnvironment ()
 		}
 
 		PX2::MaterialInstance *inst = renderable->GetMaterialInstance();
+		if (!inst)
+			continue;
+
 		PX2::Material *mtl = inst->GetMaterial();
-		PX2::StandardMaterial *standardMtl = 
-			DynamicCast<StandardMaterial>(mtl);
+		PX2::StandardMaterial *stdMtl = DynamicCast<StandardMaterial>(mtl);
+		PX2::StandardESMaterial_Default *stdDefMtl = 
+			DynamicCast<StandardESMaterial_Default>(mtl);
+		PX2::JunglerMaterial *junglerMtl = DynamicCast<JunglerMaterial>(mtl);
+
 		LightModelDVectorConstant *modelDVectorConstant = 0;
 		LightDiffuseConstant *difConstant = 0;
-		if (standardMtl && lightDir)
+
+		if (stdMtl && lightDir)
 		{
 			modelDVectorConstant = DynamicCast<LightModelDVectorConstant>(
 				inst->GetVertexConstant(0, "gLightModelDirection"));
 			difConstant = DynamicCast<LightDiffuseConstant>(
 				inst->GetPixelConstant(0, "gLightColour"));
+
+			if (modelDVectorConstant)
+				modelDVectorConstant->SetLight(lightDir);
+
+			if (difConstant)
+				difConstant->SetLight(lightDir);
+		}
+		else if (stdDefMtl && lightDir)
+		{
+			modelDVectorConstant = DynamicCast<LightModelDVectorConstant>(
+				inst->GetVertexConstant(0, "gLightModelDirection"));
+			difConstant = DynamicCast<LightDiffuseConstant>(
+				inst->GetVertexConstant(0, "gLightColour"));
+
+			if (modelDVectorConstant)
+				modelDVectorConstant->SetLight(lightDir);
+
+			if (difConstant)
+				difConstant->SetLight(lightDir);
+		}
+		else if (junglerMtl && lightDir)
+		{
+			modelDVectorConstant = DynamicCast<LightModelDVectorConstant>(
+				inst->GetVertexConstant(0, "gLightModelDirection"));
+			difConstant = DynamicCast<LightDiffuseConstant>(
+				inst->GetVertexConstant(0, "gLightColour"));
 
 			if (modelDVectorConstant)
 				modelDVectorConstant->SetLight(lightDir);

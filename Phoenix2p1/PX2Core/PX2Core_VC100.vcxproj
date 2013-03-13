@@ -19,18 +19,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PX2AbstractObserver.hpp" />
     <ClInclude Include="PX2Any.hpp" />
+    <ClInclude Include="PX2Ascii.hpp" />
     <ClInclude Include="PX2Assert.hpp" />
     <ClInclude Include="PX2BufferIO.hpp" />
     <ClInclude Include="PX2Condition.hpp" />
     <ClInclude Include="PX2ConditionType.hpp" />
     <ClInclude Include="PX2Core.hpp" />
     <ClInclude Include="PX2CorePre.hpp" />
-    <ClInclude Include="PX2DayTime.hpp" />
+    <ClInclude Include="PX2CrashMiniDump.hpp" />
+    <ClInclude Include="PX2DateTime.hpp" />
     <ClInclude Include="PX2DoubleChainList.hpp" />
     <ClInclude Include="PX2Endian.hpp" />
     <ClInclude Include="PX2Environment.hpp" />
+    <ClInclude Include="PX2Eventt.hpp" />
     <ClInclude Include="PX2FileIO.hpp" />
+    <ClInclude Include="PX2FixMemoryPool.hpp" />
     <ClInclude Include="PX2FString.hpp" />
     <ClInclude Include="PX2InitTerm.hpp" />
     <ClInclude Include="PX2InStream.hpp" />
@@ -42,28 +47,48 @@
     <ClInclude Include="PX2Mutex.hpp" />
     <ClInclude Include="PX2MutexType.hpp" />
     <ClInclude Include="PX2Names.hpp" />
+    <ClInclude Include="PX2NObserver.hpp" />
     <ClInclude Include="PX2Noncopyable.hpp" />
+    <ClInclude Include="PX2Notification.hpp" />
+    <ClInclude Include="PX2NotificationCenter.hpp" />
+    <ClInclude Include="PX2NotificationQueue.hpp" />
     <ClInclude Include="PX2Object.hpp" />
+    <ClInclude Include="PX2Observer.hpp" />
     <ClInclude Include="PX2OutStream.hpp" />
     <ClInclude Include="PX2Rtti.hpp" />
+    <ClInclude Include="PX2Runnable.hpp" />
     <ClInclude Include="PX2ScopedCS.hpp" />
+    <ClInclude Include="PX2Semaphore.hpp" />
     <ClInclude Include="PX2Singleton.hpp" />
     <ClInclude Include="PX2SmartPointer.hpp" />
     <ClInclude Include="PX2Stream.hpp" />
     <ClInclude Include="PX2StringHelp.hpp" />
     <ClInclude Include="PX2Table.hpp" />
     <ClInclude Include="PX2Thread.hpp" />
+    <ClInclude Include="PX2ThreadLocal.hpp" />
+    <ClInclude Include="PX2ThreadPool.hpp" />
+    <ClInclude Include="PX2ThreadTarget.hpp" />
     <ClInclude Include="PX2ThreadType.hpp" />
     <ClInclude Include="PX2Time.hpp" />
+    <ClInclude Include="PX2TimedNotificationQueue.hpp" />
+    <ClInclude Include="PX2Timer.hpp" />
+    <ClInclude Include="PX2TimerManager.hpp" />
+    <ClInclude Include="PX2TimerTask.hpp" />
+    <ClInclude Include="PX2Timespan.hpp" />
+    <ClInclude Include="PX2Timestamp.hpp" />
     <ClInclude Include="PX2Tuple.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="PX2AbstractObserver.cpp" />
+    <ClCompile Include="PX2Ascii.cpp" />
     <ClCompile Include="PX2Assert.cpp" />
     <ClCompile Include="PX2BufferIO.cpp" />
     <ClCompile Include="PX2Condition.cpp" />
-    <ClCompile Include="PX2DayTime.cpp" />
+    <ClCompile Include="PX2CrashMiniDump.cpp" />
+    <ClCompile Include="PX2DateTime.cpp" />
     <ClCompile Include="PX2Endian.cpp" />
     <ClCompile Include="PX2Environment.cpp" />
+    <ClCompile Include="PX2Eventt.cpp" />
     <ClCompile Include="PX2FileIO.cpp" />
     <ClCompile Include="PX2FString.cpp" />
     <ClCompile Include="PX2InitTerm.cpp" />
@@ -73,28 +98,51 @@
     <ClCompile Include="PX2LogOutputWindowHandler.cpp" />
     <ClCompile Include="PX2Memory.cpp" />
     <ClCompile Include="PX2Mutex.cpp" />
+    <ClCompile Include="PX2Notification.cpp" />
+    <ClCompile Include="PX2NotificationCenter.cpp" />
+    <ClCompile Include="PX2NotificationQueue.cpp" />
     <ClCompile Include="PX2Object.cpp" />
     <ClCompile Include="PX2OutStream.cpp" />
     <ClCompile Include="PX2Rtti.cpp" />
+    <ClCompile Include="PX2Runnable.cpp" />
     <ClCompile Include="PX2ScopedCS.cpp" />
+    <ClCompile Include="PX2Semaphore.cpp" />
     <ClCompile Include="PX2SmartPointer.cpp" />
     <ClCompile Include="PX2Stream.cpp" />
     <ClCompile Include="PX2StringHelp.cpp" />
     <ClCompile Include="PX2Thread.cpp" />
+    <ClCompile Include="PX2ThreadLocal.cpp" />
+    <ClCompile Include="PX2ThreadPool.cpp" />
+    <ClCompile Include="PX2ThreadTarget.cpp" />
     <ClCompile Include="PX2Time.cpp" />
+    <ClCompile Include="PX2TimedNotificationQueue.cpp" />
+    <ClCompile Include="PX2Timer.cpp" />
+    <ClCompile Include="PX2TimerManager.cpp" />
+    <ClCompile Include="PX2TimerTask.cpp" />
+    <ClCompile Include="PX2Timespan.cpp" />
+    <ClCompile Include="PX2Timestamp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="PX2Ascii.inl" />
     <None Include="PX2BufferIO.inl" />
+    <None Include="PX2DateTime.inl" />
     <None Include="PX2DoubleChainList.inl" />
     <None Include="PX2FileIO.inl" />
+    <None Include="PX2FixMemoryPool.inl" />
     <None Include="PX2InStream.inl" />
     <None Include="PX2Memory.inl" />
     <None Include="PX2MinHeap.inl" />
+    <None Include="PX2NObserver.inl" />
     <None Include="PX2Object.inl" />
+    <None Include="PX2Observer.inl" />
     <None Include="PX2OutStream.inl" />
     <None Include="PX2Rtti.inl" />
     <None Include="PX2SmartPointer.inl" />
     <None Include="PX2Table.inl" />
+    <None Include="PX2Thread.inl" />
+    <None Include="PX2TimerTask.inl" />
+    <None Include="PX2Timespan.inl" />
+    <None Include="PX2Timestamp.inl" />
     <None Include="PX2Tuple.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -176,7 +224,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ThirdPartiesLibs\pthread\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

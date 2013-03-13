@@ -11,7 +11,8 @@ using namespace PX2;
 //----------------------------------------------------------------------------
 PdrVertexBuffer::PdrVertexBuffer (Renderer*, const VertexBuffer* vbuffer)
 	:
-mBuffer(0)
+mBuffer(0),
+mVBuffer(vbuffer)
 {
 	PX2_GL_CHECK(glGenBuffers(1, &mBuffer));
 
@@ -22,37 +23,46 @@ mBuffer(0)
 	int totalSize = eleSize * eleNum;
 	int numBytes = vbuffer->GetNumBytes();
 
-	glBufferData(GL_ARRAY_BUFFER, vbuffer->GetNumBytes(), vbuffer->GetData(),
-		gOGLBufferUsage[vbuffer->GetUsage()]);
+	PX2_GL_CHECK(glBufferData(GL_ARRAY_BUFFER, vbuffer->GetNumBytes(), vbuffer->GetData(),
+		gOGLBufferUsage[vbuffer->GetUsage()]));
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	PX2_GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, 0));
 }
 //----------------------------------------------------------------------------
 PdrVertexBuffer::~PdrVertexBuffer ()
 {
-	glDeleteBuffers(1, &mBuffer);
+	PX2_GL_CHECK(glDeleteBuffers(1, &mBuffer));
 }
 //----------------------------------------------------------------------------
 void PdrVertexBuffer::Enable (Renderer*, unsigned int, unsigned int,
 							  unsigned int)
 {
-	glBindBuffer(GL_ARRAY_BUFFER, mBuffer);
+	PX2_GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, mBuffer));
 }
 //----------------------------------------------------------------------------
 void PdrVertexBuffer::Disable (Renderer*, unsigned int)
 {
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	PX2_GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, 0));
 }
 //----------------------------------------------------------------------------
 void* PdrVertexBuffer::Lock (Buffer::Locking mode)
 {
-	PX2_UNUSED(mode);
-	assertion (false, "OpenglES2 does't support.");
+	PX2_GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, mBuffer));
+
+	int eleSize = mVBuffer->GetElementSize();
+	int eleNum = mVBuffer->GetNumElements();
+	int totalSize = eleSize * eleNum;
+	int numBytes = mVBuffer->GetNumBytes();
+
+	PX2_GL_CHECK(glBufferData(GL_ARRAY_BUFFER, mVBuffer->GetNumBytes(), mVBuffer->GetData(),
+		gOGLBufferUsage[mVBuffer->GetUsage()]));
+
+	PX2_GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, 0));
+
 	return 0;
 }
 //----------------------------------------------------------------------------
 void PdrVertexBuffer::Unlock ()
 {
-	assertion (false, "OpenglES does't support.");
 }
 //----------------------------------------------------------------------------

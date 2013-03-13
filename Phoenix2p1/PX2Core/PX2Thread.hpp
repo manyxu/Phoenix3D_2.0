@@ -1,13 +1,6 @@
 /*
-* Phoenix 3D 引擎 Version 2.0
-*
-* Copyright (C) 2009-2011 http://www.Phoenix3d.org/
 *
 * 文件名称	：	PX2Thread.hpp
-*
-* 版本		:	1.0 (2011/01/30)
-*
-* 作者		：	more
 *
 */
 
@@ -16,32 +9,80 @@
 
 #include "PX2CorePre.hpp"
 #include "PX2ThreadType.hpp"
+#include "PX2Runnable.hpp"
+#include "PX2Mutex.hpp"
 
 namespace PX2
 {
 
+	class ThreadLocalStorage;
+
 	class Thread
 	{
 	public:
-		Thread (void* function, void* userData, unsigned int processorNumber = 0,
-			unsigned int stackSize = 0);
-
+		Thread ();
+		Thread (const std::string& name);
 		~Thread ();
 
-		/// 恢复
-		void Resume ();
+		int GetID ();
+		void SetName(const std::string& name);
+		std::string GetName ();
 
-		/// 挂起
-		void Suspend ();
+		enum Priority
+		{
+			PRIO_LOWEST,
+			PRIO_LOW,
+			PRIO_NORMAL,
+			PRIO_HIGH,
+			PRIO_HIGHEST
+		};
+		void SetPriority(Priority prio);
+		Priority GetPriority() const;
+
+		void SetStackSize(int size);
+		int GetStackSize() const;
+
+		void Start (Runnable& runable);
+		typedef void (*Callback)(void*);
+		void Start (Callback callback, void *data = 0);
+
+		void Join();
+		bool Join(long milliseconds);
+
+		bool IsRunning() const;
+		ThreadType GetThread ();
+		unsigned int GetThreadID ();
+
+		static void DoYield();
+
+public_internal:
+		Runnable *mRunable;
+		Callback mCallback;
+		void* mUserData;
+
+	protected:
+		std::string MakeName();
+		static int UniqueID();
+
+		ThreadLocalStorage& TLS();
+		void ClearTLS();
 
 	private:
+		void ThreadCleanUp ();
+
+		int mID;
+		std::string mName;
+		Priority mPriority;
 		ThreadType mThread;
 		unsigned int mThreadID;
-		void* mFunction;
-		void* mUserData;
-		unsigned int mProcessorNumber;
 		unsigned int mStackSize;
+
+		ThreadLocalStorage* mTLS;
+		Mutex *mMutex;
+		friend class ThreadLocalStorage;
 	};
+
+#include "PX2Thread.inl"
 
 }
 

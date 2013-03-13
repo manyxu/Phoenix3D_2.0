@@ -22,8 +22,10 @@ mType(type),
 mVFormat(0),
 mVBuffer(0),
 mIBuffer(0),
-mMaterial(0)
+mMaterial(0),
+mSortIndex(0)
 {
+	SetRenderLayer(RL_SCENE);
 }
 //----------------------------------------------------------------------------
 Renderable::Renderable (PrimitiveType type, VertexFormat* vformat,
@@ -33,13 +35,21 @@ mType(type),
 mVFormat(vformat),
 mVBuffer(vbuffer),
 mIBuffer(ibuffer),
-mMaterial(0)
+mMaterial(0),
+mSortIndex(0)
 {
+	SetRenderLayer(RL_SCENE);
 	UpdateModelSpace(GU_MODEL_BOUND_ONLY);
 }
 //----------------------------------------------------------------------------
 Renderable::~Renderable ()
 {
+}
+//----------------------------------------------------------------------------
+void Renderable::SetRenderLayer (RenderLayer layer)
+{
+	mLayer = layer;
+	mSortIndex = (layer<<16)|(mSortIndex&0xff00ffff);
 }
 //----------------------------------------------------------------------------
 bool Renderable::AddLight (Light *light)
@@ -418,7 +428,8 @@ mType(PT_NONE),
 mVFormat(0),
 mVBuffer(0),
 mIBuffer(0),
-mMaterial(0)
+mMaterial(0),
+mSortIndex(0)
 {
 }
 //----------------------------------------------------------------------------
@@ -434,6 +445,8 @@ void Renderable::Load (InStream& source)
 	source.ReadPointer(mVBuffer);
 	source.ReadPointer(mIBuffer);
 	source.ReadPointer(mMaterial);
+	source.ReadEnum(mLayer);
+	SetRenderLayer(mLayer);
 
 	PX2_END_DEBUG_STREAM_LOAD(Renderable, source);
 }
@@ -478,6 +491,7 @@ void Renderable::Save (OutStream& target) const
 	target.WritePointer(mVBuffer);
 	target.WritePointer(mIBuffer);
 	target.WritePointer(mMaterial);
+	target.WriteEnum(mLayer);
 
 	PX2_END_DEBUG_STREAM_SAVE(Renderable, target);
 }
@@ -491,6 +505,7 @@ int Renderable::GetStreamingSize () const
 	size += PX2_POINTERSIZE(mVBuffer);
 	size += PX2_POINTERSIZE(mIBuffer);
 	size += PX2_POINTERSIZE(mMaterial);
+	size += PX2_POINTERSIZE(mLayer);
 	return size;
 }
 //----------------------------------------------------------------------------

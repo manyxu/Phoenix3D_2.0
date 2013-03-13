@@ -34,6 +34,7 @@ mNumBytes(numElements*elementSize)
 	assertion(mElementSize > 0, "Element size must be positive\n");
 
 	mData = new1<char>(mNumBytes);
+	memset(mData, 0, mNumBytes);
 }
 //----------------------------------------------------------------------------
 Buffer::~Buffer ()

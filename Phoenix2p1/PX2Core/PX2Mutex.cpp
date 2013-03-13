@@ -8,7 +8,7 @@
 #include "PX2Assert.hpp"
 using namespace PX2;
 
-#if defined(WIN32)
+#if (defined(_WIN32) || defined(WIN32)) && !defined(PX2_USE_PTHREAD)
 
 // system mutex非常慢，Critical sections相比较而言快很多。
 #define PX2_USE_CRITICAL_SECTIONS
@@ -23,7 +23,9 @@ using namespace PX2;
 #endif
 #include <windows.h>
 //----------------------------------------------------------------------------
-Mutex::Mutex ()
+Mutex::Mutex (bool isRecursive)
+	:
+mIsRecursive(isRecursive)
 {
 #ifdef PX2_USE_CRITICAL_SECTIONS
 	// The MSVS2010 documentation mentioned that the heap manager spin lock
@@ -76,57 +78,41 @@ void Mutex::Leave ()
 #endif
 }
 //----------------------------------------------------------------------------
-#elif defined(__LINUX__) || defined(__APPLE__) || defined(__ANDROID__)
+#elif defined(__LINUX__) || defined(__APPLE__) || defined(__ANDROID__) || defined(PX2_USE_PTHREAD)
 //----------------------------------------------------------------------------
-Mutex::Mutex ()
+Mutex::Mutex (bool isRecursive)
+	:
+mIsRecursive(isRecursive)
 {
-	int result;
-	PX2_UNUSED(result);
+	pthread_mutexattr_init(&mMutex.Attribute);
+	
+	if (mIsRecursive)
+	{
+		pthread_mutexattr_settype(&mMutex.Attribute, PTHREAD_MUTEX_RECURSIVE);
+	}
 
-	result = pthread_mutexattr_init(&mMutex.Attribute);
-	// successful = 0
-	// errors = ENOMEM
-
-	result = pthread_mutexattr_settype(&mMutex.Attribute,
-		PTHREAD_MUTEX_RECURSIVE);
-	// successful = 0
-
-	result = pthread_mutex_init(&mMutex.Mutex, &mMutex.Attribute);
-	// successful = 0
-	// errors = EAGAIN, ENOMEM, EPERM, EBUSY, EINVAL
+	pthread_mutex_init(&mMutex.Mutex, &mMutex.Attribute);
 }
 //----------------------------------------------------------------------------
 Mutex::~Mutex ()
 {
-	int result;
-	PX2_UNUSED(result);
-
-	result = pthread_mutex_destroy(&mMutex.Mutex);
-	// successful = 0
-	// errors = EINVAL
-
-	result = pthread_mutexattr_destroy(&mMutex.Attribute);
-	// successful = 0
-	// errors = EBUSY, EINVAL
+	pthread_mutex_destroy(&mMutex.Mutex);
+	pthread_mutexattr_destroy(&mMutex.Attribute);
 }
 //----------------------------------------------------------------------------
 void Mutex::Enter ()
 {
 	int result = pthread_mutex_lock(&mMutex.Mutex);
+	assertion(0==result, "pthread_mutex_lock failed.\n");
 	PX2_UNUSED(result);
-	// successful = 0
-	// errors = EINVAL, EDEADLK
 }
 //----------------------------------------------------------------------------
 void Mutex::Leave ()
 {
 	int result = pthread_mutex_unlock(&mMutex.Mutex);
+	assertion(0==result, "pthread_mutex_unlock failed.\n");
 	PX2_UNUSED(result);
-	// successful = 0
-	// errors = EINVAL, EPERM
 }
 //----------------------------------------------------------------------------
-#else
-#error Other platforms not yet implemented.
 #endif
 //----------------------------------------------------------------------------

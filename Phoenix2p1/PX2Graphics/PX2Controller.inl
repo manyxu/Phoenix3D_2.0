@@ -5,18 +5,31 @@
 */
 
 //----------------------------------------------------------------------------
+inline double Controller::GetRunTime ()
+{
+	if (!mIsTimeInited)
+		return 0.0;
+
+	return mApplicationTime - mInitedApplicationIime;
+}
+//----------------------------------------------------------------------------
 inline Controlledable* Controller::GetObject () const
 {
     return mObject;
 }
 //----------------------------------------------------------------------------
-inline void Controller::SetApplicationTime (double applicationTime)
-{
-    mApplicationTime = applicationTime;
-}
-//----------------------------------------------------------------------------
 inline double Controller::GetApplicationTime () const
 {
     return mApplicationTime;
+}
+//----------------------------------------------------------------------------
+inline bool Controller::IsTimeInited ()
+{
+	return mIsTimeInited;
+}
+//----------------------------------------------------------------------------
+inline double Controller::GetElapsedTime ()
+{
+	return mApplicationTime - mLastApplicationTime;
 }
 //----------------------------------------------------------------------------

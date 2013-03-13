@@ -9,22 +9,26 @@ using namespace PX2Editor;
 using namespace PX2;
 
 IMPLEMENT_DYNAMIC_CLASS(PX2Editor::PropertyGrid, wxWindow)
-	BEGIN_EVENT_TABLE(PropertyGrid, wxWindow)
+BEGIN_EVENT_TABLE(PropertyGrid, wxWindow)
 	EVT_SIZE(PropertyGrid::OnSize)
 	EVT_MOVE(PropertyGrid::OnMove)
-	EVT_PG_CHANGED(PGT_MAX_TYPE, PropertyGrid::OnPropertyGridChange )
-	END_EVENT_TABLE()
-	//-----------------------------------------------------------------------------
-	PropertyGrid::PropertyGrid ()
-	:
-wxWindow(NULL, -1)
+	EVT_PG_CHANGED(PGT_MAX_TYPE, PropertyGrid::OnPropertyGridChange)
+	EVT_PG_CHANGING(PGT_MAX_TYPE, PropertyGrid::OnPropertyGridChanging)
+	EVT_PG_SELECTED(PGT_MAX_TYPE, PropertyGrid::OnPropertyGridSelect)
+END_EVENT_TABLE()
+//-----------------------------------------------------------------------------
+PropertyGrid::PropertyGrid ()
+:
+wxWindow(NULL, -1),
+mPropGridManager(0)
 {
 }
 //-----------------------------------------------------------------------------
 PropertyGrid::PropertyGrid (wxWindow *parent, PropertyGridType type)
 	:
 wxWindow(parent, -1),
-	mPropertyGridType(type)
+mPropertyGridType(type),
+mPropGridManager(0)
 {
 	Create(
 		wxPG_BOLD_MODIFIED |
@@ -41,7 +45,14 @@ wxWindow(parent, -1),
 //-----------------------------------------------------------------------------
 PropertyGrid::~PropertyGrid ()
 {
+	mActivePage = 0;
+	for (int i=0; i<(int)mPages.size(); i++)
+	{
+		mPages[i] = 0;
+	}
 
+	if (mPropGridManager)
+		mPropGridManager->Clear();
 }
 //-----------------------------------------------------------------------------
 void PropertyGrid::Create (int style, int extraStyle)
@@ -56,8 +67,7 @@ void PropertyGrid::Create (int style, int extraStyle)
 
 	if (extraStyle == -1)
 		extraStyle = wxPG_EX_MODE_BUTTONS
-		| wxPG_EX_MULTIPLE_SELECTION
-		| wxPG_EX_ENABLE_TLP_TRACKING;
+		| wxPG_EX_MULTIPLE_SELECTION;
 
 	mPropGridManager = new wxPropertyGridManager(this, mPropertyGridType,
 		wxDefaultPosition, wxDefaultSize, style);
@@ -74,7 +84,7 @@ void PropertyGrid::Create (int style, int extraStyle)
 	cell.SetFgCol(*wxLIGHT_GREY);
 	mPropGrid->SetUnspecifiedValueAppearance(cell);
 
-	mPropGridManager->SetDescBoxHeight(50);
+	mPropGridManager->SetDescBoxHeight(40);
 }
 //-----------------------------------------------------------------------------
 void PropertyGrid::Clear ()
@@ -96,6 +106,17 @@ PropertyPage *PropertyGrid::GetPropertyPage (std::string name)
 	for (int i=0; i<(int)mPages.size(); i++)
 	{
 		if (name == mPages[i]->GetName())
+			return mPages[i];
+	}
+
+	return 0;
+}
+//-----------------------------------------------------------------------------
+PropertyPage *PropertyGrid::GetPropertyPage (wxPGProperty *prop)
+{
+	for (int i=0; i<(int)mPages.size(); i++)
+	{
+		if (mPages[i]->HasProperty(prop))
 			return mPages[i];
 	}
 

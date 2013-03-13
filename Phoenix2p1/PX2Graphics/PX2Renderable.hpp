@@ -94,11 +94,11 @@ namespace PX2
 		enum RenderLayer
 		{
 			RL_BACKGROUND = 0,
+			RL_SKY,
 			RL_TERRAIN,
 			RL_SCENE,
 			RL_FRONT
 		};
-
 		void SetRenderLayer (RenderLayer layer);
 		unsigned int GetSortIndex ();
 
@@ -176,6 +176,8 @@ public_internal:
 
 		// 绘制几何图形的效果
 		MaterialInstancePtr mMaterial;
+
+		RenderLayer mLayer;
 
 		// 当前对象受影响的灯光
 		/*

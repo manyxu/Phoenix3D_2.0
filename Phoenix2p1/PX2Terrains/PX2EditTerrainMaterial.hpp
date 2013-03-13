@@ -1,6 +1,6 @@
 /*
 *
-* 文件名称	：	PX2TerrainMaterial.hpp
+* 文件名称	：	PX2EditTerrainMaterial.hpp
 *
 */
 
@@ -19,8 +19,21 @@ namespace PX2
 		PX2_DECLARE_STREAM(EditTerrainMaterial);
 
 	public:
-		EditTerrainMaterial (const std::string &filename);
+		EditTerrainMaterial ();
 		virtual ~EditTerrainMaterial ();
+
+	private:
+		static int msDx9VRegisters[7];
+		static int msOglVRegisters[7];
+		static int msOpenGLES2VRegisters[7];
+		static int* msVRegisters[Shader::MAX_PROFILES];
+		static std::string msVPrograms[Shader::MAX_PROFILES];
+
+		static int msAllPRegisters[3];
+		static int* msPRegisters[Shader::MAX_PROFILES];
+		static int msAllPTextureUnits[6];
+		static int* msPTextureUnits[Shader::MAX_PROFILES];
+		static std::string msPPrograms[Shader::MAX_PROFILES];
 	};
 
 	PX2_REGISTER_STREAM(EditTerrainMaterial);

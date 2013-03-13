@@ -21,7 +21,7 @@ namespace PX2
 		
 	public:
 		CameraActor (Camera *camera=0);
-		~CameraActor ();
+		virtual ~CameraActor ();
 
 		void SetCamera (Camera *camera);
 		Camera *GetCamera ();

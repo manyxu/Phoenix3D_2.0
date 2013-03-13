@@ -1,13 +1,6 @@
 /*
-* Phoenix 3D 游戏引擎 Version 2.0
 *
-* Copyright (C) 2009-2011 http://www.Phoenix3d.org/
-*
-* 文件名称	：	PX2WindowApplication.hpp
-*
-* 版本		:	1.0 (2011/02/02)
-*
-* 作者		：	more
+* 文件名称	：	PX2Application.hpp
 *
 */
 
@@ -63,6 +56,7 @@ namespace PX2
 	bool classname::AppTerminate () \
 	{ \
 		delete (msApplication); \
+		msApplication = 0; \
 		return true; \
 	}
 	//----------------------------------------------------------------------------
@@ -75,6 +69,7 @@ namespace PX2
 
 		static int Entry (int numArguments, char** arguments);
 		virtual int Main (int numArguments, char** arguments);
+		virtual void OnIdle ();
 
 	protected:
 		virtual bool OnInitlizeApp ();

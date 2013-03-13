@@ -6,6 +6,7 @@
 
 #include "PX2ResourceManager.hpp"
 #include "PX2StringHelp.hpp"
+#include "PX2XMLData.hpp"
 
 // DevIL
 #include "IL/il.h"
@@ -24,28 +25,6 @@ using namespace PX2;
 using namespace std;
 
 //----------------------------------------------------------------------------
-#if defined(WIN32)
-static unsigned int ThreadLoadFun (void *data)
-{
-	ResourceManager *manager = (ResourceManager*)data;
-
-	if (manager)
-		return manager->RunLoadingThread();
-
-	return 0;
-}
-#elif defined(__LINUX__) || defined(__APPLE__) || defined(__ANDROID__)
-static void* ThreadLoadFun (void *data)
-{
-	ResourceManager *manager = (ResourceManager*)data;
-
-	if (manager)
-		manager->RunLoadingThread();
-
-	return 0;
-}
-#endif
-//----------------------------------------------------------------------------
 std::string ResourceManager::msResPath;
 //----------------------------------------------------------------------------
 ResourceManager::ResourceManager ()
@@ -54,14 +33,23 @@ mLoadingThread(0),
 mTimeCounter(0),
 mQuitLoading(false),
 mDDSKeepCompressed(true),
-mReadFromZip(false)
+mReadFromZip(false),
+mLoadRecordMutex(0),
+mLoadingDequeMutex(0),
+mResTableMutex()
 {
+	mLoadRecordMutex = new0 Mutex();
+	mLoadingDequeMutex = new0 Mutex();
+	mResTableMutex = new0 Mutex();
+
 	// Init Devil
 	ilInit();
 	ilEnable(IL_FILE_OVERWRITE);
 	ilEnable(IL_CONV_PAL);
 
-	StartThread();
+	CreateCondition(mLoadingDequeCondition);
+	mLoadingThread = new0 Thread("ResLoadThread");
+	mLoadingThread->Start(*this);
 
 #if defined WIN32
 	if (msResPath.empty())
@@ -95,14 +83,37 @@ ResourceManager::~ResourceManager ()
 
 	if (mLoadingThread)
 	{
+		mQuitLoading = true;
+		mLoadingThread->Join();
 		delete0(mLoadingThread);
-		mLoadingThread = NULL;
+		mLoadingThread = 0;
 	}
 
 	CloseCondition(mLoadingDequeCondition);
 
 	// Shutdown Devil
 	ilShutDown();
+
+	if (mLoadRecordMutex)
+	{
+		delete0(mLoadRecordMutex);
+	}
+
+	if (mLoadingDequeMutex)
+	{
+		delete0(mLoadingDequeMutex);
+	}
+
+	if (mResTableMutex)
+	{
+		delete0(mResTableMutex);
+	}
+}
+//----------------------------------------------------------------------------
+void ResourceManager::Clear ()
+{
+	ScopedCS scopeCS(mResTableMutex);
+	mResTable.clear();
 }
 //----------------------------------------------------------------------------
 Object *ResourceManager::BlockLoad (const std::string &filename)
@@ -131,17 +142,124 @@ bool ResourceManager::GetBuffer (const std::string &filename, int &bufferSize,
 	return _LoadBuffer(filename, bufferSize, buffer);
 }
 //----------------------------------------------------------------------------
+bool ResourceManager::AddTexPack (const std::string &texPackPath)
+{
+	if (mTexPacks.find(texPackPath) != mTexPacks.end())
+		return false;
+
+	int bufferSize = 0;
+	char *buffer = 0;
+	if (GetBuffer(texPackPath, bufferSize, buffer))
+	{
+		std::string outPath;
+		std::string outBaseName;
+		std::string outExt;
+		StringHelp::SplitFullFilename(texPackPath, outPath, outBaseName, outExt);
+
+		XMLData data;
+		if (data.LoadBuffer(buffer, bufferSize))
+		{
+			XMLNode rootNode = data.GetRootNode();
+			std::string imagePath = rootNode.AttributeToString("imagePath");
+			int width = rootNode.AttributeToInt("width");
+			int height = rootNode.AttributeToInt("height");
+			TexPack pack;
+			pack.ImagePath = imagePath;
+			pack.Width = width;
+			pack.Height = height;
+
+			XMLNode childNode = rootNode.IterateChild();
+			while (!childNode.IsNull())
+			{
+				std::string eleName;
+				int x = 0;
+				int y = 0;
+				int w = 0;
+				int h = 0;
+				int oX = 0;
+				int oY = 0;
+				int oW = 0;
+				int oH = 0;
+				bool rolated = false;
+
+				if (childNode.HasAttribute("n"))
+					eleName = childNode.AttributeToString("n");
+				if (childNode.HasAttribute("x"))
+					x = childNode.AttributeToInt("x");
+				if (childNode.HasAttribute("y"))
+					y = childNode.AttributeToInt("y");
+				if (childNode.HasAttribute("w"))
+					w = childNode.AttributeToInt("w");
+				if (childNode.HasAttribute("h"))
+					h = childNode.AttributeToInt("h");
+				if (childNode.HasAttribute("oX"))
+					oX = childNode.AttributeToInt("oX");
+				if (childNode.HasAttribute("oY"))
+					oY = childNode.AttributeToInt("oY");
+				if (childNode.HasAttribute("oW"))
+					oW = childNode.AttributeToInt("oW");
+				if (childNode.HasAttribute("oH"))
+					oH = childNode.AttributeToInt("oH");
+				if (childNode.HasAttribute("r"))
+					rolated = (std::string(childNode.AttributeToString("r"))=="y");
+				
+				TexPackElement ele;
+				ele.X = x;
+				ele.Y = y;
+				ele.W = w;
+				ele.H = h;
+				ele.OX = oX;
+				ele.OY = oY;
+				ele.OW = oW;
+				ele.OH = oH;
+				ele.Rolated = rolated;
+				ele.TexWidth = width;
+				ele.TexHeight = height;
+				ele.ElementName = eleName;
+				ele.ImagePathFull = outPath+imagePath;
+
+				pack.Elements.push_back(ele);
+
+				std::string allStr = texPackPath+eleName;
+				mPackElements[allStr] = ele;
+
+				childNode = rootNode.IterateChild(childNode);
+			}
+
+			mTexPacks[texPackPath] = pack;
+		}
+
+		delete1(buffer);
+
+		return true;
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
+const TexPack &ResourceManager::GetTexPack (const std::string &texPackPath)
+{
+	return mTexPacks[texPackPath];
+}
+//----------------------------------------------------------------------------
+const TexPackElement &ResourceManager::GetTexPackElement (
+	const std::string &texPackPath, const std::string &eleName)
+{
+	std::string allStr = texPackPath+eleName;
+	return mPackElements[allStr];
+}
+//----------------------------------------------------------------------------
 ResHandle ResourceManager::BackgroundLoad (
 	const std::string &filename)
 {
 	LoadRecord &rec = InsertRecord(filename);
 
 	{
-		ScopedCS scopedCS(&mLoadRecordMutex);
+		ScopedCS scopedCS(mLoadRecordMutex);
 
 		if (LS_UNLOADED == rec.State)
 		{
-			ScopedCS scopedCSLoadingDeque(&mLoadingDequeMutex);
+			ScopedCS scopedCSLoadingDeque(mLoadingDequeMutex);
 			rec.State = LS_LOADQUE;
 			mLoadingDeque.push_front(&rec);
 
@@ -219,7 +337,7 @@ unsigned int ResourceManager::RunLoadingThread ()
 			break;
 
 		{
-			ScopedCS scopedCS(&mLoadingDequeMutex);
+			ScopedCS scopedCS(mLoadingDequeMutex);
 
 			if (mLoadingDeque.empty())
 				continue;
@@ -236,7 +354,7 @@ unsigned int ResourceManager::RunLoadingThread ()
 //----------------------------------------------------------------------------
 ResourceManager::LoadRecord &ResourceManager::InsertRecord (const std::string &filename)
 {
-	ScopedCS scopeCS(&mResTableMutex);
+	ScopedCS scopeCS(mResTableMutex);
 
 	ResTable::iterator it = mResTable.find(filename);
 	if (it != mResTable.end())
@@ -262,7 +380,7 @@ void ResourceManager::_LoadTheRecord (LoadRecord &rec)
 {
 	bool needLoad = false;
 	{
-		ScopedCS scopedCS(&mLoadRecordMutex);
+		ScopedCS scopedCS(mLoadRecordMutex);
 
 		if (LS_UNLOADED == rec.State || LS_LOADQUE == rec.State)
 		{
@@ -298,90 +416,29 @@ Object *ResourceManager::_LoadObject (const std::string &filename)
 	std::string outExtention;
 	StringHelp::SplitFullFilename(filename, outPath, outBaseName, outExtention);
 
-	if ("pxtf" == outExtention || "PXTF" == outExtention)
+	char *buffer = 0;
+	int bufferSize = 0;
+
+	if (GetBuffer(filename, bufferSize, buffer))
 	{
-		obj = Texture2D::LoadPXtf(filename);
-		if (obj)
+		if ("png"==outExtention || "PNG"==outExtention)
 		{
-			obj->SetResourcePath(filename);
-		}
-
-		return obj;
-	}
-	else if (("dds" == outExtention||"DDS" == outExtention) && mDDSKeepCompressed)
-	{
-		obj = LoadTextureFromDDS(filename);
-		if (obj)
-		{
-			obj->SetResourcePath(filename);
-		}
-
-		return obj;
-	}
-	else if ("jpg"==outExtention  || "JPG"==outExtention 
-		|| "png"==outExtention || "PNG"==outExtention 
-		|| "tga"==outExtention || "TGA"==outExtention 
-		|| "bmp"==outExtention || "BMP"==outExtention 
-		|| "dds"==outExtention || "DDS"==outExtention)
-	{
-		obj = LoadTextureFromOtherImagefile(filename);
-		if (obj)
-		{
-			obj->SetResourcePath(filename);
-		}
-
-		return obj;
-	}
-
-	InStream inStream;
-
-	if (mReadFromZip)
-	{
-		int bufferSize = 0;
-		char *buffer = 0;
-
-		std::string packageName("Data");
-		std::string fullPackageName = msResPath + packageName;
-
-		if (GetFileDataFromZip(fullPackageName, filename, bufferSize, buffer))
-		{
-			inStream.Load1(bufferSize, buffer);
-			obj = inStream.GetObjectAt(0);
-			delete1<char>(buffer);
-			bufferSize = 0;
-		}
-	}
-	else
-	{
-#ifdef __ANDROID__
-		int bufferSize = 0;
-		char *buffer = 0;
-
-		std::string fullFilename = filename;
-		fullFilename.insert(0, "assets/");
-
-		PX2_LOG_INFO("msResPath: %s\n", msResPath.c_str());
-		PX2_LOG_INFO("fullFilename: %s\n", fullFilename.c_str());
-
-		if (GetFileDataFromZip(msResPath, fullFilename, bufferSize, buffer))
-		{
-			PX2_LOG_INFO("fullFilename: %s, suc.\n", fullFilename.c_str());
-
-			inStream.Load1(bufferSize, buffer);
-			obj = inStream.GetObjectAt(0);
-			delete1<char>(buffer);
-			bufferSize = 0;
+			obj = LoadTexFormOtherImagefile(outExtention, bufferSize, buffer);
 		}
 		else
 		{
-			PX2_LOG_INFO("fullFilename: %s, failed.\n", fullFilename.c_str());
-		}
-#else
-		if (inStream.Load(filename))
-		{
+			InStream inStream;
+			inStream.Load1(bufferSize, buffer);
 			obj = inStream.GetObjectAt(0);
 		}
-#endif
+
+		delete1(buffer);
+		bufferSize = 0;
+	}
+
+	if (obj)
+	{
+		obj->SetResourcePath(filename);
 	}
 
 	return obj;
@@ -402,10 +459,6 @@ bool ResourceManager::_LoadBuffer (const std::string &filename,
 #ifdef __ANDROID__
 		std::string fullFilename = filename;
 		fullFilename.insert(0, "assets/");
-
-		PX2_LOG_INFO("msResPath: %s\n", msResPath.c_str());
-		PX2_LOG_INFO("fullFilename: %s\n", fullFilename.c_str());
-
 		return GetFileDataFromZip(msResPath, fullFilename, bufferSize, buffer);
 #else
 		if (!FileIO::Load(filename, true, bufferSize, buffer))
@@ -420,8 +473,8 @@ bool ResourceManager::_LoadBuffer (const std::string &filename,
 	return false;
 }
 //----------------------------------------------------------------------------
-Texture2D *ResourceManager::LoadTextureFromOtherImagefile (
-	const std::string& filename)
+Texture2D *ResourceManager::LoadTexFormOtherImagefile (std::string outExt,
+	int bufferSize, const char*buffer)
 {
 	ILuint image;
 	ilGenImages(1, &image);
@@ -429,33 +482,28 @@ Texture2D *ResourceManager::LoadTextureFromOtherImagefile (
 
 	bool revert = false;
 
-	std::string outPath;
-	std::string outBaseName;
-	std::string outExtention;
-	StringHelp::SplitFullFilename(filename, outPath, outBaseName, outExtention);
-
 	ILenum type = IL_TYPE_UNKNOWN;
 
-	if ("jpg" == outExtention || "JPG" == outExtention)
+	if ("jpg" == outExt || "JPG" == outExt)
 	{
 		type = IL_JPG;
 		revert = true;
 	}
-	else if ("png" == outExtention || "PNG" == outExtention)
+	else if ("png" == outExt || "PNG" == outExt)
 	{
 		type = IL_PNG;
 		revert = true;
 	}
-	else if ("dds" == outExtention || "DDS" == outExtention)
+	else if ("dds" == outExt || "DDS" == outExt)
 	{
 		type = IL_DDS;
 		revert = true;
 	}
-	else if ("tga" == outExtention || "TGA" == outExtention)
+	else if ("tga" == outExt || "TGA" == outExt)
 	{
 		type = IL_TGA;
 	}
-	else if ("bmp" == outExtention || "BMP" == outExtention)
+	else if ("bmp" == outExt || "BMP" == outExt)
 	{
 		type = IL_BMP;
 	}
@@ -465,39 +513,10 @@ Texture2D *ResourceManager::LoadTextureFromOtherImagefile (
 		return 0;
 	}
 
-	int bufferSize;
-	char* buffer = 0;
-
-	if (mReadFromZip)
-	{
-		std::string packageName("Data");
-		std::string fullPackageName = msResPath + packageName;
-#ifdef __ANDROID__
-		fullPackageName.insert(0, "assets/");
-#endif
-		if (!GetFileDataFromZip(fullPackageName, filename, bufferSize, buffer))
-		{
-			return 0;
-		}
-	}
-	else
-	{
-		if (!FileIO::Load(filename, true, bufferSize, buffer))
-		{
-			return 0;
-		}
-	}
-
 	ILboolean b = ilLoadL(type, buffer, bufferSize);
-
-	if (buffer)
-	{
-		delete1(buffer);
-	}
-
 	if (!b)
 	{
-		assertion(false, "ilLoadL texture file error: %s", filename.c_str());
+		assertion(false, "ilLoadL texture file error: %s", outExt.c_str());
 		return 0;
 	}
 
@@ -505,7 +524,7 @@ Texture2D *ResourceManager::LoadTextureFromOtherImagefile (
 	int height = ilGetInteger(IL_IMAGE_HEIGHT);
 	ILint fmt = ilGetInteger(IL_IMAGE_FORMAT);
 	int bytePerPixel = ilGetInteger(IL_IMAGE_BYTES_PER_PIXEL);
-	
+
 	ILint destfmt = IL_BGRA;
 	Texture::Format format = Texture::TF_A8R8G8B8;
 
@@ -783,10 +802,8 @@ bool ResourceManager::GetFileDataFromZip (const std::string &packageName,
 	return true;
 }
 //----------------------------------------------------------------------------
-//----------------------------------------------------------------------------
-void ResourceManager::StartThread ()
+void ResourceManager::Run ()
 {
-	CreateCondition(mLoadingDequeCondition);
-	mLoadingThread = new0 Thread((void*)ThreadLoadFun, this);
+	RunLoadingThread();
 }
 //----------------------------------------------------------------------------

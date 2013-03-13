@@ -33,6 +33,7 @@ PdrMaterialPass::PdrMaterialPass (Renderer *renderer, const MaterialPass *pass)
 
 	glBindAttribLocation(mProgramObject, ALP_POSITION, "modelPosition");
 	glBindAttribLocation(mProgramObject, ALP_NORMAL, "modelNormal");
+	glBindAttribLocation(mProgramObject, ALP_COLOR0, "modelColor0");
 	glBindAttribLocation(mProgramObject, ALP_TEXCOORD0, "modelTCoord0");
 
 	// Link the program
@@ -97,7 +98,7 @@ PdrMaterialPass::PdrMaterialPass (Renderer *renderer, const MaterialPass *pass)
 //----------------------------------------------------------------------------
 PdrMaterialPass::~PdrMaterialPass ()
 {
-	PX2_GL_CHECK(glDeleteProgram(mProgramObject));
+	glDeleteProgram(mProgramObject);
 }
 //----------------------------------------------------------------------------
 void PdrMaterialPass::Enable (Renderer* renderer)

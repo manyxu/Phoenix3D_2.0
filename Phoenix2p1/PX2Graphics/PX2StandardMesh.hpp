@@ -19,6 +19,7 @@
 #include "PX2TriMesh.hpp"
 #include "PX2TriFan.hpp"
 #include "PX2Polysegment.hpp"
+#include "PX2Node.hpp"
 
 namespace PX2
 {
@@ -132,9 +133,13 @@ namespace PX2
 		*/
 		Polysegment *Circle (float radius, int samples);
 
+		///  ´´½¨°üÎ§ºÐÇòÈ¦
+		Node *CircleSphere (float radius, int samples, Float4 color0=Float4::RED,
+			Float4 color1 = Float4::GREEN, Float4 color2 = Float4::BLUE, bool alpha=false);
+
 	private:
 		void TransformData (VertexBufferAccessor& vba);
-		void ReverseTriangleOrder (int numTriangles, int* indices);
+		void ReverseTriangleOrder (int numTriangles, unsigned short* indices);
 		void CreatePlatonicNormals (VertexBufferAccessor& vba);
 		void CreatePlatonicColors (VertexBufferAccessor& vba);
 		void CreatePlatonicUVs (VertexBufferAccessor& vba);

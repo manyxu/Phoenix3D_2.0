@@ -6,6 +6,18 @@ Open,打开,Open
 Close,关闭,Close
 Save,保存,Save
 SaveAs,另存为,Save as
+NewProject,新建工程,New project
+OpenProject,打开工程,Open project
+SaveProject,保存工程,Save project
+SaveAsProject,工程另存为,Save as project
+CloseProject,关闭工程,Close project
+NewScene,新建场景,New scene
+OpenScene,打开场景,Open scene
+CloseScene,关闭场景,Close scene
+SaveScene,保存场景,Save scene
+SaveAsScene,场景另存为,Save as scene
+Import,导入,Improt
+ExportSelected,导出选择,ExportSelected
 Exist,退出,Exist
 Edit,编辑,Edit
 Undo,撤销,Undo
@@ -15,16 +27,23 @@ Move,移动,Move
 Rolate,旋转,Rolate
 Scale,缩放,Scale
 View,视图,View
+Windows,窗口,Windows
+StageCentreDock,舞台中心停靠,StageCentreDock
 Scene,场景,Scene
 Terrain,地形,Terrain
 TerrainNew,创建,New
+TerrainUseLod,使用Lod地形,UseLodTerrain
+TerrainUseComposedMtl,使用合成材质,UseCompusedMtl
+TerrainComposeMtl,合成材质,ComposeMtl
 Game,游戏,Game
 PlayInEditor,编辑器中播放,PlayInEditor
 Play,播放,Play
 PlayConfig,播放配置,PlayConfig
 Help,帮助,Help
+Stage,舞台,Stage
 PreView,预览,PreView
 Asserts,资源,Asserts
+CurveEdit,曲线编辑,CurveEdit
 Inspector,属性,Inspector
 AddActor,添加角色,Add Actor
 AddActorModel,模型,Model
@@ -32,14 +51,20 @@ AddActorEffect,特效,Effect
 AddActorLight,灯光,Light
 AddActorLightPoint,点光源,PointLight
 AddActorLightSpot,聚光灯,SpotLight
+AddActorSky,天空,Sky
 Clone,复制,Clone
 CloneInstance,共享,Shallow
 CloneData,克隆,Deep
-Tip0,警告,Warning
+Tip0,注意,Info
 Tip1,请选择模型,Please select a model.
+Tip2,"UI只能加到""层""下，请选择一个“层”。","UI objects can only be added to ""UIFrame"".Please select a UIFrame to add this."
+Tip3,删除失败！,Delete failed！
+Tip4,确定删除？,Sure delete?
+Tip5,模块已经存在。,Module is already existed.
 Create,创建,Create
 Box,正方体,Box
 Sphere,球,Sphere
+Effect,特效,Effect
 Name,名称,Name
 Trans,方位,Trans
 Translate,位置,Translate
@@ -52,3 +77,148 @@ High,高程,High
 Material,材质,Material
 ShowPageLine,显示网格,ShowPageLine
 TerrainEdit,地形编辑,TerrainEdit
+Scene,场景,Scene
+Sky,天空,Sky
+Water,水面,Water
+Objects,物件,Objects
+Effects,特效,Effects
+Lights,光源,Lights
+Environments,环境,Environments
+Junglers,植被,Junglers
+Tip2,你确定退出?,Are you sure exiting?
+KeyPoints,关键值,KeyPoints
+Particles,粒子,Particles
+Beam,波带,Beam
+Ribbon,条带,Ribbon
+Decal,贴花,Decal
+Shake,震动,Shake
+EmitRate,EmitRate,EmitRate
+EmitterTranslate,EmitterTranslate,EmitterTranslate
+ParticleAccelerate,ParticleAccelerate,ParticleAccelerate
+ParticleAccelerateDir,ParticleAccelerateDir,ParticleAccelerateDir
+ParticleAlphaByAge,ParticleAlphaByAge,ParticleAlphaByAge
+ParticleAlphaInit,ParticleAlphaInit,ParticleAlphaInit
+ParticleColorByAge,ParticleColorByAge,ParticleColorByAge
+ParticleColorInit,ParticleColorInit,ParticleColorInit
+ParticleFaceAxisInit,ParticleFaceAxisInit,ParticleFaceAxisInit
+ParticleLifeInit,ParticleLifeInit,ParticleLifeInit
+ParticleRotateDegreeInit,ParticleRotateDegreeInit,ParticleRotateDegreeInit
+ParticleRotateSpeedByAge,ParticleRotateSpeedByAge,ParticleRotateSpeedByAge
+ParticleRotateSpeedInit,ParticleRotateSpeedInit,ParticleRotateSpeedInit
+ParticleSizeByAge,ParticleSizeByAge,ParticleSizeByAge
+ParticleSizeInit,ParticleSizeInit,ParticleSizeInit
+ParticleSpeedDirInit,ParticleSpeedDirInit,ParticleSpeedDirInit
+ParticleSpeedInit,ParticleSpeedInit,ParticleSpeedInit
+Time,时间,Time
+Value,数值,Value
+Actor,角色,Actor
+SelectedEffect,选择的特效,SelectedEffect
+SelectedModule,选择的控制器,SelectedModule
+EffectsAndModules,特效和模块,EffectsAndModules
+Property,属性,Property
+Effect,特效,Effect
+Module,控制器,Module
+FitHorizontally,水平适应视图,FitHorizontally
+FitVertically,垂直适应视图,FitVertically
+FitAll,适应视图,FitAll
+FitSelected,适应视图到所选内容,FitSelected
+PanMode,平移模式,PanMode
+ZoomMode,缩放模式,ZoomMode
+CurveAuto,曲线(自动型),CurveAuto
+CurveAutoClamped,曲线(自动型/夹取),CurveAutoClamped
+CurveUser,曲线(用户型),CurveUser
+CurveBreak,曲线(断开型),CurveBreak
+CurveLinear,线性型曲线,Linear
+CurveConstant,常量型曲线,Constant
+TangentsToAxis,变平切线至坐标轴,TangentsToAxis
+StraightenTangents,拉直切线,StraightenTangents
+SetInVal,设置InVal,SetInVal
+SetOutVal,设置OutVal,SetOutVal
+Delete,删除,Delete
+DeleteAll,删除全部,DeleteAll
+NewInVal,新InVal,NewInVal
+NewOutVal,新OutVal,NewOutVal
+UIActor,角色,UIActor
+UI,界面,UI
+Frame,层,Frame
+PictureBox,图片,Picture
+AnimPictureBox,序列帧图片,AnimPictureBox
+Button,按钮,Button
+CheckBox,选择框,Check Box
+EditBox,编辑框,Edit Box
+StaticText,静态文本,Static Text
+ProgressBar,进度条,Progress Bar
+Slider,滑动条,Slider
+Color,颜色,Color
+Alpha01,透明(0-1),Alpha(0-1)
+Size,大小,Size
+Width,宽,Height
+Height,高,Height
+Texture,纹理,Texture
+DoubleSide,双面,DoubleSide
+Project,工程,Project
+Sounds,声音,Sounds
+BlendMode,混合模式,BlendMode
+ParticleEmitter,粒子发射器,ParticleEmitter
+MaxNumParticles,最大粒子数,MaxNumParticles
+IsLocal,本地,IsLocal
+IsFixedBound,自定义包围盒,IsFixedBound
+FixedBoundCenter,包围盒中心,FixedBoundCenter
+FixedBoundRadius,包围盒半径,FixedBoundRadius
+Placer,生成器,Placer
+PlacerType,形状,PlacerShape
+PlacerBox,长方体,Box
+PlacerSphere,球,Sphere
+PlacerColumn,圆柱,Column
+InLength,长（内）,InLength
+OutLength,长（外）,OutLength
+InWidth,宽（内）,InWidth
+OutWidth,宽（外）,OutWidth
+InHeight,高（内）,InHeight
+OutHeight,高（外）,OutHeight
+SetBeRange,使用区间值,UseRangeProperty
+FaceType,面向类型,FaceType
+FT_CAMERA,面向相机,FaceCamera
+FT_FREE,自由,FaceFree
+FT_SPEEDDIR,面向速度方向,FaceSpeedDir
+RotateAxisType,旋转轴方向,RotateAxisType
+RAT_D,粒子前方向,ParticleDirectionVector
+RAT_U,粒子上方向,ParticleUpVector
+RAT_R,粒子右方向,ParticleRightVector
+Text,文本,Text
+FontWidth,字体宽度,FontWidth
+FontHeight,字体高度,FontHeight
+Italic,斜体,Italic
+UnderLine,下划线,UnderLine
+DrawStyle,绘制样式,DrawStyle
+FD_NORMAL,正常,Normal
+FD_SHADOW,阴影,Shadow
+FD_BORDER,描边,Border
+TexPackFile,序列帧文件,TexPackFile
+Animation,动画,Animation
+IntervalTime,帧间距(秒),IntervalSeconds
+ControlRepeatType,动画循环方式,RepeatType
+RT_CLAMP,一次,Clamp
+RT_WRAP,循环,Wrap
+RT_CYCLE,往复,Cycle
+BackColor,背景色,BackColor
+Show,显示,Show
+IsShowProjectInfo,显示调试信息,ShowDebugInfo
+IsSceneWired,场景线框模式,Wired
+IsShowGrid,显示网格,ShowGrid
+IsShowUI,显示界面,ShowUI
+IsUIWired,界面线框模式,Wired
+UICameraPercent,界面相机百分比,CameraPercent
+IsShowUIRange,显示界面范围,ShowUIRange
+IsShowSceneBound,显示包围体,ShowSceneBound
+ResTreeUpdate,资源树更新,UpdateResTree
+LOD,LOD,LOD
+PixelTolerance,像素容限,PixelTolerance
+IsCloseAssumption,接近地表型,CloseAssumption
+SunRadiusAttenuation,太阳内半径参数,SunRadiusAttenuation
+SunLightness,太阳内亮度,SunLightness
+LargeSunRadiusAttenuation,太阳外半径参数,LargeSunRadiusAttenuation
+LargeSunLightness,太阳外亮度,LargeSunLightness
+HazeTopAltitude,仰角参数,HazeTopAltitude
+DayToSunsetSharpness,黄昏参数,DayToSunsetSharpness
+Weather,天气,Weather

@@ -9,6 +9,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
+import android.content.pm.ActivityInfo;
 import phoenix3d.px2.library.PX2GLView;
 import phoenix3d.px2.gameplay.R;
 import phoenix3d.px2.library.PX2Natives;
@@ -20,12 +23,14 @@ public class PX2Activity extends Activity
 	
 	 protected void onCreate(Bundle savedInstanceState) 
 	 {
+	     requestWindowFeature(Window.FEATURE_NO_TITLE);
+	     getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+	    		 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		 
 		 super.onCreate(savedInstanceState); 
 		 
 		 if (DetectOpenGLES20())
 		 {
-			// setContentView(R.layout.main);
-
 			 mGLView = new PX2GLView(this);
 			 setContentView(mGLView);
 		 }
@@ -65,8 +70,6 @@ public class PX2Activity extends Activity
 	     
 	     // set apkPath
 	     PX2Natives.nativeSetResourcePath(apkFilePath);
-	     
-	     Log.w("PX2_APK_PATH", "aaa");
 	}
 	 
 	private boolean DetectOpenGLES20() 
@@ -77,5 +80,5 @@ public class PX2Activity extends Activity
 		    
 		return (info.reqGlEsVersion >= 0x20000);
 	}
-
+	
 }

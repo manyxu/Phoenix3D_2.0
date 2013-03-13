@@ -24,23 +24,23 @@ Texture2DMaterial::Texture2DMaterial (Shader::SamplerFilter filter,
 		2, 2, 1, 0, false);
 	vshader->SetInput(0, "modelPosition", Shader::VT_FLOAT3,
 		Shader::VS_POSITION);
-	vshader->SetInput(1, "modelTCoord", Shader::VT_FLOAT2,
+	vshader->SetInput(1, "modelTCoord0", Shader::VT_FLOAT2,
 		Shader::VS_TEXCOORD0);
 	vshader->SetOutput(0, "clipPosition", Shader::VT_FLOAT4,
 		Shader::VS_POSITION);
-	vshader->SetOutput(1, "vertexTCoord", Shader::VT_FLOAT2,
+	vshader->SetOutput(1, "vertexTCoord0", Shader::VT_FLOAT2,
 		Shader::VS_TEXCOORD0);
-	vshader->SetConstant(0, "PVWMatrix", 4);
+	vshader->SetConstant(0, "gPVWMatrix", 4);
 	vshader->SetBaseRegisters(msVRegisters);
 	vshader->SetPrograms(msVPrograms);
 
 	PixelShader* pshader = new0 PixelShader("PX2.Texture2D",
 		1, 1, 0, 1, false);
-	pshader->SetInput(0, "vertexTCoord", Shader::VT_FLOAT2,
+	pshader->SetInput(0, "vertexTCoord0", Shader::VT_FLOAT2,
 		Shader::VS_TEXCOORD0);
 	pshader->SetOutput(0, "pixelColor", Shader::VT_FLOAT4,
 		Shader::VS_COLOR0);
-	pshader->SetSampler(0, "BaseSampler", Shader::ST_2D);
+	pshader->SetSampler(0, "gDiffuseSampler", Shader::ST_2D);
 	pshader->SetFilter(0, filter);
 	pshader->SetCoordinate(0, 0, coordinate0);
 	pshader->SetCoordinate(0, 1, coordinate1);
@@ -74,8 +74,8 @@ PixelShader* Texture2DMaterial::GetPixelShader () const
 MaterialInstance* Texture2DMaterial::CreateInstance (Texture2D* texture) const
 {
 	MaterialInstance* instance = new0 MaterialInstance(this, 0);
-	instance->SetVertexConstant(0, "PVWMatrix", new0 PVWMatrixConstant());
-	instance->SetPixelTexture(0, "BaseSampler", texture);
+	instance->SetVertexConstant(0, "gPVWMatrix", new0 PVWMatrixConstant());
+	instance->SetPixelTexture(0, "gDiffuseSampler", texture);
 
 	//Shader::SamplerFilter filter = GetPixelShader()->GetFilter(0);
 	//if (filter != Shader::SF_NEAREST && filter != Shader::SF_LINEAR
@@ -235,13 +235,13 @@ std::string Texture2DMaterial::msVPrograms[Shader::MAX_PROFILES] =
 	"END\n",
 
 	// vp_gles2
-	"uniform highp mat4 PVWMatrix;"
+	"uniform highp mat4 gPVWMatrix;"
 	"attribute highp vec3 modelPosition;\n"
 	"attribute mediump vec2 modelTCoord0;\n"
 	"varying mediump vec2 vertexTCoord0;\n"
 	"void main()\n"
 	"{\n"
-	"	gl_Position = PVWMatrix * vec4(modelPosition, 1.0);\n"
+	"	gl_Position = gPVWMatrix * vec4(modelPosition, 1.0);\n"
 	"	vertexTCoord0 = modelTCoord0;\n"
 	"}\n"
 };
@@ -288,10 +288,10 @@ std::string Texture2DMaterial::msPPrograms[Shader::MAX_PROFILES] =
 
 	// fp_gles2
 	"varying mediump vec2 vertexTCoord0;\n"
-	"uniform sampler2D BaseSampler;\n"
+	"uniform sampler2D gDiffuseSampler;\n"
 	"void main()\n"
 	"{\n"
-	"	gl_FragColor = texture2D(BaseSampler, vertexTCoord0);\n"
+	"	gl_FragColor = texture2D(gDiffuseSampler, vertexTCoord0);\n"
 	"}\n"
 };
 //----------------------------------------------------------------------------

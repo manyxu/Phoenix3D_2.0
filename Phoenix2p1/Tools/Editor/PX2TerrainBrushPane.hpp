@@ -24,14 +24,14 @@ namespace PX2Editor
 		void RefleshCtrls ();
 
 	protected:
+		DECLARE_EVENT_TABLE();
+
 		TerrainBrushPanel ();
 
 		// Brush
 		wxChoice *mInterplate;
 		wxSlider *mSize;
 		wxSlider *mStrength;
-
-		DECLARE_EVENT_TABLE();
 	};
 
 }

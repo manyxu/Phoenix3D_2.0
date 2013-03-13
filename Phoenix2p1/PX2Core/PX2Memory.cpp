@@ -11,14 +11,18 @@
 using namespace PX2;
 
 Memory::MemoryMap* Memory::msMap = 0;
-Mutex Memory::msMutex;
+Mutex *Memory::msMutex = 0;
 Memory::Allocator Memory::msAllocator = &Memory::DefaultAllocator;
 Memory::Deallocator Memory::msDeallocator = &Memory::DefaultDeallocator;
+int64_t Memory::msCurTotalBytes = 0;
+int64_t Memory::msMaxTotalBytes = 0;
 unsigned int Memory::Information::msUniqueID = 0;
 //----------------------------------------------------------------------------
 void Memory::Initialize (Allocator allocator, Deallocator deallocator)
 {
-	msMutex.Enter();
+	msMutex = new Mutex();
+
+	msMutex->Enter();
 
 	msAllocator = allocator;
 	msDeallocator = deallocator;
@@ -26,17 +30,22 @@ void Memory::Initialize (Allocator allocator, Deallocator deallocator)
 	// 这里你必须使用'new'而不是'new0'，否则你会导致无限的循环。
 	msMap = new MemoryMap();
 
-	msMutex.Leave();
+	msMutex->Leave();
 }
 //----------------------------------------------------------------------------
 void Memory::Terminate (const std::string& filename, bool alwaysReportFile)
 {
-	msMutex.Enter();
+	msMutex->Enter();
 
 	assertion(msMap != 0, "Memory::Terminate should only be called once.\n");
 	if (!msMap)
 	{
 		return;
+	}
+
+	if ((int)msMap->size() > 0)
+	{
+		assertion(false, "Memory leaks.\n");
 	}
 
 	FILE* outFile = 0;
@@ -49,7 +58,7 @@ void Memory::Terminate (const std::string& filename, bool alwaysReportFile)
 		outFile = fopen(filename.c_str(), "wt");
 		if (!outFile)
 		{
-			msMutex.Leave();
+			msMutex->Leave();
 			return;
 		}
 	}
@@ -96,23 +105,51 @@ void Memory::Terminate (const std::string& filename, bool alwaysReportFile)
 	delete msMap;
 	msMap = 0;
 
-	msMutex.Leave();
+	msMutex->Leave();
+
+	delete msMutex;
+	msMutex = 0;
+}
+//----------------------------------------------------------------------------
+int64_t Memory::GetCurTotalBytes ()
+{
+	return msCurTotalBytes;
+}
+//----------------------------------------------------------------------------
+int64_t Memory::GetMaxTotalBytes ()
+{
+	return msMaxTotalBytes;
 }
 //----------------------------------------------------------------------------
 void* Memory::CreateBlock (size_t numBytes, int numDimensions) const
 {
-	msMutex.Enter();
+	msMutex->Enter();
 
 	void* memBlock = msAllocator((int)numBytes, mFile, mLine);
 	(*msMap)[memBlock] = Information((int)numBytes, numDimensions, mFile, mLine);
 
-	msMutex.Leave();
+	msMutex->Leave();
 	return memBlock;
 }
 //----------------------------------------------------------------------------
 void* Memory::DefaultAllocator (size_t numBytes, const char*, int)
 {
+	msCurTotalBytes += numBytes;
+	if (msCurTotalBytes > msMaxTotalBytes)
+	{
+		msMaxTotalBytes = msCurTotalBytes;
+	}
+
 	return malloc(numBytes);
+}
+//----------------------------------------------------------------------------
+void Memory::BeforeEraseInformation(void *data)
+{
+	MemoryMap::iterator it = msMap->find(data);
+	if (it != msMap->end())
+	{
+		msCurTotalBytes -= it->second.mNumBytes;	
+	}
 }
 //----------------------------------------------------------------------------
 void Memory::DefaultDeallocator (void* memBlock, const char*, int)

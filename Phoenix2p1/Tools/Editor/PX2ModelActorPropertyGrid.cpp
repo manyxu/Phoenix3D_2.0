@@ -6,6 +6,10 @@
 
 #include "PX2ModelActorPropertyGrid.hpp"
 #include "PX2ActorTransProperty.hpp"
+#include "PX2ObjectNameProperty.hpp"
+#include "PX2EditEventType.hpp"
+#include "PX2Actor.hpp"
+#include "PX2LanguageManager.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 
@@ -81,11 +85,11 @@ void ModelActorPropertyGrid::RefreshOnModelActor ()
 	PX2::Actor *actor = DynamicCast<Actor>(mObject);
 	mActorName = actor->GetName();
 	mActorType = actor->GetRttiType().GetName();
-	Property *propName = new0 Property(page, PX2_LM.GetValue("Name"),
-		Property::PT_STRING, &mActorName);
+
+	Property *nameProp = new0 ObjectNameProperty(page, PX2_LM.GetValue("Name"),
+		mObject);
 	Property *propType = new0 Property(page, PX2_LM.GetValue("Type"),
 		Property::PT_STRING, &mActorType, false);
-
 	Property *propTrans = new0 ActorTransProperty(page, PX2_LM.GetValue("Trans"), 
 		actor);
 	EventWorld::GetSingleton().ComeIn(propTrans);

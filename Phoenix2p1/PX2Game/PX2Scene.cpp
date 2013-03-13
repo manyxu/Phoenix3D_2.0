@@ -7,6 +7,8 @@
 #include "PX2Scene.hpp"
 #include "PX2GraphicsRoot.hpp"
 #include "PX2Interpolate.hpp"
+#include "PX2SkyActor.hpp"
+#include "PX2UIManager.hpp"
 using namespace PX2;
 using namespace std;
 
@@ -34,6 +36,11 @@ Scene::Scene ()
 	mDefaultARActor->SetName("DefaultAmibient");
 	mDefaultARActor->SetLight(mDefaultLight);
 	AddActor(mDefaultARActor);
+
+	SkySphere *skySphere = new0 SkySphere();
+	SkyActor *skyActor = new0 SkyActor(skySphere);
+	skyActor->SetName("DefaultSky");
+	AddActor(skyActor);
 }
 //----------------------------------------------------------------------------
 Scene::~Scene ()
@@ -44,11 +51,14 @@ Scene::~Scene ()
 
 	if (mDefaultCameraActor)
 		mDefaultCameraActor->GoOutFromEventWorld();
+
+	mDefaultCameraActor = 0;
+	mDefaultARActor = 0;
 }
 //----------------------------------------------------------------------------
 static AVector AnglesToDirection(float angle0, float angle1)
 {
-	return AVector(-Mathf::Cos(angle1)*Mathf::Cos(angle0), 
+	return AVector(Mathf::Cos(angle1)*Mathf::Cos(angle0), 
 		-Mathf::Cos(angle1)*Mathf::Sin(angle0), -Mathf::Sin(angle1));
 }
 //-----------------------------------------------------------------------------
@@ -72,6 +82,9 @@ void Scene::Update (double appSeconds, double elapsedSeconds)
 	light->Specular = Interpolate::LinearFloat4(
 		pastARActor->mDirLightSpecColor, curARActor->mDirLightSpecColor,
 		mAmbientBlend);
+	light->Intensity =  Interpolate::LinearFloat(
+		pastARActor->mDirLightIntensity, curARActor->mDirLightIntensity,
+		mAmbientBlend);
 	float horAngle = Interpolate::LinearFloat(
 		pastARActor->mHorAngle, curARActor->mHorAngle,
 		mAmbientBlend);
@@ -83,7 +96,7 @@ void Scene::Update (double appSeconds, double elapsedSeconds)
 	light->SetDirection(dir);
 
 	// Scene
-	mSceneNode->Update(appSeconds);
+	mSceneNode->Update(appSeconds, false);
 }
 //----------------------------------------------------------------------------
 void Scene::AddActor (Actor *actor)
@@ -235,6 +248,17 @@ AmbientRegionActor *Scene::GetARActor (int i)
 	return 0;
 }
 //----------------------------------------------------------------------------
+void Scene::ShowHelpMovables (bool show)
+{
+	for (int i=0; i<(int)mActors.size(); i++)
+	{
+		if (mActors[i])
+		{
+			mActors[i]->ShowHelpMovable(show);
+		}
+	}
+}
+//----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
 // Ãû³ÆÖ§³Ö
@@ -315,6 +339,8 @@ void Scene::Load (InStream& source)
 //----------------------------------------------------------------------------
 void Scene::Link (InStream& source)
 {
+	GraphicsRoot::GetSingleton().ClearAllLights();
+
 	Netable::Link(source);
 
 	source.ResolveLink(mSceneNode);
@@ -331,6 +357,7 @@ void Scene::Link (InStream& source)
 	source.ResolveLink(mTerrainActor);
 
 	source.ResolveLink(mDefaultLight);
+	GraphicsRoot::GetSingleton().AddLight(mDefaultLight);
 	source.ResolveLink(mDefaultCameraActor);
 	source.ResolveLink(mDefaultARActor);
 }

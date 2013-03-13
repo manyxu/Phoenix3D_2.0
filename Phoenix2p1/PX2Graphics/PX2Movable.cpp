@@ -45,6 +45,16 @@ void Movable::OnDetach ()
 {
 }
 //----------------------------------------------------------------------------
+void Movable::OnPicked (int pickInfo)
+{
+	PX2_UNUSED(pickInfo);
+}
+//----------------------------------------------------------------------------
+void Movable::OnNotPicked (int pickInfo)
+{
+	PX2_UNUSED(pickInfo);
+}
+//----------------------------------------------------------------------------
 void Movable::UpdateWorldData (double applicationTime)
 {
 	// ¸üÐÂ¿ØÖÆÆ÷

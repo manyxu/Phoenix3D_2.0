@@ -21,11 +21,11 @@ namespace PX2Editor
 		void RefleshCtrls ();
 
 	protected:
+		DECLARE_EVENT_TABLE();
+
 		TerrainHeightPanel ();
 
 		wxRadioBox *mHeightModeRadio;
-
-		DECLARE_EVENT_TABLE();
 	};
 
 }

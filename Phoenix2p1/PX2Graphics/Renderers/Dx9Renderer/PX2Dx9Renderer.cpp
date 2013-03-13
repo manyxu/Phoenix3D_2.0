@@ -1477,7 +1477,7 @@ void RendererData::CreateUniqueFont ()
 {
 	HRESULT hr = D3DXCreateFont(
 		mDevice,              // pDevice
-		18,                   // Height
+		15,                   // Height
 		0,                    // Width
 		FW_REGULAR,           // Weight
 		0,                    // MipLevels
@@ -1486,7 +1486,7 @@ void RendererData::CreateUniqueFont ()
 		OUT_DEFAULT_PRECIS,   // OutputPrecision
 		ANTIALIASED_QUALITY,  // Quality
 		VARIABLE_PITCH,       // PitchAndFamily
-		"Arial",              // pFaceName
+		"Times New Roman",	  // pFaceName
 		&mFont);              // ppFont
 
 	PX2_UNUSED(hr);

@@ -82,7 +82,7 @@ namespace PX2
 			bool initiator = true);
 
 		/// 获得父亲
-		inline Movable* GetParent ();
+		Movable* GetParent ();
 
 		// 挂接
 		/*
@@ -91,6 +91,9 @@ namespace PX2
 		*/
 		virtual void OnAttach ();
 		virtual void OnDetach (); 
+
+		virtual void OnPicked (int pickInfo); // called during Picker::Execute
+		virtual void OnNotPicked (int pickInfo);
 
 	protected:
 		// 几何状态更新
@@ -104,7 +107,7 @@ public_internal:
 		virtual void GetVisibleSet (Culler& culler, bool noCull) = 0;
 
 		// 设置父节点，节点在attach/detach的时候调用此函数。
-		inline void SetParent (Movable* parent);
+		void SetParent (Movable* parent);
 
 	protected:
 		Movable* mParent;

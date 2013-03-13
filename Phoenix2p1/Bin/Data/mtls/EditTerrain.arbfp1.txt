@@ -9,60 +9,24 @@
 #semantic p_EditTerrain.UVScale01
 #semantic p_EditTerrain.UVScale23
 #semantic p_EditTerrain.UVScale4
-#semantic gWMatrix
-#semantic gVMatrix
-#semantic gPMatrix
-#semantic gPVWMatrix
-#semantic gVWMatrix
-#semantic gWIMatrix
-#semantic gVIMatrix
-#semantic gCameraWorldPosition
-#semantic gShineEmissive
-#semantic gShineAmbient
-#semantic gShineDiffuse
-#semantic gLightColour
-#semantic gLightModelDirection
 #semantic Sampler0
 #semantic SamplerAlpha
 #semantic Sampler1
 #semantic Sampler2
 #semantic Sampler3
 #semantic Sampler4
-#var float4 vertexColor : $vin.COLOR : COL0 : 0 : 1
+#var float4 vertexColor0 : $vin.COLOR : COL0 : 0 : 1
 #var float2 vertexTCoord0 : $vin.TEXCOORD0 : TEX0 : 1 : 1
-#var float2 vertexTAlpha : $vin.TEXCOORD1 : TEX1 : 2 : 1
-#var float2 vertexTCoord1 : $vin.TEXCOORD2 : TEX2 : 3 : 1
-#var float2 vertexTCoord2 : $vin.TEXCOORD3 : TEX3 : 4 : 1
-#var float2 vertexTCoord3 : $vin.TEXCOORD4 : TEX4 : 5 : 1
-#var float2 vertexTCoord4 : $vin.TEXCOORD5 : TEX5 : 6 : 1
-#var float4 pixelColor : $vout.COLOR : COL : 7 : 1
-#var float4 UVScale01 :  : c[0] : 8 : 1
-#var float4 UVScale23 :  : c[1] : 9 : 1
-#var float4 UVScale4 :  : c[2] : 10 : 1
-#var float4x4 gWMatrix :  : , 4 : -1 : 0
-#var float4x4 gVMatrix :  : , 4 : -1 : 0
-#var float4x4 gPMatrix :  : , 4 : -1 : 0
-#var float4x4 gPVWMatrix :  : , 4 : -1 : 0
-#var float4x4 gVWMatrix :  : , 4 : -1 : 0
-#var float4x4 gWIMatrix :  : , 4 : -1 : 0
-#var float4x4 gVIMatrix :  : , 4 : -1 : 0
-#var float3 gCameraWorldPosition :  :  : -1 : 0
-#var float4 gShineEmissive :  :  : -1 : 0
-#var float4 gShineAmbient :  :  : -1 : 0
-#var float4 gShineDiffuse :  :  : -1 : 0
-#var float4 gLightColour :  :  : -1 : 0
-#var float3 gLightModelDirection :  :  : -1 : 0
+#var float4 pixelColor : $vout.COLOR : COL : 2 : 1
+#var float4 UVScale01 :  : c[0] : 3 : 1
+#var float4 UVScale23 :  : c[1] : 4 : 1
+#var float4 UVScale4 :  : c[2] : 5 : 1
 #var sampler2D Sampler0 :  : texunit 0 : -1 : 1
 #var sampler2D SamplerAlpha :  : texunit 1 : -1 : 1
 #var sampler2D Sampler1 :  : texunit 2 : -1 : 1
 #var sampler2D Sampler2 :  : texunit 3 : -1 : 1
 #var sampler2D Sampler3 :  : texunit 4 : -1 : 1
 #var sampler2D Sampler4 :  : texunit 5 : -1 : 1
-#default gShineEmissive = 0 0 0 1
-#default gShineAmbient = 0.1 0.1 0.1 1
-#default gShineDiffuse = 0.47 0.47 0.47 1
-#default gLightColour = 0.30000001 0.30000001 0.30000001 1
-#default gLightModelDirection = -0.5 -0.5 -0.5
 PARAM c[3] = { program.local[0..2] };
 TEMP R0;
 TEMP R1;
@@ -70,20 +34,20 @@ TEMP R2;
 TEMP R3;
 MUL R0.zw, fragment.texcoord[0].xyxy, c[0].xyxy;
 TEX R1, R0.zwzw, texture[0], 2D;
-MUL R0.xy, fragment.texcoord[2], c[0].zwzw;
+MUL R0.xy, fragment.texcoord[0], c[0].zwzw;
 TEX R0, R0, texture[2], 2D;
 ADD R2, R0, -R1;
-TEX R0, fragment.texcoord[1], texture[1], 2D;
+TEX R0, fragment.texcoord[0], texture[1], 2D;
 MAD R1, R0.x, R2, R1;
-MUL R3.xy, fragment.texcoord[3], c[1];
+MUL R3.xy, fragment.texcoord[0], c[1];
 TEX R2, R3, texture[3], 2D;
 ADD R2, R2, -R1;
 MAD R1, R0.y, R2, R1;
-MUL R3.xy, fragment.texcoord[4], c[1].zwzw;
+MUL R3.xy, fragment.texcoord[0], c[1].zwzw;
 TEX R2, R3, texture[4], 2D;
 ADD R2, R2, -R1;
 MAD R1, R0.z, R2, R1;
-MUL R0.xy, fragment.texcoord[5], c[2];
+MUL R0.xy, fragment.texcoord[0], c[2];
 TEX R2, R0, texture[5], 2D;
 ADD R2, R2, -R1;
 MAD R0, R0.w, R2, R1;

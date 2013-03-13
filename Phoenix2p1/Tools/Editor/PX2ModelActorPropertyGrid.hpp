@@ -16,7 +16,7 @@ namespace PX2Editor
 	{
 	public:
 		ModelActorPropertyGrid (wxWindow *parent);
-		~ModelActorPropertyGrid ();
+		virtual ~ModelActorPropertyGrid ();
 
 		DECLARE_DYNAMIC_CLASS(ModelActorPropertyGrid)
 

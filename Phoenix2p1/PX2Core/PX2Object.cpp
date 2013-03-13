@@ -9,6 +9,8 @@ using namespace PX2;
 
 //----------------------------------------------------------------------------
 Object::Object ()
+	:
+mVersion("PX2_VERSION_1_0")
 {
 }
 //----------------------------------------------------------------------------
@@ -152,6 +154,9 @@ void Object::Load (InStream& source)
 	// 读取ID，提供对象的链接信息
 	source.ReadUniqueID(this);
 
+	// 版本
+	source.ReadString(mVersion);
+
 	// 资源路径
 	source.ReadString(mResourcePath);
 
@@ -186,6 +191,9 @@ void Object::Save (OutStream& target) const
 	// 写入ID
 	target.WriteUniqueID(this);
 
+	// 写入version
+	target.WriteString(mVersion);
+
 	// 资源路径
 	target.WriteString(mResourcePath);
 
@@ -202,6 +210,9 @@ int Object::GetStreamingSize () const
 
 	// 对象ID
 	size += sizeof(unsigned int);
+
+	// 版本
+	size += PX2_STRINGSIZE(mVersion);
 
 	// 资源路径
 	size += PX2_STRINGSIZE(mResourcePath);

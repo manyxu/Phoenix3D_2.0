@@ -6,19 +6,12 @@
 #version 3.1.0.10
 #profile arbvp1
 #program v_StandardES_Default
-#semantic gWMatrix
-#semantic gVMatrix
-#semantic gPMatrix
-#semantic gPVWMatrix
-#semantic gVWMatrix
-#semantic gWIMatrix
-#semantic gVIMatrix
-#semantic gCameraWorldPosition
-#semantic gShineEmissive
-#semantic gShineAmbient
-#semantic gShineDiffuse
-#semantic gLightColour
-#semantic gLightModelDirection
+#semantic v_StandardES_Default.gPVWMatrix
+#semantic v_StandardES_Default.gShineEmissive
+#semantic v_StandardES_Default.gShineAmbient
+#semantic v_StandardES_Default.gShineDiffuse
+#semantic v_StandardES_Default.gLightColour
+#semantic v_StandardES_Default.gLightModelDirection
 #semantic gDiffuseSampler
 #var float3 modelPosition : $vin.POSITION : POSITION : 0 : 1
 #var float3 modelNormal : $vin.NORMAL : NORMAL : 1 : 1
@@ -26,26 +19,14 @@
 #var float4 clipPosition : $vout.POSITION : HPOS : 3 : 1
 #var float2 vertexTCoord0 : $vout.TEXCOORD0 : TEX0 : 4 : 1
 #var float4 vertexTCoord1 : $vout.TEXCOORD1 : TEX1 : 5 : 1
-#var float4x4 gWMatrix :  : , 4 : -1 : 0
-#var float4x4 gVMatrix :  : , 4 : -1 : 0
-#var float4x4 gPMatrix :  : , 4 : -1 : 0
-#var float4x4 gPVWMatrix :  : c[1], 4 : -1 : 1
-#var float4x4 gVWMatrix :  : , 4 : -1 : 0
-#var float4x4 gWIMatrix :  : , 4 : -1 : 0
-#var float4x4 gVIMatrix :  : , 4 : -1 : 0
-#var float3 gCameraWorldPosition :  :  : -1 : 0
-#var float4 gShineEmissive :  : c[5] : -1 : 1
-#var float4 gShineAmbient :  : c[6] : -1 : 1
-#var float4 gShineDiffuse :  : c[7] : -1 : 1
-#var float4 gLightColour :  : c[8] : -1 : 1
-#var float3 gLightModelDirection :  : c[9] : -1 : 1
+#var float4x4 gPVWMatrix :  : c[1], 4 : 6 : 1
+#var float4 gShineEmissive :  : c[5] : 7 : 1
+#var float4 gShineAmbient :  : c[6] : 8 : 1
+#var float4 gShineDiffuse :  : c[7] : 9 : 1
+#var float4 gLightColour :  : c[8] : 10 : 1
+#var float4 gLightModelDirection :  : c[9] : 11 : 1
 #var sampler2D gDiffuseSampler :  :  : -1 : 0
 #const c[0] = 1 0
-#default gShineEmissive = 0 0 0 1
-#default gShineAmbient = 0.1 0.1 0.1 1
-#default gShineDiffuse = 0.47 0.47 0.47 1
-#default gLightColour = 0.30000001 0.30000001 0.30000001 1
-#default gLightModelDirection = -0.5 -0.5 -0.5
 PARAM c[10] = { { 1, 0 },
 		program.local[1..9] };
 TEMP R0;
@@ -53,7 +34,7 @@ TEMP R1;
 MOV R0.xyz, c[7];
 MOV R1.xyz, c[6];
 MUL R1.xyz, R1, c[8];
-DP3 R0.w, vertex.normal, c[9];
+DP3 R0.w, vertex.normal, -c[9];
 MUL R0.xyz, R0, c[8];
 MAX R0.w, R0, c[0].y;
 ADD R1.xyz, R1, c[5];

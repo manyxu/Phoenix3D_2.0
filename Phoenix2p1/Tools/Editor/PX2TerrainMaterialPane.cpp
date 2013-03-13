@@ -5,6 +5,8 @@
 */
 
 #include "PX2TerrainMaterialPane.hpp"
+#include "PX2EditSystem.hpp"
+#include "PX2Project.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 
@@ -50,7 +52,7 @@ TerrainMaterialPanel::TerrainMaterialPanel (wxWindow *parent)
 	mYIndex = (wxTextCtrl*)FindWindow(XRCID("mYIndex"));
 	assertion(mYIndex!=0, "Window must be find!");
 
-	mLayerList = (wxListBox*)FindWindow(XRCID("LayerList"));
+	mLayerList = (wxListBox*)FindWindow(XRCID("mLayerList"));
 	assertion(mLayerList!=0, "Window must be find!");
 
 	mURepeatText = (wxTextCtrl*)FindWindow(XRCID("mURepeatText"));
@@ -71,8 +73,9 @@ TerrainMaterialPanel::TerrainMaterialPanel (wxWindow *parent)
 //-----------------------------------------------------------------------------
 void TerrainMaterialPanel::OnSliderUpdate (wxCommandEvent &event)
 {
-	PX2::RawTerrainPage *page = EditSystem::GetSingleton().GetTerrainEdit()
+	PX2::TerrainPage *page = EditSystem::GetSingleton().GetTerrainEdit()
 		->GetBrush()->GetSelectedPage();
+	PX2::RawTerrainPage *rawPage = DynamicCast<RawTerrainPage>(page);
 
 	if (event.GetEventObject() == mURepeatSlider)
 	{
@@ -81,11 +84,11 @@ void TerrainMaterialPanel::OnSliderUpdate (wxCommandEvent &event)
 		int selectIndex = EditSystem::GetSingleton().GetTerrainEdit()
 			->GetTextureProcess()->GetSelectedLayer();
 
-		if (page)
+		if (rawPage)
 		{
-			PX2::Float2 uv = page->GetUV(selectIndex);
+			PX2::Float2 uv = rawPage->GetUV(selectIndex);
 			uv[0] = (float)value;
-			page->SetUV(selectIndex, uv);
+			rawPage->SetUV(selectIndex, uv);
 
 			wxString strU = wxString::Format("%.2f", uv[0]);
 			mURepeatText->Clear();
@@ -98,14 +101,12 @@ void TerrainMaterialPanel::OnSliderUpdate (wxCommandEvent &event)
 
 		int selectIndex = EditSystem::GetSingleton().GetTerrainEdit()
 			->GetTextureProcess()->GetSelectedLayer();
-		PX2::RawTerrainPage *page = EditSystem::GetSingleton().GetTerrainEdit()
-			->GetBrush()->GetSelectedPage();
 
-		if (page)
+		if (rawPage)
 		{
-			PX2::Float2 uv = page->GetUV(selectIndex);
+			PX2::Float2 uv = rawPage->GetUV(selectIndex);
 			uv[1] = (float)value;
-			page->SetUV(selectIndex, uv);
+			rawPage->SetUV(selectIndex, uv);
 
 			wxString strV = wxString::Format("%.2f", uv[1]);
 			mVRepeatText->Clear();
@@ -113,7 +114,7 @@ void TerrainMaterialPanel::OnSliderUpdate (wxCommandEvent &event)
 		}
 	}
 
-	if (!page)
+	if (!rawPage)
 	{
 		mURepeatText->Clear();
 		mVRepeatText->Clear();
@@ -153,16 +154,19 @@ void TerrainMaterialPanel::OnTextEnter (wxCommandEvent& event)
 {
 	int selectIndex = EditSystem::GetSingleton().GetTerrainEdit()
 		->GetTextureProcess()->GetSelectedLayer();
-	PX2::RawTerrainPage *page = EditSystem::GetSingleton().GetTerrainEdit()
+	PX2::TerrainPage *page = EditSystem::GetSingleton().GetTerrainEdit()
 		->GetBrush()->GetSelectedPage();
+	PX2::RawTerrainPage *rawPage = DynamicCast<RawTerrainPage>(page);
+	if (!rawPage)
+		return;
 
-	PX2::Float2 uv = page->GetUV(selectIndex);
+	PX2::Float2 uv = rawPage->GetUV(selectIndex);
 
 	if (event.GetEventObject() == mURepeatText)
 	{
 		int value = wxAtoi(event.GetString().GetData());
 		uv[0] = (float)value;
-		page->SetUV(selectIndex, uv);
+		rawPage->SetUV(selectIndex, uv);
 
 		mURepeatSlider->SetValue(value);
 	}
@@ -171,7 +175,7 @@ void TerrainMaterialPanel::OnTextEnter (wxCommandEvent& event)
 		int value = wxAtoi(event.GetString().GetData());
 		uv[1] = (float)value;
 
-		page->SetUV(selectIndex, uv);
+		rawPage->SetUV(selectIndex, uv);
 		mVRepeatSlider->SetValue(value);
 	}
 }
@@ -199,11 +203,13 @@ void TerrainMaterialPanel::RefleshCtrls ()
 	selectIndex = EditSystem::GetSingleton().GetTerrainEdit()
 		->GetTextureProcess()->GetSelectedLayer();
 
-	TerrainActor *actor = EditSystem::GetSingleton().GetEditMap()
-		->GetScene()->GetTerrainActor();
+	TerrainActor *actor = 0;
+
+	if (Project::GetSingletonPtr())
+		actor = Project::GetSingleton().GetScene()->GetTerrainActor();
+
 	Terrain *ter = 0;
-	if (actor)
-		ter = actor->GetTerrain();
+	ter = actor->GetRawTerrain();
 
 	if (!ter)
 		return;
@@ -252,15 +258,16 @@ void TerrainMaterialPanel::RefleshCtrls ()
 		mTexToUse->Clear();
 	}
 
-	// selectedPage
-	PX2::RawTerrainPage *selectedPage = EditSystem::GetSingleton().GetTerrainEdit()
-		->GetBrush()->GetSelectedPage();
+	// rawPage
+	PX2::TerrainPage *page = 
+		EditSystem::GetSingleton().GetTerrainEdit()->GetBrush()->GetSelectedPage();
+	PX2::RawTerrainPage *rawPage = DynamicCast<RawTerrainPage>(page);
 
-	if (selectedPage && terrain)
+	if (rawPage && terrain)
 	{
 		int xIndex = 0;
 		int yIndex = 0;
-		terrain->GetPageIndex(xIndex, yIndex, selectedPage);
+		terrain->GetPageIndex(xIndex, yIndex, rawPage);
 		wxString strXIndex = wxString::Format("%d", xIndex);
 		wxString strYIndex = wxString::Format("%d", yIndex);
 		mXIndex->Clear();
@@ -268,10 +275,10 @@ void TerrainMaterialPanel::RefleshCtrls ()
 		mYIndex->Clear();
 		mYIndex->WriteText(strYIndex);	
 
-		Float2 uv = selectedPage->GetUV(selectIndex);
+		Float2 uv = rawPage->GetUV(selectIndex);
 
 		PX2::Texture2D *tex2d = 0;
-		tex2d = selectedPage->GetTexture(selectIndex);
+		tex2d = rawPage->GetTexture(selectIndex);
 		if (tex2d)
 		{
 			std::string texPath = tex2d->GetResourcePath();

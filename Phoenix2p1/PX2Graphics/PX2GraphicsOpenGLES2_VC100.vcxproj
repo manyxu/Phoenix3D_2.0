@@ -42,6 +42,7 @@
     <ClCompile Include="PX2ImageProcessing.cpp" />
     <ClCompile Include="PX2ImageProcessing2.cpp" />
     <ClCompile Include="PX2IndexBuffer.cpp" />
+    <ClCompile Include="PX2JunglerMaterial.cpp" />
     <ClCompile Include="PX2KeyframeController.cpp" />
     <ClCompile Include="PX2Light.cpp" />
     <ClCompile Include="PX2LightAmbientConstant.cpp" />
@@ -104,6 +105,7 @@
     <ClCompile Include="PX2TriFan.cpp" />
     <ClCompile Include="PX2TriMesh.cpp" />
     <ClCompile Include="PX2TriStrip.cpp" />
+    <ClCompile Include="PX2UserConstant.cpp" />
     <ClCompile Include="PX2VertexBuffer.cpp" />
     <ClCompile Include="PX2VertexBufferAccessor.cpp" />
     <ClCompile Include="PX2VertexColor4Material.cpp" />
@@ -164,6 +166,7 @@
     <ClInclude Include="PX2ImageProcessing.hpp" />
     <ClInclude Include="PX2ImageProcessing2.hpp" />
     <ClInclude Include="PX2IndexBuffer.hpp" />
+    <ClInclude Include="PX2JunglerMaterial.hpp" />
     <ClInclude Include="PX2KeyframeController.hpp" />
     <ClInclude Include="PX2Light.hpp" />
     <ClInclude Include="PX2LightAmbientConstant.hpp" />
@@ -228,6 +231,7 @@
     <ClInclude Include="PX2TriFan.hpp" />
     <ClInclude Include="PX2TriMesh.hpp" />
     <ClInclude Include="PX2TriStrip.hpp" />
+    <ClInclude Include="PX2UserConstant.hpp" />
     <ClInclude Include="PX2VertexBuffer.hpp" />
     <ClInclude Include="PX2VertexBufferAccessor.hpp" />
     <ClInclude Include="PX2VertexColor4Material.hpp" />
@@ -355,7 +359,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;PX2_USE_OPENGLES2;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\;Renderers\OpenGLES2Renderer;..\PX2SDK\Include;..\ThirdPartiesLibs\OGLES;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;Renderers\OpenGLES2Renderer;..\PX2SDK\Include;..\ThirdPartiesLibs\OGLES;..\ThirdPartiesLibs\pthread\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

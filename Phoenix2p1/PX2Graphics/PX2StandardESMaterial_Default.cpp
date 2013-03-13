@@ -27,7 +27,7 @@ PX2_IMPLEMENT_DEFAULT_NAMES(Material, StandardESMaterial_Default);
 //----------------------------------------------------------------------------
 StandardESMaterial_Default::StandardESMaterial_Default ()
 {
-	VertexShader* vshader = new0 VertexShader("PX2.StandardMaterial_Default",
+	VertexShader* vshader = new0 VertexShader("PX2.StandardESMaterial_Default",
 		3, 3, 6, 0, false);
 	vshader->SetInput(0, "modelPosition", Shader::VT_FLOAT3,
 		Shader::VS_POSITION);
@@ -53,7 +53,7 @@ StandardESMaterial_Default::StandardESMaterial_Default ()
 	vshader->SetBaseRegisters(msVRegisters);
 	vshader->SetPrograms(msVPrograms);
 
-	PixelShader* pshader = new0 PixelShader("PX2.StandardMaterial_Default",
+	PixelShader* pshader = new0 PixelShader("PX2.StandardESMaterial_Default",
 		2, 1, 0, 1, false);
 	pshader->SetInput(0, "vertexTCoord0", Shader::VT_FLOAT2,
 		Shader::VS_TEXCOORD0);
@@ -97,6 +97,14 @@ MaterialInstance* StandardESMaterial_Default::CreateInstance (
 	if (!dirLight)
 	{
 		dirLight = new0 Light(Light::LT_DIRECTIONAL);
+		dirLight->Ambient = Float4(1.0f, 1.0f, 1.0f, 1.0f);
+		dirLight->Diffuse = Float4(1.0f, 1.0f, 1.0f, 1.0f);
+	}
+	if (!shine)
+	{
+		shine = new0 Shine();
+		shine->Ambient = Float4(0.3f, 0.3f, 0.3f, 1.0f);
+		shine->Diffuse = Float4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
 	// vertex
@@ -113,9 +121,22 @@ MaterialInstance* StandardESMaterial_Default::CreateInstance (
 		new0 LightModelDVectorConstant(dirLight));
 
 	// pixel
+	if (diffTex)
+	{
+		if (!diffTex->HasMipmaps())
+			diffTex->GenerateMipmaps();
+	}
+
 	instance->SetPixelTexture(0, "gDiffuseSampler", diffTex);
 
 	return instance;
+}
+//----------------------------------------------------------------------------
+MaterialInstance* StandardESMaterial_Default::CreateUniqueInstance (	
+	Texture2D *diffTex, Light *dirLight, Shine* shine)
+{
+	StandardESMaterial_Default *mtl = new0 StandardESMaterial_Default(); 
+	return mtl->CreateInstance(diffTex, dirLight, shine);
 }
 //----------------------------------------------------------------------------
 
@@ -206,27 +227,7 @@ std::string StandardESMaterial_Default::msVPrograms[Shader::MAX_PROFILES] =
 	"",
 
 	// VP_VS_1_1
-	"vs_1_1\n"
-	"def c9, 1.00000000, 0.00000000, 0, 0\n"
-	"dcl_position0 v0\n"
-	"dcl_texcoord0 v2\n"
-	"dcl_normal0 v1\n"
-	"mov r0.xyz, c7\n"
-	"mov r1.xyz, c7\n"
-	"mul r1.xyz, c5, r1\n"
-	"dp3 r0.w, v1, c8\n"
-	"mul r0.xyz, c6, r0\n"
-	"max r0.w, r0, c9.y\n"
-	"add r1.xyz, r1, c4\n"
-	"mad oT1.xyz, r0, r0.w, r1\n"
-	"mov r0.w, c9.x\n"
-	"mov r0.xyz, v0\n"
-	"dp4 oPos.w, r0, c3\n"
-	"dp4 oPos.z, r0, c2\n"
-	"dp4 oPos.y, r0, c1\n"
-	"dp4 oPos.x, r0, c0\n"
-	"mov oT0.xy, v2\n"
-	"mov oT1.w, c6\n",
+	"",
 
 	// VP_VS_2_0
 	"vs_2_0\n"
@@ -237,7 +238,7 @@ std::string StandardESMaterial_Default::msVPrograms[Shader::MAX_PROFILES] =
 	"mov r0.xyz, c7\n"
 	"mov r1.xyz, c7\n"
 	"mul r1.xyz, c5, r1\n"
-	"dp3 r0.w, v1, c8\n"
+	"dp3 r0.w, v1, -c8\n"
 	"mul r0.xyz, c6, r0\n"
 	"max r0.w, r0, c9.y\n"
 	"add r1.xyz, r1, c4\n"
@@ -263,7 +264,7 @@ std::string StandardESMaterial_Default::msVPrograms[Shader::MAX_PROFILES] =
 	"mov r0.xyz, c7\n"
 	"mov r1.xyz, c7\n"
 	"mul r1.xyz, c5, r1\n"
-	"dp3 r0.w, v1, c8\n"
+	"dp3 r0.w, v1, -c8\n"
 	"mul r0.xyz, c6, r0\n"
 	"max r0.w, r0, c9.y\n"
 	"add r1.xyz, r1, c4\n"
@@ -275,23 +276,24 @@ std::string StandardESMaterial_Default::msVPrograms[Shader::MAX_PROFILES] =
 	"dp4 o0.y, r0, c1\n"
 	"dp4 o0.x, r0, c0\n"
 	"mov o1.xy, v2\n"
-	"mov o2.w, c6\n",
+	"mov o2.w, c6",
+
 
 	// VP_ARBVP1
 	"",
 
 	// vp_gles2
 	"uniform mat4 gPVWMatrix;\n"
-	"uniform vec4 gShineEmissive;\n"
-	"uniform vec4 gShineAmbient;\n"
-	"uniform vec4 gShineDiffuse;\n"
-	"uniform vec4 gLightColour;\n"
-	"uniform vec4 gLightModelDirection;\n"
-	"attribute vec3 modelPosition;\n"
-	"attribute vec3 modelNormal;\n"
-	"attribute vec2 modelTCoord0;\n"
-	"varying vec2 vertexTCoord0;\n"
-	"varying vec4 vertexTCoord1;\n"
+	"uniform mediump vec4 gShineEmissive;\n"
+	"uniform mediump vec4 gShineAmbient;\n"
+	"uniform mediump vec4 gShineDiffuse;\n"
+	"uniform mediump vec4 gLightColour;\n"
+	"uniform mediump vec4 gLightModelDirection;\n"
+	"attribute mediump vec3 modelPosition;\n"
+	"attribute mediump vec3 modelNormal;\n"
+	"attribute mediump vec2 modelTCoord0;\n"
+	"varying mediump vec2 vertexTCoord0;\n"
+	"varying mediump vec4 vertexTCoord1;\n"
 	"void main()\n"
 	"{\n"
 	"	gl_Position = gPVWMatrix*vec4(modelPosition, 1.0);\n"
@@ -299,7 +301,7 @@ std::string StandardESMaterial_Default::msVPrograms[Shader::MAX_PROFILES] =
 	"	vertexTCoord1.rgb = gShineEmissive.rgb"
 	"		+ gLightColour.rgb*gShineAmbient.rgb"
 	"		+ gLightColour.rgb*gShineDiffuse.rgb"
-	"		* max(0.0, dot(modelNormal, gLightModelDirection.rgb));\n"
+	"		* max(0.0, dot(modelNormal, -gLightModelDirection.rgb));\n"
 	"	vertexTCoord1.a = gShineDiffuse.a;\n"
 	"}\n"
 };

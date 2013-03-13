@@ -1,8 +1,8 @@
-<Project name="Test">
+<boost name="boost">
 	<Config>
 		<var width="960" height="640"/>
 	</Config>
 	<Play>
-		<var mapName="test"/>
+		<var projectPath="Data/projects/phoenix.px2proj"/>
 	</Play>
-</Project>
+</boost>

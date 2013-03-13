@@ -46,7 +46,7 @@ namespace PX2
 		inline const Transform& GetWorldTransform () const;
 		Float3 GetPosition (int v) const; //< 输入的索引v必须在顶点索引buffer中
 
-		/// 几何图形跟新，在TDRenderable.hpp中看参数说明。
+		/// 几何图形跟新，在PX2Renderable.hpp中看参数说明。
 		virtual void UpdateModelSpace (UpdateType type);
 
 	private:

@@ -10,6 +10,8 @@
 template <typename T>
 T* Memory::New1 (const int bound0)
 {
+	assertion(bound0>0, "must bigger than 0.\n");
+
 	T* data;
 
 	if (msMap)
@@ -38,6 +40,8 @@ T* Memory::New1 (const int bound0)
 template <typename T>
 T** Memory::New2 (const int bound0, const int bound1)
 {
+	assertion(bound0>0 && bound1>0, "must bigger than 0.\n");
+
 	const int bound01 = bound0*bound1;
 	T** data;
 
@@ -79,6 +83,8 @@ T** Memory::New2 (const int bound0, const int bound1)
 template <typename T>
 T*** Memory::New3 (const int bound0, const int bound1, const int bound2)
 {
+	assertion(bound0>0 && bound1>0 && bound2>0, "must bigger than 0.\n");
+
 	const int bound12 = bound1*bound2;
 	const int bound012 = bound0*bound12;
 	T*** data;
@@ -131,6 +137,9 @@ template <typename T>
 T**** Memory::New4 (const int bound0, const int bound1, const int bound2,
 					const int bound3)
 {
+	assertion(bound0>0 && bound1>0 && bound2>0
+		&& bound3>0, "must bigger than 0.\n");
+
 	const int bound23 = bound2*bound3;
 	const int bound123 = bound1*bound23;
 	const int bound0123 = bound0*bound123;
@@ -204,19 +213,22 @@ void Memory::Delete0 (T*& data)
 			return;
 		}
 
-		msMutex.Enter();
+		msMutex->Enter();
 
 		MemoryMap::iterator iter = msMap->find(data);
 		if (iter != msMap->end())
 		{
 			if (iter->second.mNumDimensions == 0)
 			{
+				size_t numBytes = iter->second.mNumBytes;
+
 				// 调用T的析构函数。如果T是一个指针类型，编译器不会为析构函数生
 				// 成任何代码。
 				data->~T();
 
 				// 将T从msMap中移除
-				msMap->erase(data);
+				BeforeEraseInformation(data);
+				msMap->erase(data);				
 				msDeallocator(data, mFile, mLine);
 			}
 			else
@@ -235,7 +247,7 @@ void Memory::Delete0 (T*& data)
 
 		data = 0;
 
-		msMutex.Leave();
+		msMutex->Leave();
 	}
 }
 //----------------------------------------------------------------------------
@@ -254,7 +266,7 @@ void Memory::Delete1 (T*& data)
 			return;
 		}
 
-		msMutex.Enter();
+		msMutex->Enter();
 
 		MemoryMap::iterator iter = msMap->find(data);
 		if (iter != msMap->end())
@@ -263,6 +275,7 @@ void Memory::Delete1 (T*& data)
 			{
 				// 调用T的析构函数。如果T是一个指针类型，编译器不会为析构函数生
 				// 成任何代码。
+				size_t numBytes = iter->second.mNumBytes;
 				const int numElements = iter->second.mNumBytes/sizeof(T);
 				T* object = data;
 				for (int i = 0; i < numElements; ++i, ++object)
@@ -271,6 +284,7 @@ void Memory::Delete1 (T*& data)
 				}
 
 				// 将T[]从msMap中移除
+				BeforeEraseInformation(data);
 				msMap->erase(data);
 				msDeallocator(data, mFile, mLine);
 			}
@@ -290,7 +304,7 @@ void Memory::Delete1 (T*& data)
 
 		data = 0;
 
-		msMutex.Leave();
+		msMutex->Leave();
 	}
 }
 //----------------------------------------------------------------------------
@@ -310,7 +324,7 @@ void Memory::Delete2 (T**& data)
 			return;
 		}
 
-		msMutex.Enter();
+		msMutex->Enter();
 
 		MemoryMap::iterator iter = msMap->find(data);
 		if (iter != msMap->end())
@@ -319,6 +333,7 @@ void Memory::Delete2 (T**& data)
 			{
 				// 调用T的析构函数。如果T是一个指针类型，编译器不会为析构函数生
 				// 成任何代码。
+				size_t numBytes = iter->second.mNumBytes;
 				const int numElements = iter->second.mNumBytes/sizeof(T);
 				T* object = data[0];
 				for (int i = 0; i < numElements; ++i, ++object)
@@ -327,10 +342,12 @@ void Memory::Delete2 (T**& data)
 				}
 
 				// 将T[]从msMap中移除
+				BeforeEraseInformation(data[0]);
 				msMap->erase(data[0]);
 				msDeallocator(data[0], mFile, mLine);
 
 				// T*没有析构函数，将T*[]从msMap中移除
+				BeforeEraseInformation(data);
 				msMap->erase(data);
 				msDeallocator(data, mFile, mLine);
 			}
@@ -351,7 +368,7 @@ void Memory::Delete2 (T**& data)
 
 		data = 0;
 
-		msMutex.Leave();
+		msMutex->Leave();
 	}
 }
 //----------------------------------------------------------------------------
@@ -372,7 +389,7 @@ void Memory::Delete3 (T***& data)
 			return;
 		}
 
-		msMutex.Enter();
+		msMutex->Enter();
 
 		MemoryMap::iterator iter = msMap->find(data);
 		if (iter != msMap->end())
@@ -381,6 +398,7 @@ void Memory::Delete3 (T***& data)
 			{
 				// 调用T的析构函数。如果T是一个指针类型，编译器不会为析构函数生
 				// 成任何代码。
+				size_t numBytes = iter->second.mNumBytes;
 				const int numElements = iter->second.mNumBytes/sizeof(T);
 				T* object = data[0][0];
 				for (int i = 0; i < numElements; ++i, ++object)
@@ -389,14 +407,17 @@ void Memory::Delete3 (T***& data)
 				}
 
 				// 将T[]从msMap中移除
+				BeforeEraseInformation(data[0][0]);
 				msMap->erase(data[0][0]);
 				msDeallocator(data[0][0], mFile, mLine);
 
 				// T*没有析构函数，将T*[]从msMap中移除
+				BeforeEraseInformation(data[0]);
 				msMap->erase(data[0]);
 				msDeallocator(data[0], mFile, mLine);
 
 				// T**没有析构函数，将T**[]从msMap中移除
+				BeforeEraseInformation(data);
 				msMap->erase(data);
 				msDeallocator(data, mFile, mLine);
 			}
@@ -418,7 +439,7 @@ void Memory::Delete3 (T***& data)
 
 		data = 0;
 
-		msMutex.Leave();
+		msMutex->Leave();
 	}
 }
 //----------------------------------------------------------------------------
@@ -440,7 +461,7 @@ void Memory::Delete4 (T****& data)
 			return;
 		}
 
-		msMutex.Enter();
+		msMutex->Enter();
 
 		MemoryMap::iterator iter = msMap->find(data);
 		if (iter != msMap->end())
@@ -449,6 +470,7 @@ void Memory::Delete4 (T****& data)
 			{
 				// 调用T的析构函数。如果T是一个指针类型，编译器不会为析构函数生
 				// 成任何代码。
+				size_t numBytes = iter->second.mNumBytes;
 				const int numElements = iter->second.mNumBytes/sizeof(T);
 				T* object = data[0][0][0];
 				for (int i = 0; i < numElements; ++i, ++object)
@@ -457,18 +479,22 @@ void Memory::Delete4 (T****& data)
 				}
 
 				// 将T[]从msMap中移除
+				BeforeEraseInformation(data[0][0][0]);
 				msMap->erase(data[0][0][0]);
 				msDeallocator(data[0][0][0], mFile, mLine);
 
 				// T*没有析构函数，将T*[]从msMap中移除
+				BeforeEraseInformation(data[0][0]);
 				msMap->erase(data[0][0]);
 				msDeallocator(data[0][0], mFile, mLine);
 
 				// T**没有析构函数, 将T**[]从msMap中移除
+				BeforeEraseInformation(data[0]);
 				msMap->erase(data[0]);
 				msDeallocator(data[0], mFile, mLine);
 
 				// T***没有析构函数, 将T***[]从msMap中移除
+				BeforeEraseInformation(data);
 				msMap->erase(data);
 				msDeallocator(data, mFile, mLine);
 			}
@@ -491,7 +517,7 @@ void Memory::Delete4 (T****& data)
 
 		data = 0;
 
-		msMutex.Leave();
+		msMutex->Leave();
 	}
 }
 //----------------------------------------------------------------------------

@@ -10,6 +10,7 @@
 #include "PX2TerrainsPre.hpp"
 #include "PX2Node.hpp"
 #include "PX2Camera.hpp"
+#include "PX2TerrainPage.hpp"
 
 namespace PX2
 {
@@ -28,20 +29,44 @@ namespace PX2
 		inline int GetColQuantity () const;
 		inline int GetSize () const;
 		inline float GetSpacing () const;
-		virtual float GetHeight (float x, float y) const;
-		virtual AVector GetNormal (float x, float y) const;
+		float GetHeight (float x, float y) const;
+		AVector GetNormal (float x, float y) const;
 
-		void OnCameraMotion ();
+		TerrainPage* GetPage (int row, int col);
+		TerrainPage* GetCurrentPage (float x, float y) const;
+		bool GetPageIndex (int &outRow, int &outCol, TerrainPage *page);
+		TerrainPagePtr ReplacePage (int row, int col, TerrainPage* newPage);
+
+		virtual void UseSimpleMtl (bool use);
+		bool IsUseSimpleMtl ();
+
+		EditTerrainMaterial *GetEidtMaterial ();
+		EditTerrainMaterial *GetSimpleMaterial ();
+		Shine *GetShine ();
+
+		// 在radius，随机生成num个植被
+		void AddJunglers (Texture2D *tex, APoint center, float radius, int num, 
+			float width, float height, float lower);
+		void RemoveJunglers (Texture2D *tex, APoint center, float radius, int num);
 
 	protected:
-		Terrain();
+		Terrain(bool useSimpleMtl);
 
 		int mNumRows, mNumCols;
 		int mSize;
 		float mMinElevation, mMaxElevation, mSpacing;
+		TerrainPagePtr** mPages;
 
-		int mCameraRow, mCameraCol;
-		CameraPtr mCamera;
+		bool mIsUseSimpleMtl;
+		VertexFormatPtr mVFormatEdit;
+		VertexFormatPtr mVFormatSimple;
+		EditTerrainMaterialPtr mMtlEdit;
+		EditTerrainMaterialPtr mMtlSimple;
+
+		ShinePtr mShine;
+
+	private:
+		Terrain();
 	};
 
 	PX2_REGISTER_STREAM(Terrain);

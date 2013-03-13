@@ -34,6 +34,66 @@
     <Filter Include="ZLib\minzip">
       <UniqueIdentifier>{15439039-4818-4296-8072-8d0793dfbdce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="InputEventAdapter">
+      <UniqueIdentifier>{1e787a30-005b-43ef-8648-c23c4eefe48f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Font">
+      <UniqueIdentifier>{3e8c5625-7beb-4077-89ba-4d05f8694dd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FreeType">
+      <UniqueIdentifier>{aadf60cf-657f-4dd7-ab2e-7c791d4774a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Font\CharCoding">
+      <UniqueIdentifier>{ed4d227e-8145-44b4-9f13-e3946223a515}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Font\FontTypes">
+      <UniqueIdentifier>{412fa9b6-8199-45e2-b668-562f5c8a2a91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Font\FontTypes\CommonImpl">
+      <UniqueIdentifier>{fb61ad19-ba4d-4bbb-ab19-1c3b1bf00db9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FreeType\include">
+      <UniqueIdentifier>{e2a3eced-9d7e-417e-8e1e-55a8fa142b66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FreeType\src">
+      <UniqueIdentifier>{d6d662de-e702-41df-a19a-d8d1a6bfba86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FreeType\src\base">
+      <UniqueIdentifier>{49603465-bf76-4351-80e0-6bf0ae5032a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FreeType\src\raster">
+      <UniqueIdentifier>{97bdbb18-7e4b-4f69-8651-dd816b974a0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FreeType\src\sfnt">
+      <UniqueIdentifier>{9d6294a8-9af1-40f4-a0d8-5e57d349f135}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FreeType\src\smooth">
+      <UniqueIdentifier>{64e24836-dd5f-4f0e-947e-c739bf201d97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FreeType\src\autofit">
+      <UniqueIdentifier>{a9812174-9d37-4039-8c60-15794eb43dc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FreeType\src\truetype">
+      <UniqueIdentifier>{f5241819-714e-40e8-899f-685b0404b68e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FreeType\src\cff">
+      <UniqueIdentifier>{bd6a8d2f-4a65-444d-b511-5a8b93da9351}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FreeType\src\psnames">
+      <UniqueIdentifier>{d509ed69-72b7-4d02-b251-e71696ae495c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FreeType\src\pshinter">
+      <UniqueIdentifier>{b6db6f51-3a0b-4e49-8d05-256be3f84194}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts">
+      <UniqueIdentifier>{68597c40-44e0-4800-b26c-d44298201bf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\ToLua">
+      <UniqueIdentifier>{8842d8a6-0b1a-446e-82a8-30fc6035c120}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Lua">
+      <UniqueIdentifier>{25be5886-7e92-4c99-8179-87ff51384494}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TinyXML\tinystr.cpp">
@@ -91,12 +151,6 @@
       <Filter>DevIL</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\il_dcx.c">
-      <Filter>DevIL</Filter>
-    </ClCompile>
-    <ClCompile Include="DevIL\il_dds.c">
-      <Filter>DevIL</Filter>
-    </ClCompile>
-    <ClCompile Include="DevIL\il_dds-save.c">
       <Filter>DevIL</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\il_devil.c">
@@ -166,9 +220,6 @@
       <Filter>DevIL</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\il_lif.c">
-      <Filter>DevIL</Filter>
-    </ClCompile>
-    <ClCompile Include="DevIL\il_main.c">
       <Filter>DevIL</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\il_manip.c">
@@ -274,12 +325,6 @@
       <Filter>DevIL</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\il_utility.c">
-      <Filter>DevIL</Filter>
-    </ClCompile>
-    <ClCompile Include="DevIL\il_utx.c">
-      <Filter>DevIL</Filter>
-    </ClCompile>
-    <ClCompile Include="DevIL\il_utx.cpp">
       <Filter>DevIL</Filter>
     </ClCompile>
     <ClCompile Include="DevIL\il_vtf.c">
@@ -399,6 +444,219 @@
     <ClCompile Include="PX2JNI.cpp">
       <Filter>Android</Filter>
     </ClCompile>
+    <ClCompile Include="PX2InputEventAdapter.cpp">
+      <Filter>InputEventAdapter</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2InputEventListener.cpp">
+      <Filter>InputEventAdapter</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2InputEvent.cpp">
+      <Filter>InputEventAdapter</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2FontManager.cpp">
+      <Filter>Font</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2CharCodingGBK.cpp">
+      <Filter>Font\CharCoding</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2CharCodingUTF8.cpp">
+      <Filter>Font\CharCoding</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2FontBitmapImpl.cpp">
+      <Filter>Font\FontTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2FontCommonImpl.cpp">
+      <Filter>Font\FontTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2FontGlyphMapFreeType.cpp">
+      <Filter>Font\FontTypes\CommonImpl</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2FontGlyphMapTrueType.cpp">
+      <Filter>Font\FontTypes\CommonImpl</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2Font.cpp">
+      <Filter>Font\FontTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\base\ftbbox.c">
+      <Filter>FreeType\src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\base\ftbitmap.c">
+      <Filter>FreeType\src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\base\ftfstype.c">
+      <Filter>FreeType\src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\base\ftglyph.c">
+      <Filter>FreeType\src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\base\ftlcdfil.c">
+      <Filter>FreeType\src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\base\ftstroke.c">
+      <Filter>FreeType\src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\base\fttype1.c">
+      <Filter>FreeType\src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\base\ftxf86.c">
+      <Filter>FreeType\src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\base\ftbase.c">
+      <Filter>FreeType\src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\base\ftsystem.c">
+      <Filter>FreeType\src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\base\ftinit.c">
+      <Filter>FreeType\src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\base\ftgasp.c">
+      <Filter>FreeType\src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\raster\raster.c">
+      <Filter>FreeType\src\raster</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\sfnt\sfnt.c">
+      <Filter>FreeType\src\sfnt</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\smooth\smooth.c">
+      <Filter>FreeType\src\smooth</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\autofit\autofit.c">
+      <Filter>FreeType\src\autofit</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\truetype\truetype.c">
+      <Filter>FreeType\src\truetype</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\cff\cff.c">
+      <Filter>FreeType\src\cff</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\psnames\psnames.c">
+      <Filter>FreeType\src\psnames</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeType\src\pshinter\pshinter.c">
+      <Filter>FreeType\src\pshinter</Filter>
+    </ClCompile>
+    <ClCompile Include="DevIL\il_dds.c">
+      <Filter>DevIL</Filter>
+    </ClCompile>
+    <ClCompile Include="DevIL\il_dds-save.c">
+      <Filter>DevIL</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2TexPackData.cpp">
+      <Filter>ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ScriptManager.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2LuaManager.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="ToLua\tolua_event.c">
+      <Filter>Scripts\ToLua</Filter>
+    </ClCompile>
+    <ClCompile Include="ToLua\tolua_is.c">
+      <Filter>Scripts\ToLua</Filter>
+    </ClCompile>
+    <ClCompile Include="ToLua\tolua_map.c">
+      <Filter>Scripts\ToLua</Filter>
+    </ClCompile>
+    <ClCompile Include="ToLua\tolua_push.c">
+      <Filter>Scripts\ToLua</Filter>
+    </ClCompile>
+    <ClCompile Include="ToLua\tolua_to.c">
+      <Filter>Scripts\ToLua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lapi.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lauxlib.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lbaselib.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lcode.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\ldblib.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\ldebug.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\ldo.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\ldump.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lfunc.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lgc.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\linit.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\liolib.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lmathlib.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lmem.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\loadlib.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lobject.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lopcodes.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\loslib.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lparser.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lstate.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lstring.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lstrlib.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\ltable.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\ltablib.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\ltm.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lundump.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lvm.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lzio.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\print.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\llex.c">
+      <Filter>Scripts\Lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TinyXML\tinystr.h">
@@ -440,9 +698,6 @@
       <Filter>DevIL</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\il_dcx.h">
-      <Filter>DevIL</Filter>
-    </ClInclude>
-    <ClInclude Include="DevIL\il_dds.h">
       <Filter>DevIL</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\il_doompal.h">
@@ -527,9 +782,6 @@
       <Filter>DevIL</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\il_targa.h">
-      <Filter>DevIL</Filter>
-    </ClInclude>
-    <ClInclude Include="DevIL\il_utx.h">
       <Filter>DevIL</Filter>
     </ClInclude>
     <ClInclude Include="DevIL\il_vtf.h">
@@ -625,6 +877,138 @@
     <ClInclude Include="PX2JNI.hpp">
       <Filter>Android</Filter>
     </ClInclude>
+    <ClInclude Include="PX2InputEventAdapter.hpp">
+      <Filter>InputEventAdapter</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2InputEventListener.hpp">
+      <Filter>InputEventAdapter</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2InputEvent.hpp">
+      <Filter>InputEventAdapter</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2FontDefine.hpp">
+      <Filter>Font</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2FontManager.hpp">
+      <Filter>Font</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2CharCodingGBK.hpp">
+      <Filter>Font\CharCoding</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2CharCodingUTF8.hpp">
+      <Filter>Font\CharCoding</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2CharCoding.hpp">
+      <Filter>Font\CharCoding</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2FontBitmapImpl.hpp">
+      <Filter>Font\FontTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2FontCommonImpl.hpp">
+      <Filter>Font\FontTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2FontGlyphMapFreeType.hpp">
+      <Filter>Font\FontTypes\CommonImpl</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2FontGlyphMapTrueType.hpp">
+      <Filter>Font\FontTypes\CommonImpl</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2FontGlyphMap.hpp">
+      <Filter>Font\FontTypes\CommonImpl</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2Font.hpp">
+      <Filter>Font\FontTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="FreeType\include\ft2build.h">
+      <Filter>FreeType\include</Filter>
+    </ClInclude>
+    <ClInclude Include="DevIL\il_dds.h">
+      <Filter>DevIL</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2TexPackData.hpp">
+      <Filter>ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ScriptManager.hpp">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2LuaManager.hpp">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="ToLua\tolua_event.h">
+      <Filter>Scripts\ToLua</Filter>
+    </ClInclude>
+    <ClInclude Include="ToLua\tolua++.h">
+      <Filter>Scripts\ToLua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lapi.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lauxlib.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lcode.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\ldebug.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\ldo.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lfunc.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lgc.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\llimits.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lmem.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lobject.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lopcodes.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lparser.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lstate.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lstring.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\ltable.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\ltm.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lua.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\luaconf.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lualib.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lundump.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lvm.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lzio.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\llex.h">
+      <Filter>Scripts\Lua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PX2ResourceManager.inl">
@@ -632,6 +1016,30 @@
     </None>
     <None Include="PX2CSVParser.inl">
       <Filter>CSV</Filter>
+    </None>
+    <None Include="PX2InputEventAdapter.inl">
+      <Filter>InputEventAdapter</Filter>
+    </None>
+    <None Include="PX2Font.inl">
+      <Filter>Font\FontTypes</Filter>
+    </None>
+    <None Include="PX2FontCommonImpl.inl">
+      <Filter>Font\FontTypes</Filter>
+    </None>
+    <None Include="PX2FontManager.inl">
+      <Filter>Font</Filter>
+    </None>
+    <None Include="PX2TexPackData.inl">
+      <Filter>ResourceManager</Filter>
+    </None>
+    <None Include="PX2LuaManager.inl">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="Lua\Makefile">
+      <Filter>Scripts\Lua</Filter>
+    </None>
+    <None Include="PX2ScriptManager.inl">
+      <Filter>Scripts</Filter>
     </None>
   </ItemGroup>
 </Project>

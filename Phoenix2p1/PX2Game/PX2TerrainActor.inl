@@ -5,8 +5,18 @@
 */
 
 //----------------------------------------------------------------------------
-inline Terrain *TerrainActor::GetTerrain()
+inline bool TerrainActor::IsUseLod ()
 {
-	return mTerrain;
+	return mIsUseLOD;
+}
+//----------------------------------------------------------------------------
+inline RawTerrain *TerrainActor::GetRawTerrain()
+{
+	return mRawTerrain;
+}
+//----------------------------------------------------------------------------
+inline LODTerrain *TerrainActor::GetLODTerrain ()
+{
+	return mLODTerrain;
 }
 //----------------------------------------------------------------------------

@@ -23,7 +23,7 @@ PdrVertexShader::PdrVertexShader (Renderer*, const VertexShader* vshader)
 	assertion(mShader != 0, "mShader create failed.");
 
 	// Load the mShader source
-	glShaderSource(mShader, 1, &programText, NULL);
+	glShaderSource(mShader, 1, &programText, 0);
 
 	// Compile the mShader
 	glCompileShader(mShader);
@@ -53,7 +53,6 @@ PdrVertexShader::PdrVertexShader (Renderer*, const VertexShader* vshader)
 //----------------------------------------------------------------------------
 PdrVertexShader::~PdrVertexShader ()
 {
-	glDeleteShader(mShader);
 }
 //----------------------------------------------------------------------------
 void PdrVertexShader::Enable (Renderer* renderer, const VertexShader* vshader, 

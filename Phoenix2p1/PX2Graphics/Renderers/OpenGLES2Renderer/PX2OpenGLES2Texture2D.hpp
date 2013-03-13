@@ -36,6 +36,7 @@ namespace PX2
 		void Unlock (int level);
 
 	private:
+		const Texture2D *mTex;
 		GLuint mTexture, mInternalFormat, mFormat, mType;
 		GLint mNumLevels;
 		GLint mNumLevelBytes[Texture::MM_MAX_MIPMAP_LEVELS];

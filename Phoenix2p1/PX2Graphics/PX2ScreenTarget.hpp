@@ -30,9 +30,12 @@ namespace PX2
 		// 创建reder target的屏幕网格。顶点格式必须有3-tuple positions和2-tuple
 		// texture coordinates in unit 0。其他属性[xmin,xmax]x[ymin,ymax]所代表
 		// 的区间必须在范围[0,1]x[0,1]内。
-		static TriMesh* CreateRectangle (VertexFormat* vformat, int rtWidth,
+		static TriMesh *CreateRectangle (VertexFormat* vformat, int rtWidth,
 			int rtHeight, float xmin, float xmax, float ymin, float ymax,
 			float zValue);
+
+		static TriMesh *CreateRectangle (VertexFormat* vformat, float xMin,
+			float xMax, float yMin, float yMax, float zValue);
 
 		/// 拷贝屏幕矩形的空间位置到输入的数组里
 		static bool CreatePositions (int rtWidth, int rtHeight, float xmin,

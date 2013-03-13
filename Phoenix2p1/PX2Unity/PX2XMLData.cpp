@@ -52,6 +52,11 @@ bool XMLData::SaveFile (const string &fileName)
 	return mDocument->SaveFile(fileName.c_str());
 }
 //----------------------------------------------------------------------------
+void XMLData::Create ()
+{
+	mDocument = new0 TiXmlDocument;
+}
+//----------------------------------------------------------------------------
 XMLNode XMLData::GetRootNode ()
 {
 	return XMLNode(mDocument->RootElement());
@@ -85,5 +90,13 @@ XMLNode XMLData::GetNodeByPath (const char *path)
 	}
 
 	return node;
+}
+//----------------------------------------------------------------------------
+void XMLData::LinkEndChild (XMLNode node)
+{
+	if (node.mElement)
+	{
+		mDocument->LinkEndChild(node.mElement);
+	}
 }
 //----------------------------------------------------------------------------

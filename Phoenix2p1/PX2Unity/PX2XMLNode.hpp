@@ -1,13 +1,6 @@
 /*
-* Phoenix 3D 游戏引擎 Version 2.0
-*
-* Copyright (C) 2009-2011 http://www.Phoenix3d.org/
 *
 * 文件名称	：	PX2XMLNode.hpp
-*
-* 版本		:	1.0 (2011/02/09)
-*
-* 作者		：	more
 *
 */
 
@@ -24,11 +17,13 @@ namespace PX2
 	class XMLNode
 	{
 	public:
-		XMLNode ();
+		XMLNode (std::string name="");
 		XMLNode (TiXmlElement *element);
 		~XMLNode ();
 
 		bool IsNull ();
+		void Create ();
+		void LinkEndChild (XMLNode node);
 
 		const char *GetName ();
 		char *GetFullName (char *buffer, size_t maxBuffer);
@@ -56,6 +51,7 @@ namespace PX2
 		void SetAttributeString (const char *name, const char *string);
 
 	public:
+		std::string mName;
 		TiXmlElement *mElement;
 	};
 

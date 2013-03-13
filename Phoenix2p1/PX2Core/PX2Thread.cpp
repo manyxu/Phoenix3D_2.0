@@ -5,74 +5,320 @@
 */
 
 #include "PX2Thread.hpp"
+#include "PX2Mutex.hpp"
+#include "PX2ScopedCS.hpp"
 #include "PX2Assert.hpp"
+#include "PX2ThreadLocal.hpp"
+#include "PX2Memory.hpp"
+#include "PX2ScopedCS.hpp"
 using namespace PX2;
 
-#if defined(WIN32)
-//----------------------------------------------------------------------------
+#if (defined(_WIN32) || defined(WIN32)) && !defined(PX2_USE_PTHREAD)
 #include <windows.h>
+#else
+#endif
 //----------------------------------------------------------------------------
-Thread::Thread (void* function, void* userData, unsigned int processorNumber,
-				unsigned int stackSize)
-				:
-mFunction(function),
-mUserData(userData),
-mProcessorNumber(processorNumber),
-mStackSize(stackSize)
+Thread::Thread ()
+	:
+mRunable(0),
+	mCallback(0),
+	mUserData(0),
+	mStackSize(0),
+	mPriority(PRIO_NORMAL),
+	mTLS(0)
 {
-	mThread = CreateThread(NULL, (SIZE_T)stackSize,
-		(LPTHREAD_START_ROUTINE)function, (LPVOID)userData, CREATE_SUSPENDED,
+	mID = UniqueID();
+	mName = MakeName();
+	mMutex = new0 Mutex();
+}
+//----------------------------------------------------------------------------
+Thread::Thread (const std::string& name)
+	:
+mRunable(0),
+	mCallback(0),
+	mUserData(0),
+	mStackSize(0),
+	mTLS(0)
+{
+	mID = UniqueID();
+	mName = name;
+	mMutex = new0 Mutex();
+}
+//----------------------------------------------------------------------------
+Thread::~Thread ()
+{
+	if (mMutex)
+		delete0(mMutex);
+
+	if (mTLS)
+		delete0(mTLS);
+}
+//----------------------------------------------------------------------------
+void Thread::SetName(const std::string& name)
+{
+	ScopedCS cs(mMutex);
+	mName = name;
+}
+//----------------------------------------------------------------------------
+std::string Thread::MakeName()
+{
+	std::ostringstream name;
+	name << '#' << mID;
+	return name.str();
+}
+//----------------------------------------------------------------------------
+int Thread::UniqueID()
+{
+	static unsigned count = 0;
+	++count;
+	return count;
+}
+//----------------------------------------------------------------------------
+ThreadLocalStorage& Thread::TLS()
+{
+	if (!mTLS)
+		mTLS = new0 ThreadLocalStorage();
+
+	return *mTLS;
+}
+//----------------------------------------------------------------------------
+void Thread::ClearTLS()
+{
+	if (mTLS)
+	{
+		delete0(mTLS);
+		mTLS = 0;
+	}
+}
+//----------------------------------------------------------------------------
+#if defined(WIN32) && !defined(PX2_USE_PTHREAD)
+DWORD WINAPI RunnableEntry(LPVOID t)
+#else
+static void* RunnableEntry(void* t)
+#endif
+{
+	Thread *thread = (Thread*)(t);
+
+	if (thread->mRunable)
+	{
+		thread->mRunable->Run();
+		thread->mRunable = 0;
+	}
+	else
+	{
+		thread->mCallback(thread->mUserData);
+	}
+
+	return 0;
+}
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+#if (defined(_WIN32) || defined(WIN32)) && !defined(PX2_USE_PTHREAD)
+//----------------------------------------------------------------------------
+void Thread::SetPriority(Priority prio)
+{
+	if (mPriority == prio)
+		return;
+
+	mPriority = prio;
+
+	if (mThread)
+	{
+		if (0 == SetThreadPriority(mThread, mPriority))
+		{
+			assertion(false, "cannot set thread priority");
+		}
+	}
+}
+//----------------------------------------------------------------------------
+void Thread::SetStackSize(int size)
+{
+	mStackSize = size;
+}
+//----------------------------------------------------------------------------
+void Thread::Start (Runnable& runable)
+{
+	if (IsRunning())
+		return;
+
+	mRunable = &runable;
+
+	mThread = CreateThread(NULL, mStackSize, RunnableEntry, (LPVOID)this, 0, 
 		(LPDWORD)&mThreadID);
 }
 //----------------------------------------------------------------------------
-Thread::~Thread ()
+void Thread::Start(Callback callback, void *data)
 {
-	// 析构函数中不对线程进行析构。
+	if (IsRunning())
+		return;
+
+	mCallback = callback;
+	mUserData = data;
+
+	mThread = CreateThread(NULL, mStackSize, RunnableEntry, (LPVOID)this, 0, 
+		(LPDWORD)&mThreadID);
 }
 //----------------------------------------------------------------------------
-void Thread::Resume ()
+void Thread::Join ()
 {
-	DWORD result = ResumeThread((HANDLE)mThread);
-	assertion(result != (DWORD)-1, "Failed to resume thread\n");
-	PX2_UNUSED(result);
+	if (!mThread) 
+		return;
+
+	switch (WaitForSingleObject(mThread, INFINITE))
+	{
+	case WAIT_OBJECT_0:
+		ThreadCleanUp();
+		break;
+	default:
+		break;
+	}
 }
 //----------------------------------------------------------------------------
-void Thread::Suspend ()
+bool Thread::Join(long milliseconds)
 {
-	DWORD result = SuspendThread((HANDLE)mThread);
-	assertion(result != (DWORD)-1, "Failed to suspend thread\n");
-	PX2_UNUSED(result);
+	if (!mThread) 
+		return true;
+
+	switch (WaitForSingleObject(mThread, milliseconds + 1))
+	{
+	case WAIT_TIMEOUT:
+		return false;
+	case WAIT_OBJECT_0:
+		ThreadCleanUp();
+		return true;
+	default:
+		break;
+	}
+
+	return true;
 }
 //----------------------------------------------------------------------------
-#elif defined(__LINUX__) || defined(__APPLE__) || defined(__ANDROID__)
-//----------------------------------------------------------------------------
-Thread::Thread (void* function, void* userData, unsigned int processorNumber,
-				unsigned int stackSize)
-				:
-mFunction(function),
-mUserData(userData),
-mProcessorNumber(processorNumber),
-mStackSize(stackSize)
+bool Thread::IsRunning() const
 {
-	typedef void *(*PX2_PTHREADFUN)(void *) ;
-	pthread_create(&mThread, 0, (PX2_PTHREADFUN)function, userData);
+	if (mThread)
+	{
+		DWORD ec = 0;
+		return GetExitCodeThread(mThread, &ec) && ec == STILL_ACTIVE;
+	}
+
+	return false;
 }
 //----------------------------------------------------------------------------
-Thread::~Thread ()
+void Thread::DoYield()
 {
-	// TODO. 
+	Sleep(0);
 }
 //----------------------------------------------------------------------------
-void Thread::Resume ()
+void Thread::ThreadCleanUp ()
 {
+	if (!mThread) 
+		return;
+
+	if (CloseHandle(mThread))
+		mThread = 0;
 }
 //----------------------------------------------------------------------------
-void Thread::Suspend ()
+#elif defined(__LINUX__) || defined(__APPLE__) || defined(__ANDROID__) || defined(PX2_USE_PTHREAD)
+//----------------------------------------------------------------------------
+void Thread::SetPriority(Priority prio)
 {
-	// TODO.
+	if (mPriority == prio)
+		return;
+
+	mPriority = prio;
+
+	if (IsRunning())
+	{
+	}
 }
 //----------------------------------------------------------------------------
-#else
-#error Other platforms not yet implemented.
+void Thread::SetStackSize(int size)
+{
+	mStackSize = size;
+}
+//----------------------------------------------------------------------------
+void Thread::Start (Runnable& target)
+{
+	if (IsRunning())
+		return;
+
+	pthread_attr_t attributes;
+	pthread_attr_init(&attributes);
+
+	if (mStackSize != 0)
+	{
+		if (0 != pthread_attr_setstacksize(&attributes,mStackSize))
+		{
+			pthread_attr_destroy(&attributes);
+			assertion(false, "can not set thread stack size.\n");
+			return;
+		}
+	}
+
+	mRunable = &target;
+
+	if (pthread_create(&mThread, &attributes, RunnableEntry, this))
+	{
+		mRunable = 0;
+		pthread_attr_destroy(&attributes);
+		assertion(false, "cannot start thread");
+		return;
+	}
+	pthread_attr_destroy(&attributes);
+}
+//----------------------------------------------------------------------------
+void Thread::Start (Callback callback, void *data)
+{
+	if (IsRunning())
+		return;
+
+	pthread_attr_t attributes;
+	pthread_attr_init(&attributes);
+
+	if (mStackSize != 0)
+	{
+		if (0 != pthread_attr_setstacksize(&attributes, mStackSize))
+		{
+			assertion(false, "can not set thread stack size\n");
+			return;
+		}
+	}
+
+	mCallback = callback;
+	mUserData = data;
+
+	if (pthread_create(&mThread, &attributes, RunnableEntry, this))
+	{
+		mCallback = 0;
+		mUserData = 0;
+		assertion(false, "cannot start thread.cpp\n");
+	}
+}
+//----------------------------------------------------------------------------
+void Thread::Join ()
+{
+	void* ret;
+	pthread_join(mThread, &ret);
+}
+//----------------------------------------------------------------------------
+bool Thread::Join(long milliseconds)
+{
+	void* ret;
+	pthread_join(mThread, &ret);
+	
+	return true;
+}
+//----------------------------------------------------------------------------
+bool Thread::IsRunning() const
+{
+	return (mRunable!= 0) || (mCallback!=0);
+}
+//----------------------------------------------------------------------------
+void Thread::DoYield()
+{
+	sched_yield();
+};
+//----------------------------------------------------------------------------
 #endif
 //----------------------------------------------------------------------------

@@ -30,6 +30,8 @@ namespace PX2
 		SwitchNode ();
 		virtual ~SwitchNode ();
 
+		static SwitchNode *Create();
+
 		enum { SN_INVALID_CHILD = -1 };
 
 		inline void SetActiveChild (int activeChild);

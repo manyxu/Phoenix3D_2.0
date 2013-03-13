@@ -10,4 +10,10 @@ public class PX2Natives
 	public static native void nativeOnResume ();
 	public static native void nativeOnTerm ();
 	public static native void nativeSetResourcePath(String path);
+	
+	public static native void nativeTouchPressed(int id, float x, float y);
+	public static native void nativeTouchReleased(int id, float x, float y);
+    public static native void nativeTouchMoved(int[] id, float[] x, float[] y);
+    public static native void nativeTouchCancelled(int[] id, float[] x, float[] y);
+    public static native boolean nativeKeyDown(int keyCode);
 }

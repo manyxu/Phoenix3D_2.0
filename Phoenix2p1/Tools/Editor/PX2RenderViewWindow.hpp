@@ -1,6 +1,6 @@
 /*
 *
-* 文件名称	：	PX2RenderViewWindow.h
+* 文件名称	：	PX2RenderViewWindow.hpp
 *
 */
 
@@ -9,6 +9,7 @@
 
 #include "PX2EditorPre.hpp"
 #include "PX2SceneNodeCtrl.hpp"
+#include "PX2UIPicBox.hpp"
 
 namespace PX2Editor
 {
@@ -29,6 +30,7 @@ namespace PX2Editor
 		PX2::Renderer *GetRenderer ();
 		PX2::Camera *GetCamera ();
 		SceneNodeCtrl *GetSceneNodeCtrl ();
+		BoundCtrl *GetBoundCtrl ();
 
 		enum ViewType
 		{
@@ -75,14 +77,21 @@ namespace PX2Editor
 		void OnActorLight_Direction (wxCommandEvent& e);
 		void OnActorLight_Point (wxCommandEvent& e);
 		void OnActorLight_Spot (wxCommandEvent& e);
+		void OnActorSky (wxCommandEvent& e);
 		void OnCreateBox (wxCommandEvent& e);
 		void OnCreateSphere (wxCommandEvent& e);
+		void OnCreateEffect (wxCommandEvent& e);
+		void OnCreateUIFrame (wxCommandEvent& e);
+		void OnCreateUIPicBox (wxCommandEvent& e);
+		void OnCreateUIAnimPixBox (wxCommandEvent& e);
+		void OnCreateUIStaticText (wxCommandEvent& e);
+		void OnCreateUIButton (wxCommandEvent& e);
 		void OnCloneShare (wxCommandEvent& e);
 		void OnCloneData (wxCommandEvent& e);
 
 		void ZoomCamera (float zoom);
 		void PanCamera (const float &horz, const float &vert); //< 透视角度，上下左右移动，其他视角和MoveCamera一样
-		void MoveCamera (const float &horz, const float vert); //< 透视角度，沿着视线方向移动
+		void MoveCamera (const float &horz, const float &vert); //< 透视角度，沿着视线方向移动
 		void RolateCamera (const float &horz, const float &vert);
 
 		virtual void DoEnter ();
@@ -98,13 +107,17 @@ public_internal:
 
 	protected:
 		DECLARE_EVENT_TABLE()
+		void UpdateProjectTrans ();
+		void UpdateProjectRange ();
+		void AdjustUICameraPercent ();
 		void CreateEditMenu ();
 		void CreateGridGeometry ();
 		void SetAxisPerspective ();
 		void Update (double detalSeconds);
 		void CamMoveUpdate (double detalSeconds);
 		void DrawScene ();
-		
+		void CameraChangedSimplyTerrain ();
+
 		bool mInited;
 
 		PX2::Float4 mBlack, mRed, mGreen, mBlue, mGray;
@@ -120,6 +133,9 @@ public_internal:
 		PX2::Renderer *mRenderer;
 		ViewType mViewType;
 		ViewDetail mViewDetail;
+
+		PX2::WirePropertyPtr mSceneWireOverride;
+		PX2::WirePropertyPtr mUIWireOverride;
 
 		wxTimer mRenderTimer;
 		int mRenderMilliseconds;
@@ -152,6 +168,7 @@ public_internal:
 		PX2::Culler mCtrlCuller;
 		PX2::NodePtr mCtrlScene;
 		SceneNodeCtrl *mSceneNodeCtrl;
+		BoundCtrl *mBoundCtrl;
 
 		bool mActive;
 		bool mLeftDown;
@@ -162,6 +179,15 @@ public_internal:
 
 		// View
 		wxMenu *mEditMenu;
+		PX2::Float2 mRightDownScreenPos;
+
+		// splash
+		PX2::UIPicBoxPtr mPicBox;
+
+		// Project Range
+		PX2::VertexFormatPtr mProjRangeVFormat;
+		PX2::VertexBufferPtr mProjRangeVBuffer;
+		PX2::PolysegmentPtr mProjRangeSegment;
 	};
 
 #include "PX2RenderViewWindow.inl"

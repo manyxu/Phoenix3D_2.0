@@ -353,6 +353,12 @@
     <ClCompile Include="PX2Texture2DMaterial.cpp">
       <Filter>LocalMaterials</Filter>
     </ClCompile>
+    <ClCompile Include="PX2JunglerMaterial.cpp">
+      <Filter>LocalMaterials</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2UserConstant.cpp">
+      <Filter>ShaderFloats</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PX2Graphics.hpp" />
@@ -714,6 +720,12 @@
     </ClInclude>
     <ClInclude Include="PX2Texture2DMaterial.hpp">
       <Filter>LocalMaterials</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2JunglerMaterial.hpp">
+      <Filter>LocalMaterials</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2UserConstant.hpp">
+      <Filter>ShaderFloats</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

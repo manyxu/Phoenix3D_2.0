@@ -34,11 +34,11 @@
 #include "PX2OpenGLES2VertexBuffer.hpp"
 #include "PX2OpenGLES2VertexFormat.hpp"
 #include "PX2OpenGLES2VertexShader.hpp"
+#include "PX2OpenGLES2MaterialPass.hpp"
 #endif
 
 using namespace PX2;
 
-Mutex Renderer::msMutex;
 std::set<Renderer*> Renderer::msRenderers;
 
 //----------------------------------------------------------------------------
@@ -90,9 +90,9 @@ void Renderer::Initialize (int width, int height, Texture::Format colorFormat,
 	mAllowBlue = true;
 	mAllowAlpha = true;
 
-	msMutex.Enter();
+	GetMutex().Enter();
 	msRenderers.insert(this);
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Terminate ()
@@ -113,12 +113,15 @@ void Renderer::Terminate ()
 	DestroyAllTexture3Ds();
 	DestroyAllTextureCubes();
 	DestroyAllRenderTargets();
+#ifdef PX2_USE_OPENGLES2
+	DestroyAllMaterialPasses();
+#endif
 	DestroyAllVertexShaders();
 	DestroyAllPixelShaders();
 
-	msMutex.Enter();
+	GetMutex().Enter();
 	msRenderers.erase(this);
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 
@@ -135,7 +138,7 @@ void Renderer::Bind (const VertexFormat* vformat)
 //----------------------------------------------------------------------------
 void Renderer::BindAll (const VertexFormat* vformat)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -145,7 +148,7 @@ void Renderer::BindAll (const VertexFormat* vformat)
 		renderer->Bind(vformat);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const VertexFormat* vformat)
@@ -161,7 +164,7 @@ void Renderer::Unbind (const VertexFormat* vformat)
 //----------------------------------------------------------------------------
 void Renderer::UnbindAll (const VertexFormat* vformat)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -171,7 +174,7 @@ void Renderer::UnbindAll (const VertexFormat* vformat)
 		renderer->Unbind(vformat);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Enable (const VertexFormat* vformat)
@@ -215,7 +218,7 @@ void Renderer::Bind (const VertexBuffer* vbuffer)
 //----------------------------------------------------------------------------
 void Renderer::BindAll (const VertexBuffer* vbuffer)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -225,7 +228,7 @@ void Renderer::BindAll (const VertexBuffer* vbuffer)
 		renderer->Bind(vbuffer);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const VertexBuffer* vbuffer)
@@ -241,7 +244,7 @@ void Renderer::Unbind (const VertexBuffer* vbuffer)
 //----------------------------------------------------------------------------
 void Renderer::UnbindAll (const VertexBuffer* vbuffer)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -251,7 +254,7 @@ void Renderer::UnbindAll (const VertexBuffer* vbuffer)
 		renderer->Unbind(vbuffer);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Enable (const VertexBuffer* vbuffer,
@@ -311,16 +314,21 @@ void Renderer::Unlock (const VertexBuffer* vbuffer)
 //----------------------------------------------------------------------------
 void Renderer::Update (const VertexBuffer* vbuffer)
 {
+#ifdef PX2_USE_OPENGLES2
+	Lock(vbuffer, Buffer::BL_WRITE_ONLY); // lock is updated
+#else
 	int numBytes = vbuffer->GetNumBytes();
 	char* srcData = vbuffer->GetData();
 	void* trgData = Lock(vbuffer, Buffer::BL_WRITE_ONLY);
 	memcpy(trgData, srcData, numBytes);
 	Unlock(vbuffer);
+#endif
+
 }
 //----------------------------------------------------------------------------
 void Renderer::UpdateAll (const VertexBuffer* vbuffer)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -330,7 +338,7 @@ void Renderer::UpdateAll (const VertexBuffer* vbuffer)
 		renderer->Update(vbuffer);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 
@@ -347,7 +355,7 @@ void Renderer::Bind (const IndexBuffer* ibuffer)
 //----------------------------------------------------------------------------
 void Renderer::BindAll (const IndexBuffer* ibuffer)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -357,7 +365,7 @@ void Renderer::BindAll (const IndexBuffer* ibuffer)
 		renderer->Bind(ibuffer);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const IndexBuffer* ibuffer)
@@ -373,7 +381,7 @@ void Renderer::Unbind (const IndexBuffer* ibuffer)
 //----------------------------------------------------------------------------
 void Renderer::UnbindAll (const IndexBuffer* ibuffer)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -383,7 +391,7 @@ void Renderer::UnbindAll (const IndexBuffer* ibuffer)
 		renderer->Unbind(ibuffer);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Enable (const IndexBuffer* ibuffer)
@@ -442,16 +450,21 @@ void Renderer::Unlock (const IndexBuffer* ibuffer)
 //----------------------------------------------------------------------------
 void Renderer::Update (const IndexBuffer* ibuffer)
 {
+
+#ifdef PX2_USE_OPENGLES2
+	Lock(ibuffer, Buffer::BL_WRITE_ONLY); // lock is updated
+#else
 	int numBytes = ibuffer->GetNumBytes();
 	char* srcData = ibuffer->GetData();
 	void* trgData = Lock(ibuffer, Buffer::BL_WRITE_ONLY);
 	memcpy(trgData, srcData, numBytes);
 	Unlock(ibuffer);
+#endif
 }
 //----------------------------------------------------------------------------
 void Renderer::UpdateAll (const IndexBuffer* ibuffer)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -461,7 +474,7 @@ void Renderer::UpdateAll (const IndexBuffer* ibuffer)
 		renderer->Update(ibuffer);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 
@@ -478,7 +491,7 @@ void Renderer::Bind (const Texture1D* texture)
 //----------------------------------------------------------------------------
 void Renderer::BindAll (const Texture1D* texture)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -488,7 +501,7 @@ void Renderer::BindAll (const Texture1D* texture)
 		renderer->Bind(texture);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const Texture1D* texture)
@@ -504,7 +517,7 @@ void Renderer::Unbind (const Texture1D* texture)
 //----------------------------------------------------------------------------
 void Renderer::UnbindAll (const Texture1D* texture)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -514,7 +527,7 @@ void Renderer::UnbindAll (const Texture1D* texture)
 		renderer->Unbind(texture);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Enable (const Texture1D* texture, int textureUnit)
@@ -583,7 +596,7 @@ void Renderer::Update (const Texture1D* texture, int level)
 //----------------------------------------------------------------------------
 void Renderer::UpdateAll (const Texture1D* texture, int level)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -593,7 +606,7 @@ void Renderer::UpdateAll (const Texture1D* texture, int level)
 		renderer->Update(texture, level);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 
@@ -610,7 +623,7 @@ void Renderer::Bind (const Texture2D* texture)
 //----------------------------------------------------------------------------
 void Renderer::BindAll (const Texture2D* texture)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -620,7 +633,7 @@ void Renderer::BindAll (const Texture2D* texture)
 		renderer->Bind(texture);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const Texture2D* texture)
@@ -636,7 +649,7 @@ void Renderer::Unbind (const Texture2D* texture)
 //----------------------------------------------------------------------------
 void Renderer::UnbindAll (const Texture2D* texture)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -646,7 +659,7 @@ void Renderer::UnbindAll (const Texture2D* texture)
 		renderer->Unbind(texture);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Enable (const Texture2D* texture, int textureUnit)
@@ -706,16 +719,21 @@ void Renderer::Unlock (const Texture2D* texture, int level)
 //----------------------------------------------------------------------------
 void Renderer::Update (const Texture2D* texture, int level)
 {
+
+#ifdef PX2_USE_OPENGLES2
+	void* trgData = Lock(texture, level, Buffer::BL_WRITE_ONLY); // lock is updated
+#else
 	int numBytes = texture->GetNumLevelBytes(level);
 	char* srcData = texture->GetData(level);
 	void* trgData = Lock(texture, level, Buffer::BL_WRITE_ONLY);
 	memcpy(trgData, srcData, numBytes);
 	Unlock(texture, level);
+#endif
 }
 //----------------------------------------------------------------------------
 void Renderer::UpdateAll (const Texture2D* texture, int level)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -725,7 +743,7 @@ void Renderer::UpdateAll (const Texture2D* texture, int level)
 		renderer->Update(texture, level);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 
@@ -742,7 +760,7 @@ void Renderer::Bind (const Texture3D* texture)
 //----------------------------------------------------------------------------
 void Renderer::BindAll (const Texture3D* texture)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -752,7 +770,7 @@ void Renderer::BindAll (const Texture3D* texture)
 		renderer->Bind(texture);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const Texture3D* texture)
@@ -768,7 +786,7 @@ void Renderer::Unbind (const Texture3D* texture)
 //----------------------------------------------------------------------------
 void Renderer::UnbindAll (const Texture3D* texture)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -778,7 +796,7 @@ void Renderer::UnbindAll (const Texture3D* texture)
 		renderer->Unbind(texture);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Enable (const Texture3D* texture, int textureUnit)
@@ -847,7 +865,7 @@ void Renderer::Update (const Texture3D* texture, int level)
 //----------------------------------------------------------------------------
 void Renderer::UpdateAll (const Texture3D* texture, int level)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -857,7 +875,7 @@ void Renderer::UpdateAll (const Texture3D* texture, int level)
 		renderer->Update(texture, level);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 
@@ -874,7 +892,7 @@ void Renderer::Bind (const TextureCube* texture)
 //----------------------------------------------------------------------------
 void Renderer::BindAll (const TextureCube* texture)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -884,7 +902,7 @@ void Renderer::BindAll (const TextureCube* texture)
 		renderer->Bind(texture);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const TextureCube* texture)
@@ -900,7 +918,7 @@ void Renderer::Unbind (const TextureCube* texture)
 //----------------------------------------------------------------------------
 void Renderer::UnbindAll (const TextureCube* texture)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -910,7 +928,7 @@ void Renderer::UnbindAll (const TextureCube* texture)
 		renderer->Unbind(texture);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Enable (const TextureCube* texture, int textureUnit)
@@ -979,7 +997,7 @@ void Renderer::Update (const TextureCube* texture, int face, int level)
 //----------------------------------------------------------------------------
 void Renderer::UpdateAll (const TextureCube* texture, int face, int level)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -989,7 +1007,7 @@ void Renderer::UpdateAll (const TextureCube* texture, int face, int level)
 		renderer->Update(texture, face, level);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 
@@ -1007,7 +1025,7 @@ void Renderer::Bind (const RenderTarget* renderTarget)
 //----------------------------------------------------------------------------
 void Renderer::BindAll (const RenderTarget* renderTarget)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -1017,7 +1035,7 @@ void Renderer::BindAll (const RenderTarget* renderTarget)
 		renderer->Bind(renderTarget);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const RenderTarget* renderTarget)
@@ -1033,7 +1051,7 @@ void Renderer::Unbind (const RenderTarget* renderTarget)
 //----------------------------------------------------------------------------
 void Renderer::UnbindAll (const RenderTarget* renderTarget)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -1043,7 +1061,7 @@ void Renderer::UnbindAll (const RenderTarget* renderTarget)
 		renderer->Unbind(renderTarget);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Enable (const RenderTarget* renderTarget)
@@ -1099,7 +1117,7 @@ void Renderer::Bind (const VertexShader* vshader)
 //----------------------------------------------------------------------------
 void Renderer::BindAll (const VertexShader* vshader)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -1109,7 +1127,7 @@ void Renderer::BindAll (const VertexShader* vshader)
 		renderer->Bind(vshader);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const VertexShader* vshader)
@@ -1125,7 +1143,7 @@ void Renderer::Unbind (const VertexShader* vshader)
 //----------------------------------------------------------------------------
 void Renderer::UnbindAll (const VertexShader* vshader)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -1135,7 +1153,7 @@ void Renderer::UnbindAll (const VertexShader* vshader)
 		renderer->Unbind(vshader);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Enable (const VertexShader* vshader,
@@ -1181,7 +1199,7 @@ void Renderer::Bind (const PixelShader* pshader)
 //----------------------------------------------------------------------------
 void Renderer::BindAll (const PixelShader* pshader)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -1191,7 +1209,7 @@ void Renderer::BindAll (const PixelShader* pshader)
 		renderer->Bind(pshader);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Unbind (const PixelShader* pshader)
@@ -1207,7 +1225,7 @@ void Renderer::Unbind (const PixelShader* pshader)
 //----------------------------------------------------------------------------
 void Renderer::UnbindAll (const PixelShader* pshader)
 {
-	msMutex.Enter();
+	GetMutex().Enter();
 
 	RendererSet::iterator iter = msRenderers.begin();
 	RendererSet::iterator end = msRenderers.end();
@@ -1217,7 +1235,7 @@ void Renderer::UnbindAll (const PixelShader* pshader)
 		renderer->Unbind(pshader);
 	}
 
-	msMutex.Leave();
+	GetMutex().Leave();
 }
 //----------------------------------------------------------------------------
 void Renderer::Enable (const PixelShader* pshader,
@@ -1294,7 +1312,7 @@ const
 	return true;
 }
 //----------------------------------------------------------------------------
-Vector2f Renderer::PointWorldToViewPort (APoint &point, bool *isInBack)
+Vector2f Renderer::PointWorldToViewPort (const  APoint &point, bool *isInBack)
 {
 	HMatrix matProjView = GetProjectionMatrix() * GetViewMatrix();
 	HPoint hPoint(point.X(), point.Y(), point.Z(), point.W());
@@ -1416,6 +1434,12 @@ void Renderer::Draw (const Renderable* renderable,
 	Disable(vbuffer);
 }
 //----------------------------------------------------------------------------
+Mutex &Renderer::GetMutex ()
+{
+	static Mutex mx;
+	return mx;
+}
+//----------------------------------------------------------------------------
 void Renderer::DestroyAllVertexFormats ()
 {
 	VertexFormatMap::iterator iter = mVertexFormats.begin();
@@ -1502,6 +1526,19 @@ void Renderer::DestroyAllRenderTargets ()
 		PdrRenderTarget* pdrRenderTarget = iter->second;
 		delete0(pdrRenderTarget);
 	}
+}
+//----------------------------------------------------------------------------
+void Renderer::DestroyAllMaterialPasses ()
+{
+#ifdef PX2_USE_OPENGLES2
+	MaterialPassMap::iterator iter = mMaterialPasses.begin();
+	MaterialPassMap::iterator end = mMaterialPasses.end();
+	for (/**/; iter != end; ++iter)
+	{
+		PdrMaterialPass* pdrMaterialPass = iter->second;
+		delete0(pdrMaterialPass);
+	}
+#endif
 }
 //----------------------------------------------------------------------------
 void Renderer::DestroyAllVertexShaders ()

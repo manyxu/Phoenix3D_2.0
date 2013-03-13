@@ -19,7 +19,7 @@ BEGIN_EVENT_TABLE(PreViewWindow, wxWindow)
 END_EVENT_TABLE()
 //----------------------------------------------------------------------------
 PreViewWindow::PreViewWindow ()
-	:wxWindow(0, -1),
+	:wxWindow(0, wxID_ANY),
 	mInited(false),
 	mPreViewType(PVT_NONE),
 	mRenderer(0)
@@ -28,7 +28,7 @@ PreViewWindow::PreViewWindow ()
 //----------------------------------------------------------------------------
 PreViewWindow::PreViewWindow (wxWindow *parent)
 	:
-wxWindow(parent, -1, wxDefaultPosition, wxSize(200, 150)),
+wxWindow(parent, wxID_ANY, wxDefaultPosition, wxSize(200, 150)),
 	mInited(false),
 	mPreViewType(PVT_NONE),
 	mRenderer(0)
@@ -130,6 +130,7 @@ void PreViewWindow::Initlize ()
 	mScreenMesh = ScreenTarget::CreateRectangle(mVFormat, mWidth, mHeight,
 		0.0f, 1.0f, 0.0f, 1.0f, 0.0f);
 	mPreViewMaterial = new Texture2DMaterial();
+	mPreViewMaterial->GetAlphaProperty(0, 0)->BlendEnabled = true;
 
 	mPreViewTimer.SetOwner(this, ID_PREVIEWTIMERR);
 	mPreViewTimer.Start(100);

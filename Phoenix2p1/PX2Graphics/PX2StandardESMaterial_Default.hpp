@@ -26,10 +26,11 @@ namespace PX2
 		StandardESMaterial_Default ();
 		virtual ~StandardESMaterial_Default ();
 
-		MaterialInstance* CreateInstance (
-			PX2::Texture2D *diffTex,
-			PX2::Light *dirLight,
-			PX2::Shine* shine) const;
+		MaterialInstance* CreateInstance (Texture2D *diffTex, Light *dirLight,
+			Shine* shine) const;
+
+		static MaterialInstance* CreateUniqueInstance (Texture2D *diffTex,
+			Light *dirLight=0, Shine* shine=0);
 
 	private:
 		static int msDx9VRegisters[6];

@@ -207,46 +207,57 @@ void PdrVertexFormat::Enable (Renderer *renderer)
 
 	if (mHasPosition)
 	{
-		glVertexAttribPointer(ALP_POSITION, mPositionChannels, mPositionType, GL_FALSE, 
-			mStride, (const void*)mPositionOffset);
-		glEnableVertexAttribArray(ALP_POSITION);
+		PX2_GL_CHECK(glVertexAttribPointer(ALP_POSITION, mPositionChannels, mPositionType, GL_FALSE, 
+			mStride, (const void*)mPositionOffset));
+		PX2_GL_CHECK(glEnableVertexAttribArray(ALP_POSITION));
 	}
 
 	if (mHasNormal)
 	{
-		glVertexAttribPointer(ALP_NORMAL, mNormalChannels, mNormalType, GL_FALSE,
-			mStride, (const void*)mNormalOffset);
-		glEnableVertexAttribArray(ALP_NORMAL);
+		PX2_GL_CHECK(glVertexAttribPointer(ALP_NORMAL, mNormalChannels, mNormalType, GL_FALSE,
+			mStride, (const void*)mNormalOffset));
+		PX2_GL_CHECK(glEnableVertexAttribArray(ALP_NORMAL));
 	}
-
+	
 	unsigned int unit;
 	for (unit = 0; unit < VertexFormat::AM_MAX_TCOORD_UNITS; ++unit)
 	{
 		if (mHasTCoord[unit])
 		{
-			glVertexAttribPointer(ALP_TEXCOORD0 + unit, mTCoordChannels[unit], 
-				mTCoordType[unit], GL_FALSE, mStride, (const void*)mTCoordOffset[unit]);
-			glEnableVertexAttribArray(ALP_TEXCOORD0 + unit);
+			PX2_GL_CHECK(glVertexAttribPointer(ALP_TEXCOORD0 + unit, mTCoordChannels[unit], 
+				mTCoordType[unit], GL_FALSE, mStride, (const void*)mTCoordOffset[unit]));
+			PX2_GL_CHECK(glEnableVertexAttribArray(ALP_TEXCOORD0 + unit));
 		}
 	}
+
+	for (unit = 0; unit < VertexFormat::AM_MAX_COLOR_UNITS; ++unit)
+	{
+		if (mHasColor[unit])
+		{
+			PX2_GL_CHECK(glVertexAttribPointer(ALP_COLOR0 + unit, mColorChannels[unit], 
+				mColorType[unit], GL_FALSE,	mStride, (const void*)mColorOffset[unit]));
+			PX2_GL_CHECK(glEnableVertexAttribArray(ALP_COLOR0 + unit));
+		}
+	}
+
 }
 //----------------------------------------------------------------------------
 void PdrVertexFormat::Disable (Renderer*)
 {
 	if (mHasPosition)
 	{
-		glDisableVertexAttribArray(ALP_POSITION);
+		PX2_GL_CHECK(glDisableVertexAttribArray(ALP_POSITION));
 	}
 
 	if (mHasNormal)
 	{
-		glDisableVertexAttribArray(ALP_NORMAL);
+		PX2_GL_CHECK(glDisableVertexAttribArray(ALP_NORMAL));
 	}
 
 	unsigned int unit;
 	for (unit = 0; unit < VertexFormat::AM_MAX_TCOORD_UNITS; ++unit)
 	{
-		glDisableVertexAttribArray(ALP_TEXCOORD0 + unit);
+		PX2_GL_CHECK(glDisableVertexAttribArray(ALP_TEXCOORD0 + unit));
 	}
 }
 //----------------------------------------------------------------------------

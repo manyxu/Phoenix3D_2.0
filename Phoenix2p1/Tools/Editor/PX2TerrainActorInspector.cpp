@@ -5,6 +5,8 @@
 */
 
 #include "PX2TerrainActorInspector.hpp"
+#include "PX2EditSystem.hpp"
+#include "PX2LanguageManager.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 
@@ -21,6 +23,7 @@ wxScrolledWindow(parent),
 mFoldPaneBar(0),
 mHeightPanel(0),
 mMaterialPanel(0),
+mJunglerPanel(0),
 mTerrainActorPropGrid(0),
 mInitSized(false),
 mEnableEdit(false),
@@ -57,8 +60,10 @@ void TerrainActorInspector::EnableEdit (bool enable)
 	{
 		if (mInitSized)
 		{
-			mBrushFold.GetItem()->Show(true);
-			mEditFold.GetItem()->Show(true);
+			if (mBrushFold.GetItem())
+				mBrushFold.GetItem()->Show(true);
+			if (mEditFold.GetItem())
+				mEditFold.GetItem()->Show(true);
 			mTerrainActorPropGrid->EnableTerrainEdit(true);
 		}
 	}
@@ -66,8 +71,10 @@ void TerrainActorInspector::EnableEdit (bool enable)
 	{
 		if (mInitSized)
 		{
-			mBrushFold.GetItem()->Show(false);
-			mEditFold.GetItem()->Show(false);
+			if (mBrushFold.GetItem())
+				mBrushFold.GetItem()->Show(false);
+			if (mEditFold.GetItem())
+				mEditFold.GetItem()->Show(false);
 			mTerrainActorPropGrid->EnableTerrainEdit(false);
 		}
 	}
@@ -75,9 +82,18 @@ void TerrainActorInspector::EnableEdit (bool enable)
 //-----------------------------------------------------------------------------
 void TerrainActorInspector::RefreshSelectTerrainPage ()
 {
-	if (mMaterialPanel && mEnableEdit)
+	if (mEnableEdit)
 	{
-		mMaterialPanel->RefleshCtrls();
+		TerrainProcess::TerProType proType = 
+			EditSystem::GetSingleton().GetTerrainEdit()->GetEditType();
+		if (proType == TerrainProcess::TPT_TEXTURE)
+		{
+			mMaterialPanel->RefleshCtrls();
+		}
+		else if (proType == TerrainProcess::TPT_JUNGLER)
+		{
+			mJunglerPanel->RefleshCtrls();
+		}
 	}
 }
 //-----------------------------------------------------------------------------
@@ -100,21 +116,29 @@ void TerrainActorInspector::OnPageChanged( wxBookCtrlEvent &event )
 		if (mMaterialPanel)
 			mMaterialPanel->RefleshCtrls();
 	}
+	else if (2 == sel)
+	{
+		EditSystem::GetSingleton().GetTerrainEdit()->SetEditType(
+			TerrainProcess::TPT_JUNGLER);
+
+		if (mJunglerPanel)
+			mJunglerPanel->RefleshCtrls();
+	}
 }
 //-----------------------------------------------------------------------------
 void TerrainActorInspector::OnSize(wxSizeEvent& e)
 {
 	wxSize size = GetClientSize();
 
-	if (mFoldPaneBar)
-		mFoldPaneBar->SetSize(size);
-
 	if (!mInitSized)
 	{
+		mFoldPaneBar->SetSize(size);
+
 		wxFoldPanel item = mFoldPaneBar->AddFoldPanel(
 			PX2_LM.GetValue("General"), true);
+
 		mTerrainActorPropGrid = new TerrainActorPropertyGrid(item.GetParent());
-		mTerrainActorPropGrid->SetSize(size.GetWidth(), size.GetHeight()/4);
+		mTerrainActorPropGrid->SetSize(size.GetWidth(), size.GetHeight()/3);
 		mFoldPaneBar->AddFoldPanelWindow(item, mTerrainActorPropGrid);
 		mFoldPaneBar->Expand(item);
 		mTerrainActorPropGrid->SetObject(mTerrainActor);
@@ -130,9 +154,9 @@ void TerrainActorInspector::OnSize(wxSizeEvent& e)
 		mEditBook->AddPage(mHeightPanel, PX2_LM.GetValue("High"), true);
 		mMaterialPanel = new TerrainMaterialPanel(mEditBook);
 		mEditBook->AddPage(mMaterialPanel, PX2_LM.GetValue("Material"));
+		mJunglerPanel = new TerrainJunglerPanel(mEditBook);
+		mEditBook->AddPage(mJunglerPanel, PX2_LM.GetValue("Junglers"));
 		mFoldPaneBar->AddFoldPanelWindow(mEditFold, mEditBook);	
-
-		mFoldPaneBar->SetSize(size);
 
 		if (!mEnableEdit)
 		{
@@ -142,6 +166,11 @@ void TerrainActorInspector::OnSize(wxSizeEvent& e)
 		}
 
 		mInitSized = true;
+	}
+	else
+	{
+		if (mFoldPaneBar)
+			mFoldPaneBar->SetSize(size);
 	}
 }
 //-----------------------------------------------------------------------------

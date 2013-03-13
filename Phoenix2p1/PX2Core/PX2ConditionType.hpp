@@ -9,19 +9,17 @@
 
 #include "PX2CorePre.hpp"
 
-#if defined(WIN32)
+#if (defined(_WIN32) || defined(WIN32)) && !defined(PX2_USE_PTHREAD)
 namespace PX2
 {
 	typedef void *ConditionType;
 }
-#elif defined(__LINUX__) || defined(__APPLE__) || defined(__ANDROID__)
+#elif defined(__LINUX__) || defined(__APPLE__) || defined(__ANDROID__) || defined(PX2_USE_PTHREAD)
 #include <semaphore.h>
 namespace PX2
 {
 	typedef sem_t ConditionType;
 }
-#else
-#error Other platforms not yet implemented.
 #endif
 
 #endif

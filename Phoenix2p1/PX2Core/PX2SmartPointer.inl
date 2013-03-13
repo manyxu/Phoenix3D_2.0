@@ -5,32 +5,12 @@
 */
 
 //----------------------------------------------------------------------------
-// PointerBaseu
-//----------------------------------------------------------------------------
-inline void PointerBase::MutexEnter ()
-{
-	GetMutex().Enter();
-}
-//----------------------------------------------------------------------------
-inline void PointerBase::MutexLeave ()
-{
-	GetMutex().Leave();
-}
-//----------------------------------------------------------------------------
-inline Mutex &PointerBase::GetMutex()
-{
-	static Mutex mutex;
-	return mutex;
-}
-//----------------------------------------------------------------------------
-
-//----------------------------------------------------------------------------
 // Pointer0
 //----------------------------------------------------------------------------
 template <typename T>
 Pointer0<T>::Pointer0 (T* data)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	mData = data;
 	if (mData)
@@ -46,13 +26,13 @@ Pointer0<T>::Pointer0 (T* data)
 		}
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 }
 //----------------------------------------------------------------------------
 template <typename T>
 Pointer0<T>::Pointer0 (const Pointer0& pointer)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	mData = pointer.mData;
 	if (mData)
@@ -68,13 +48,13 @@ Pointer0<T>::Pointer0 (const Pointer0& pointer)
 		}
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 }
 //----------------------------------------------------------------------------
 template <typename T>
 Pointer0<T>::~Pointer0 ()
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	if (mData)
 	{
@@ -93,7 +73,7 @@ Pointer0<T>::~Pointer0 ()
 		}
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 }
 //----------------------------------------------------------------------------
 template <typename T>
@@ -117,7 +97,7 @@ inline T* Pointer0<T>::operator-> () const
 template <typename T>
 Pointer0<T>& Pointer0<T>::operator= (T* data)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	if (mData != data)
 	{
@@ -156,14 +136,14 @@ Pointer0<T>& Pointer0<T>::operator= (T* data)
 		mData = data;
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 	return *this;
 }
 //----------------------------------------------------------------------------
 template <typename T>
 Pointer0<T>& Pointer0<T>::operator= (const Pointer0& pointer)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	if (mData != pointer.mData)
 	{
@@ -202,7 +182,7 @@ Pointer0<T>& Pointer0<T>::operator= (const Pointer0& pointer)
 		mData = pointer.mData;
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 	return *this;
 }
 //----------------------------------------------------------------------------
@@ -237,7 +217,7 @@ inline bool Pointer0<T>::operator!= (const Pointer0& pointer) const
 template <typename T>
 Pointer1<T>::Pointer1 (T* data)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	mData = data;
 	if (mData)
@@ -253,13 +233,13 @@ Pointer1<T>::Pointer1 (T* data)
 		}
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 }
 //----------------------------------------------------------------------------
 template <typename T>
 Pointer1<T>::Pointer1 (const Pointer1& pointer)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	mData = pointer.mData;
 	if (mData)
@@ -275,13 +255,13 @@ Pointer1<T>::Pointer1 (const Pointer1& pointer)
 		}
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 }
 //----------------------------------------------------------------------------
 template <typename T>
 Pointer1<T>::~Pointer1 ()
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	if (mData)
 	{
@@ -300,7 +280,7 @@ Pointer1<T>::~Pointer1 ()
 		}
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 }
 //----------------------------------------------------------------------------
 template <typename T>
@@ -324,7 +304,7 @@ inline T* Pointer1<T>::operator-> () const
 template <typename T>
 Pointer1<T>& Pointer1<T>::operator= (T* data)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	if (mData != data)
 	{
@@ -363,14 +343,14 @@ Pointer1<T>& Pointer1<T>::operator= (T* data)
 		mData = data;
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 	return *this;
 }
 //----------------------------------------------------------------------------
 template <typename T>
 Pointer1<T>& Pointer1<T>::operator= (const Pointer1& pointer)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	if (mData != pointer.mData)
 	{
@@ -409,7 +389,7 @@ Pointer1<T>& Pointer1<T>::operator= (const Pointer1& pointer)
 		mData = pointer.mData;
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 	return *this;
 }
 //----------------------------------------------------------------------------
@@ -444,7 +424,7 @@ inline bool Pointer1<T>::operator!= (const Pointer1& pointer) const
 template <typename T>
 Pointer2<T>::Pointer2 (T** data)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	mData = data;
 	if (mData)
@@ -460,13 +440,13 @@ Pointer2<T>::Pointer2 (T** data)
 		}
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 }
 //----------------------------------------------------------------------------
 template <typename T>
 Pointer2<T>::Pointer2 (const Pointer2& pointer)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	mData = pointer.mData;
 	if (mData)
@@ -482,13 +462,13 @@ Pointer2<T>::Pointer2 (const Pointer2& pointer)
 		}
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 }
 //----------------------------------------------------------------------------
 template <typename T>
 Pointer2<T>::~Pointer2 ()
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	if (mData)
 	{
@@ -507,7 +487,7 @@ Pointer2<T>::~Pointer2 ()
 		}
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 }
 //----------------------------------------------------------------------------
 template <typename T>
@@ -525,7 +505,7 @@ inline T*& Pointer2<T>::operator* () const
 template <typename T>
 Pointer2<T>& Pointer2<T>::operator= (T** data)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	if (mData != data)
 	{
@@ -564,14 +544,14 @@ Pointer2<T>& Pointer2<T>::operator= (T** data)
 		mData = data;
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 	return *this;
 }
 //----------------------------------------------------------------------------
 template <typename T>
 Pointer2<T>& Pointer2<T>::operator= (const Pointer2& pointer)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	if (mData != pointer.mData)
 	{
@@ -610,7 +590,7 @@ Pointer2<T>& Pointer2<T>::operator= (const Pointer2& pointer)
 		mData = pointer.mData;
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 	return *this;
 }
 //----------------------------------------------------------------------------
@@ -645,7 +625,7 @@ inline bool Pointer2<T>::operator!= (const Pointer2& pointer) const
 template <typename T>
 Pointer3<T>::Pointer3 (T*** data)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	mData = data;
 	if (mData)
@@ -661,13 +641,13 @@ Pointer3<T>::Pointer3 (T*** data)
 		}
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 }
 //----------------------------------------------------------------------------
 template <typename T>
 Pointer3<T>::Pointer3 (const Pointer3& pointer)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	mData = pointer.mData;
 	if (mData)
@@ -683,13 +663,13 @@ Pointer3<T>::Pointer3 (const Pointer3& pointer)
 		}
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 }
 //----------------------------------------------------------------------------
 template <typename T>
 Pointer3<T>::~Pointer3 ()
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	if (mData)
 	{
@@ -708,7 +688,7 @@ Pointer3<T>::~Pointer3 ()
 		}
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 }
 //----------------------------------------------------------------------------
 template <typename T>
@@ -726,7 +706,7 @@ inline T**& Pointer3<T>::operator* () const
 template <typename T>
 Pointer3<T>& Pointer3<T>::operator= (T*** data)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	if (mData != data)
 	{
@@ -765,14 +745,14 @@ Pointer3<T>& Pointer3<T>::operator= (T*** data)
 		mData = data;
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 	return *this;
 }
 //----------------------------------------------------------------------------
 template <typename T>
 Pointer3<T>& Pointer3<T>::operator= (const Pointer3& pointer)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	if (mData != pointer.mData)
 	{
@@ -811,7 +791,7 @@ Pointer3<T>& Pointer3<T>::operator= (const Pointer3& pointer)
 		mData = pointer.mData;
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 	return *this;
 }
 //----------------------------------------------------------------------------
@@ -846,7 +826,7 @@ inline bool Pointer3<T>::operator!= (const Pointer3& pointer) const
 template <typename T>
 Pointer4<T>::Pointer4 (T**** data)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	mData = data;
 	if (mData)
@@ -862,13 +842,13 @@ Pointer4<T>::Pointer4 (T**** data)
 		}
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 }
 //----------------------------------------------------------------------------
 template <typename T>
 Pointer4<T>::Pointer4 (const Pointer4& pointer)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	mData = pointer.mData;
 	if (mData)
@@ -884,13 +864,13 @@ Pointer4<T>::Pointer4 (const Pointer4& pointer)
 		}
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 }
 //----------------------------------------------------------------------------
 template <typename T>
 Pointer4<T>::~Pointer4 ()
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	if (mData)
 	{
@@ -909,7 +889,7 @@ Pointer4<T>::~Pointer4 ()
 		}
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 }
 //----------------------------------------------------------------------------
 template <typename T>
@@ -927,7 +907,7 @@ inline T***& Pointer4<T>::operator* () const
 template <typename T>
 Pointer4<T>& Pointer4<T>::operator= (T**** data)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	if (mData != data)
 	{
@@ -966,14 +946,14 @@ Pointer4<T>& Pointer4<T>::operator= (T**** data)
 		mData = data;
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 	return *this;
 }
 //----------------------------------------------------------------------------
 template <typename T>
 Pointer4<T>& Pointer4<T>::operator= (const Pointer4& pointer)
 {
-	MutexEnter();
+	msMutex.Enter();
 
 	if (mData != pointer.mData)
 	{
@@ -1012,7 +992,7 @@ Pointer4<T>& Pointer4<T>::operator= (const Pointer4& pointer)
 		mData = pointer.mData;
 	}
 
-	MutexLeave();
+	msMutex.Leave();
 	return *this;
 }
 //----------------------------------------------------------------------------

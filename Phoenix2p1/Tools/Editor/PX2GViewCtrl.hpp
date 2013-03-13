@@ -52,6 +52,7 @@ namespace PX2Editor
 		bool mDragRangeSelect;
 		wxPoint mLastSelectEnd;
 		PX2Editor::SceneNodeCtrl *mAttachedCtrl;
+		PX2Editor::BoundCtrl *mBoundCtrl;
 
 		// State UnDo ReDo
 		bool mTransChanged;

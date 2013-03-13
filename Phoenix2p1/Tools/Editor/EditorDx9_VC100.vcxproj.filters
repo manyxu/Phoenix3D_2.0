@@ -22,9 +22,6 @@
     <Filter Include="Inspector">
       <UniqueIdentifier>{899cb4a9-b104-4df6-af55-19454f4a434a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Dlgs">
-      <UniqueIdentifier>{69826e89-a806-465c-b1c0-6cd8660cc159}</UniqueIdentifier>
-    </Filter>
     <Filter Include="wxExtents\FlodPane">
       <UniqueIdentifier>{773c2b41-f4dd-4c81-a275-b9f61becbc2f}</UniqueIdentifier>
     </Filter>
@@ -36,6 +33,30 @@
     </Filter>
     <Filter Include="Inspector\Terrain">
       <UniqueIdentifier>{22b697c3-ec15-40b6-9288-8d63fa7f98f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inspector\Environment">
+      <UniqueIdentifier>{dd96bc00-4256-4d08-876a-b5379c024326}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inspector\Effect">
+      <UniqueIdentifier>{076d55b5-0040-4177-9afa-8363ce4a3786}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CurveEditor">
+      <UniqueIdentifier>{aee10792-cd5c-4f3c-9b17-e6e178d4b696}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dlgs">
+      <UniqueIdentifier>{69826e89-a806-465c-b1c0-6cd8660cc159}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inspector\UI">
+      <UniqueIdentifier>{4a47d4ac-f853-420d-9a5c-c8d1b6102888}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectTree">
+      <UniqueIdentifier>{33263ffb-f198-433d-bcd8-caffdbb80b92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inspector\General">
+      <UniqueIdentifier>{5dabad2f-5242-40af-ba5d-31e86ed3b516}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inspector\Sky">
+      <UniqueIdentifier>{89b22429-f42e-4f89-8620-5374bf228835}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +155,87 @@
     <ClInclude Include="PX2TerEditCtrl.hpp">
       <Filter>ViewCtrl</Filter>
     </ClInclude>
+    <ClInclude Include="PX2TerrainJunglerPane.hpp">
+      <Filter>Inspector\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EnvPanel.hpp">
+      <Filter>Inspector\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2CurveEditWindow.hpp">
+      <Filter>CurveEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EffectActorInspector.hpp">
+      <Filter>Inspector\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EffectNodePanel.hpp">
+      <Filter>Inspector\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EffectPropertyGrid.hpp">
+      <Filter>Inspector\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2MovableTransProperty.hpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EMFloatProperty.hpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EMFloat3RangeProperty.hpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2DlgSetCurveVal.hpp">
+      <Filter>CurveEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2UIPicBoxPropGrid.hpp">
+      <Filter>Inspector\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2UIFramePropGrid.hpp">
+      <Filter>Inspector\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2UIButtonPropGrid.hpp">
+      <Filter>Inspector\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2UIInspector.hpp">
+      <Filter>Inspector\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ObjectNameProperty.hpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ObjectTree.hpp">
+      <Filter>ObjectTree</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ObjectTreeItem.hpp">
+      <Filter>ObjectTree</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2DlgCreateProject.hpp">
+      <Filter>Dlgs</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EMFloatRangeProperty.hpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2EMFloat3Property.hpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2UIStaticTextPropGrid.hpp">
+      <Filter>Inspector\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2UIAnimPicBoxPropGrid.hpp">
+      <Filter>Inspector\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2GeneralInspector.hpp">
+      <Filter>Inspector\General</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2GeneralPropertyGrid.hpp">
+      <Filter>Inspector\General</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ResTreePanel.hpp">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2SkyActorInspector.hpp">
+      <Filter>Inspector\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2SkyActorPropertyGrid.hpp">
+      <Filter>Inspector\Sky</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PX2EditorApp.cpp">
@@ -166,9 +268,6 @@
     </ClCompile>
     <ClCompile Include="PX2PreViewWindow.cpp">
       <Filter>PreView</Filter>
-    </ClCompile>
-    <ClCompile Include="PX2InspectorWindow.cpp">
-      <Filter>Inspector</Filter>
     </ClCompile>
     <ClCompile Include="PX2ResTree.cpp">
       <Filter>Resource</Filter>
@@ -229,6 +328,90 @@
     </ClCompile>
     <ClCompile Include="PX2TerEditCtrl.cpp">
       <Filter>ViewCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2TerrainJunglerPane.cpp">
+      <Filter>Inspector\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EnvPanel.cpp">
+      <Filter>Inspector\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2InspectorWindow.cpp">
+      <Filter>Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2CurveEditWindow.cpp">
+      <Filter>CurveEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EffectActorInspector.cpp">
+      <Filter>Inspector\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EffectNodePanel.cpp">
+      <Filter>Inspector\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EffectPropertyGrid.cpp">
+      <Filter>Inspector\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2MovableTransProperty.cpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EMFloatProperty.cpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EMFloat3RangeProperty.cpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2DlgSetCurveVal.cpp">
+      <Filter>CurveEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2UIPicBoxPropGrid.cpp">
+      <Filter>Inspector\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2UIFramePropGrid.cpp">
+      <Filter>Inspector\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2UIButtonPropGrid.cpp">
+      <Filter>Inspector\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2UIInspector.cpp">
+      <Filter>Inspector\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ObjectNameProperty.cpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ObjectTree.cpp">
+      <Filter>ObjectTree</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ObjectTreeItem.cpp">
+      <Filter>ObjectTree</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2DlgCreateProject.cpp">
+      <Filter>Dlgs</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EMFloatRangeProperty.cpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2EMFloat3Property.cpp">
+      <Filter>wxExtents\PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2UIStaticTextPropGrid.cpp">
+      <Filter>Inspector\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2UIAnimPicBoxPropGrid.cpp">
+      <Filter>Inspector\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2GeneralInspector.cpp">
+      <Filter>Inspector\General</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2GeneralPropertyGrid.cpp">
+      <Filter>Inspector\General</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ResTreePanel.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2SkyActorInspector.cpp">
+      <Filter>Inspector\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2SkyActorPropertyGrid.cpp">
+      <Filter>Inspector\Sky</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

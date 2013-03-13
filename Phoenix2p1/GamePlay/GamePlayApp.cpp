@@ -23,22 +23,43 @@ bool GamePlayApp::OnInitlize ()
 {
 	Application::OnInitlize();
 
-	CreateScene();
+	//std::string writeablePath = ResourceManager::GetSingleton().GetWriteablePath();
+	//PX2_LOG_INFO("GamePlay writeablePath is %s\n", writeablePath.c_str());
+
+	CreateProject();
 
 	return true;
 }
 //----------------------------------------------------------------------------
 bool GamePlayApp::OnTernamate ()
 {
-	mScene = 0;
-	mSceneGraph = 0;
 	mCamera = 0;
 	mWireProperty = 0;
 	mCullProperty = 0;
+	mDepthProperty = 0;
+
+	Project::GetSingleton().SetScene(0);
+	Project::GetSingleton().SetUI(0);
+	PX2_RM.Clear();
 
 	Application::OnTernamate();
+	mInited = false;
 
 	return true;
+}
+//----------------------------------------------------------------------------
+void GamePlayApp::WillEnterForeground ()
+{
+	PX2_LOG_INFO("WillEnterForeground");
+
+	OnInitlize();
+}
+//----------------------------------------------------------------------------
+void GamePlayApp::DidEnterBackground ()
+{
+	PX2_LOG_INFO("DidEnterBackground");
+
+	OnTernamate();
 }
 //----------------------------------------------------------------------------
 bool GamePlayApp::OnResume()
@@ -51,17 +72,106 @@ bool GamePlayApp::OnPause()
 	return true;
 }
 //----------------------------------------------------------------------------
+void GamePlayApp::DoEnter ()
+{
+
+}
+//----------------------------------------------------------------------------
+void GamePlayApp::DoExecute (Event *event)
+{
+	if (InputEventSpace::IsEqual(event, InputEventSpace::TouchPressed))
+	{
+		InputEventData data = event->GetData<InputEventData>();
+
+		float absX = (float)data.TState.X.Absoulate;
+		float absY = (float)data.TState.Y.Absoulate;
+		mTouchPos[0] = absX;
+		mTouchPos[1] = absY;
+	}
+	else if (InputEventSpace::IsEqual(event, InputEventSpace::TouchReleased))
+	{
+		InputEventData data = event->GetData<InputEventData>();
+
+		float absX = (float)data.TState.X.Absoulate;
+		float absY = (float)data.TState.Y.Absoulate;
+		mTouchPos[0] = absX;
+		mTouchPos[1] = absY;
+	}
+	else if (InputEventSpace::IsEqual(event, InputEventSpace::TouchMoved))
+	{
+		InputEventData data = event->GetData<InputEventData>();
+
+		float absX = (float)data.TState.X.Absoulate;
+		float absY = (float)data.TState.Y.Absoulate;
+		//float relX = (float)data.TState.X.Relative;
+		//float relY = (float)data.TState.Y.Relative;
+		//float relZ = (float)data.TState.Z.Relative;
+
+		float relX = absX - mTouchPos[0];
+		float relY = absY - mTouchPos[1];
+
+		RolateCamera(relX/mWidth*360.0f, relY/mWidth*180.0f);
+
+	//	ZoomCamera(relZ/10.0f);
+
+		mTouchPos[0] = absX;
+		mTouchPos[1] = absY;
+	}
+}
+//----------------------------------------------------------------------------
+void GamePlayApp::DoLeave ()
+{
+
+}
+//----------------------------------------------------------------------------
 void GamePlayApp::OnIdle ()
 {
+	Application::OnIdle();
+
 	if (!mInited)
 		return;
 
-	MeasureTime();
+	Project *proj = Project::GetSingletonPtr();
+	if (!proj)
+		return;
 
-	if (mSceneGraph)
+	float moveHor = 0.0f;
+	float moveVer = 0.0f;
+	float moveVal = 0.05f;
+	Keyboard *keyboard = InputEventAdapter::GetSingleton().GetKeyboard();
+	if (keyboard)
 	{
-		mSceneGraph->Update(GetTimeInSeconds());
-		mCuller.ComputeVisibleSet(mSceneGraph);
+		if (keyboard->IsKeyDown(KC_W))
+		{
+			moveVer = moveVal;
+		}
+		if (keyboard->IsKeyDown(KC_S))
+		{
+			moveVer = -moveVal;
+		}
+		if (keyboard->IsKeyDown(KC_A))
+		{
+			moveHor = -moveVal;
+		}
+		if (keyboard->IsKeyDown(KC_D))
+		{
+			moveHor = moveVal;
+		}
+	}
+	MoveCamera(moveHor, moveVer);
+
+	Scene *scene = Project::GetSingleton().GetScene();
+	if (scene)
+	{
+		scene->Update(mApplicationTime, mElapsedTime);		
+		mCuller.ComputeVisibleSet(scene->GetSceneNode());
+	}
+
+	UIView *uiView = UIManager::GetSingleton().GetDefaultView();
+	if (uiView)
+	{
+		uiView->Update(mApplicationTime, mElapsedTime);
+		uiView->ComputeVisibleSet();
 	}
 
 	if (mRenderer->PreDraw())
@@ -70,67 +180,171 @@ void GamePlayApp::OnIdle ()
 
 		mRenderer->Draw(mCuller.GetVisibleSet().Sort());
 
-		DrawFrameRate(8, mHeight-8, mTextColor);
+#if defined(_WIN32) || defined(WIN32)
+		// 加此代码，否则模拟器会有bug
+		mRenderer->SetDepthProperty(mDepthProperty);
+#endif
+
+		// ui
+		if (uiView)
+		{
+			Camera *uiCamera = uiView->GetCamera();
+			Culler &uiCuller = uiView->GetCuller();
+			mRenderer->SetCamera(uiCamera);
+			mRenderer->Draw(uiCuller.GetVisibleSet());
+			if (proj->IsShowProjectInfo())
+			{
+			//	DrawInfo(10, mHeight-20);
+			}
+			mRenderer->SetCamera(mCamera);
+		}
 
 		mRenderer->PostDraw();
 		mRenderer->DisplayColorBuffer();
 	}
-
-	UpdateFrameCount();
 }
 //----------------------------------------------------------------------------
-void GamePlayApp::CreateScene ()
+void GamePlayApp::CreateProject ()
 {
-	PX2_LOG_INFO("Begin CreateScene.\n");
-
-	mRenderer->SetClearColor(Float4(0.5f, 0.5f, 0.0f, 1.0f));
+	PX2_LOG_INFO("Begin CreateProject.\n");
 
 	mWireProperty = new0 WireProperty();
 	mWireProperty->Enabled = true;
 	mCullProperty = new0 CullProperty();
 	mCullProperty->Enabled = false;
+	mDepthProperty = new DepthProperty();
 
-	std::string mapName = GameManager::GetSingleton().GetMapName();
-	std::string fullMapName = "Data/maps/"+mapName+".pxof";
+	// clear color
+	mClearColor =  Project::GetSingleton().GetColor();
+	mRenderer->SetClearColor(mClearColor);
 
-	Object *obj = ResourceManager::GetSingleton()
-		.BlockLoad(fullMapName.c_str());
-	Scene *scene = DynamicCast<Scene>(obj);
-	if (scene)
+	// load scene
+	PX2_LOG_INFO("Begin load scene.\n");
+	std::string scenePath = Project::GetSingleton().GetSceneFilename();
+	PX2_LOG_INFO("scenePath is %s\n", scenePath.c_str());
+	if ("" != scenePath)
 	{
-		PX2_LOG_INFO("Load scene successful.\n");
+		ObjectPtr sceneObj = 0;
+		sceneObj = ResourceManager::GetSingleton().BlockLoad(scenePath);
 
-		mScene = scene;
-		mSceneGraph = scene->GetSceneNode();
-		mCamera = scene->GetDefaultCameraActor()->GetCamera();
-		mRenderer->SetCamera(mCamera);
-		mCuller.SetCamera(mCamera);
+		Scene *scene = DynamicCast<Scene>(sceneObj);
+		if (scene)
+		{
+			mCamera = scene->GetDefaultCameraActor()->GetCamera();
+			mRenderer->SetCamera(mCamera);
+			mCuller.SetCamera(mCamera);
+			GraphicsRoot::GetSingleton().SetCamera(mCamera);
+			scene->ShowHelpMovables(false);
+			Project::GetSingleton().SetScene(scene);
+
+			PX2_LOG_INFO("Load scene successful.\n");
+		}
+		else
+		{
+			PX2_LOG_INFO("Load scene failed.\n");
+		}
 	}
-	else
+	PX2_LOG_INFO("End load scene.\n");
+
+	// ui
+	PX2_LOG_INFO("Begin load UI.\n");
+	std::string uiPath = Project::GetSingleton().GetUIFilename();
+	PX2_LOG_INFO("uiPath is %s\n", uiPath.c_str());
+	if ("" != uiPath)
 	{
-		PX2_LOG_INFO("Load scene failed.\n");
+		ObjectPtr uiObj = 0;
+		uiObj = ResourceManager::GetSingleton().BlockLoad(uiPath);
 
-		mSceneGraph = new0 Node();
-		mSceneGraph->Update();
-		mCamera->SetFrustum(60.0f, ((float)mWidth)/(float)mHeight, 1.0f, 100.0f);
-		AVector camDVector(0.0f, 0.0f, 1.0f);
-		AVector camUVector(0.0f,1.0f,0.0f);
-		AVector camRVector = camDVector.Cross(camUVector);
-		APoint camPosition = APoint::ORIGIN -
-			2.0f*mSceneGraph->WorldBound.GetRadius()*camDVector;
-		mCamera->SetFrame(camPosition, camDVector, camUVector, camRVector);
+		UIFrame *ui = DynamicCast<UIFrame>(uiObj);
+		if (ui)
+		{
+			Project::GetSingleton().SetUI(ui);
 
-		mCuller.SetCamera(mCamera);
-		mRenderer->SetCamera(mCamera);
+			PX2_LOG_INFO("Load ui successful.\n");
+		}
+		else
+		{
+			PX2_LOG_INFO("Load ui failed.\n");
+		}
 	}
-
-	//std::string writeablePath = ResourceManager::GetSingleton()
-	//	.GetWriteablePath();
-	//PX2_LOG_INFO("GamePlay writeablePath is %s\n", writeablePath.c_str());
-	//PX2_LOG_INFO("CreateScene successful!\n");
-
-	PX2_LOG_INFO("End CreateScene.\n");
-
+	PX2_LOG_INFO("End load UI.\n");
+	
 	mInited = true;
+
+	PX2_LOG_INFO("End CreateProject.\n");
+}
+//----------------------------------------------------------------------------
+void GamePlayApp::ZoomCamera (float zoom)
+{
+	if (!mCamera)
+		return;
+
+	Vector3f position = mCamera->GetPosition();
+	AVector dir = mCamera->GetDVector();
+	dir.Normalize();
+
+	position += dir*zoom;
+	mCamera->SetPosition(position);
+}
+//----------------------------------------------------------------------------
+void GamePlayApp::MoveCamera (const float &horz, const float &vert)
+{
+	if (!mCamera)
+		return;
+
+	Vector3f position = mCamera->GetPosition();
+	AVector dVector = mCamera->GetDVector();
+	AVector uVector = mCamera->GetUVector();
+	AVector rVector = mCamera->GetRVector();
+
+	dVector.Z() = 0.0f;
+	dVector.Normalize();
+	rVector.Z() = 0.0f;
+	rVector.Normalize();
+	position += dVector * vert;
+	position += rVector * horz;
+
+	mCamera->SetPosition(position);
+}
+//----------------------------------------------------------------------------
+void GamePlayApp::RolateCamera (const float &horz, const float &vert)
+{
+	if (!mCamera)
+		return;
+
+	AVector dVector = mCamera->GetDVector();
+	AVector uVector = mCamera->GetUVector();
+	AVector rVector = mCamera->GetRVector();
+
+	// horz
+	HMatrix incrH(AVector::UNIT_Z, -horz*Mathf::DEG_TO_RAD);
+	dVector = incrH * dVector;
+	uVector = incrH * uVector;
+	rVector = incrH * rVector;
+
+	// vert
+	Matrix3f kIncrV(rVector, vert*Mathf::DEG_TO_RAD);
+	dVector = kIncrV * dVector;
+	uVector = kIncrV * uVector;
+
+	AVector::Orthonormalize(dVector, uVector, rVector);
+	mCamera->SetAxes(dVector, uVector, rVector);
+
+	SimplifyTerrain();
+}
+//----------------------------------------------------------------------------
+void GamePlayApp::SimplifyTerrain ()
+{
+	TerrainActor *terActor = Project::GetSingleton().GetScene()
+		->GetTerrainActor();
+	if (terActor)
+	{
+		bool useLod = terActor->IsUseLod();
+		LODTerrain *lodTer = terActor->GetLODTerrain();
+		if (useLod && lodTer)
+		{
+			lodTer->Simplify();
+		}
+	}
 }
 //----------------------------------------------------------------------------

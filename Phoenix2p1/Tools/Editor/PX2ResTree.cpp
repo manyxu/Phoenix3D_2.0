@@ -5,6 +5,8 @@
 */
 
 #include "PX2ResTree.hpp"
+#include "PX2ResourceManager.hpp"
+#include "PX2EditSystem.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 
@@ -37,27 +39,13 @@ void ResTree::OnItemActivated(wxTreeEvent& event)
 	if (!item)
 		return;
 
-	std::string resPath = item->GetPathName();
-	if (resPath.find(".wav")!=std::string::npos ||
-		resPath.find(".mp3")!=std::string::npos)
-	{
-	}
-	else if (resPath.find(".")!=std::string::npos)
-	{
-		PX2::Object* object = ResourceManager::GetSingleton().BlockLoad(
-			resPath.c_str());
-		if (object)
-		{
-			object->SetResourcePath(resPath);
+#if defined(_WIN32) || defined(WIN32)
+	WCHAR wszPath[MAX_PATH];
+	GetCurrentDirectoryW(sizeof(wszPath), wszPath);
+	std::wstring fullPath = wszPath + std::wstring(_T("\\")) + item->GetPathName();
 
-			EditSystem::GetSingleton().SetSelectedResource(object);
-			EditSystem::GetSingleton().SetSelectedResourceName(resPath);
-		}
-
-		EditSystem::GetSingleton().SetPreViewObject(object);
-	}
-
-	Expand(item->GetItemID());
+	ShellExecute(0, _T("open"), fullPath.c_str(), 0, 0, SW_SHOW);
+#endif
 }
 //-----------------------------------------------------------------------------
 void ResTree::OnSelChanged(wxTreeEvent& event)
@@ -76,6 +64,8 @@ void ResTree::OnSelChanged(wxTreeEvent& event)
 	}
 	else if (resPath.find(".")!=std::string::npos)
 	{
+		EditSystem::GetSingleton().SetSelectedResourceName(resPath);
+
 		PX2::Object* object = ResourceManager::GetSingleton().BlockLoad(
 			resPath.c_str());
 		if (object)
@@ -83,7 +73,6 @@ void ResTree::OnSelChanged(wxTreeEvent& event)
 			object->SetResourcePath(resPath);
 
 			EditSystem::GetSingleton().SetSelectedResource(object);
-			EditSystem::GetSingleton().SetSelectedResourceName(resPath);
 		}
 
 		EditSystem::GetSingleton().SetPreViewObject(object);

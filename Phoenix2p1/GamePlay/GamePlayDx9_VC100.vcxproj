@@ -40,7 +40,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)\Bin\</OutDir>
+    <OutDir>$(SolutionDir)Bin\</OutDir>
     <IntDir>_Output\$(PlatformToolset)\$(Platform)\Dx9$(Configuration)\</IntDir>
     <TargetName>GamePlayDx9D</TargetName>
   </PropertyGroup>
@@ -57,13 +57,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;PX2_USE_DX9;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\PX2SDK\Include;..\ThirdPartiesLibs\Microsoft DirectX SDK %28June 2010%29\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\PX2SDK\Include;..\ThirdPartiesLibs\Microsoft DirectX SDK %28June 2010%29\Include;..\ThirdPartiesLibs\pthread\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration);..\ThirdPartiesLibs\Microsoft DirectX SDK %28June 2010%29\Lib\x86</AdditionalLibraryDirectories>
-      <AdditionalDependencies>PX2CoreD.lib;PX2MathermaticsD.lib;PX2GraphicsDx9D.lib;PX2EventSystemD.lib;PX2TerrainsD.lib;PX2UnityD.lib;PX2GameD.lib;PX2AppFrameDx9D.lib;d3d9.lib;d3dx9.lib;dxerr.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration);..\ThirdPartiesLibs\Microsoft DirectX SDK %28June 2010%29\Lib\x86;..\ThirdPartiesLibs\pthread\lib\x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>PX2CoreD.lib;PX2MathermaticsD.lib;PX2GraphicsDx9D.lib;PX2EventSystemD.lib;PX2TerrainsD.lib;PX2InputD.lib;PX2UnityD.lib;PX2UserInterfaceD.lib;PX2EffectD.lib;PX2GameD.lib;PX2AppFrameDx9D.lib;d3d9.lib;d3dx9.lib;dxerr.lib;xinput.lib;dinput8.lib;dxguid.lib;pthreadVC2.lib;pthreadVCE2.lib;pthreadVSE2.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
@@ -84,7 +84,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>..\PX2SDK\Library\$(PlatformToolset)\$(Platform)\$(Configuration);..\ThirdPartiesLibs\Microsoft DirectX SDK %28June 2010%29\Lib\x86</AdditionalLibraryDirectories>
-      <AdditionalDependencies>PX2Core.lib;PX2Mathermatics.lib;PX2GraphicsDx9.lib;PX2Terrains.lib;PX2EventSystem.lib;PX2Unity.lib;PX2Game.lib;PX2AppFrameDx9.lib;d3d9.lib;d3dx9.lib;dxerr.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>PX2Core.lib;PX2Mathermatics.lib;PX2GraphicsDx9.lib;PX2Terrains.lib;PX2EventSystem.lib;PX2UserInterface.lib;PX2Effect.lib;PX2Input.lib;PX2Unity.lib;PX2Game.lib;PX2AppFrameDx9.lib;d3d9.lib;d3dx9.lib;dxerr.lib;xinput.lib;dinput8.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>

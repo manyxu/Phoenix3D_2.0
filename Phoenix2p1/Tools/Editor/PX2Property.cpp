@@ -64,7 +64,9 @@ bool wxStringButtonEditor::OnEvent( wxPropertyGrid* propGrid,
 		if ( event.GetId() == buttons->GetButtonId(0) )
 		{
 			if (mButtonDownCallback)
-				mButtonDownCallback (mProperty);
+			{
+				(*mButtonDownCallback)(mProperty);
+			}
 
 			return false;
 		}
@@ -82,10 +84,11 @@ void wxStringButtonEditor::SetButtonDownCallback (ButtonDownCallback fun)
 //-----------------------------------------------------------------------------
 // Property
 //-----------------------------------------------------------------------------
-bool Property::msRegisteredStrongButton = false;
+int Property::msStringButtonEditorNum = 0;
 //-----------------------------------------------------------------------------
 Property::Property (PropertyPage *parent, std::string name, PropertyType type, 
-					void *data, bool enable)
+					void *data, bool enable, 
+					const std::vector<std::string> *enums)
 :
 mParent(parent),
 mName(name),
@@ -151,7 +154,9 @@ mButtonDownCallback(0)
 				(unsigned char)(255*value[2]));
 		}
 		else
+		{
 			color.Set(255, 255, 255);
+		}
 
 		mProperty = new wxColourProperty(name.c_str(), wxPG_LABEL, color);
 
@@ -189,19 +194,37 @@ mButtonDownCallback(0)
 		{
 			value = wxString( (*((std::string*)data)).c_str() );
 		}
-
 		mProperty = new wxStringProperty(name.c_str(), wxPG_LABEL, value);
-
 		mParent->mPage->Append(mProperty);
 
-		if (!msRegisteredStrongButton)
+		std::string regName = mName + StringHelp::IntToString(msStringButtonEditorNum);
+
+		mStringButtonEditor = wxPropertyGrid::DoRegisterEditorClass(
+			new wxStringButtonEditor(this), regName);
+		mProperty->SetEditor(mStringButtonEditor);
+
+		msStringButtonEditorNum++;
+	}
+	else if (PT_ENUM == type)
+	{
+		wxPGChoices choices;
+
+		if (enums)
 		{
-			wxPropertyGrid::RegisterEditorClass(new wxStringButtonEditor());
-			msRegisteredStrongButton = true;
+			for (int i=0; i<(int)enums->size(); i++)
+			{
+				choices.Add((*enums)[i]);
+			}
 		}
 
-		mStringButtonEditor = new wxStringButtonEditor(this);
-		mParent->mPage->SetPropertyEditor(name.c_str(), mStringButtonEditor);
+		int val = 0;
+		if (mData)
+		{
+			val = *(int*)mData;
+		}
+
+		mProperty = new wxEnumProperty(name.c_str(), wxPG_LABEL, choices, val);
+		mParent->mPage->Append(mProperty);
 	}
 
 	parent->mProperties.push_back(this);
@@ -232,7 +255,7 @@ void Property::SetValue (std::string val)
 {
 	if (mProperty)
 	{
-		mProperty->SetValue(wxVariant(val));
+		mProperty->SetValueInEvent(wxVariant(val));
 	}
 }
 //-----------------------------------------------------------------------------
@@ -269,7 +292,7 @@ void Property::SetButtonDownCallback (ButtonDownCallback fun)
 	mButtonDownCallback = fun;
 
 	if (mStringButtonEditor)
-		mStringButtonEditor->SetButtonDownCallback(fun);
+		((wxStringButtonEditor*)mStringButtonEditor)->SetButtonDownCallback(fun);
 }
 //-----------------------------------------------------------------------------
 void Property::OnChange (wxPropertyGridEvent &event)
@@ -291,19 +314,19 @@ void Property::OnChange (wxPropertyGridEvent &event)
 	}
 	else if (mType == PT_FLOAT)
 	{
-		double value = 0;
-		value = wxANY_AS(anyValue, double);
-		*((float*)mData) = (float)value;
+		double val = 0;
+		val = wxANY_AS(anyValue, double);
+		*((float*)mData) = (float)val;
 	}
 	else if (mType == PT_BOOL)
 	{
-		bool value =  wxANY_AS(anyValue, bool);
-		*((bool*)mData) = value;
+		bool val =  wxANY_AS(anyValue, bool);
+		*((bool*)mData) = val;
 	}
 	else if (mType == PT_BOOLCHECK)
 	{
-		bool value =  wxANY_AS(anyValue, bool);
-		*((bool*)mData) = value;
+		bool val =  wxANY_AS(anyValue, bool);
+		*((bool*)mData) = val;
 	}
 	else if (PT_COLOR3FLOAT3 == mType)
 	{
@@ -316,19 +339,82 @@ void Property::OnChange (wxPropertyGridEvent &event)
 	}
 	else if (PT_FLOAT3 == mType)
 	{
-		//*((Float3*)mData) = Float3FromVariant(variant);
+		*((Float3*)mData) = Float3RefFromVariant(anyValue);
 	}
-	else if (mType == PT_STRING)
+	else if (PT_STRING == mType)
 	{
-		std::string value;
-		value = wxANY_AS(anyValue, std::string);
-		*((std::string*)mData) = value;
+		std::string val;
+		val = wxANY_AS(anyValue, wxString); // must be wxString
+		*((std::string*)mData) = val;
+	}
+	else if (PT_STRINGBUTTON == mType)
+	{
+		std::string val;
+		val = wxANY_AS(anyValue, wxString); // must be wxString
+		*((std::string*)mData) = val;
+	}
+	else if (PT_ENUM == mType)
+	{
+		*((int*)mData) = wxANY_AS(anyValue, int);
+	}
+}
+//-----------------------------------------------------------------------------
+void Property::OnChanging (wxPropertyGridEvent &event)
+{
+	wxPGProperty *property = event.GetProperty();
+	const wxString &name = event.GetPropertyName();
+	std::string stdName = std::string(name);
+	wxAny anyValue = property->GetValue();
+
+	if (name != wxString(mName.c_str()))
+		return;
+
+	if (!mData)
+		return;
+
+	if (mType == PT_INT)
+	{
+		*((int*)mData) = wxANY_AS(anyValue, int);
+	}
+	else if (mType == PT_FLOAT)
+	{
+		double val = 0;
+		val = wxANY_AS(anyValue, double);
+		*((float*)mData) = (float)val;
+	}
+	else if (mType == PT_BOOL)
+	{
+		bool val =  wxANY_AS(anyValue, bool);
+		*((bool*)mData) = val;
+	}
+	else if (mType == PT_BOOLCHECK)
+	{
+		bool val =  wxANY_AS(anyValue, bool);
+		*((bool*)mData) = val;
+	}
+	else if (PT_COLOR3FLOAT3 == mType)
+	{
+		wxColor color =  wxANY_AS(anyValue, wxColor);
+
+		Float3 float3Color((float)color.Red()/255.0f, (float)color.Green()/255.0f,
+			(float)color.Blue()/255.0f);
+
+		*((Float3*)mData) = float3Color;
+	}
+	else if (PT_FLOAT3 == mType)
+	{
+		*((Float3*)mData) = Float3RefFromVariant(anyValue);
+	}
+	else if (PT_STRING == mType)
+	{
+		std::string val;
+		val = wxANY_AS(anyValue, wxString); // must be wxString
+		*((std::string*)mData) = val;
 	}
 }
 //-----------------------------------------------------------------------------
 void Property::DoEnter ()
 {
-
 }
 //-----------------------------------------------------------------------------
 void Property::DoExecute (PX2::Event *event)

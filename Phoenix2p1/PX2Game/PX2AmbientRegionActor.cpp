@@ -14,27 +14,21 @@ PX2_IMPLEMENT_FACTORY(AmbientRegionActor);
 //----------------------------------------------------------------------------
 AmbientRegionActor::AmbientRegionActor ()
 {
-	mHorAngle = 135.0f;
-	mVerAngle = 45.0f;
+	mHorAngle = 30.0f;
+	mVerAngle = 15.0f;
+	mDirLightIntensity = 1.0f;
 
 	mAmbientColor = Float4(0.2f, 0.2f, 0.2f, 1.0f);
-	mDirLightDiffColor = Float4(1.0f, 1.0f, 1.0f, 1.0f);;
+	mDirLightDiffColor = Float4(1.0f, 1.0f, 1.0f, 1.0f);
 	mDirLightSpecColor = Float4(0.5f, 0.5f, 0.5f, 1.0f);
 }
 //----------------------------------------------------------------------------
 AmbientRegionActor::~AmbientRegionActor ()
 {
-
 }
 //----------------------------------------------------------------------------
 void AmbientRegionActor::DoEnter ()
 {
-
-}
-//----------------------------------------------------------------------------
-void AmbientRegionActor::DoUpdate ()
-{
-
 }
 //----------------------------------------------------------------------------
 void AmbientRegionActor::DoExecute (Event *event)
@@ -86,6 +80,7 @@ void AmbientRegionActor::Load (InStream& source)
 	source.ReadAggregate<Float4>(mAmbientColor);
 	source.ReadAggregate<Float4>(mDirLightDiffColor);
 	source.ReadAggregate<Float4>(mDirLightSpecColor);
+	source.Read(mDirLightIntensity);
 	source.Read(mHorAngle);
 	source.Read(mVerAngle);
 	source.ReadPointer(mLight);
@@ -127,6 +122,7 @@ void AmbientRegionActor::Save (OutStream& target) const
 	target.WriteAggregate<Float4>(mAmbientColor);
 	target.WriteAggregate<Float4>(mDirLightDiffColor);
 	target.WriteAggregate<Float4>(mDirLightSpecColor);
+	target.Write(mDirLightIntensity);
 	target.Write(mHorAngle);
 	target.Write(mVerAngle);
 	target.WritePointer(mLight);
@@ -140,6 +136,7 @@ int AmbientRegionActor::GetStreamingSize () const
 	size += sizeof(mAmbientColor);
 	size += sizeof(mDirLightDiffColor);
 	size += sizeof(mDirLightSpecColor);
+	size += sizeof(mDirLightIntensity);
 	size += sizeof(mHorAngle);
 	size += sizeof(mVerAngle);
 	size += PX2_POINTERSIZE(mLight);

@@ -24,8 +24,8 @@ enum AttribLocationPos
 {
 	ALP_POSITION = 0,
 	ALP_NORMAL,
-	ALP_TEXCOORD0,
 	ALP_COLOR0,
+	ALP_TEXCOORD0,
 };
 
 #define PX2_GL_CHECK(x) \

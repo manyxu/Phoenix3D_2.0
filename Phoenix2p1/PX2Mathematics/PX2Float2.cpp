@@ -7,6 +7,9 @@
 #include "PX2Float2.hpp"
 using namespace PX2;
 
+const Float2 Float2::ZERO(0.0f, 0.0f);
+const Float2 Float2::UNIT(1.0f, 1.0f);
+
 //----------------------------------------------------------------------------
 Float2::Float2 ()
 {

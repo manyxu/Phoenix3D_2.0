@@ -10,9 +10,10 @@
 using namespace std;
 using namespace PX2;
 
-XMLNode::XMLNode ()
+XMLNode::XMLNode (std::string name)
 :
-mElement(0)
+mElement(0),
+mName(name)
 {
 }
 //----------------------------------------------------------------------------
@@ -20,6 +21,8 @@ XMLNode::XMLNode(TiXmlElement *element)
 : 
 mElement(element)
 {
+	if (mElement)
+		mName = mElement->Value();
 }
 //----------------------------------------------------------------------------
 XMLNode::~XMLNode ()
@@ -29,6 +32,19 @@ XMLNode::~XMLNode ()
 bool XMLNode::IsNull ()
 {
 	return (mElement == 0);
+}
+//----------------------------------------------------------------------------
+void XMLNode::Create ()
+{
+	mElement = new TiXmlElement(mName.c_str());
+}
+//----------------------------------------------------------------------------
+void XMLNode::LinkEndChild (XMLNode node)
+{
+	if (node.mElement && mElement)
+	{
+		mElement->LinkEndChild(node.mElement);
+	}
 }
 //----------------------------------------------------------------------------
 const char *XMLNode::GetName ()
@@ -117,7 +133,7 @@ bool XMLNode::HasAttribute (const char *name)
 //----------------------------------------------------------------------------
 int XMLNode::AttributeToInt (const char *name)
 {
-	int value;
+	int value = 0;
 
 	if (mElement->QueryIntAttribute(name, &value) != TIXML_SUCCESS)
 	{
@@ -129,7 +145,7 @@ int XMLNode::AttributeToInt (const char *name)
 //----------------------------------------------------------------------------
 float XMLNode::AttributeToFloat (const char *name)
 {
-	float value;
+	float value = 0.0f;
 
 	if (mElement->QueryFloatAttribute(name, &value) != TIXML_SUCCESS)
 	{

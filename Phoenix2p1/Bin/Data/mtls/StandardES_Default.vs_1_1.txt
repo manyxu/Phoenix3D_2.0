@@ -6,19 +6,12 @@ vs_1_1
 //version 3.1.0.10
 //profile vs_1_1
 //program v_StandardES_Default
-//semantic gWMatrix
-//semantic gVMatrix
-//semantic gPMatrix
-//semantic gPVWMatrix
-//semantic gVWMatrix
-//semantic gWIMatrix
-//semantic gVIMatrix
-//semantic gCameraWorldPosition
-//semantic gShineEmissive
-//semantic gShineAmbient
-//semantic gShineDiffuse
-//semantic gLightColour
-//semantic gLightModelDirection
+//semantic v_StandardES_Default.gPVWMatrix
+//semantic v_StandardES_Default.gShineEmissive
+//semantic v_StandardES_Default.gShineAmbient
+//semantic v_StandardES_Default.gShineDiffuse
+//semantic v_StandardES_Default.gLightColour
+//semantic v_StandardES_Default.gLightModelDirection
 //semantic gDiffuseSampler
 //var float3 modelPosition : $vin.POSITION0 : ATTR0 : 0 : 1
 //var float3 modelNormal : $vin.NORMAL0 : ATTR1 : 1 : 1
@@ -26,26 +19,14 @@ vs_1_1
 //var float4 clipPosition : $vout.POSITION : HPOS : 3 : 1
 //var float2 vertexTCoord0 : $vout.TEXCOORD0 : TEX0 : 4 : 1
 //var float4 vertexTCoord1 : $vout.TEXCOORD1 : TEX1 : 5 : 1
-//var float4x4 gWMatrix :  : , 4 : -1 : 0
-//var float4x4 gVMatrix :  : , 4 : -1 : 0
-//var float4x4 gPMatrix :  : , 4 : -1 : 0
-//var float4x4 gPVWMatrix :  : c[0], 4 : -1 : 1
-//var float4x4 gVWMatrix :  : , 4 : -1 : 0
-//var float4x4 gWIMatrix :  : , 4 : -1 : 0
-//var float4x4 gVIMatrix :  : , 4 : -1 : 0
-//var float3 gCameraWorldPosition :  :  : -1 : 0
-//var float4 gShineEmissive :  : c[4] : -1 : 1
-//var float4 gShineAmbient :  : c[5] : -1 : 1
-//var float4 gShineDiffuse :  : c[6] : -1 : 1
-//var float4 gLightColour :  : c[7] : -1 : 1
-//var float3 gLightModelDirection :  : c[8] : -1 : 1
+//var float4x4 gPVWMatrix :  : c[0], 4 : 6 : 1
+//var float4 gShineEmissive :  : c[4] : 7 : 1
+//var float4 gShineAmbient :  : c[5] : 8 : 1
+//var float4 gShineDiffuse :  : c[6] : 9 : 1
+//var float4 gLightColour :  : c[7] : 10 : 1
+//var float4 gLightModelDirection :  : c[8] : 11 : 1
 //var sampler2D gDiffuseSampler :  :  : -1 : 0
 //const c[9] = 1 0
-//default gShineEmissive = 0 0 0 1
-//default gShineAmbient = 0.1 0.1 0.1 1
-//default gShineDiffuse = 0.47 0.47 0.47 1
-//default gLightColour = 0.30000001 0.30000001 0.30000001 1
-//default gLightModelDirection = -0.5 -0.5 -0.5
 def c9, 1.00000000, 0.00000000, 0, 0
 dcl_position0 v0
 dcl_texcoord0 v2
@@ -53,7 +34,7 @@ dcl_normal0 v1
 mov r0.xyz, c7
 mov r1.xyz, c7
 mul r1.xyz, c5, r1
-dp3 r0.w, v1, c8
+dp3 r0.w, v1, -c8
 mul r0.xyz, c6, r0
 max r0.w, r0, c9.y
 add r1.xyz, r1, c4

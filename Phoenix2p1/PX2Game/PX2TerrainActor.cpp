@@ -13,6 +13,8 @@ PX2_IMPLEMENT_STREAM(TerrainActor);
 PX2_IMPLEMENT_FACTORY(TerrainActor);
 
 TerrainActor::TerrainActor ()
+	:
+mIsUseLOD(false)
 {
 }
 //----------------------------------------------------------------------------
@@ -20,10 +22,30 @@ TerrainActor::~TerrainActor ()
 {
 }
 //----------------------------------------------------------------------------
-void TerrainActor::SetTerrain (Terrain *terrain)
+void TerrainActor::UseLod (bool use)
 {
-	mTerrain = terrain;
-	SetMovable(mTerrain);
+	mIsUseLOD = use;
+
+	if (!mIsUseLOD)
+	{
+		SetMovable(mRawTerrain);
+	}
+	else
+	{
+		SetMovable(mLODTerrain);
+	}
+}
+//----------------------------------------------------------------------------
+void TerrainActor::SetRawTerrain (RawTerrain *terrain)
+{
+	mRawTerrain = terrain;
+	UseLod(mIsUseLOD);
+}
+//----------------------------------------------------------------------------
+void TerrainActor::SetLODTerrain(LODTerrain *terrain)
+{
+	mLODTerrain = terrain;
+	UseLod(mIsUseLOD);
 }
 //----------------------------------------------------------------------------
 void TerrainActor::DoEnter ()
@@ -75,7 +97,9 @@ void TerrainActor::Load (InStream& source)
 	PX2_BEGIN_DEBUG_STREAM_LOAD(source);
 
 	Actor::Load(source);
-	source.ReadPointer(mTerrain);
+	source.ReadBool(mIsUseLOD);
+	source.ReadPointer(mRawTerrain);
+	source.ReadPointer(mLODTerrain);
 
 	PX2_END_DEBUG_STREAM_LOAD(TerrainActor, source);
 }
@@ -83,7 +107,8 @@ void TerrainActor::Load (InStream& source)
 void TerrainActor::Link (InStream& source)
 {
 	Actor::Link(source);
-	source.ResolveLink(mTerrain);
+	source.ResolveLink(mRawTerrain);
+	source.ResolveLink(mLODTerrain);
 }
 //----------------------------------------------------------------------------
 void TerrainActor::PostLink ()
@@ -95,7 +120,8 @@ bool TerrainActor::Register (OutStream& target) const
 {
 	if (Actor::Register(target))
 	{
-		target.Register(mTerrain);
+		target.Register(mRawTerrain);
+		target.Register(mLODTerrain);
 
 		return true;
 	}	
@@ -108,7 +134,9 @@ void TerrainActor::Save (OutStream& target) const
 	PX2_BEGIN_DEBUG_STREAM_SAVE(target);
 
 	Actor::Save(target);
-	target.WritePointer(mTerrain);
+	target.WriteBool(mIsUseLOD);
+	target.WritePointer(mRawTerrain);
+	target.WritePointer(mLODTerrain);
 
 	PX2_END_DEBUG_STREAM_SAVE(TerrainActor, target);
 }
@@ -116,7 +144,9 @@ void TerrainActor::Save (OutStream& target) const
 int TerrainActor::GetStreamingSize () const
 {
 	int size = Actor::GetStreamingSize();
-	size += PX2_POINTERSIZE(mTerrain);
+	size += PX2_BOOLSIZE(mIsUseLOD);
+	size += PX2_POINTERSIZE(mRawTerrain);
+	size += PX2_POINTERSIZE(mLODTerrain);
 
 	return size;
 }

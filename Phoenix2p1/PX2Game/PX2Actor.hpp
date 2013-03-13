@@ -25,7 +25,7 @@ namespace PX2
 
 	public:
 		Actor ();
-		~Actor ();
+		virtual ~Actor ();
 
 		// 场景
 		PX2::Scene *GetScene ();
@@ -52,7 +52,7 @@ namespace PX2
 		float GetTransparent ();
 
 		// 模型
-		void SetMovable (Movable *movable);
+		virtual void SetMovable (Movable *movable);
 		Movable *GetMovable ();
 
 		// 替身

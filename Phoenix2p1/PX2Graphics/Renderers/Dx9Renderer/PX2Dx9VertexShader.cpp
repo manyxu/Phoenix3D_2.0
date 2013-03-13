@@ -102,7 +102,7 @@ void PdrVertexShader::Disable (Renderer* renderer,
 	activeVShader->Release();
 #endif
 
-	int profile = PixelShader::GetProfile();
+	int profile = VertexShader::GetProfile();
 	DisableTextures(renderer, vshader, profile, parameters,
 		renderer->mData->mMaxVShaderImages, D3DVERTEXTEXTURESAMPLER0);
 

@@ -36,6 +36,7 @@ namespace PX2
 
 	private:
 		GLuint mBuffer;
+		const VertexBuffer *mVBuffer;
 	};
 
 }
