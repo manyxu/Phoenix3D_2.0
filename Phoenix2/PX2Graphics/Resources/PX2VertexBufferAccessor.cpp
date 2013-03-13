@@ -26,7 +26,7 @@ mTangentChannels(0),
 mBinormalChannels(0)
 {
 	int i;
-	for (i = 0; i < VertexFormat::AM_MAX_COLOR_UNITS; ++i)
+	for (i = 0; i < VertexFormat::AM_MAX_TCOORD_UNITS; ++i)
 	{
 		mTCoord[i] = 0;
 		mTCoordChannels[i] = 0;
