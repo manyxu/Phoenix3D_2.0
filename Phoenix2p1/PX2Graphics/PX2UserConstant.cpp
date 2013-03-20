@@ -18,8 +18,7 @@ PX2_IMPLEMENT_DEFAULT_NAMES(ShaderFloat, UserConstant);
 //----------------------------------------------------------------------------
 UserConstant::UserConstant ()
 	:
-ShaderFloat(1),
-mValue(Float4::ZERO)
+ShaderFloat(1)
 {
 	EnableUpdater();
 }
@@ -30,14 +29,8 @@ UserConstant::~UserConstant ()
 //----------------------------------------------------------------------------
 void UserConstant::Update (const Renderable*, const Camera*)
 {
-	mValue[0] = (float)GetTimeInSeconds();
-
-	const float* source = (const float*)mValue;
-	float* target = mData;
-	for (int i = 0; i < 4; ++i)
-	{
-		*target++ = *source++;
-	}
+	float val = (float)GetTimeInSeconds();
+	(*this)[0] = val;
 }
 //----------------------------------------------------------------------------
 
@@ -55,8 +48,6 @@ void UserConstant::Load (InStream& source)
 	PX2_BEGIN_DEBUG_STREAM_LOAD(source);
 
 	ShaderFloat::Load(source);
-
-	source.ReadAggregate<Float4>(mValue);
 
 	PX2_END_DEBUG_STREAM_LOAD(UserConstant, source);
 }
@@ -86,15 +77,12 @@ void UserConstant::Save (OutStream& target) const
 
 	ShaderFloat::Save(target);
 
-	target.WriteAggregate<Float4>(mValue);
-
 	PX2_END_DEBUG_STREAM_SAVE(UserConstant, target);
 }
 //----------------------------------------------------------------------------
 int UserConstant::GetStreamingSize () const
 {
 	int size = ShaderFloat::GetStreamingSize();
-	size += sizeof(mValue);
 	return size;
 }
 //----------------------------------------------------------------------------

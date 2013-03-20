@@ -151,6 +151,14 @@ PdrTexture2D::~PdrTexture2D ()
 	mTexture->Release();
 }
 //----------------------------------------------------------------------------
+void PdrTexture2D::Enable (Renderer* renderer, int textureUnit, int loc)
+{
+	PX2_UNUSED(renderer);
+	PX2_UNUSED(textureUnit);
+	PX2_UNUSED(loc);
+	assertion(false, "Dx9Renderer do not need this.\n");
+}
+//----------------------------------------------------------------------------
 void PdrTexture2D::Enable (Renderer* renderer, int textureUnit)
 {
 	IDirect3DDevice9* device = renderer->mData->mDevice;

@@ -18,7 +18,6 @@
 #include "PX2UIStaticText.hpp"
 #include "PX2UIManager.hpp"
 #include "PX2Project.hpp"
-
 using namespace PX2Editor;
 using namespace PX2;
 
@@ -276,6 +275,24 @@ void ObjectTree::DoExecute (PX2::Event *event)
 		if (parItem)
 		{
 			parItem->RemoveChild(obj);
+		}
+	}
+	else if (EditorEventSpace::IsEqual(event, EditorEventSpace::AttachControl))
+	{
+		using PX2::Controller;
+		using PX2::Controlledable;
+		Object *obj = event->GetData<Object*>();
+		Controller *ctrl = DynamicCast<Controller>(obj);
+		if (ctrl)
+		{
+			Controlledable *ctrlAble = DynamicCast<Controlledable>(ctrl->GetControlledable());
+
+			ObjectTreeItem *item = GetItem(ctrlAble);
+			if (item)
+			{
+				item->AddChild(ctrl);
+				Expand(item->GetItemId());
+			}
 		}
 	}
 }

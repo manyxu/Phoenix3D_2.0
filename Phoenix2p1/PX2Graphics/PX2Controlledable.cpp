@@ -52,7 +52,7 @@ void Controlledable::AttachController (Controller* controller)
 	}
 
 	// 将控制器绑定到对象
-	controller->SetObject(this);
+	controller->SetControlledable(this);
 
 	// 控制器不再当前控制器队列，将其加入
 	if (mNumControllers == mCapacity)
@@ -78,7 +78,7 @@ void Controlledable::DetachController (Controller* controller)
 		if (controller == mControllers[i])
 		{
 			// Unbind
-			controller->SetObject(0);
+			controller->SetControlledable(0);
 
 			// 从数组中移除控制器
 			for (int j = i + 1; j < mNumControllers; ++j, ++i)
@@ -96,7 +96,7 @@ void Controlledable::DetachAllControllers ()
 	for (int i = 0; i < mNumControllers; ++i)
 	{
 		// Unbind
-		mControllers[i]->SetObject(0);
+		mControllers[i]->SetControlledable(0);
 		mControllers[i] = 0;
 	}
 	mNumControllers = 0;

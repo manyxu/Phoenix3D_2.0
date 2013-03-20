@@ -34,8 +34,12 @@ mSize(0),
 mMinElevation(0),
 mMaxElevation(0),
 mSpacing(1.0f),
-mIsUseSimpleMtl(useSimpleMtl)
+mIsUseSimpleMtl(useSimpleMtl),
+mJunglerFrequency(1.0f),
+mJunglerStrength(1.0f)
 {
+	mCurSaveVersion = "PX2_VERSION_1_1";
+
 	mShine = new0 Shine();
 	mShine->Emissive = Float4(0.05f, 0.05f, 0.05f, 1.0f);
 	mShine->Ambient = Float4(0.25f, 0.25f, 0.25f, 1.0f);
@@ -176,6 +180,9 @@ AVector Terrain::GetNormal (float x, float y) const
 void Terrain::AddJunglers (Texture2D *tex, APoint center, float radius,
 	int num, float width, float height, float lower)
 {
+	if (!tex)
+		return;
+
 	for (int i=0; i<mNumRows; i++)
 	{
 		for (int j=0; j<mNumCols; j++)
@@ -234,6 +241,34 @@ void Terrain::RemoveJunglers (Texture2D *tex, APoint center, float radius,
 	}
 }
 //----------------------------------------------------------------------------
+void Terrain::SetJunglerFrequency (float fre)
+{
+	mJunglerFrequency = fre;
+
+	for (int i=0; i<mNumRows; i++)
+	{
+		for (int j=0; j<mNumCols; j++)
+		{
+			TerrainPage *page = GetPage(i, j);
+			page->SetJunglerFrequency(fre);			
+		}
+	}
+}
+//----------------------------------------------------------------------------
+void Terrain::SetJunglerStrength (float strength)
+{
+	mJunglerStrength = strength;
+
+	for (int i=0; i<mNumRows; i++)
+	{
+		for (int j=0; j<mNumCols; j++)
+		{
+			TerrainPage *page = GetPage(i, j);
+			page->SetJunglerStrength(strength);
+		}
+	}
+}
+//----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
 // Ãû³ÆÖ§³Ö
@@ -269,8 +304,11 @@ Node(value),
 	mMinElevation(0.0f),
 	mMaxElevation(0.0f),
 	mSpacing(0.0f),
-	mIsUseSimpleMtl(false)
+	mIsUseSimpleMtl(false),
+	mJunglerFrequency(1.0f),
+	mJunglerStrength(1.0f)
 {
+	mCurSaveVersion = "PX2_VERSION_1_1";
 }
 //----------------------------------------------------------------------------
 void Terrain::Load (InStream& source)
@@ -301,6 +339,17 @@ void Terrain::Load (InStream& source)
 	source.ReadPointer(mMtlEdit);
 	source.ReadPointer(mMtlSimple);
 	source.ReadPointer(mShine);
+
+	if (mVersion == "PX2_VERSION_1_0")
+	{
+		mJunglerFrequency = 1.0f;
+		mJunglerStrength = 1.0f;
+	}
+	else
+	{
+		source.Read(mJunglerFrequency);
+		source.Read(mJunglerStrength);
+	}
 
 	PX2_END_DEBUG_STREAM_LOAD(Terrain, source);
 }
@@ -379,12 +428,16 @@ void Terrain::Save (OutStream& target) const
 	target.WritePointer(mMtlEdit);
 	target.WritePointer(mMtlSimple);
 	target.WritePointer(mShine);
+	target.Write(mJunglerFrequency);
+	target.Write(mJunglerStrength);
 
 	PX2_END_DEBUG_STREAM_SAVE(Terrain, target);
 }
 //----------------------------------------------------------------------------
 int Terrain::GetStreamingSize () const
 {
+	int ioFlag = GetCurIOFlag();
+
 	int size = Node::GetStreamingSize();
 	size += sizeof(mNumRows);
 	size += sizeof(mNumCols);
@@ -399,6 +452,15 @@ int Terrain::GetStreamingSize () const
 	size += PX2_POINTERSIZE(mMtlEdit);
 	size += PX2_POINTERSIZE(mMtlSimple);
 	size += PX2_POINTERSIZE(mShine);
+
+	if (0==ioFlag && mVersion=="PX2_VERSION_1_0")
+	{
+	}
+	else
+	{
+		size += sizeof(mJunglerFrequency);
+		size += sizeof(mJunglerStrength);
+	}
 
 	return size;
 }

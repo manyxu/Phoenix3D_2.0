@@ -44,6 +44,12 @@ TerrainJunglerPanel::TerrainJunglerPanel (wxWindow *parent)
 	assertion(mWidthText!=0, "Window must be find!");
 	mHeightText = (wxTextCtrl*)FindWindow(XRCID("mHeight"));
 	assertion(mHeightText!=0, "Window must be find!");
+	mLowerText = (wxTextCtrl*)FindWindow(XRCID("mLower"));
+	assertion(mLowerText!=0, "Window must be find!");
+	mFrequencyText = (wxTextCtrl*)FindWindow(XRCID("mFrequency"));
+	assertion(mFrequencyText!=0, "Window must be find!");
+	mStrengthText = (wxTextCtrl*)FindWindow(XRCID("mJunglerStrength"));
+	assertion(mStrengthText!=0, "Window must be find!");
 
 	mJungleTexBitmap = (wxStaticBitmap*)FindWindow(XRCID("mJungleTexBitmap"));
 	assertion(mJungleTexBitmap!=0, "Window must be find!");
@@ -164,7 +170,11 @@ void TerrainJunglerPanel::OnButton (wxCommandEvent& event)
 //-----------------------------------------------------------------------------
 void TerrainJunglerPanel::OnTextEnter (wxCommandEvent& event)
 {
-	if (event.GetEventObject() == mWidthText)
+	if (event.GetEventObject() == mTexToUse)
+	{
+
+	}
+	else if (event.GetEventObject() == mWidthText)
 	{
 		float val = (float)wxAtof(event.GetString().GetData());
 
@@ -177,6 +187,50 @@ void TerrainJunglerPanel::OnTextEnter (wxCommandEvent& event)
 
 		EditSystem::GetSingleton().GetTerrainEdit()->GetJunglerProcess()
 			->SetHeight(val);
+	}
+	else if (event.GetEventObject() == mLowerText)
+	{
+		float val = (float)wxAtof(event.GetString().GetData());
+
+		EditSystem::GetSingleton().GetTerrainEdit()->GetJunglerProcess()
+			->SetLower(val);
+	}
+	else if (event.GetEventObject() == mFrequencyText)
+	{
+		float val = (float)wxAtof(event.GetString().GetData());
+
+		TerrainActor *actor = 0;
+
+		if (Project::GetSingletonPtr())
+			actor = Project::GetSingleton().GetScene()->GetTerrainActor();
+
+		if (!actor)
+			return;
+
+		RawTerrain *terrain = actor->GetRawTerrain();
+		if (!terrain)
+			return;
+
+		terrain->SetJunglerFrequency(val);
+
+	}
+	else if (event.GetEventObject() == mStrengthText)
+	{
+		float val = (float)wxAtof(event.GetString().GetData());
+
+		TerrainActor *actor = 0;
+
+		if (Project::GetSingletonPtr())
+			actor = Project::GetSingleton().GetScene()->GetTerrainActor();
+
+		if (!actor)
+			return;
+
+		RawTerrain *terrain = actor->GetRawTerrain();
+		if (!terrain)
+			return;
+
+		terrain->SetJunglerStrength(val);
 	}
 }
 //-----------------------------------------------------------------------------
@@ -215,12 +269,26 @@ void TerrainJunglerPanel::RefleshCtrls ()
 		->GetJunglerProcess()->GetWidth();
 	float height = EditSystem::GetSingleton().GetTerrainEdit()
 		->GetJunglerProcess()->GetHeight();
+	float lower = EditSystem::GetSingleton().GetTerrainEdit()
+		->GetJunglerProcess()->GetLower();
+	float frequence = terrain->GetJunglerFrequency();
+	float strength = terrain->GetJunglerStrength();
+
 	wxString strWidth =  wxString::Format("%.2f", width);
 	wxString strHeight =  wxString::Format("%.2f", height);
+	wxString strLower = wxString::Format("%.2f", lower);
+	wxString strFrequence = wxString::Format("%.2f", frequence);
+	wxString strStrength = wxString::Format("%.2f", strength);
 	mWidthText->Clear();
 	mWidthText->WriteText(strWidth);
 	mHeightText->Clear();
-	mHeightText->WriteText(strHeight);	
+	mHeightText->WriteText(strHeight);
+	mLowerText->Clear();
+	mLowerText->WriteText(strLower);
+	mFrequencyText->Clear();
+	mFrequencyText->WriteText(strFrequence);
+	mStrengthText->Clear();
+	mStrengthText->WriteText(strStrength);
 
 	// rawPage
 	PX2::TerrainPage *page = EditSystem::GetSingleton().GetTerrainEdit()

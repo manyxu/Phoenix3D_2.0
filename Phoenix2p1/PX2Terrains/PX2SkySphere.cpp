@@ -19,25 +19,23 @@ PX2_IMPLEMENT_DEFAULT_NAMES(TriMesh, SkySphere);
 //----------------------------------------------------------------------------
 SkySphere::SkySphere ()
 {
+	mCurSaveVersion = "PX2_VERSION_1_1";
+
 	mRadius = 500.0f;
 
 	SetRenderLayer(Renderable::RL_SKY);
 
-	VertexFormat *vf = VertexFormat::Create(1,
+	VertexFormatPtr vf = VertexFormat::Create(1,
 		VertexFormat::AU_POSITION, VertexFormat::AT_FLOAT3, 0);
-
 	SetVertexFormat(vf);
 
-	StandardMesh sm(vf, true, true);
-	TriMesh *mesh = sm.Sphere(16, 16, mRadius);
+	TriMeshPtr mesh = StandardMesh(vf, true, true).Sphere(16, 16, mRadius);
 	SetVertexBuffer(mesh->GetVertexBuffer());
 	SetIndexBuffer(mesh->GetIndexBuffer());
-	delete0(mesh);
 
 	UpdateModelSpace(Renderable::GU_MODEL_BOUND_ONLY);
 
 	SkyMaterial *mtl = new0 SkyMaterial();
-	mtl->GetDepthProperty(0, 0)->Writable = true;
 	mMtlInst = new0 MaterialInstance(mtl, 0);
 
 	// vs
@@ -51,12 +49,12 @@ SkySphere::SkySphere ()
 	mMtlInst->SetPixelConstant(0, "gCameraWorldDVector",
 		new0 CameraWorldDVectorConstant());
 
-	PX2::LightPtr light = new0 Light(Light::LT_DIRECTIONAL);
-	light->SetDirection(AVector(-1.0f, -1.0f, -1.0f));
+	mDirLight = new0 Light(Light::LT_DIRECTIONAL);
+	mDirLight->SetDirection(AVector(-1.0f, -1.0f, -1.0f));
 	mMtlInst->SetPixelConstant(0, "gLightColour",
-		new0 LightDiffuseConstant(light));
+		new0 LightDiffuseConstant(mDirLight));
 	mMtlInst->SetPixelConstant(0, "gLightWorldDirection", 
-		new0 LightWorldDVectorConstant(light));
+		new0 LightWorldDVectorConstant(mDirLight));
 
 	mSunParams = Float4(300.0f, 0.2f, 300.0f, 0.2f);
 	mSunParamsShaderFloat = new0 ShaderFloat(1);
@@ -151,8 +149,10 @@ void SkySphere::UpdateWorldData (double applicationTime)
 //----------------------------------------------------------------------------
 SkySphere::SkySphere (LoadConstructor value)
 	:
-TriMesh(value)
+TriMesh(value),
+mRadius(500.0f)
 {
+	mCurSaveVersion = "PX2_VERSION_1_1";
 }
 //----------------------------------------------------------------------------
 void SkySphere::Load (InStream& source)
@@ -161,6 +161,14 @@ void SkySphere::Load (InStream& source)
 
 	TriMesh::Load(source);
 
+	if (mVersion == "PX2_VERSION_1_0")
+	{
+		mRadius = 500.0f;
+	}
+	else
+	{
+		source.Read(mRadius);
+	}
 	source.ReadAggregate(mSunParams);
 	source.ReadAggregate(mSkyParams);
 	source.ReadPointer(mSunParamsShaderFloat);
@@ -212,6 +220,7 @@ void SkySphere::Save (OutStream& target) const
 
 	TriMesh::Save(target);
 
+	target.Write(mRadius);
 	target.WriteAggregate(mSunParams);
 	target.WriteAggregate(mSkyParams);
 	target.WritePointer(mSunParamsShaderFloat);
@@ -226,7 +235,16 @@ void SkySphere::Save (OutStream& target) const
 //----------------------------------------------------------------------------
 int SkySphere::GetStreamingSize () const
 {
+	int ioFlag = GetCurIOFlag();
+
 	int size = TriMesh::GetStreamingSize();
+	if (ioFlag==0 && mVersion == "PX2_VERSION_1_0")
+	{
+	}
+	else
+	{
+		size += sizeof(mRadius);
+	}
 	size += sizeof(mSunParams);
 	size += sizeof(mSkyParams);
 	size += PX2_POINTERSIZE(mSunParamsShaderFloat);

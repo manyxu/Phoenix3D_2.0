@@ -58,7 +58,7 @@ void Controller::Reset ()
 	mIsTimeInited = false;
 }
 //----------------------------------------------------------------------------
-void Controller::SetObject (Controlledable* object)
+void Controller::SetControlledable (Controlledable* object)
 {
 	mObject = object;
 }

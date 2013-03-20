@@ -46,6 +46,8 @@ namespace PX2
 		bool IsDynamic ();
 
 		// vertexs
+		void SetAnchorPoint (Float2 anchor);
+		Float2 GetAnchorPoint ();
 		void SetSize (float width, float height);
 		void SetSize (const Sizef &size);
 		const Sizef &GetSize () const;
@@ -86,6 +88,7 @@ namespace PX2
 		PicBoxType mPicBoxType;
 		bool mIsDynamic;
 
+		Float2 mAnchorPoint;
 		Sizef mSize;
 		Sizef mCorSize;
 		Float2 mUV0;

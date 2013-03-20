@@ -314,12 +314,28 @@ void RawTerrainPage::UpdateWorldData (double applicationTime)
 	{
 		mDirLight = light;
 
-		mMtlInst->SetVertexConstant(0, "gLightModelDirection",
-			new0 LightModelDVectorConstant(mDirLight));
 		mMtlInst->SetVertexConstant(0, "gLightColour",
 			new0 LightDiffuseConstant(mDirLight));
 		mMtlInst->SetVertexConstant(0, "gLightAttenuation",
 			new0 LightAttenuationConstant(mDirLight));
+		mMtlInst->SetVertexConstant(0, "gLightModelDirection",
+			new0 LightModelDVectorConstant(mDirLight));
+
+		for (int i=0; i<(int)mJunglers.size(); i++)
+		{
+			Jungler *jungler = mJunglers[i];
+			
+			MaterialInstance *inst = jungler->GetMtlInst();
+			if (inst)
+			{
+				inst->SetVertexConstant(0, "gLightColour",
+					new0 LightDiffuseConstant(mDirLight));
+				inst->SetVertexConstant(0, "gLightAttenuation",
+					new0 LightAttenuationConstant(mDirLight));
+				inst->SetVertexConstant(0, "gLightModelDirection",
+					new0 LightModelDVectorConstant(mDirLight));
+			}
+		}
 	}
 }
 //----------------------------------------------------------------------------
@@ -377,6 +393,12 @@ void RawTerrainPage::Link (InStream& source)
 void RawTerrainPage::PostLink ()
 {
 	TerrainPage::PostLink();
+
+	if (mTextureAlpha)
+	{
+		if (!mTextureAlpha->HasMipmaps())
+			mTextureAlpha->GenerateMipmaps();
+	}
 }
 //----------------------------------------------------------------------------
 bool RawTerrainPage::Register (OutStream& target) const

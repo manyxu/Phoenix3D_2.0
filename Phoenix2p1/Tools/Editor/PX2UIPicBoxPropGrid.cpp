@@ -37,6 +37,7 @@ void UIPicBoxPropGrid::OnSetObject(PX2::Object *object)
 	if (!mUIPicBox)
 		return;
 
+	mAnchorPoint = mUIPicBox->GetAnchorPoint();
 	mColor = mUIPicBox->GetColor();
 	mAlpha = mUIPicBox->GetAlpha();
 	mWidth = mUIPicBox->GetWidth();
@@ -64,6 +65,10 @@ void UIPicBoxPropGrid::OnSetObject(PX2::Object *object)
 	page->AddProperty(PX2_LM.GetValue("Width"), Property::PT_FLOAT, &mWidth);
 	page->AddProperty(PX2_LM.GetValue("Height"), Property::PT_FLOAT, &mHeight);
 
+	page->AddProperty(PX2_LM.GetValue("AnchorPoint"), Property::PT_CATEGORY, 0);
+	page->AddProperty(PX2_LM.GetValue("AnchorX"), Property::PT_FLOAT, &mAnchorPoint[0]);
+	page->AddProperty(PX2_LM.GetValue("AnchorZ"), Property::PT_FLOAT, &mAnchorPoint[1]);
+
 	page->AddProperty(PX2_LM.GetValue("Material"), Property::PT_CATEGORY, 0);
 	page->AddProperty(PX2_LM.GetValue("Texture"), Property::PT_STRING,
 		&(mTexResPath));
@@ -86,6 +91,11 @@ void UIPicBoxPropGrid::OnPropertyGridChange (wxPropertyGridEvent &event)
 	else if (prop->GetName() == PX2_LM.GetValue("Alpha01"))
 	{
 		mUIPicBox->SetAlpha(mAlpha);
+	}
+	else if (prop->GetName() == PX2_LM.GetValue("AnchorX")
+		|| prop->GetName() == PX2_LM.GetValue("AnchorZ"))
+	{
+		mUIPicBox->SetAnchorPoint(mAnchorPoint);
 	}
 	else if (prop->GetName() == PX2_LM.GetValue("Width"))
 	{

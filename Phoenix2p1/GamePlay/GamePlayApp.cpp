@@ -128,9 +128,6 @@ void GamePlayApp::OnIdle ()
 {
 	Application::OnIdle();
 
-	if (!mInited)
-		return;
-
 	Project *proj = Project::GetSingletonPtr();
 	if (!proj)
 		return;
@@ -160,6 +157,9 @@ void GamePlayApp::OnIdle ()
 	}
 	MoveCamera(moveHor, moveVer);
 
+	if (!mInited)
+		return;
+
 	Scene *scene = Project::GetSingleton().GetScene();
 	if (scene)
 	{
@@ -176,14 +176,9 @@ void GamePlayApp::OnIdle ()
 
 	if (mRenderer->PreDraw())
 	{
+		ResetRenderStates();
 		mRenderer->ClearBuffers();
-
 		mRenderer->Draw(mCuller.GetVisibleSet().Sort());
-
-#if defined(_WIN32) || defined(WIN32)
-		// 加此代码，否则模拟器会有bug
-		mRenderer->SetDepthProperty(mDepthProperty);
-#endif
 
 		// ui
 		if (uiView)
@@ -335,15 +330,19 @@ void GamePlayApp::RolateCamera (const float &horz, const float &vert)
 //----------------------------------------------------------------------------
 void GamePlayApp::SimplifyTerrain ()
 {
-	TerrainActor *terActor = Project::GetSingleton().GetScene()
-		->GetTerrainActor();
-	if (terActor)
+	Scene *scene = Project::GetSingleton().GetScene();
+	if (scene)
 	{
-		bool useLod = terActor->IsUseLod();
-		LODTerrain *lodTer = terActor->GetLODTerrain();
-		if (useLod && lodTer)
+		TerrainActor *terActor = Project::GetSingleton().GetScene()
+			->GetTerrainActor();
+		if (terActor)
 		{
-			lodTer->Simplify();
+			bool useLod = terActor->IsUseLod();
+			LODTerrain *lodTer = terActor->GetLODTerrain();
+			if (useLod && lodTer)
+			{
+				lodTer->Simplify();
+			}
 		}
 	}
 }

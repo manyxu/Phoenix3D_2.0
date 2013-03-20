@@ -7,6 +7,7 @@
 #include "PX2TerrainMaterialPane.hpp"
 #include "PX2EditSystem.hpp"
 #include "PX2Project.hpp"
+#include "PX2ResourceManager.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 
@@ -162,7 +163,23 @@ void TerrainMaterialPanel::OnTextEnter (wxCommandEvent& event)
 
 	PX2::Float2 uv = rawPage->GetUV(selectIndex);
 
-	if (event.GetEventObject() == mURepeatText)
+	if (event.GetEventObject() == mTexToUse)
+	{
+		std::string resName = mTexToUse->GetValue();
+
+		EditSystem::GetSingleton().SetSelectedResource(0);
+		EditSystem::GetSingleton().SetSelectedResourceName(resName);
+		PX2::Texture2D *tex = PX2::DynamicCast<PX2::Texture2D>(
+			PX2_RM.BlockLoad(resName.c_str()));
+		if (tex)
+		{
+			EditSystem::GetSingleton().GetTerrainEdit()->GetTextureProcess()
+				->SetSelectedLayerUsingTexture(tex);
+
+			RefleshCtrls();
+		}
+	}
+	else if (event.GetEventObject() == mURepeatText)
 	{
 		int value = wxAtoi(event.GetString().GetData());
 		uv[0] = (float)value;

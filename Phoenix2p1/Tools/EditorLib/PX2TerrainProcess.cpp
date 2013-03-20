@@ -345,8 +345,8 @@ TerrainJunglerProcess::TerrainJunglerProcess ()
 	:
 TerrainProcess(TerrainProcess::TPT_JUNGLER),
 mMode(JM_ADD),
-mWidth(1.0f),
-mHeight(2.0f),
+mWidth(2.0f),
+mHeight(1.0f),
 mLower(0.0f)
 {
 }
@@ -378,13 +378,18 @@ void TerrainJunglerProcess::Apply ()
 	APoint pos = mBrush->GetPos();
 	float size = mBrush->GetSize();
 	float strength = mBrush->GetStrength();
+	bool isShiftDown = EditSystem::GetSingleton().IsShiftDown();
 
-	if (JM_ADD == mMode)
+	JunglerMode mode = GetJunglerMode();
+	if (isShiftDown)
+		mode = JM_REDUCE;
+
+	if (JM_ADD == mode)
 	{
 		mTerrain->AddJunglers(mUsingTexture, pos, size, 
 			(int)(strength*1000.0f), mWidth, mHeight, mLower);
 	}
-	else if (JM_REDUCE == mMode)
+	else if (JM_REDUCE == mode)
 	{
 		mTerrain->RemoveJunglers(mUsingTexture, pos, size, 
 			(int)(strength*1000.0f));

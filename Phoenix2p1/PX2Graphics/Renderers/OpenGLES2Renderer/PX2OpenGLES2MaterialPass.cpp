@@ -35,6 +35,13 @@ PdrMaterialPass::PdrMaterialPass (Renderer *renderer, const MaterialPass *pass)
 	glBindAttribLocation(mProgramObject, ALP_NORMAL, "modelNormal");
 	glBindAttribLocation(mProgramObject, ALP_COLOR0, "modelColor0");
 	glBindAttribLocation(mProgramObject, ALP_TEXCOORD0, "modelTCoord0");
+	glBindAttribLocation(mProgramObject, ALP_TEXCOORD1, "modelTCoord1");
+	glBindAttribLocation(mProgramObject, ALP_TEXCOORD2, "modelTCoord2");
+	glBindAttribLocation(mProgramObject, ALP_TEXCOORD3, "modelTCoord3");
+	glBindAttribLocation(mProgramObject, ALP_TEXCOORD4, "modelTCoord4");
+	glBindAttribLocation(mProgramObject, ALP_TEXCOORD5, "modelTCoord5");
+	glBindAttribLocation(mProgramObject, ALP_TEXCOORD6, "modelTCoord6");
+	glBindAttribLocation(mProgramObject, ALP_TEXCOORD7, "modelTCoord7");
 
 	// Link the program
 	glLinkProgram (mProgramObject);
@@ -77,6 +84,7 @@ PdrMaterialPass::PdrMaterialPass (Renderer *renderer, const MaterialPass *pass)
 		{
 			std::string sampleName = vshader->GetSamplerName(i);
 			int location = glGetUniformLocation(mProgramObject, sampleName.c_str());
+			vshader->SetTextureLoc(i, location);
 		}
 
 		int pProfile = PixelShader::GetProfile();
@@ -92,6 +100,7 @@ PdrMaterialPass::PdrMaterialPass (Renderer *renderer, const MaterialPass *pass)
 		{
 			std::string sampleName = pshader->GetSamplerName(i);
 			int location = glGetUniformLocation(mProgramObject, sampleName.c_str());
+			pshader->SetTextureLoc(i, location);
 		}
 	}
 }

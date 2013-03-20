@@ -16,6 +16,7 @@
 #include "PX2Project.hpp"
 #include "PX2UIManager.hpp"
 #include "PX2StringHelp.hpp"
+#include "PX2InterpCurveTransCtrl.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 
@@ -79,9 +80,21 @@ bool EditMap::LoadProject (const char *pathname)
 	if (proj->Load(pathname))
 	{
 		std::string sceneFilename = proj->GetSceneFilename();
+		std::string uiFilename = proj->GetUIFilename();
 
 		if ("" != sceneFilename)
 			LoadScene(sceneFilename.c_str());
+
+		if ("" != uiFilename)
+		{
+			ObjectPtr uiObj = 0;
+			uiObj = ResourceManager::GetSingleton().BlockLoad(uiFilename);
+			UIFrame *ui = DynamicCast<UIFrame>(uiObj);
+			if (ui)
+			{
+				Project::GetSingleton().SetUI(ui);
+			}
+		}
 
 		mProjectFilePath = pathname;
 
@@ -474,6 +487,22 @@ void EditMap::CreateUIButton (PX2::Node *parent, PX2::Float2 posScreen)
 	Event *event = 0;
 	event = EditorEventSpace::CreateEventX(EditorEventSpace::AddUI);
 	event->SetData<Object*>(bnt);
+	EventWorld::GetSingleton().BroadcastingLocalEvent(event);
+}
+//----------------------------------------------------------------------------
+void EditMap::CreateCurveTransCtrl (PX2::Movable *mov)
+{
+	if (!mov)
+		return;
+
+	InterpCurveTransController *ictCtrl = new0 InterpCurveTransController(
+		mov->LocalTransform);
+	ictCtrl->SetName("InterpCurveTransController");
+	mov->AttachController(ictCtrl);
+
+	Event *event = 0;
+	event = EditorEventSpace::CreateEventX(EditorEventSpace::AttachControl);
+	event->SetData<Object*>(ictCtrl);
 	EventWorld::GetSingleton().BroadcastingLocalEvent(event);
 }
 //----------------------------------------------------------------------------

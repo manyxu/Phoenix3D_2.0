@@ -29,7 +29,7 @@ PX2_IMPLEMENT_DEFAULT_NAMES(Material, JunglerMaterial);
 JunglerMaterial::JunglerMaterial ()
 {
 	VertexShader* vshader = new0 VertexShader("PX2.JunglerMaterial",
-		3, 3, 7, 0, false);
+		3, 3, 8, 0, false);
 	vshader->SetInput(0, "modelPosition", Shader::VT_FLOAT3,
 		Shader::VS_POSITION);
 	vshader->SetInput(1, "modelNormal", Shader::VT_FLOAT3,
@@ -49,8 +49,9 @@ JunglerMaterial::JunglerMaterial ()
 	vshader->SetConstant(2, "gShineAmbient", 1);
 	vshader->SetConstant(3, "gShineDiffuse", 1);
 	vshader->SetConstant(4, "gLightColour", 1);
-	vshader->SetConstant(5, "gLightModelDirection", 1);
-	vshader->SetConstant(6, "gUser", 1);
+	vshader->SetConstant(5, "gLightAttenuation", 1);
+	vshader->SetConstant(6, "gLightModelDirection", 1);
+	vshader->SetConstant(7, "gUser", 1);
 	vshader->SetBaseRegisters(msVRegisters);
 	vshader->SetPrograms(msVPrograms);
 
@@ -117,9 +118,16 @@ MaterialInstance* JunglerMaterial::CreateInstance (
 		new0 ShineDiffuseConstant(shine));
 	instance->SetVertexConstant(0, "gLightColour",
 		new0 LightDiffuseConstant(dirLight));
+	instance->SetVertexConstant(0, "gLightAttenuation",
+		new0 LightAttenuationConstant(dirLight));
 	instance->SetVertexConstant(0, "gLightModelDirection",
 		new0 LightModelDVectorConstant(dirLight));
-	instance->SetVertexConstant(0, "gUser", new0 UserConstant());
+	UserConstantPtr userConst = new0 UserConstant();
+	instance->SetVertexConstant(0, "gUser", userConst);
+	ShaderFloat *cSF = instance->GetVertexConstant(0, "gUser");
+	(*cSF)[0] = 0.0f;
+	(*cSF)[1] = 1.0f;
+	(*cSF)[2] = 0.1f;
 
 	// pixel
 	instance->SetPixelTexture(0, "gDiffuseSampler", diffTex);
@@ -200,12 +208,12 @@ int JunglerMaterial::GetStreamingSize () const
 //----------------------------------------------------------------------------
 // profile
 //----------------------------------------------------------------------------
-int JunglerMaterial::msDx9VRegisters[7] =
-{ 0, 4, 5, 6, 7, 8, 9};
-int JunglerMaterial::msOglVRegisters[7] =
-{ 1, 5, 6, 7, 8, 9, 10};
-int JunglerMaterial::msOpenGLES2VRegisters[7] = 
-{ 0, 0, 0, 0, 0, 0, 0};
+int JunglerMaterial::msDx9VRegisters[8] =
+{ 0, 4, 5, 6, 7, 8, 9, 10};
+int JunglerMaterial::msOglVRegisters[8] =
+{ 1, 5, 6, 7, 8, 9, 10, 11};
+int JunglerMaterial::msOpenGLES2VRegisters[8] = 
+{ 0, 0, 0, 0, 0, 0, 0, 0};
 int* JunglerMaterial::msVRegisters[Shader::MAX_PROFILES] =
 {
 	0,
@@ -227,31 +235,34 @@ std::string JunglerMaterial::msVPrograms[Shader::MAX_PROFILES] =
 	// VP_VS_2_0
 	"vs_2_0\n"
 	"dcl_position0 v0\n"
-	"def c10, -0.02083333, -0.12500000, 1.00000000, 0.50000000\n"
-	"def c11, -0.00000155, -0.00002170, 0.00260417, 0.00026042\n"
-	"def c12, 0.15915491, 0.50000000, 6.28318501, -3.14159298\n"
-	"def c13, 0.10000000, 0.00000000, 0, 0\n"
+	"def c11, -0.02083333, -0.12500000, 1.00000000, 0.50000000\n"
+	"def c12, -0.00000155, -0.00002170, 0.00260417, 0.00026042\n"
+	"def c13, 0.15915491, 0.50000000, 6.28318501, -3.14159298\n"
+	"def c14, 0.00000000, 0, 0, 0\n"
 	"dcl_normal0 v1\n"
 	"dcl_texcoord0 v2\n"
-	"add r0.x, c9, c9.y\n"
-	"add r0.x, r0, v0.y\n"
-	"mad r0.x, r0, c12, c12.y\n"
+	"mad r0.x, c10, c10.y, v0.y\n"
+	"mad r0.x, r0, c13, c13.y\n"
 	"frc r0.x, r0\n"
-	"mad r0.x, r0, c12.z, c12.w\n"
-	"sincos r1.xy, r0.x, c11.xyzw, c10.xyzw\n"
+	"mad r0.x, r0, c13.z, c13.w\n"
+	"sincos r2.xy, r0.x, c12.xyzw, c11.xyzw\n"
 	"mov r0.xyz, c7\n"
-	"mul r2.xyz, c6, r0\n"
-	"mov r0.xyz, c7\n"
-	"dp3 r0.w, v1, -c8\n"
 	"mul r0.xyz, c5, r0\n"
+	"dp3 r0.w, v1, -c9\n"
 	"abs r0.w, r0\n"
-	"add r0.xyz, r0, c4\n"
-	"max r0.w, r0, c13.y\n"
-	"mad oT1.xyz, r2, r0.w, r0\n"
-	"mul r1.xyz, v1, r1.y\n"
+	"mul r1.xyz, v1, c10.z\n"
+	"mul r1.xyz, r1, r2.y\n"
+	"mul r0.xyz, r0, c8.w\n"
+	"add r2.xyz, r0, c4\n"
+	"mov r0.xyz, c7\n"
+	"max r0.w, r0, c14.x\n"
+	"mul r0.xyz, c6, r0\n"
+	"mul r0.xyz, r0, r0.w\n"
+	"mov r0.w, c11.z\n"
+	"mul r1.xyz, r1, v2.y\n"
+	"mad oT1.xyz, r0, c8.w, r2\n"
 	"mul r0.xyz, r1, v2.y\n"
-	"mov r0.w, c10.z\n"
-	"mad r0.xyz, r0, c13.x, v0\n"
+	"add r0.xyz, r0, v0\n"
 	"dp4 oPos.w, r0, c3\n"
 	"dp4 oPos.z, r0, c2\n"
 	"dp4 oPos.y, r0, c1\n"
@@ -265,29 +276,32 @@ std::string JunglerMaterial::msVPrograms[Shader::MAX_PROFILES] =
 	"dcl_position o0\n"
 	"dcl_texcoord0 o1\n"
 	"dcl_texcoord1 o2\n"
-	"def c10, 0.15915491, 0.50000000, 6.28318501, -3.14159298\n"
-	"def c11, 0.10000000, 1.00000000, 0.00000000, 0\n"
+	"def c11, 0.15915491, 0.50000000, 6.28318501, -3.14159298\n"
+	"def c12, 1.00000000, 0.00000000, 0, 0\n"
 	"dcl_normal0 v1\n"
 	"dcl_texcoord0 v2\n"
-	"add r0.x, c9, c9.y\n"
-	"add r0.x, r0, v0.y\n"
-	"mad r0.x, r0, c10, c10.y\n"
+	"mad r0.x, c10, c10.y, v0.y\n"
+	"mad r0.x, r0, c11, c11.y\n"
 	"frc r0.x, r0\n"
-	"mad r0.x, r0, c10.z, c10.w\n"
-	"sincos r1.xy, r0.x\n"
+	"mad r0.x, r0, c11.z, c11.w\n"
+	"sincos r2.xy, r0.x\n"
 	"mov r0.xyz, c7\n"
-	"mul r2.xyz, c6, r0\n"
-	"mov r0.xyz, c7\n"
-	"dp3 r0.w, v1, -c8\n"
 	"mul r0.xyz, c5, r0\n"
+	"dp3 r0.w, v1, -c9\n"
 	"abs r0.w, r0\n"
-	"add r0.xyz, r0, c4\n"
-	"max r0.w, r0, c11.z\n"
-	"mad o2.xyz, r2, r0.w, r0\n"
-	"mul r1.xyz, v1, r1.y\n"
+	"mul r1.xyz, v1, c10.z\n"
+	"mul r1.xyz, r1, r2.y\n"
+	"mul r0.xyz, r0, c8.w\n"
+	"add r2.xyz, r0, c4\n"
+	"mov r0.xyz, c7\n"
+	"max r0.w, r0, c12.y\n"
+	"mul r0.xyz, c6, r0\n"
+	"mul r0.xyz, r0, r0.w\n"
+	"mov r0.w, c12.x\n"
+	"mul r1.xyz, r1, v2.y\n"
+	"mad o2.xyz, r0, c8.w, r2\n"
 	"mul r0.xyz, r1, v2.y\n"
-	"mov r0.w, c11.y\n"
-	"mad r0.xyz, r0, c11.x, v0\n"
+	"add r0.xyz, r0, v0\n"
 	"dp4 o0.w, r0, c3\n"
 	"dp4 o0.z, r0, c2\n"
 	"dp4 o0.y, r0, c1\n"
@@ -300,11 +314,13 @@ std::string JunglerMaterial::msVPrograms[Shader::MAX_PROFILES] =
 
 	// vp_gles2
 	"uniform mat4 gPVWMatrix;\n"
-	"uniform vec4 gShineEmissive;\n"
-	"uniform vec4 gShineAmbient;\n"
-	"uniform vec4 gShineDiffuse;\n"
-	"uniform vec4 gLightColour;\n"
-	"uniform vec4 gLightModelDirection;\n"
+	"uniform mediump vec4 gShineEmissive;\n"
+	"uniform mediump vec4 gShineAmbient;\n"
+	"uniform mediump vec4 gShineDiffuse;\n"
+	"uniform mediump vec4 gLightColour;\n"
+	"uniform mediump vec4 gLightAttenuation;\n"
+	"uniform mediump vec4 gLightModelDirection;\n"
+	"uniform mediump vec4 gUser;\n"
 	"attribute vec3 modelPosition;\n"
 	"attribute vec3 modelNormal;\n"
 	"attribute vec2 modelTCoord0;\n"
@@ -312,12 +328,13 @@ std::string JunglerMaterial::msVPrograms[Shader::MAX_PROFILES] =
 	"varying vec4 vertexTCoord1;\n"
 	"void main()\n"
 	"{\n"
-	"	gl_Position = gPVWMatrix*vec4(modelPosition, 1.0);\n"
-	"	vertexTCoord0 = modelTCoord0;\n"
+	"	mediump float valSin = sin(gUser.x*gUser.y + modelPosition.y);"
+	"	mediump vec3 mpTrans = modelPosition + modelNormal * gUser.z * valSin * modelTCoord0.y*modelTCoord0.y;"
+	"	gl_Position = gPVWMatrix*vec4(mpTrans, 1.0);\n"
+	"	vertexTCoord0 = vec2(modelTCoord0.x, 1.0-modelTCoord0.y);\n"
 	"	vertexTCoord1.rgb = gShineEmissive.rgb"
-	"		+ gLightColour.rgb*gShineAmbient.rgb"
-	"		+ gLightColour.rgb*gShineDiffuse.rgb"
-	"		* max(0.0, dot(modelNormal, -gLightModelDirection.rgb));\n"
+	"		+ gLightColour.rgb*gShineAmbient.rgb*gLightAttenuation[3]"
+	"		+ gLightColour.rgb*gShineDiffuse.rgb* max(0.0, abs(dot(modelNormal, -gLightModelDirection.rgb)))*gLightAttenuation[3];\n"
 	"	vertexTCoord1.a = gShineDiffuse.a;\n"
 	"}\n"
 };
@@ -373,7 +390,11 @@ std::string JunglerMaterial::msPPrograms[Shader::MAX_PROFILES] =
 	"uniform sampler2D gDiffuseSampler;\n"
 	"void main()\n"
 	"{\n"
-	"	gl_FragColor = texture2D(gDiffuseSampler, vertexTCoord0)*vertexTCoord1;\n"
+	"	mediump vec4 color = texture2D(gDiffuseSampler, vertexTCoord0)*vertexTCoord1;\n"
+	"	if (color.a < 0.2)\n"
+	"		discard;\n"
+	"	else\n"
+	"		gl_FragColor = texture2D(gDiffuseSampler, vertexTCoord0)*vertexTCoord1;\n"
 	"}\n"
 };
 //----------------------------------------------------------------------------

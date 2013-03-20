@@ -45,3 +45,13 @@ inline float Terrain::GetSpacing () const
 	return mSpacing;
 }
 //----------------------------------------------------------------------------
+inline float Terrain::GetJunglerFrequency ()
+{
+	return mJunglerFrequency;
+}
+//----------------------------------------------------------------------------
+inline float Terrain::GetJunglerStrength ()
+{
+	return mJunglerStrength;
+}
+//----------------------------------------------------------------------------

@@ -41,6 +41,10 @@ mJunglerType(type)
 	SetVertexBuffer(vBuffer);
 	SetIndexBuffer(iBuffer);
 
+	mShine = new0 Shine();
+	mShine->Ambient = Float4(0.6f, 0.6f, 0.6f, 1.0f);
+	mShine->Diffuse = Float4(0.6f, 0.6f, 0.6f, 1.0f);
+
 	JunglerMaterialPtr mtl = new0 JunglerMaterial();
 	mtl->GetCullProperty(0, 0)->Enabled = false;
 	mtl->GetAlphaProperty(0, 0)->CompareEnabled = true;
@@ -52,7 +56,8 @@ mJunglerType(type)
 		tex->GenerateMipmaps();
 	}
 
-	SetMaterialInstance(mtl->CreateInstance(tex, 0, 0));
+	mMtlInst = mtl->CreateInstance(tex, 0, mShine);
+	SetMaterialInstance(mMtlInst);
 }
 //----------------------------------------------------------------------------
 Jungler::~Jungler ()
@@ -107,6 +112,30 @@ void Jungler::Remove (std::vector<int> indexs)
 	}
 
 	ReGenerate();
+}
+//----------------------------------------------------------------------------
+void Jungler::SetJunglerFrequency (float fre)
+{
+	if (mMtlInst)
+	{
+		ShaderFloat *sf = mMtlInst->GetVertexConstant(0, "gUser");
+		if (sf)
+		{
+			(*sf)[1] = fre;
+		}
+	}
+}
+//----------------------------------------------------------------------------
+void Jungler::SetJunglerStrength (float strength)
+{
+	if (mMtlInst)
+	{
+		ShaderFloat *sf = mMtlInst->GetVertexConstant(0, "gUser");
+		if (sf)
+		{
+			(*sf)[2] = strength;
+		}
+	}
 }
 //----------------------------------------------------------------------------
 void Jungler::ReGenerate ()
@@ -201,6 +230,7 @@ void Jungler::Load (InStream& source)
 
 	source.ReadEnum(mJunglerType);
 	source.Read(mMaxNum);
+	source.ReadPointer(mMtlInst);
 	source.ReadPointer(mTexture);
 	int num = 0;
 	source.Read(num);
@@ -224,6 +254,7 @@ void Jungler::Link (InStream& source)
 {
 	TriMesh::Link(source);
 
+	source.ResolveLink(mMtlInst);
 	source.ResolveLink(mTexture);
 }
 //----------------------------------------------------------------------------
@@ -236,6 +267,7 @@ bool Jungler::Register (OutStream& target) const
 {
 	if (TriMesh::Register(target))
 	{
+		target.Register(mMtlInst);
 		target.Register(mTexture);
 
 		return true;
@@ -251,6 +283,7 @@ void Jungler::Save (OutStream& target) const
 
 	target.WriteEnum(mJunglerType);
 	target.Write(mMaxNum);
+	target.WritePointer(mMtlInst);
 	target.WritePointer(mTexture);
 	int num = (int)mPoses.size();
 	target.Write<int>(num);
@@ -270,6 +303,7 @@ int Jungler::GetStreamingSize () const
 	int size = TriMesh::GetStreamingSize();
 	size += PX2_ENUMSIZE(mJunglerType);
 	size += sizeof(mMaxNum);
+	size += PX2_POINTERSIZE(mMtlInst);
 	size += PX2_POINTERSIZE(mTexture);
 	int num = (int)mPoses.size();
 	size += sizeof(num); // num

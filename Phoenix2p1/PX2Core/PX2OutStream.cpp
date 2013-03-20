@@ -59,6 +59,8 @@ bool OutStream::IsTopLevel (const Object* object) const
 //----------------------------------------------------------------------------
 void OutStream::Save (int& bufferSize, char*& buffer, int mode)
 {
+	Object::SetCurIOFlag(1);
+
 	// 插入指针和0索引对（保证每个对象的ID从0开始）
 	const Object* object = 0;
 	unsigned int uniqueID = 0;
@@ -110,6 +112,8 @@ void OutStream::Save (int& bufferSize, char*& buffer, int mode)
 	mRegistered.clear();
 	mOrdered.clear();
 	mTarget.Close();
+
+	Object::SetCurIOFlag(0);
 }
 //----------------------------------------------------------------------------
 bool OutStream::Save (const std::string& name, std::string version, int mode)

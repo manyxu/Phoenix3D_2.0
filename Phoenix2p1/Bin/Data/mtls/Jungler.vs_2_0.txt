@@ -6,20 +6,14 @@ vs_2_0
 //version 3.1.0.10
 //profile vs_2_0
 //program v_Jungler
-//semantic gWMatrix
-//semantic gVMatrix
-//semantic gPMatrix
-//semantic gPVWMatrix
-//semantic gVWMatrix
-//semantic gWIMatrix
-//semantic gVIMatrix
-//semantic gCameraWorldPosition
-//semantic gShineEmissive
-//semantic gShineAmbient
-//semantic gShineDiffuse
-//semantic gLightColour
-//semantic gLightModelDirection
-//semantic gUser
+//semantic v_Jungler.gPVWMatrix
+//semantic v_Jungler.gShineEmissive
+//semantic v_Jungler.gShineAmbient
+//semantic v_Jungler.gShineDiffuse
+//semantic v_Jungler.gLightColour
+//semantic v_Jungler.gLightAttenuation
+//semantic v_Jungler.gLightModelDirection
+//semantic v_Jungler.gUser
 //semantic gDiffuseSampler
 //var float3 modelPosition : $vin.POSITION0 : ATTR0 : 0 : 1
 //var float3 modelNormal : $vin.NORMAL0 : ATTR1 : 1 : 1
@@ -27,57 +21,48 @@ vs_2_0
 //var float4 clipPosition : $vout.POSITION : HPOS : 3 : 1
 //var float2 vertexTCoord0 : $vout.TEXCOORD0 : TEX0 : 4 : 1
 //var float4 vertexTCoord1 : $vout.TEXCOORD1 : TEX1 : 5 : 1
-//var float4x4 gWMatrix :  : , 4 : -1 : 0
-//var float4x4 gVMatrix :  : , 4 : -1 : 0
-//var float4x4 gPMatrix :  : , 4 : -1 : 0
-//var float4x4 gPVWMatrix :  : c[0], 4 : -1 : 1
-//var float4x4 gVWMatrix :  : , 4 : -1 : 0
-//var float4x4 gWIMatrix :  : , 4 : -1 : 0
-//var float4x4 gVIMatrix :  : , 4 : -1 : 0
-//var float3 gCameraWorldPosition :  :  : -1 : 0
-//var float4 gShineEmissive :  : c[4] : -1 : 1
-//var float4 gShineAmbient :  : c[5] : -1 : 1
-//var float4 gShineDiffuse :  : c[6] : -1 : 1
-//var float4 gLightColour :  : c[7] : -1 : 1
-//var float3 gLightModelDirection :  : c[8] : -1 : 1
-//var float4 gUser :  : c[9] : -1 : 1
+//var float4x4 gPVWMatrix :  : c[0], 4 : 6 : 1
+//var float4 gShineEmissive :  : c[4] : 7 : 1
+//var float4 gShineAmbient :  : c[5] : 8 : 1
+//var float4 gShineDiffuse :  : c[6] : 9 : 1
+//var float4 gLightColour :  : c[7] : 10 : 1
+//var float4 gLightAttenuation :  : c[8] : 11 : 1
+//var float4 gLightModelDirection :  : c[9] : 12 : 1
+//var float4 gUser :  : c[10] : 13 : 1
 //var sampler2D gDiffuseSampler :  :  : -1 : 0
-//const c[10] = -0.020833334 -0.125 1 0.5
-//const c[11] = -1.5500992e-006 -2.1701389e-005 0.0026041667 0.00026041668
-//const c[12] = 0.15915491 0.5 6.283185 -3.141593
-//const c[13] = 0.1 0
-//default gShineEmissive = 0 0 0 1
-//default gShineAmbient = 0.1 0.1 0.1 1
-//default gShineDiffuse = 0.47 0.47 0.47 1
-//default gLightColour = 0.30000001 0.30000001 0.30000001 1
-//default gLightModelDirection = -0.5 -0.5 -0.5
-//default gUser = 1 1 1 1
+//const c[11] = -0.020833334 -0.125 1 0.5
+//const c[12] = -1.5500992e-006 -2.1701389e-005 0.0026041667 0.00026041668
+//const c[13] = 0.15915491 0.5 6.283185 -3.141593
+//const c[14] = 0
 dcl_position0 v0
-def c10, -0.02083333, -0.12500000, 1.00000000, 0.50000000
-def c11, -0.00000155, -0.00002170, 0.00260417, 0.00026042
-def c12, 0.15915491, 0.50000000, 6.28318501, -3.14159298
-def c13, 0.10000000, 0.00000000, 0, 0
+def c11, -0.02083333, -0.12500000, 1.00000000, 0.50000000
+def c12, -0.00000155, -0.00002170, 0.00260417, 0.00026042
+def c13, 0.15915491, 0.50000000, 6.28318501, -3.14159298
+def c14, 0.00000000, 0, 0, 0
 dcl_normal0 v1
 dcl_texcoord0 v2
-add r0.x, c9, c9.y
-add r0.x, r0, v0.y
-mad r0.x, r0, c12, c12.y
+mad r0.x, c10, c10.y, v0.y
+mad r0.x, r0, c13, c13.y
 frc r0.x, r0
-mad r0.x, r0, c12.z, c12.w
-sincos r1.xy, r0.x, c11.xyzw, c10.xyzw
+mad r0.x, r0, c13.z, c13.w
+sincos r2.xy, r0.x, c12.xyzw, c11.xyzw
 mov r0.xyz, c7
-mul r2.xyz, c6, r0
-mov r0.xyz, c7
-dp3 r0.w, v1, -c8
 mul r0.xyz, c5, r0
+dp3 r0.w, v1, -c9
 abs r0.w, r0
-add r0.xyz, r0, c4
-max r0.w, r0, c13.y
-mad oT1.xyz, r2, r0.w, r0
-mul r1.xyz, v1, r1.y
+mul r1.xyz, v1, c10.z
+mul r1.xyz, r1, r2.y
+mul r0.xyz, r0, c8.w
+add r2.xyz, r0, c4
+mov r0.xyz, c7
+max r0.w, r0, c14.x
+mul r0.xyz, c6, r0
+mul r0.xyz, r0, r0.w
+mov r0.w, c11.z
+mul r1.xyz, r1, v2.y
+mad oT1.xyz, r0, c8.w, r2
 mul r0.xyz, r1, v2.y
-mov r0.w, c10.z
-mad r0.xyz, r0, c13.x, v0
+add r0.xyz, r0, v0
 dp4 oPos.w, r0, c3
 dp4 oPos.z, r0, c2
 dp4 oPos.y, r0, c1

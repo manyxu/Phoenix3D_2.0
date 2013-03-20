@@ -5,9 +5,19 @@
 */
 
 //----------------------------------------------------------------------------
+inline MaterialInstance *Jungler::GetMtlInst ()
+{
+	return mMtlInst;
+}
+//----------------------------------------------------------------------------
 inline Texture2D *Jungler::GetTexture ()
 {
 	return mTexture;
+}
+//----------------------------------------------------------------------------
+inline Shine *Jungler::GetShine()
+{
+	return mShine;
 }
 //----------------------------------------------------------------------------
 inline int Jungler::GetNum ()

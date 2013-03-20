@@ -161,6 +161,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="PX2ActorTransProperty.hpp" />
+    <ClInclude Include="PX2ControllerInspector.hpp" />
+    <ClInclude Include="PX2ControllerKeyPointsPanel.hpp" />
+    <ClInclude Include="PX2ControllerPropertyGrid.hpp" />
     <ClInclude Include="PX2CurveEditWindow.hpp" />
     <ClInclude Include="PX2DlgCreateProject.hpp" />
     <ClInclude Include="PX2DlgSetCurveVal.hpp" />
@@ -223,6 +226,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PX2ActorTransProperty.cpp" />
+    <ClCompile Include="PX2ControllerInspector.cpp" />
+    <ClCompile Include="PX2ControllerKeyPointsPanel.cpp" />
+    <ClCompile Include="PX2ControllerPropertyGrid.cpp" />
     <ClCompile Include="PX2CurveEditWindow.cpp" />
     <ClCompile Include="PX2DlgCreateProject.cpp" />
     <ClCompile Include="PX2DlgSetCurveVal.cpp" />

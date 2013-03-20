@@ -30,6 +30,11 @@ extern "C"
 			PX2::ApplicationBase::msApplication->Initlize ();
 			PX2::ApplicationBase::msApplication->SetSize(width, height);
 		}
+		else
+		{
+			// ÖØÉèäÖÈ¾×´Ì¬
+			PX2::ApplicationBase::msApplication->ResetRenderStates();
+		}
 	}
 
 

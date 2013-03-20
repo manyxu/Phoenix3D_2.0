@@ -49,6 +49,8 @@ Shader::Shader ()
         mTextureUnit[i] = 0;
         mProgram[i] = 0;
     }
+
+	memset(&mTexLoc, 0, sizeof(int)*8);
 }
 //----------------------------------------------------------------------------
 Shader::Shader (const std::string& programName, int numInputs, int numOutputs,
@@ -183,6 +185,8 @@ Shader::Shader (const std::string& programName, int numInputs, int numOutputs,
             mProgram[i] = 0;
         }
     }
+
+	memset(&mTexLoc, 0, sizeof(int)*8);
 }
 //----------------------------------------------------------------------------
 Shader::~Shader ()
@@ -623,6 +627,16 @@ const std::string* Shader::GetProgram (int profile) const
     return 0;
 }
 //----------------------------------------------------------------------------
+void Shader::SetTextureLoc (int i, int loc)
+{
+	mTexLoc[i] = loc;
+}
+//----------------------------------------------------------------------------
+int Shader::GetTextureLoc (int i) const
+{
+	return mTexLoc[i];
+}
+//----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
 // ³Ö¾Ã»¯
@@ -662,6 +676,7 @@ Shader::Shader (LoadConstructor value)
         mTextureUnit[i] = 0;
         mProgram[i] = 0;
     }
+	memset(&mTexLoc, 0, sizeof(int)*8);
 }
 //----------------------------------------------------------------------------
 void Shader::Load (InStream& source)

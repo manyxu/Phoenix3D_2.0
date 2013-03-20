@@ -50,6 +50,8 @@ namespace PX2Editor
 			const std::string &filename="");
 		void CreateUIButton (PX2::Node *parent, PX2::Float2 posScreen);
 
+		void CreateCurveTransCtrl (PX2::Movable *mov);
+
 		void AddActor (PX2::Actor *actor);
 		void RemoveActor (PX2::Actor *actor);
 		bool RemoveUI (PX2::Object *obj);

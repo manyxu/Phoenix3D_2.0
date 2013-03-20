@@ -296,6 +296,7 @@ void ParticleEmitter::GenerateParticles ()
 		vba.TCoord<Float2>(0, vertexIndex) = Float2(0.0f, 1.0f);
 		vertexIndex++;
 	}
+
 	mVBuffer->SetNumElements(vertexIndex);
 	mIBuffer->SetNumElements((int)(1.5f*vertexIndex));
 	

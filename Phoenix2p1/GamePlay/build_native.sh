@@ -23,15 +23,62 @@ fi
 
 mkdir $GAMEPLAY_ANDROID_ROOT/assets
 mkdir $GAMEPLAY_ANDROID_ROOT/assets/Data
+mkdir $GAMEPLAY_ANDROID_ROOT/assets/Data/fonts
+mkdir $GAMEPLAY_ANDROID_ROOT/assets/Data/language
+mkdir $GAMEPLAY_ANDROID_ROOT/assets/Data/projects
+mkdir $GAMEPLAY_ANDROID_ROOT/assets/Data/scenes
+mkdir $GAMEPLAY_ANDROID_ROOT/assets/Data/scripts
 
-for file in $PX2_ROOT_LOCAL/Bin/Data/*
+cp -rf $PX2_ROOT_LOCAL/Bin/Data/boost.lua $GAMEPLAY_ANDROID_ROOT/assets/Data
+cp -rf $PX2_ROOT_LOCAL/Bin/Data/boost.xml $GAMEPLAY_ANDROID_ROOT/assets/Data
+
+for file in $PX2_ROOT_LOCAL/Bin/Data/fonts/*
 do
 if [ -d $file ]; then
-cp -rf $file $GAMEPLAY_ANDROID_ROOT/assets/Data
+cp -rf $file $GAMEPLAY_ANDROID_ROOT/assets/Data/fonts
 fi
-
 if [ -f $file ]; then
-cp $file $GAMEPLAY_ANDROID_ROOT/assets/Data
+cp $file $GAMEPLAY_ANDROID_ROOT/assets/Data/fonts
+fi
+done
+
+for file in $PX2_ROOT_LOCAL/Bin/Data/language/*
+do
+if [ -d $file ]; then
+cp -rf $file $GAMEPLAY_ANDROID_ROOT/assets/Data/language
+fi
+if [ -f $file ]; then
+cp $file $GAMEPLAY_ANDROID_ROOT/assets/Data/language
+fi
+done
+
+for file in $PX2_ROOT_LOCAL/Bin/Data/projects/*
+do
+if [ -d $file ]; then
+cp -rf $file $GAMEPLAY_ANDROID_ROOT/assets/Data/projects
+fi
+if [ -f $file ]; then
+cp $file $GAMEPLAY_ANDROID_ROOT/assets/Data/projects
+fi
+done
+
+for file in $PX2_ROOT_LOCAL/Bin/Data/scenes/*
+do
+if [ -d $file ]; then
+cp -rf $file $GAMEPLAY_ANDROID_ROOT/assets/Data/scenes
+fi
+if [ -f $file ]; then
+cp $file $GAMEPLAY_ANDROID_ROOT/assets/Data/scenes
+fi
+done
+
+for file in $PX2_ROOT_LOCAL/Bin/Data/scripts/*
+do
+if [ -d $file ]; then
+cp -rf $file $GAMEPLAY_ANDROID_ROOT/assets/Data/scripts
+fi
+if [ -f $file ]; then
+cp $file $GAMEPLAY_ANDROID_ROOT/assets/Data/scripts
 fi
 done
 

@@ -17,6 +17,7 @@
 // Controllers
 #include "PX2Controlledable.hpp"
 #include "PX2Controller.hpp"
+#include "PX2InterpCurveTransCtrl.hpp"
 #include "PX2KeyframeController.hpp"
 #include "PX2SkinController.hpp"
 #include "PX2TransformController.hpp"

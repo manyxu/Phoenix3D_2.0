@@ -27,6 +27,7 @@ namespace PX2
 		static bool IsInitlized ();
 		bool Initlize ();
 		bool Ternamate ();
+		void ResetRenderStates ();
 		virtual bool OnInitlize ();
 		virtual bool OnTernamate ();
 

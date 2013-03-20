@@ -574,8 +574,11 @@ void RenderViewWindow::OnCreateUIFrame (wxCommandEvent& e)
 
 	if (obj->IsExactly(UIFrame::TYPE))
 	{
+		float uiCanPercent = Project::GetSingleton().GetUICameraPercent();
+		Float2 pos = Float2(mRightDownScreenPos[0]*uiCanPercent, mRightDownScreenPos[1]*uiCanPercent);
+
 		EditSystem::GetSingleton().GetEditMap()
-			->CreateUIFrame(DynamicCast<UIFrame>(obj), mRightDownScreenPos);
+			->CreateUIFrame(DynamicCast<UIFrame>(obj), pos);
 	}
 	else
 	{
@@ -601,8 +604,11 @@ void RenderViewWindow::OnCreateUIPicBox (wxCommandEvent& e)
 
 		if (tex)
 		{
+			float uiCanPercent = Project::GetSingleton().GetUICameraPercent();
+			Float2 pos = Float2(mRightDownScreenPos[0]*uiCanPercent, mRightDownScreenPos[1]*uiCanPercent);
+
 			EditSystem::GetSingleton().GetEditMap()->CreateUIPicBox(
-				DynamicCast<UIFrame>(obj), mRightDownScreenPos, 
+				DynamicCast<UIFrame>(obj), pos, 
 				filename);
 		}
 	}
@@ -623,8 +629,11 @@ void RenderViewWindow::OnCreateUIAnimPixBox (wxCommandEvent& e)
 
 	if (obj->IsExactly(UIFrame::TYPE))
 	{
+		float uiCanPercent = Project::GetSingleton().GetUICameraPercent();
+		Float2 pos = Float2(mRightDownScreenPos[0]*uiCanPercent, mRightDownScreenPos[1]*uiCanPercent);
+
 		EditSystem::GetSingleton().GetEditMap()
-			->CreateUIAnimPicBox(DynamicCast<UIFrame>(obj), mRightDownScreenPos);
+			->CreateUIAnimPicBox(DynamicCast<UIFrame>(obj), pos);
 	}
 	else
 	{
@@ -643,8 +652,11 @@ void RenderViewWindow::OnCreateUIStaticText (wxCommandEvent& e)
 
 	if (obj->IsExactly(UIFrame::TYPE))
 	{
+		float uiCanPercent = Project::GetSingleton().GetUICameraPercent();
+		Float2 pos = Float2(mRightDownScreenPos[0]*uiCanPercent, mRightDownScreenPos[1]*uiCanPercent);
+
 		EditSystem::GetSingleton().GetEditMap()
-			->CreateUIStaticText(DynamicCast<UIFrame>(obj), mRightDownScreenPos);
+			->CreateUIStaticText(DynamicCast<UIFrame>(obj), pos);
 	}
 	else
 	{
@@ -663,8 +675,11 @@ void RenderViewWindow::OnCreateUIButton (wxCommandEvent& e)
 
 	if (obj->IsExactly(UIFrame::TYPE))
 	{
+		float uiCanPercent = Project::GetSingleton().GetUICameraPercent();
+		Float2 pos = Float2(mRightDownScreenPos[0]*uiCanPercent, mRightDownScreenPos[1]*uiCanPercent);
+
 		EditSystem::GetSingleton().GetEditMap()
-			->CreateUIButton(DynamicCast<UIFrame>(obj), mRightDownScreenPos);
+			->CreateUIButton(DynamicCast<UIFrame>(obj), pos);
 	}
 	else
 	{

@@ -39,6 +39,9 @@ namespace PX2
 		Object *CheckRes (ResHandle handle);
 		LoadState GetResLoadState (ResHandle handle);
 
+		bool SaveCachedResource (const std::string &filename);
+		bool LoadCachedResource (const std::string &filename);
+
 		/// 获得buffer,如果是Android设备从apk中获取
 		/**
 		* 你需要负责使用delete1释放获得的buffer

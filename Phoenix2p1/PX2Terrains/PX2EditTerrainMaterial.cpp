@@ -67,7 +67,7 @@ EditTerrainMaterial::EditTerrainMaterial ()
 	pshader->SetCoordinate(0, 1, Shader::SC_REPEAT);
 
 	pshader->SetSampler(1, "SamplerAlpha", Shader::ST_2D);
-	pshader->SetFilter(1, Shader::SF_NEAREST_NEAREST);
+	pshader->SetFilter(1, Shader::SF_LINEAR_LINEAR);
 	pshader->SetCoordinate(1, 0, Shader::SC_CLAMP_EDGE);
 	pshader->SetCoordinate(1, 1, Shader::SC_CLAMP_EDGE);
 
@@ -276,7 +276,7 @@ std::string EditTerrainMaterial::msVPrograms[Shader::MAX_PROFILES] =
 	"		+ gLightColour.rgb*gShineDiffuse.rgb*gLightAttenuation[3]"
 	"		* max(0.0, dot(modelNormal, -gLightModelDirection.xyz));\n"
 	"	vertexColor0.a = gShineDiffuse.a;\n"
-	"	vertexTCoord0 = vec2(modelTCoord0.x, 1.0-modelTCoord0.y);\n"
+	"	vertexTCoord0 = vec2(modelTCoord0.x, modelTCoord0.y);\n"
 	"}\n"
 };
 

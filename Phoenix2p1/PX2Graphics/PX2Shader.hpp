@@ -225,6 +225,10 @@ namespace PX2
 		int GetTextureUnit (int profile, int i) const;
 		const std::string* GetProgram (int profile) const;
 
+		// 只有在OpengES中，渲染器需要调用此接口
+		void SetTextureLoc (int i, int loc);
+		int GetTextureLoc (int i) const;
+
 	protected:
 		// 输入顶点 名称，类型，语义
 		int mNumInputs;
@@ -257,6 +261,9 @@ namespace PX2
 		std::string* mProgram[MAX_PROFILES];
 
 		static std::string msNullString;
+
+		// 不需要保存
+		int mTexLoc[8];
 	};
 
 	PX2_REGISTER_STREAM(Shader);

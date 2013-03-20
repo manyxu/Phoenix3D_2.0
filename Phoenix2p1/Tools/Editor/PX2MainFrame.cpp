@@ -56,6 +56,9 @@ using namespace PX2;
 #define ID_CREATE_BOX wxID_HIGHEST + 1251
 #define ID_CREATE_SPHERE wxID_HIGHEST + 1252
 #define ID_CREATE_EFFECT wxID_HIGHEST + 1253
+#define ID_CREATE_CTRL_TRANSFORM wxID_HIGHEST + 1254
+#define ID_CREATE_CTRL_COLOR wxID_HIGHEST + 1255
+#define ID_CREATE_CTRL_ALPHA wxID_HIGHEST + 1256
 
 #define ID_TERRAIN_NEW wxID_HIGHEST + 1401
 #define ID_TERRAIN_COMPOSEMTL wxID_HIGHEST + 1402
@@ -98,6 +101,9 @@ BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_MENU(ID_CREATE_BOX, MainFrame::OnCreateBox)
 	EVT_MENU(ID_CREATE_SPHERE, MainFrame::OnCreateSphere)
 	EVT_MENU(ID_CREATE_EFFECT, MainFrame::OnCreateEffect)
+	EVT_MENU(ID_CREATE_CTRL_TRANSFORM, MainFrame::OnCreateCtrlTransform)
+	EVT_MENU(ID_CREATE_CTRL_COLOR, MainFrame::OnCreateCtrlColor)
+	EVT_MENU(ID_CREATE_CTRL_ALPHA, MainFrame::OnCreateCtrlAlpha)
 	EVT_MENU(ID_TERRAIN_NEW, MainFrame::OnTerrainNew)
 	EVT_MENU(ID_TERRAIN_COMPOSEMTL, MainFrame::OnTerrainComposeMtl)
 	EVT_MENU(ID_TERRAIN_USELOD, MainFrame::OnTerrainUseLod)
@@ -512,6 +518,34 @@ void MainFrame::OnCreateEffect (wxCommandEvent& e)
 	EditSystem::GetSingleton().GetEditMap()->CreateEffect(APoint::ORIGIN);
 }
 //----------------------------------------------------------------------------
+void MainFrame::OnCreateCtrlTransform (wxCommandEvent& e)
+{
+	ObjectSelection *objSelection = EditSystem::GetSingleton().GetSelection();
+	int numObjects = objSelection->GetNumObjects();
+	if (1 != numObjects)
+		return;
+
+	Movable *mov = DynamicCast<Movable>(objSelection->GetObjectAt(0));
+	if (mov)
+	{
+		EditSystem::GetSingleton().GetEditMap()->CreateCurveTransCtrl(mov);
+	}
+	else
+	{
+		wxMessageBox(PX2_LM.GetValue("Tip6"),PX2_LM.GetValue("Tip0"), wxOK);
+	}
+}
+//----------------------------------------------------------------------------
+void MainFrame::OnCreateCtrlColor (wxCommandEvent& e)
+{
+
+}
+//----------------------------------------------------------------------------
+void MainFrame::OnCreateCtrlAlpha (wxCommandEvent& e)
+{
+
+}
+//----------------------------------------------------------------------------
 void MainFrame::OnTerrainNew (wxCommandEvent &e)
 {
 	DlgTerrainNew dlg(mRenderView);
@@ -678,6 +712,12 @@ void MainFrame::CreateMenu()
 	menu->Append(ID_CREATE_BOX, PX2_LM.GetValue("Box"));
 	menu->Append(ID_CREATE_SPHERE, PX2_LM.GetValue("Sphere"));
 	menu->Append(ID_CREATE_EFFECT, PX2_LM.GetValue("Effect"));
+
+	wxMenu *ctrlMenu = new wxMenu();
+	menu->AppendSubMenu(ctrlMenu, PX2_LM.GetValue("Control"));
+	ctrlMenu->Append(ID_CREATE_CTRL_TRANSFORM, PX2_LM.GetValue("TransformCurveControl"));
+	ctrlMenu->Append(ID_CREATE_CTRL_COLOR, PX2_LM.GetValue("ColorCurveControl"));
+	ctrlMenu->Append(ID_CREATE_CTRL_ALPHA, PX2_LM.GetValue("AlphaCurveControl"));
 
 	menu = new wxMenu();
 	mMainMenu->Append(menu, PX2_LM.GetValue("Terrain"));

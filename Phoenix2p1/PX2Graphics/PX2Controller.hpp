@@ -27,7 +27,7 @@ namespace PX2
 		virtual ~Controller ();
 
 		// 成员访问
-		Controlledable* GetObject () const;
+		Controlledable* GetControlledable () const;
 		double GetApplicationTime () const;
 
 		// 动画更新，applicationTime是以毫秒作计算单位的
@@ -55,7 +55,7 @@ namespace PX2
 
 public_internal:
 		/// 设置被控制的对象
-		virtual void SetObject (Controlledable* object);
+		virtual void SetControlledable (Controlledable* object);
 
 	protected:
 		/// 将应用程序的时间转换到控制器的当前时间。派生类在更新自己的时候会

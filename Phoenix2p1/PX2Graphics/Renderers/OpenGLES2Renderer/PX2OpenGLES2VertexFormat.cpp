@@ -198,6 +198,21 @@ PdrVertexFormat::PdrVertexFormat (Renderer*, const VertexFormat* vformat)
 //----------------------------------------------------------------------------
 PdrVertexFormat::~PdrVertexFormat ()
 {
+	if (mHasPosition)
+	{
+		PX2_GL_CHECK(glDisableVertexAttribArray(ALP_POSITION));
+	}
+
+	if (mHasNormal)
+	{
+		PX2_GL_CHECK(glDisableVertexAttribArray(ALP_NORMAL));
+	}
+
+	unsigned int unit;
+	for (unit = 0; unit < VertexFormat::AM_MAX_TCOORD_UNITS; ++unit)
+	{
+		PX2_GL_CHECK(glDisableVertexAttribArray(ALP_TEXCOORD0 + unit));
+	}
 }
 //----------------------------------------------------------------------------
 void PdrVertexFormat::Enable (Renderer *renderer)

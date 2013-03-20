@@ -9,6 +9,7 @@ using namespace PX2;
 
 const Float2 Float2::ZERO(0.0f, 0.0f);
 const Float2 Float2::UNIT(1.0f, 1.0f);
+const Float2 Float2::HALFUNIT(0.5f, 0.5f);
 
 //----------------------------------------------------------------------------
 Float2::Float2 ()

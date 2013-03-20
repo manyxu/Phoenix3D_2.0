@@ -1,5 +1,11 @@
 package phoenix3d.px2.library;
 
+import javax.microedition.khronos.egl.EGL10;
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.egl.EGLContext;
+import javax.microedition.khronos.egl.EGLDisplay;
+
+import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -10,19 +16,24 @@ import phoenix3d.px2.library.PX2Renderer;
 
 public class PX2GLView extends GLSurfaceView
 {
-    private PX2Renderer mRenderer;
+    private PX2Renderer mRenderer;    
 	
     public PX2GLView(PX2Activity activity)
     {
         super(activity);
-        setEGLContextClientVersion(2);
+        setEGLContextClientVersion(2);        
+        setEGLConfigChooser(true);
+        
         mRenderer = new PX2Renderer(activity);        
         setRenderer(mRenderer);
+        
+        Log.d("phoenix3d.px2", "PX2GLView::PX2GLView");
     }
    
     protected void onSizeChanged(int w, int h, int oldw, int oldh)
     {
-    	this.mRenderer.setScreenWidthAndHeight(w, h);
+    	this.mRenderer.setScreenWidthAndHeight(w, h);    	
+    	Log.d("phoenix3d.px2", "PX2Renderer::onSizeChanged");
     }
     
     public void onPause(){
@@ -39,12 +50,23 @@ public class PX2GLView extends GLSurfaceView
     
     public void onResume(){
     	
-    	super.onResume();   	 
+    	super.onResume();
+    	
+    	queueEvent(new Runnable() {
+
+            public void run() {  
+            	PX2Natives.nativeOnResume();
+            }
+        });
+    }
+    
+    public void onDestory(){ 
     	
     	queueEvent(new Runnable() {
 
             public void run() {
-            	PX2Natives.nativeOnResume();
+            //	PX2Natives.nativeOnTerm();
+            //	Log.d("phoenix3d.px2", "PX2GLView::onDestory");
             }
         });
     }
@@ -152,4 +174,5 @@ public class PX2GLView extends GLSurfaceView
     	}
         return super.onKeyDown(keyCode, event);
     }
+
 }

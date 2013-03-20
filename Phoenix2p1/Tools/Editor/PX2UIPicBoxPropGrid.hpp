@@ -34,6 +34,7 @@ namespace PX2Editor
 
 		PX2::UIPicBoxPtr mUIPicBox;
 		std::string mObjectType;
+		PX2::Float2 mAnchorPoint;
 		PX2::Float3 mColor;
 		float mAlpha;
 		float mWidth;

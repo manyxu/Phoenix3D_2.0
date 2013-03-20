@@ -121,10 +121,16 @@ PdrTexture2D::~PdrTexture2D ()
 	PX2_GL_CHECK(glDeleteTextures(1, &mTexture));
 }
 //----------------------------------------------------------------------------
-void PdrTexture2D::Enable (Renderer*,int textureUnit)
+void PdrTexture2D::Enable (Renderer* renderer, int textureUnit)
+{
+	assertion(false, "OpenglES should not call this function.\n");
+}
+//----------------------------------------------------------------------------
+void PdrTexture2D::Enable (Renderer* renderer, int textureUnit, int loc)
 {
 	PX2_GL_CHECK(glActiveTexture(GL_TEXTURE0 + textureUnit));
 	PX2_GL_CHECK(glBindTexture(GL_TEXTURE_2D, mTexture));
+	PX2_GL_CHECK(glUniform1i(loc, textureUnit));
 }
 //----------------------------------------------------------------------------
 void PdrTexture2D::Disable (Renderer*,int textureUnit)

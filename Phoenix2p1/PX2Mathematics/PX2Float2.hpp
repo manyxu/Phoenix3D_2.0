@@ -33,6 +33,7 @@ namespace PX2
 
 		static const Float2 ZERO;   //< (0,0)
 		static const Float2 UNIT;	//< (1,1)
+		static const Float2 HALFUNIT; //< (0.5,0.5)
 	};
 
 }

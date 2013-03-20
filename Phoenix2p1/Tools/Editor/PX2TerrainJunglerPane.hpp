@@ -36,6 +36,9 @@ namespace PX2Editor
 		wxTextCtrl *mYIndex;
 		wxTextCtrl *mWidthText;
 		wxTextCtrl *mHeightText;
+		wxTextCtrl *mLowerText;
+		wxTextCtrl *mFrequencyText;
+		wxTextCtrl *mStrengthText;
 		wxStaticBitmap *mJungleTexBitmap;
 		wxListBox *mJungleList;
 	};

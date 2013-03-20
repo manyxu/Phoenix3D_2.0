@@ -40,6 +40,20 @@ mIconId(iconId)
 			}
 		}
 	}
+
+	Controlledable *ctrlAble = DynamicCast<Controlledable>(mObject);
+	if (ctrlAble)
+	{
+		int numCtrls = ctrlAble->GetNumControllers();
+		for (int i=0; i<numCtrls; i++)
+		{
+			Controller *ctrl = ctrlAble->GetController(i);
+			if (ctrl)
+			{
+				AddChild(ctrl);
+			}
+		}
+	}
 }
 //-----------------------------------------------------------------------------
 ObjectTreeItem::~ObjectTreeItem ()

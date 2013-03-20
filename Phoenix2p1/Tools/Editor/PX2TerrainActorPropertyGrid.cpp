@@ -9,6 +9,7 @@
 #include "PX2TerrainActor.hpp"
 #include "PX2LanguageManager.hpp"
 #include "PX2EditSystem.hpp"
+#include "PX2ObjectNameProperty.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 
@@ -148,10 +149,9 @@ void TerrainActorPropertyGrid::RefreshOnActor ()
 	page->AddProperty(PX2_LM.GetValue("General"), Property::PT_CATEGORY, 0);
 
 	PX2::Actor *actor = DynamicCast<Actor>(mObject);
-	mActorName = actor->GetName();
+	Property *propName = new0 ObjectNameProperty(page, PX2_LM.GetValue("Name"), actor);
 	mActorType = actor->GetRttiType().GetName();
-	Property *propName = new0 Property(page, PX2_LM.GetValue("Name"),
-		Property::PT_STRING, &mActorName);
+
 	Property *propType = new0 Property(page, PX2_LM.GetValue("Type"),
 		Property::PT_STRING, &mActorType, false);
 

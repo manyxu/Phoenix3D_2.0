@@ -18,7 +18,7 @@ import phoenix3d.px2.library.PX2Natives;
 
 public class PX2Activity extends Activity
 {	
-	 protected PX2GLView mGLView;
+	 public PX2GLView mGLView;
 	 private static String mPackageName;
 	
 	 protected void onCreate(Bundle savedInstanceState) 
@@ -36,9 +36,10 @@ public class PX2Activity extends Activity
 		 }
 		 else 
 		 {
-			Log.d("PX2Activity", "Don't support gles2.0");
+			Log.d("phoenix3d.px2", "Don't support gles2.0");
 			finish();
 		 }
+		 Log.d("phoenix3d.px2", "PX2Activity::onCreate");
 	 }
 	 
 	public static String GetPX2PackageName ()
@@ -66,7 +67,7 @@ public class PX2Activity extends Activity
 	     }
 	     
 	     apkFilePath = appInfo.sourceDir;
-	     Log.w("PX2_APK_PATH", apkFilePath);
+	     Log.w("phoenix3d.px2", apkFilePath);
 	     
 	     // set apkPath
 	     PX2Natives.nativeSetResourcePath(apkFilePath);

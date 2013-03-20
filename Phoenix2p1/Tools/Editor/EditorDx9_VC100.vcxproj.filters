@@ -58,6 +58,9 @@
     <Filter Include="Inspector\Sky">
       <UniqueIdentifier>{89b22429-f42e-4f89-8620-5374bf228835}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Inspector\Controller">
+      <UniqueIdentifier>{9ef1d533-6b9a-41f8-91e6-bfa40638bd6c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PX2EditorApp.hpp">
@@ -236,6 +239,15 @@
     <ClInclude Include="PX2SkyActorPropertyGrid.hpp">
       <Filter>Inspector\Sky</Filter>
     </ClInclude>
+    <ClInclude Include="PX2ControllerInspector.hpp">
+      <Filter>Inspector\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ControllerPropertyGrid.hpp">
+      <Filter>Inspector\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="PX2ControllerKeyPointsPanel.hpp">
+      <Filter>Inspector\Controller</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PX2EditorApp.cpp">
@@ -412,6 +424,15 @@
     </ClCompile>
     <ClCompile Include="PX2SkyActorPropertyGrid.cpp">
       <Filter>Inspector\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ControllerInspector.cpp">
+      <Filter>Inspector\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ControllerPropertyGrid.cpp">
+      <Filter>Inspector\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="PX2ControllerKeyPointsPanel.cpp">
+      <Filter>Inspector\Controller</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

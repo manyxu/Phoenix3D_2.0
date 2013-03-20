@@ -13,7 +13,7 @@ inline double Controller::GetRunTime ()
 	return mApplicationTime - mInitedApplicationIime;
 }
 //----------------------------------------------------------------------------
-inline Controlledable* Controller::GetObject () const
+inline Controlledable* Controller::GetControlledable () const
 {
     return mObject;
 }

@@ -5,6 +5,21 @@
 */
 
 //----------------------------------------------------------------------------
+inline void Object::SetCurIOFlag (int flag)
+{
+	msCurIOFlag = flag;
+}
+//----------------------------------------------------------------------------
+inline int Object::GetCurIOFlag () 
+{
+	return msCurIOFlag;
+}
+//----------------------------------------------------------------------------
+inline const std::string &Object::GetCurSaveVersion() const
+{
+	return mCurSaveVersion;
+}
+//----------------------------------------------------------------------------
 inline const std::string &Object::GetVersion() const
 {
 	return mVersion;

@@ -56,6 +56,8 @@ namespace PX2
 	// ProjSceneUI
 	PX2_EVENT(SelectPSU)
 	PX2_EVENT(UICameraPercentChanged)
+	// AttachControl
+	PX2_EVENT(AttachControl)
 	PX2_DECLARE_EVENT_END(EditorEventSpace)
 
 }

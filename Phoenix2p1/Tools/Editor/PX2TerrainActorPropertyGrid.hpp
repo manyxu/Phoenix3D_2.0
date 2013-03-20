@@ -38,7 +38,6 @@ namespace PX2Editor
 		TerrainActorPropertyGrid ();
 		void RefreshOnActor ();
 
-		std::string mActorName;
 		std::string mActorType;
 		bool mEnableTerrainEdit;
 		bool mShowPageGridLine;

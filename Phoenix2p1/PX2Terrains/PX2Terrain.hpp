@@ -49,6 +49,11 @@ namespace PX2
 			float width, float height, float lower);
 		void RemoveJunglers (Texture2D *tex, APoint center, float radius, int num);
 
+		void SetJunglerFrequency (float fre);
+		float GetJunglerFrequency ();
+		void SetJunglerStrength (float strength);
+		float GetJunglerStrength ();
+
 	protected:
 		Terrain(bool useSimpleMtl);
 
@@ -64,6 +69,8 @@ namespace PX2
 		EditTerrainMaterialPtr mMtlSimple;
 
 		ShinePtr mShine;
+		float mJunglerFrequency;
+		float mJunglerStrength;
 
 	private:
 		Terrain();

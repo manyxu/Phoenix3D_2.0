@@ -34,7 +34,7 @@ EM_E_EmitterTranslate::~EM_E_EmitterTranslate ()
 void EM_E_EmitterTranslate::UpdateParticleEmitter (
 	ParticleEmitterController &ctrl, double ctrlTime)
 {
-	ParticleEmitter *emitter = DynamicCast<ParticleEmitter>(ctrl.GetObject());
+	ParticleEmitter *emitter = DynamicCast<ParticleEmitter>(ctrl.GetControlledable());
 	if (!emitter)
 		return;
 

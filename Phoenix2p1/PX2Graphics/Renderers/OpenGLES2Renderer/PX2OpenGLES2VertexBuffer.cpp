@@ -16,17 +16,7 @@ mVBuffer(vbuffer)
 {
 	PX2_GL_CHECK(glGenBuffers(1, &mBuffer));
 
-	PX2_GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, mBuffer));
-
-	int eleSize = vbuffer->GetElementSize();
-	int eleNum = vbuffer->GetNumElements();
-	int totalSize = eleSize * eleNum;
-	int numBytes = vbuffer->GetNumBytes();
-
-	PX2_GL_CHECK(glBufferData(GL_ARRAY_BUFFER, vbuffer->GetNumBytes(), vbuffer->GetData(),
-		gOGLBufferUsage[vbuffer->GetUsage()]));
-
-	PX2_GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, 0));
+	Lock(Buffer::BL_WRITE_ONLY);
 }
 //----------------------------------------------------------------------------
 PdrVertexBuffer::~PdrVertexBuffer ()
@@ -48,11 +38,6 @@ void PdrVertexBuffer::Disable (Renderer*, unsigned int)
 void* PdrVertexBuffer::Lock (Buffer::Locking mode)
 {
 	PX2_GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, mBuffer));
-
-	int eleSize = mVBuffer->GetElementSize();
-	int eleNum = mVBuffer->GetNumElements();
-	int totalSize = eleSize * eleNum;
-	int numBytes = mVBuffer->GetNumBytes();
 
 	PX2_GL_CHECK(glBufferData(GL_ARRAY_BUFFER, mVBuffer->GetNumBytes(), mVBuffer->GetData(),
 		gOGLBufferUsage[mVBuffer->GetUsage()]));

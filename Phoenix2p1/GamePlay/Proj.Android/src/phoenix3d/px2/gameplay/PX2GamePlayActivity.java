@@ -21,6 +21,7 @@ public class PX2GamePlayActivity extends PX2Activity
         super.onCreate(savedInstanceState);
     }
     
+    @Override
 	 protected void onPause() {  
 		 Log.d("phoenix3d.px2", "PX2GamePlayActivity::onPause");
 	     super.onPause();	   
@@ -31,7 +32,13 @@ public class PX2GamePlayActivity extends PX2Activity
 	 protected void onResume() {
 		 Log.d("phoenix3d.px2", "PX2GamePlayActivity::onResume");
 	     mGLView.onResume();
-		 super.onResume();		
+		 super.onResume();
+	 }
+	 
+	 @Override
+	 public void onDestroy() {
+		 mGLView.onDestory();
+	     super.onDestroy();
 	 }
     
     static

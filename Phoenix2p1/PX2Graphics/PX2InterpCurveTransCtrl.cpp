@@ -19,6 +19,9 @@ InterpCurveTransController::InterpCurveTransController (
 	:
 TransformController(localTransform)
 {
+	mScales.AddPoint(0.0f, Float3::UNIT, Float3::ZERO, Float3::ZERO, ICM_CURVE_AUTO);
+	mRotates.AddPoint(0.0f, Float3::ZERO, Float3::ZERO, Float3::ZERO, ICM_CURVE_AUTO);
+	mTrans.AddPoint(0.0f, Float3::ZERO, Float3::ZERO, Float3::ZERO, ICM_CURVE_AUTO);
 }
 //----------------------------------------------------------------------------
 InterpCurveTransController::~InterpCurveTransController ()
@@ -45,6 +48,7 @@ bool InterpCurveTransController::Update (double applicationTime)
 
 	Movable* movable = StaticCast<Movable>(mObject);
 	movable->LocalTransform = mLocalTransform;
+
 	return true;
 }
 //----------------------------------------------------------------------------
@@ -63,6 +67,9 @@ void InterpCurveTransController::Load (InStream& source)
 	PX2_BEGIN_DEBUG_STREAM_LOAD(source);
 
 	TransformController::Load(source);
+	source.ReadAggregate(mScales);
+	source.ReadAggregate(mRotates);
+	source.ReadAggregate(mTrans);
 
 	PX2_END_DEBUG_STREAM_LOAD(InterpCurveTransController, source);
 }
@@ -87,6 +94,9 @@ void InterpCurveTransController::Save (OutStream& target) const
 	PX2_BEGIN_DEBUG_STREAM_SAVE(target);
 
 	TransformController::Save(target);
+	target.WriteAggregate(mScales);
+	target.WriteAggregate(mRotates);
+	target.WriteAggregate(mTrans);
 
 	PX2_END_DEBUG_STREAM_SAVE(InterpCurveTransController, target);
 }
@@ -94,7 +104,9 @@ void InterpCurveTransController::Save (OutStream& target) const
 int InterpCurveTransController::GetStreamingSize () const
 {
 	int size = TransformController::GetStreamingSize();
-
+	size += mScales.GetStreamSize();
+	size += mRotates.GetStreamSize();
+	size += mTrans.GetStreamSize();
 	return size;
 }
 //----------------------------------------------------------------------------

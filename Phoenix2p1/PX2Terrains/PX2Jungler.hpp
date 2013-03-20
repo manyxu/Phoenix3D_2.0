@@ -44,12 +44,17 @@ namespace PX2
 		Jungler (Texture2D *tex, int maxNum=500, JunglerType type=JT_PLANE);
 		virtual ~Jungler ();
 
+		MaterialInstance *GetMtlInst ();
 		Texture2D *GetTexture ();
+		Shine *GetShine();
 
 		void Add (std::vector<JObj> objs);
 		void Remove (std::vector<int> indexs);
 		int GetNum ();
-		const APoint &GetPos (int i); 
+		const APoint &GetPos (int i);
+
+		void SetJunglerFrequency (float fre);
+		void SetJunglerStrength (float strength);
 
 	protected:
 		Jungler ();
@@ -60,6 +65,8 @@ namespace PX2
 
 		JunglerType mJunglerType;
 		int mMaxNum;
+		MaterialInstancePtr mMtlInst;
+		ShinePtr mShine;
 		Texture2DPtr mTexture;
 		std::vector<APoint> mPoses;
 		std::vector<AVector> mNormals;

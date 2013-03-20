@@ -100,6 +100,22 @@ float TerrainPage::GetHeight (float x, float y) const
 	return height;
 }
 //----------------------------------------------------------------------------
+void TerrainPage::SetJunglerFrequency (float fre)
+{
+	for (int i=0; i<(int)mJunglers.size(); i++)
+	{
+		mJunglers[i]->SetJunglerFrequency(fre);
+	}
+}
+//----------------------------------------------------------------------------
+void TerrainPage::SetJunglerStrength (float strength)
+{
+	for (int i=0; i<(int)mJunglers.size(); i++)
+	{
+		mJunglers[i]->SetJunglerStrength(strength);
+	}
+}
+//----------------------------------------------------------------------------
 void TerrainPage::AddJunglers (Texture2D *tex, std::vector<JObj> objs)
 {
 	if (0 == (int)objs.size())
@@ -128,15 +144,51 @@ void TerrainPage::RemoveJunglers (Texture2D *tex, APoint center, float radius,
 	if (0 == (int)mJunglers.size())
 		return;
 
-	JunglerPtr junglerP = mJunglersMap[tex];
-	if (!junglerP)
+	if (0 == tex)
+	{
+		std::vector<JunglerPtr>::iterator it = mJunglers.begin();
+		for (; it!=mJunglers.end(); it++)
+		{
+			RemoveJunglerPoints((*it), center, radius, num);
+		}
+	}
+	else
+	{
+		JunglerPtr junglerP = mJunglersMap[tex];
+		Jungler *jungler = junglerP;
+
+		if (jungler)
+		{
+			RemoveJunglerPoints(jungler, center, radius, num);
+		}
+	}
+
+	std::vector<JunglerPtr>::iterator it = mJunglers.begin();
+	for (; it!=mJunglers.end();)
+	{
+		if (0==(*it)->GetNum())
+		{
+			mJunglersMap.erase((*it)->GetTexture());
+			it = mJunglers.erase(it);
+		}
+		else
+		{
+			it++;
+		}
+	}
+}
+//----------------------------------------------------------------------------
+void TerrainPage::RemoveJunglerPoints (Jungler *jungler, APoint center, float radius, 
+	int num)
+{
+	if (!jungler)
 		return;
 
 	// 范围内个数
 	std::vector<int> indexs;
-	for (int i=0; i<junglerP->GetNum(); i++)
+	for (int i=0; i<jungler->GetNum(); i++)
 	{
-		const APoint &pos = junglerP->GetPos(i);
+		const APoint &pos = jungler->GetPos(i);
 		AVector dir = pos - center;
 		if (dir.Length() < radius)
 		{
@@ -156,22 +208,7 @@ void TerrainPage::RemoveJunglers (Texture2D *tex, APoint center, float radius,
 		}
 	}
 
-	junglerP->Remove(indexsRemoves);
-
-	if (0 == junglerP->GetNum())
-	{
-		std::vector<JunglerPtr>::iterator it = mJunglers.begin();
-		for (; it!=mJunglers.end(); it++)
-		{
-			if (junglerP == *it)
-			{
-				mJunglers.erase(it);
-				mJunglersMap.erase(tex);
-
-				return;
-			}
-		}
-	}
+	jungler->Remove(indexsRemoves);
 }
 //----------------------------------------------------------------------------
 void TerrainPage::GetVisibleSet (Culler& culler, bool noCull)
@@ -183,6 +220,7 @@ void TerrainPage::GetVisibleSet (Culler& culler, bool noCull)
 		culler.Insert(mJunglers[i]);
 	}
 }
+//----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
 // 持久化支持

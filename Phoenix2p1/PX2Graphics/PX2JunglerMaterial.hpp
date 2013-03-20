@@ -33,9 +33,9 @@ namespace PX2
 			Light *dirLight=0, Shine* shine=0);
 
 	private:
-		static int msDx9VRegisters[7];
-		static int msOglVRegisters[7];
-		static int msOpenGLES2VRegisters[7];
+		static int msDx9VRegisters[8];
+		static int msOglVRegisters[8];
+		static int msOpenGLES2VRegisters[8];
 		static int* msVRegisters[Shader::MAX_PROFILES];
 		static std::string msVPrograms[Shader::MAX_PROFILES];
 		static int msAllPTextureUnits[1];

@@ -29,6 +29,7 @@ namespace PX2
 		PdrTexture2D (Renderer* renderer, const Texture2D* texture);
 		~PdrTexture2D ();
 
+		void Enable (Renderer* renderer, int textureUnit, int loc);
 		void Enable (Renderer* renderer, int textureUnit);
 		void Disable (Renderer* renderer, int textureUnit);
 		void* Lock (int level, Buffer::Locking mode);

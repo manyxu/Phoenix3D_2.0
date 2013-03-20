@@ -135,6 +135,13 @@ Renderer::~Renderer ()
 	}
 }
 //----------------------------------------------------------------------------
+void Renderer::InitRenderStates ()
+{
+	mData->mCurrentRS.Initialize(mDefaultAlphaProperty, mDefaultCullProperty,
+		mDefaultDepthProperty, mDefaultOffsetProperty, mDefaultStencilProperty,
+		mDefaultWireProperty);
+}
+//----------------------------------------------------------------------------
 // Pass №ЬАн
 //----------------------------------------------------------------------------
 void Renderer::Bind (const MaterialPass *pass)
@@ -592,6 +599,13 @@ void Renderer::Resize (int width, int height)
 	glViewport(param[0], param[1], width, height);
 }
 //----------------------------------------------------------------------------
+void Renderer::ResizeWindow (int width, int height)
+{
+	mData->mCurrentRS.Initialize(mDefaultAlphaProperty, mDefaultCullProperty,
+		mDefaultDepthProperty, mDefaultOffsetProperty, mDefaultStencilProperty,
+		mDefaultWireProperty);
+}
+//----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
 // Support for clearing the color, depth, and stencil buffers.
@@ -779,9 +793,7 @@ void Renderer::DrawPrimitive (const Renderable* visual)
 
 			PX2_BEGIN_QUERY(query);
 
-			// vertex data
-			glDrawElements(gOGLPrimitiveType[type], numIndices, indexType,
-				indexData);
+			PX2_GL_CHECK(glDrawElements(gOGLPrimitiveType[type], numIndices, indexType, indexData));
 
 			PX2_END_QUERY(query, numPixelsDrawn);
 		}
@@ -805,7 +817,7 @@ void Renderer::DrawPrimitive (const Renderable* visual)
 		{
 			PX2_BEGIN_QUERY(query);
 
-			glDrawArrays(GL_LINES, 0, 2*numSegments);
+			PX2_GL_CHECK(glDrawArrays(GL_LINES, 0, 2*numSegments));
 
 			PX2_END_QUERY(query, numPixelsDrawn);
 		}
@@ -817,7 +829,7 @@ void Renderer::DrawPrimitive (const Renderable* visual)
 		{
 			PX2_BEGIN_QUERY(query);
 
-			glDrawArrays(GL_POINTS, 0, numPoints);
+			PX2_GL_CHECK(glDrawArrays(GL_POINTS, 0, numPoints));
 
 			PX2_END_QUERY(query, numPixelsDrawn);
 		}

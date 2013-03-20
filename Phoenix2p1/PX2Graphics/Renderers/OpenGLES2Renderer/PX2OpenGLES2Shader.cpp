@@ -38,6 +38,7 @@ void PdrShader::SetSamplerState (Renderer* renderer, const Shader* shader,
 		Shader::SamplerType type = shader->GetSamplerType(i);
 		GLenum target = gOGLTextureTarget[type];
 		int textureUnit = shader->GetTextureUnit(profile, i);
+		int textureLoc = shader->GetTextureLoc(i);
 		const Texture* texture = parameters->GetTexture(i);
 		RendererData::SamplerState& current = currentSS[textureUnit];
 
@@ -47,7 +48,7 @@ void PdrShader::SetSamplerState (Renderer* renderer, const Shader* shader,
 			break;
 		case Shader::ST_2D:
 			{
-				renderer->Enable((const Texture2D*)texture, textureUnit);
+				renderer->Enable((const Texture2D*)texture, textureUnit, textureLoc);
 				current.GetCurrent(target);
 
 				GLint wrap0 = gOGLWrapMode[shader->GetCoordinate(i, 0)];

@@ -23,9 +23,8 @@ namespace PX2
 
 	public:
 		// size = 2^p + 1, p <= 7 (size = 3, 5, 9, 17, 33, 65, 129)
-		TerrainPage (int size, float* heights,
-			const Float2& origin, float spacing);
-
+		TerrainPage (int size, float* heights, const Float2& origin,
+			float spacing);
 		virtual ~TerrainPage ();
 
 		// ¸ß³Ì·ÃÎÊ
@@ -43,6 +42,9 @@ namespace PX2
 		float GetHeight (float x, float y) const;
 		int GetJunglerNum (); 
 		Jungler *GetJungler (int i);
+
+		void SetJunglerFrequency (float fre);
+		void SetJunglerStrength (float strength);
 
 	protected:
 		inline float GetX (int x) const;
@@ -65,6 +67,7 @@ public_internal:
 		void AddJunglers (Texture2D *tex, std::vector<JObj> objs);
 		void RemoveJunglers (Texture2D *tex, APoint center, float radius, 
 			int num);
+		void RemoveJunglerPoints (Jungler *jungler, APoint center, float radius, int num);
 		std::vector<JObj> mAddingJObjs;
 	};
 

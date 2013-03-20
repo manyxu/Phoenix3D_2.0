@@ -31,6 +31,7 @@ namespace PX2
 		inline GLuint GetTexture () { return mTexture; }
 
 		void Enable (Renderer* renderer, int textureUnit);
+		void Enable (Renderer* renderer, int textureUnit, int loc);
 		void Disable (Renderer* renderer, int textureUnit);
 		void* Lock (int level, Buffer::Locking mode);
 		void Unlock (int level);

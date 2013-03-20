@@ -25,9 +25,6 @@ namespace PX2
 		virtual ~UserConstant ();
 
 		virtual void Update (const Renderable* renderable, const Camera* camera);
-
-	protected:
-		Float4 mValue;
 	};
 
 	PX2_REGISTER_STREAM(UserConstant);

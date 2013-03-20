@@ -20,6 +20,7 @@ UIPicBox::UIPicBox (std::string filename)
 	:
 mPicBoxType(PBT_MAX_TYPE),
 mIsDynamic(false),
+mAnchorPoint(0.0f, 0.0f),
 mSize(128, 64),
 mCorSize(6, 6),
 mUV0(0.0f, 0.0f),
@@ -84,6 +85,12 @@ void UIPicBox::SetDynamic (bool dyn)
 {
 	mIsDynamic = dyn;
 	SetPicBoxType(mPicBoxType);
+}
+//----------------------------------------------------------------------------
+void UIPicBox::SetAnchorPoint (Float2 anchor)
+{
+	mAnchorPoint = anchor;
+	UpdateBuffers();
 }
 //----------------------------------------------------------------------------
 void UIPicBox::SetSize (float width, float height)
@@ -280,12 +287,15 @@ void UIPicBox::UpdateVertexBuffer ()
 {
 	VertexBufferAccessor vba(GetVertexFormat(), GetVertexBuffer());
 
+	float anchorWidth = mAnchorPoint[0]*mSize.Width;
+	float anchorHeight = mAnchorPoint[1]*mSize.Height;
+
 	if (PBT_NORMAL == mPicBoxType)
 	{
-		vba.Position<Float3>(0) = Float3::ZERO;
-		vba.Position<Float3>(1) = Float3(mSize.Width, 0.0f, 0.0f);
-		vba.Position<Float3>(2) = Float3(0.0f, 0.0f, mSize.Height);
-		vba.Position<Float3>(3) = Float3(mSize.Width, 0.0f, mSize.Height);
+		vba.Position<Float3>(0) = Float3(0.0f-anchorWidth, 0.0f, 0.0f-anchorHeight);
+		vba.Position<Float3>(1) = Float3(mSize.Width-anchorWidth, 0.0f, 0.0f-anchorHeight);
+		vba.Position<Float3>(2) = Float3(0.0f-anchorWidth, 0.0f, mSize.Height-anchorHeight);
+		vba.Position<Float3>(3) = Float3(mSize.Width-anchorWidth, 0.0f, mSize.Height-anchorHeight);
 
 		vba.Color<Float4>(0, 0) = mColor;
 		vba.Color<Float4>(0, 1) = mColor;
@@ -362,37 +372,37 @@ void UIPicBox::UpdateVertexBuffer ()
 			uv[15] = Float2(u3, v0);
 		}
 
-		vba.Position<Float3>(0) = Float3::ZERO;
+		vba.Position<Float3>(0) = Float3(0.0f-anchorWidth, 0.0f, 0.0f-anchorHeight);
 		vba.TCoord<Float2>(0, 0) = uv[0];
-		vba.Position<Float3>(1) = Float3(mCorSize.Width, 0.0f, 0.0f);
+		vba.Position<Float3>(1) = Float3(mCorSize.Width-anchorWidth, 0.0f, 0.0f-anchorHeight);
 		vba.TCoord<Float2>(0, 1) = uv[1];
-		vba.Position<Float3>(2) = Float3(mSize.Width-mCorSize.Width, 0.0f, 0.0f);
+		vba.Position<Float3>(2) = Float3(mSize.Width-mCorSize.Width-anchorWidth, 0.0f, 0.0f-anchorHeight);
 		vba.TCoord<Float2>(0, 2) = uv[2];
-		vba.Position<Float3>(3) = Float3(mSize.Width, 0.0f, 0.0f);
+		vba.Position<Float3>(3) = Float3(mSize.Width-anchorWidth, 0.0f, 0.0f-anchorHeight);
 		vba.TCoord<Float2>(0, 3) = uv[3];
-		vba.Position<Float3>(4) = Float3(0.0f, 0.0f, mCorSize.Height);
+		vba.Position<Float3>(4) = Float3(0.0f-anchorWidth, 0.0f, mCorSize.Height-anchorHeight);
 		vba.TCoord<Float2>(0, 4) = uv[4];
-		vba.Position<Float3>(5) = Float3(mCorSize.Width, 0.0f, mCorSize.Height);
+		vba.Position<Float3>(5) = Float3(mCorSize.Width-anchorWidth, 0.0f, mCorSize.Height-anchorHeight);
 		vba.TCoord<Float2>(0, 5) = uv[5];
-		vba.Position<Float3>(6) = Float3(mSize.Width-mCorSize.Width, 0.0f, mCorSize.Height);
+		vba.Position<Float3>(6) = Float3(mSize.Width-mCorSize.Width-anchorWidth, 0.0f, mCorSize.Height-anchorHeight);
 		vba.TCoord<Float2>(0, 6) = uv[6];
-		vba.Position<Float3>(7) = Float3(mSize.Width, 0.0f, mCorSize.Height);
+		vba.Position<Float3>(7) = Float3(mSize.Width-anchorWidth, 0.0f, mCorSize.Height-anchorHeight);
 		vba.TCoord<Float2>(0, 7) = uv[7];
-		vba.Position<Float3>(8) = Float3(0.0f, 0.0f, mSize.Height-mCorSize.Height);
+		vba.Position<Float3>(8) = Float3(0.0f-anchorWidth, 0.0f, mSize.Height-mCorSize.Height-anchorHeight);
 		vba.TCoord<Float2>(0, 8) = uv[8];
-		vba.Position<Float3>(9) = Float3(mCorSize.Width, 0.0f, mSize.Height-mCorSize.Height);
+		vba.Position<Float3>(9) = Float3(mCorSize.Width-anchorWidth, 0.0f, mSize.Height-mCorSize.Height-anchorHeight);
 		vba.TCoord<Float2>(0, 9) = uv[9];
-		vba.Position<Float3>(10) = Float3(mSize.Width-mCorSize.Width, 0.0f, mSize.Height-mCorSize.Height);
+		vba.Position<Float3>(10) = Float3(mSize.Width-mCorSize.Width-anchorWidth, 0.0f, mSize.Height-mCorSize.Height-anchorHeight);
 		vba.TCoord<Float2>(0, 10) = uv[10];
-		vba.Position<Float3>(11) = Float3(mSize.Width, 0.0f, mSize.Height-mCorSize.Height);
+		vba.Position<Float3>(11) = Float3(mSize.Width-anchorWidth, 0.0f, mSize.Height-mCorSize.Height-anchorHeight);
 		vba.TCoord<Float2>(0, 11) = uv[11];
-		vba.Position<Float3>(12) = Float3(0.0f, 0.0f, mSize.Height);
+		vba.Position<Float3>(12) = Float3(0.0f-anchorWidth, 0.0f, mSize.Height-anchorHeight);
 		vba.TCoord<Float2>(0, 12) = uv[12];
-		vba.Position<Float3>(13) = Float3(mCorSize.Width, 0.0f, mSize.Height);
+		vba.Position<Float3>(13) = Float3(mCorSize.Width-anchorWidth, 0.0f, mSize.Height-anchorHeight);
 		vba.TCoord<Float2>(0, 13) = uv[13];
-		vba.Position<Float3>(14) = Float3(mSize.Width-mCorSize.Width, 0.0f, mSize.Height);
+		vba.Position<Float3>(14) = Float3(mSize.Width-mCorSize.Width-anchorWidth, 0.0f, mSize.Height-anchorHeight);
 		vba.TCoord<Float2>(0, 14) = uv[14];
-		vba.Position<Float3>(15) = Float3(mSize.Width, 0.0f, mSize.Height);
+		vba.Position<Float3>(15) = Float3(mSize.Width-anchorWidth, 0.0f, mSize.Height-anchorHeight);
 		vba.TCoord<Float2>(0, 15) = uv[15];
 		vba.Color<Float4>(0, 0) = mColor;
 		vba.Color<Float4>(0, 1) = mColor;
@@ -521,6 +531,7 @@ void UIPicBox::Load (InStream& source)
 
 	source.ReadEnum(mPicBoxType);
 	source.ReadBool(mIsDynamic);
+	source.ReadAggregate(mAnchorPoint),
 	source.ReadAggregate(mSize);
 	source.ReadAggregate(mCorSize);
 	source.ReadAggregate(mUV0);
@@ -571,6 +582,7 @@ void UIPicBox::Save (OutStream& target) const
 
 	target.WriteEnum(mPicBoxType);
 	target.WriteBool(mIsDynamic);
+	target.WriteAggregate(mAnchorPoint);
 	target.WriteAggregate(mSize);
 	target.WriteAggregate(mCorSize);
 	target.WriteAggregate(mUV0);
@@ -590,6 +602,7 @@ int UIPicBox::GetStreamingSize () const
 	int size = TriMesh::GetStreamingSize();
 	size += PX2_ENUMSIZE(mPicBoxType);
 	size += PX2_BOOLSIZE(mIsDynamic);
+	size += sizeof(mAnchorPoint),
 	size += sizeof(mSize);
 	size += sizeof(mCorSize);
 	size += sizeof(mUV0);

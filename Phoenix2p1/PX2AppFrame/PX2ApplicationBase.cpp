@@ -240,6 +240,15 @@ void ApplicationBase::DoLeave ()
 {
 }
 //----------------------------------------------------------------------------
+void ApplicationBase::ResetRenderStates ()
+{
+	if (mRenderer)
+	{
+		mRenderer->InitRenderStates();
+		PX2_LOG_INFO("ApplicationBase::ResetRenderStates.\n");
+	}
+}
+//----------------------------------------------------------------------------
 bool ApplicationBase::Ternamate ()
 {
 	PX2_LOG_INFO("Begin ApplicationBase::Ternamate.\n");

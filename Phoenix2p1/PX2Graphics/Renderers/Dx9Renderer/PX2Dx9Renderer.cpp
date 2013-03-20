@@ -49,6 +49,13 @@ Renderer::~Renderer ()
 	Terminate();
 }
 //----------------------------------------------------------------------------
+void Renderer::InitRenderStates ()
+{
+	mData->SetDefaultProperties(mDefaultAlphaProperty, mDefaultCullProperty,
+		mDefaultDepthProperty, mDefaultOffsetProperty, mDefaultStencilProperty,
+		mDefaultWireProperty);
+}
+//----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
 // ‰÷»æ◊¥Ã¨π‹¿Ì

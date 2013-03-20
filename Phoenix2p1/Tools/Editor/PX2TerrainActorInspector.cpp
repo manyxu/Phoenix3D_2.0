@@ -145,6 +145,7 @@ void TerrainActorInspector::OnSize(wxSizeEvent& e)
 
 		mBrushFold = mFoldPaneBar->AddFoldPanel(PX2_LM.GetValue("Brush"));
 		mTerrainBrush = new TerrainBrushPanel(mBrushFold.GetParent());
+		mTerrainBrush->SetSize(size.GetWidth(), size.GetHeight()/5);
 		mFoldPaneBar->AddFoldPanelWindow(mBrushFold, mTerrainBrush);
 
 		mEditFold = mFoldPaneBar->AddFoldPanel(PX2_LM.GetValue("Edit"));

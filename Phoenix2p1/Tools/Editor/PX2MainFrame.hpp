@@ -59,6 +59,9 @@ namespace PX2Editor
 		void OnCreateBox (wxCommandEvent& e);
 		void OnCreateSphere (wxCommandEvent& e);
 		void OnCreateEffect (wxCommandEvent& e);
+		void OnCreateCtrlTransform (wxCommandEvent& e);
+		void OnCreateCtrlColor (wxCommandEvent& e);
+		void OnCreateCtrlAlpha (wxCommandEvent& e);
 		void OnTerrainNew (wxCommandEvent &e);
 		void OnTerrainComposeMtl (wxCommandEvent &e);
 		void OnTerrainUseLod (wxCommandEvent &e);

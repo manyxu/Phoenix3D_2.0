@@ -12,6 +12,7 @@
 #include "PX2SkyActorInspector.hpp"
 #include "PX2UIInspector.hpp"
 #include "PX2GeneralInspector.hpp"
+#include "PX2ControllerInspector.hpp"
 #include "PX2EditSystem.hpp"
 using namespace PX2Editor;
 using namespace PX2;
@@ -130,6 +131,10 @@ void InspectorWindow::DoExecute (PX2::Event *event)
 			insp->TryRefreshModulePoints(data);
 		}
 	}
+	else if (EditorEventSpace::IsEqual(event, EditorEventSpace::AttachControl))
+	{
+		ChangeToWindow("Control", 3);
+	}
 }
 //----------------------------------------------------------------------------
 void InspectorWindow::DoLeave ()
@@ -198,6 +203,12 @@ void InspectorWindow::ChangeToWindow (std::string str, int userData)
 		inspec->SetActor(DynamicCast<SkyActor>(mObject));
 		mCurWindow = inspec;
 	}
+	else if ("Control" == str)
+	{
+		ControllerInspector *inspec = new ControllerInspector(this);
+		inspec->SetController(DynamicCast<Controller>(mObject));
+		mCurWindow = inspec;
+	}
 
 	if (mCurWindow)
 	{
@@ -248,6 +259,10 @@ void InspectorWindow::SetObject (PX2::Object *obj)
 	else if (mObject->IsDerived(UIStaticText::TYPE))
 	{
 		ChangeToWindow("UI");
+	}
+	else if (mObject->IsDerived(Controller::TYPE))
+	{
+		ChangeToWindow("Control");
 	}
 }
 //----------------------------------------------------------------------------

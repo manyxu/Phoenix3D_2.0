@@ -10,7 +10,8 @@ using namespace PX2;
 //----------------------------------------------------------------------------
 Object::Object ()
 	:
-mVersion("PX2_VERSION_1_0")
+mVersion("PX2_VERSION_1_0"),
+mCurSaveVersion("PX2_VERSION_1_0")
 {
 }
 //----------------------------------------------------------------------------
@@ -97,6 +98,7 @@ void Object::GetAllObjectsByName (const std::string& name,
 //----------------------------------------------------------------------------
 Object::FactoryMap* Object::msFactories = 0;
 bool Object::msStreamRegistered = false;
+int Object::msCurIOFlag = 0;
 //----------------------------------------------------------------------------
 Object* Object::Factory (InStream&)
 {
@@ -142,6 +144,9 @@ Object::FactoryFunction Object::Find (const std::string& name)
 }
 //----------------------------------------------------------------------------
 Object::Object (LoadConstructor)
+	:
+mVersion("PX2_VERSION_1_0"),
+mCurSaveVersion("PX2_VERSION_1_0")
 {
 }
 //----------------------------------------------------------------------------
@@ -192,7 +197,7 @@ void Object::Save (OutStream& target) const
 	target.WriteUniqueID(this);
 
 	// 写入version
-	target.WriteString(mVersion);
+	target.WriteString(mCurSaveVersion);
 
 	// 资源路径
 	target.WriteString(mResourcePath);

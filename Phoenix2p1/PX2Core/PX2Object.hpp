@@ -76,8 +76,14 @@ namespace PX2
 		Object* Copy (const std::string& uniqueNameAppend) const;
 		Object* ShareCopy (const std::string& uniqueNameAppend,
 			bool f=true, bool v=true, bool i=true, bool m=true);
+		static void SetCurIOFlag (int flag); // 1write otherwise read
+		static int GetCurIOFlag ();
+		const std::string &GetCurSaveVersion() const;
 		const std::string &GetVersion() const;
 	protected:
+		static int msCurIOFlag;
+		// 你必须确保mCurSaveVersion和mVersion大小是一样的
+		std::string mCurSaveVersion;
 		std::string mVersion;
 
 		// Constructor used by the loading system.

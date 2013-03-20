@@ -191,6 +191,7 @@ namespace PX2
 		void Unbind (const Texture2D* texture);
 		static void UnbindAll (const Texture2D* texture);
 		void Enable (const Texture2D* texture, int textureUnit);
+		void Enable (const Texture2D* texture, int textureUnit, int loc); // opengles2
 		void Disable (const Texture2D* texture, int textureUnit);
 		void* Lock (const Texture2D* texture, int level,
 			Buffer::Locking mode);
@@ -434,6 +435,8 @@ namespace PX2
 			int numMultisamples);
 
 		~Renderer ();
+
+		void InitRenderStates ();
 
 		// Pass №ЬАн
 		void Bind (const MaterialPass *pass);

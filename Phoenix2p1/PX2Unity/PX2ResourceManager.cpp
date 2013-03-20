@@ -289,6 +289,53 @@ ResourceManager::LoadState ResourceManager::GetResLoadState (ResHandle handle)
 	return rec.State;
 }
 //----------------------------------------------------------------------------
+bool ResourceManager::SaveCachedResource (const std::string &filename)
+{
+	ScopedCS scopeCS(mResTableMutex);
+
+	OutStream outPut;
+
+	ResTable::iterator it = mResTable.begin();
+	for (; it!=mResTable.end(); it++)
+	{
+		Object *obj = it->second.Obj;
+		if (obj)
+		{
+			outPut.Insert(obj);
+		}
+	}
+
+	return outPut.Save(filename);
+}
+//----------------------------------------------------------------------------
+bool ResourceManager::LoadCachedResource (const std::string &filename)
+{
+	ScopedCS scopeCS(mResTableMutex);
+
+	InStream inPut;
+
+	if (inPut.Load(filename))
+	{
+		int numObjects = inPut.GetNumObjects();
+		for (int i=0; i<numObjects; i++)
+		{
+			Object *obj = inPut.GetObjectAt(i);
+			if (obj)
+			{
+				std::string filename = obj->GetResourcePath();
+				LoadRecord rec;
+				rec.Filename = filename;
+				rec.Obj = obj;
+				mResTable.insert(std::pair<std::string, LoadRecord>(filename, rec));
+			}
+		}
+
+		return true;
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
 std::string ResourceManager::GetWriteablePath ()
 {
 #if defined(_WIN32) || defined(WIN32)

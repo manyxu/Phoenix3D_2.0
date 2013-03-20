@@ -679,6 +679,23 @@ void Renderer::Enable (const Texture2D* texture, int textureUnit)
 	pdrTexture->Enable(this, textureUnit);
 }
 //----------------------------------------------------------------------------
+void Renderer::Enable (const Texture2D* texture, int textureUnit, int loc)
+{
+	Texture2DMap::iterator iter = mTexture2Ds.find(texture);
+	PdrTexture2D* pdrTexture;
+	if (iter != mTexture2Ds.end())
+	{
+		pdrTexture = iter->second;
+	}
+	else
+	{
+		pdrTexture = new0 PdrTexture2D(this, texture);
+		mTexture2Ds[texture] = pdrTexture;
+	}
+
+	pdrTexture->Enable(this, textureUnit, loc);
+}
+//----------------------------------------------------------------------------
 void Renderer::Disable (const Texture2D* texture, int textureUnit)
 {
 	Texture2DMap::iterator iter = mTexture2Ds.find(texture);

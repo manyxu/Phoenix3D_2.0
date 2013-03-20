@@ -15,6 +15,11 @@ inline UIPicBox::PicBoxType UIPicBox::GetPicBoxType ()
 	return mPicBoxType;
 }
 //----------------------------------------------------------------------------
+inline Float2 UIPicBox::GetAnchorPoint ()
+{
+	return mAnchorPoint;
+}
+//----------------------------------------------------------------------------
 inline const Sizef &UIPicBox::GetSize () const
 {
 	return mSize;

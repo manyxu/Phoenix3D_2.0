@@ -351,7 +351,15 @@ std::string StandardESMaterial_Default::msPPrograms[Shader::MAX_PROFILES] =
 	"uniform sampler2D gDiffuseSampler;\n"
 	"void main()\n"
 	"{\n"
-	"	gl_FragColor = texture2D(gDiffuseSampler, vertexTCoord0)*vertexTCoord1;\n"
+	"	mediump vec4 color = texture2D(gDiffuseSampler, vertexTCoord0)*vertexTCoord1;\n"
+	"	if (color.a < 0.25)\n"
+	"	{"
+	"		discard;\n"
+	"	}"
+	"	else"
+	"	{"
+	"		gl_FragColor = color;\n"
+	"	}"
 	"}\n"
 };
 //----------------------------------------------------------------------------

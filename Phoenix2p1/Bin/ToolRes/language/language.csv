@@ -86,7 +86,8 @@ Lights,光源,Lights
 Environments,环境,Environments
 Junglers,植被,Junglers
 Tip2,你确定退出?,Are you sure exiting?
-KeyPoints,关键值,KeyPoints
+KeyPoints,关键点,KeyPoints
+KeyPointsValue,关键值,KeyPointsValue
 Particles,粒子,Particles
 Beam,波带,Beam
 Ribbon,条带,Ribbon
@@ -222,3 +223,11 @@ LargeSunLightness,太阳外亮度,LargeSunLightness
 HazeTopAltitude,仰角参数,HazeTopAltitude
 DayToSunsetSharpness,黄昏参数,DayToSunsetSharpness
 Weather,天气,Weather
+AnchorPoint,锚点,AnchorPoint
+AnchorX,X,X
+AnchorZ,Z,Z
+Control,控制器,Control
+TransformCurveControl,方位曲线控制器,TransformCurveControl
+ColorCurveControl,颜色曲线控制器,ColorCurveControl
+AlphaCurveControl,透明曲线控制器,AlphaCurveControl
+Control,控制器,Control
