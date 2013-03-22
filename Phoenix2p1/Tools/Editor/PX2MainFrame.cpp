@@ -56,9 +56,11 @@ using namespace PX2;
 #define ID_CREATE_BOX wxID_HIGHEST + 1251
 #define ID_CREATE_SPHERE wxID_HIGHEST + 1252
 #define ID_CREATE_EFFECT wxID_HIGHEST + 1253
-#define ID_CREATE_CTRL_TRANSFORM wxID_HIGHEST + 1254
-#define ID_CREATE_CTRL_COLOR wxID_HIGHEST + 1255
-#define ID_CREATE_CTRL_ALPHA wxID_HIGHEST + 1256
+#define ID_CREATE_CTRL_SCALE wxID_HIGHEST + 1254
+#define ID_CREATE_CTRL_ROTATE wxID_HIGHEST + 1255
+#define ID_CREATE_CTRL_TRANSLATE wxID_HIGHEST + 1256
+#define ID_CREATE_CTRL_COLOR wxID_HIGHEST + 1257
+#define ID_CREATE_CTRL_ALPHA wxID_HIGHEST + 1258
 
 #define ID_TERRAIN_NEW wxID_HIGHEST + 1401
 #define ID_TERRAIN_COMPOSEMTL wxID_HIGHEST + 1402
@@ -101,7 +103,9 @@ BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_MENU(ID_CREATE_BOX, MainFrame::OnCreateBox)
 	EVT_MENU(ID_CREATE_SPHERE, MainFrame::OnCreateSphere)
 	EVT_MENU(ID_CREATE_EFFECT, MainFrame::OnCreateEffect)
-	EVT_MENU(ID_CREATE_CTRL_TRANSFORM, MainFrame::OnCreateCtrlTransform)
+	EVT_MENU(ID_CREATE_CTRL_SCALE, MainFrame::OnCreateCtrlScale)
+	EVT_MENU(ID_CREATE_CTRL_ROTATE, MainFrame::OnCreateCtrlRotate)
+	EVT_MENU(ID_CREATE_CTRL_TRANSLATE, MainFrame::OnCreateCtrlTranslate)
 	EVT_MENU(ID_CREATE_CTRL_COLOR, MainFrame::OnCreateCtrlColor)
 	EVT_MENU(ID_CREATE_CTRL_ALPHA, MainFrame::OnCreateCtrlAlpha)
 	EVT_MENU(ID_TERRAIN_NEW, MainFrame::OnTerrainNew)
@@ -518,7 +522,7 @@ void MainFrame::OnCreateEffect (wxCommandEvent& e)
 	EditSystem::GetSingleton().GetEditMap()->CreateEffect(APoint::ORIGIN);
 }
 //----------------------------------------------------------------------------
-void MainFrame::OnCreateCtrlTransform (wxCommandEvent& e)
+void MainFrame::OnCreateCtrlScale (wxCommandEvent& e)
 {
 	ObjectSelection *objSelection = EditSystem::GetSingleton().GetSelection();
 	int numObjects = objSelection->GetNumObjects();
@@ -528,7 +532,43 @@ void MainFrame::OnCreateCtrlTransform (wxCommandEvent& e)
 	Movable *mov = DynamicCast<Movable>(objSelection->GetObjectAt(0));
 	if (mov)
 	{
-		EditSystem::GetSingleton().GetEditMap()->CreateCurveTransCtrl(mov);
+		EditSystem::GetSingleton().GetEditMap()->CreateCurveScaleCtrl(mov);
+	}
+	else
+	{
+		wxMessageBox(PX2_LM.GetValue("Tip6"),PX2_LM.GetValue("Tip0"), wxOK);
+	}
+}
+//----------------------------------------------------------------------------
+void MainFrame::OnCreateCtrlRotate (wxCommandEvent& e)
+{
+	ObjectSelection *objSelection = EditSystem::GetSingleton().GetSelection();
+	int numObjects = objSelection->GetNumObjects();
+	if (1 != numObjects)
+		return;
+
+	Movable *mov = DynamicCast<Movable>(objSelection->GetObjectAt(0));
+	if (mov)
+	{
+		EditSystem::GetSingleton().GetEditMap()->CreateCurveRotateCtrl(mov);
+	}
+	else
+	{
+		wxMessageBox(PX2_LM.GetValue("Tip6"),PX2_LM.GetValue("Tip0"), wxOK);
+	}
+}
+//----------------------------------------------------------------------------
+void MainFrame::OnCreateCtrlTranslate (wxCommandEvent& e)
+{
+	ObjectSelection *objSelection = EditSystem::GetSingleton().GetSelection();
+	int numObjects = objSelection->GetNumObjects();
+	if (1 != numObjects)
+		return;
+
+	Movable *mov = DynamicCast<Movable>(objSelection->GetObjectAt(0));
+	if (mov)
+	{
+		EditSystem::GetSingleton().GetEditMap()->CreateCurveTranslateCtrl(mov);
 	}
 	else
 	{
@@ -715,7 +755,10 @@ void MainFrame::CreateMenu()
 
 	wxMenu *ctrlMenu = new wxMenu();
 	menu->AppendSubMenu(ctrlMenu, PX2_LM.GetValue("Control"));
-	ctrlMenu->Append(ID_CREATE_CTRL_TRANSFORM, PX2_LM.GetValue("TransformCurveControl"));
+	ctrlMenu->Append(ID_CREATE_CTRL_SCALE, PX2_LM.GetValue("InterpCurveCtrlScale"));
+	ctrlMenu->Append(ID_CREATE_CTRL_ROTATE, PX2_LM.GetValue("InterpCurveCtrlRotate"));
+	ctrlMenu->Append(ID_CREATE_CTRL_TRANSLATE, PX2_LM.GetValue("InterpCurveCtrlTranslate"));
+	ctrlMenu->AppendSeparator();
 	ctrlMenu->Append(ID_CREATE_CTRL_COLOR, PX2_LM.GetValue("ColorCurveControl"));
 	ctrlMenu->Append(ID_CREATE_CTRL_ALPHA, PX2_LM.GetValue("AlphaCurveControl"));
 

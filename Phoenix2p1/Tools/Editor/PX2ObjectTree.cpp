@@ -279,8 +279,6 @@ void ObjectTree::DoExecute (PX2::Event *event)
 	}
 	else if (EditorEventSpace::IsEqual(event, EditorEventSpace::AttachControl))
 	{
-		using PX2::Controller;
-		using PX2::Controlledable;
 		Object *obj = event->GetData<Object*>();
 		Controller *ctrl = DynamicCast<Controller>(obj);
 		if (ctrl)
@@ -295,11 +293,23 @@ void ObjectTree::DoExecute (PX2::Event *event)
 			}
 		}
 	}
+	else if (EditorEventSpace::IsEqual(event, EditorEventSpace::DetachControl))
+	{
+		Object *obj = event->GetData<Object*>();
+		ObjectTreeItem *item = GetItem(obj);
+		if (item)
+		{
+			ObjectTreeItem *parentItem = item->GetParent();
+			if (parentItem)
+			{
+				parentItem->RemoveChild(obj);
+			}
+		}
+	}
 }
 //-----------------------------------------------------------------------------
 void ObjectTree::DoLeave ()
 {
-
 }
 //-----------------------------------------------------------------------------
 void ObjectTree::RefreshProject ()

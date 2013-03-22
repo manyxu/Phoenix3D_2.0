@@ -18,10 +18,18 @@ namespace PX2Editor
 		ControllerKeyPointsPanel (wxWindow *parent);
 		virtual ~ControllerKeyPointsPanel ();
 
+		void SetControl (PX2::Controller *ctrl);
+		void RefreshControl ();
+
+		void OnListCtrlItemSelected(wxListEvent& event);
+
 	protected:
 		DECLARE_EVENT_TABLE();
 
 		ControllerKeyPointsPanel ();
+		
+		wxListCtrl *mListCtrl;
+		PX2::ControllerPtr mControl;
 	};
 
 }

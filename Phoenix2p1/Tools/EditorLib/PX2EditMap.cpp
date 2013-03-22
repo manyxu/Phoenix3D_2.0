@@ -16,7 +16,9 @@
 #include "PX2Project.hpp"
 #include "PX2UIManager.hpp"
 #include "PX2StringHelp.hpp"
-#include "PX2InterpCurveTransCtrl.hpp"
+#include "PX2InterpCurveScaleCtrl.hpp"
+#include "PX2InterpCurveRotateCtrl.hpp"
+#include "PX2InterpCurveTranslateCtrl.hpp"
 using namespace PX2Editor;
 using namespace PX2;
 
@@ -490,20 +492,57 @@ void EditMap::CreateUIButton (PX2::Node *parent, PX2::Float2 posScreen)
 	EventWorld::GetSingleton().BroadcastingLocalEvent(event);
 }
 //----------------------------------------------------------------------------
-void EditMap::CreateCurveTransCtrl (PX2::Movable *mov)
+void EditMap::CreateCurveScaleCtrl (PX2::Movable *mov)
 {
 	if (!mov)
 		return;
 
-	InterpCurveTransController *ictCtrl = new0 InterpCurveTransController(
-		mov->LocalTransform);
-	ictCtrl->SetName("InterpCurveTransController");
+	Float3 initScale = mov->LocalTransform.GetScale();
+	InterpCurveScaleController *ictCtrl = new0 InterpCurveScaleController(
+		initScale);
+	ictCtrl->SetName("InterpCurveScaleController");
 	mov->AttachController(ictCtrl);
 
-	Event *event = 0;
-	event = EditorEventSpace::CreateEventX(EditorEventSpace::AttachControl);
-	event->SetData<Object*>(ictCtrl);
-	EventWorld::GetSingleton().BroadcastingLocalEvent(event);
+	Event *ent = 0;
+	ent = EditorEventSpace::CreateEventX(EditorEventSpace::AttachControl);
+	ent->SetData<Object*>(ictCtrl);
+	EventWorld::GetSingleton().BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void EditMap::CreateCurveRotateCtrl (PX2::Movable *mov)
+{
+	if (!mov)
+		return;
+
+	Float3 initRotate;
+	Matrix3f matRotate = mov->LocalTransform.GetRotate();
+	matRotate.ExtractEulerXYZ(initRotate[0], initRotate[1], initRotate[2]);
+	InterpCurveRotateController *ictCtrl = new0 InterpCurveRotateController(
+		initRotate);
+	ictCtrl->SetName("InterpCurveRotateController");
+	mov->AttachController(ictCtrl);
+
+	Event *ent = 0;
+	ent = EditorEventSpace::CreateEventX(EditorEventSpace::AttachControl);
+	ent->SetData<Object*>(ictCtrl);
+	EventWorld::GetSingleton().BroadcastingLocalEvent(ent);
+}
+//----------------------------------------------------------------------------
+void EditMap::CreateCurveTranslateCtrl (PX2::Movable *mov)
+{
+	if (!mov)
+		return;
+
+	Float3 initTrans = mov->LocalTransform.GetTranslate();
+	InterpCurveTranslateController *ictCtrl = new0 InterpCurveTranslateController(
+		initTrans);
+	ictCtrl->SetName("InterpCurveTranslateController");
+	mov->AttachController(ictCtrl);
+
+	Event *ent = 0;
+	ent = EditorEventSpace::CreateEventX(EditorEventSpace::AttachControl);
+	ent->SetData<Object*>(ictCtrl);
+	EventWorld::GetSingleton().BroadcastingLocalEvent(ent);
 }
 //----------------------------------------------------------------------------
 void EditMap::CreateEffect(PX2::APoint pos)
@@ -570,6 +609,30 @@ bool EditMap::RemoveUI (PX2::Object *obj)
 			(EditorEventSpace::RemoveUI);
 		event->SetData<Object*>(obj);
 		EventWorld::GetSingleton().BroadcastingLocalEvent(event);
+
+		return true;
+	}
+
+	return false;
+}
+//----------------------------------------------------------------------------
+bool EditMap::RemoveCtrl (PX2::Object *obj)
+{
+	if (!Project::GetSingletonPtr())
+		return false;
+
+	Controller *ctrl = DynamicCast<Controller>(obj);
+	if (!ctrl)
+		return false;
+
+	Controlledable *ctrlAble = ctrl->GetControlledable();
+	if (ctrlAble)
+	{
+		ctrlAble->DetachController(ctrl);
+
+		Event *ent = EditorEventSpace::CreateEventX(EditorEventSpace::DetachControl);
+		ent->SetData<Object*>(obj);
+		EventWorld::GetSingleton().BroadcastingLocalEvent(ent);
 
 		return true;
 	}

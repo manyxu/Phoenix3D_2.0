@@ -50,7 +50,9 @@
     <ClCompile Include="PX2ImageProcessing.cpp" />
     <ClCompile Include="PX2ImageProcessing2.cpp" />
     <ClCompile Include="PX2IndexBuffer.cpp" />
-    <ClCompile Include="PX2InterpCurveTransCtrl.cpp" />
+    <ClCompile Include="PX2InterpCurveRotateCtrl.cpp" />
+    <ClCompile Include="PX2InterpCurveScaleCtrl.cpp" />
+    <ClCompile Include="PX2InterpCurveTranslateCtrl.cpp" />
     <ClCompile Include="PX2JunglerMaterial.cpp" />
     <ClCompile Include="PX2KeyframeController.cpp" />
     <ClCompile Include="PX2Light.cpp" />
@@ -161,7 +163,8 @@
     <ClInclude Include="PX2CullProperty.hpp" />
     <ClInclude Include="PX2CurveMesh.hpp" />
     <ClInclude Include="PX2CurveSegment.hpp" />
-    <ClInclude Include="PX2InterpCurveTransCtrl.hpp" />
+    <ClInclude Include="PX2InterpCurveRotateCtrl.hpp" />
+    <ClInclude Include="PX2InterpCurveScaleCtrl.hpp" />
     <ClInclude Include="PX2DepthProperty.hpp" />
     <ClInclude Include="PX2DlodNode.hpp" />
     <ClInclude Include="PX2Float2Array.hpp" />
@@ -174,6 +177,7 @@
     <ClInclude Include="PX2ImageProcessing.hpp" />
     <ClInclude Include="PX2ImageProcessing2.hpp" />
     <ClInclude Include="PX2IndexBuffer.hpp" />
+    <ClInclude Include="PX2InterpCurveTranslateCtrl.hpp" />
     <ClInclude Include="PX2JunglerMaterial.hpp" />
     <ClInclude Include="PX2KeyframeController.hpp" />
     <ClInclude Include="PX2Light.hpp" />
@@ -284,7 +288,6 @@
     <None Include="PX2ImageProcessing.inl" />
     <None Include="PX2ImageProcessing2.inl" />
     <None Include="PX2IndexBuffer.inl" />
-    <None Include="PX2InterpCurveTransCtrl.inl" />
     <None Include="PX2KeyframeController.inl" />
     <None Include="PX2Light.inl" />
     <None Include="PX2LightNode.inl" />

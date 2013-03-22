@@ -12,7 +12,7 @@ using namespace PX2;
 
 IMPLEMENT_DYNAMIC_CLASS(ControllerPropertyGrid, ObjectPropertyGrid)
 BEGIN_EVENT_TABLE(ControllerPropertyGrid, ObjectPropertyGrid)
-EVT_PG_CHANGED(PGT_EFFECT, ControllerPropertyGrid::OnPropertyGridChange )
+EVT_PG_CHANGED(PGT_CONTROL, ControllerPropertyGrid::OnPropertyGridChange )
 END_EVENT_TABLE()
 //-----------------------------------------------------------------------------
 ControllerPropertyGrid::ControllerPropertyGrid (wxWindow *parent)

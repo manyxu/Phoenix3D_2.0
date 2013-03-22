@@ -231,3 +231,9 @@ TransformCurveControl,方位曲线控制器,TransformCurveControl
 ColorCurveControl,颜色曲线控制器,ColorCurveControl
 AlphaCurveControl,透明曲线控制器,AlphaCurveControl
 Control,控制器,Control
+Index,索引,Index
+Time(s),时间(s),Time(s)
+InterpCurveCtrlTranslate,位置曲线控制器,InterpCurveCtrlTranslate
+InterpCurveCtrlScale,缩放曲线控制器,InterpCurveCtrlScale
+InterpCurveCtrlRotate,旋转曲线控制器,InterpCurveCtrlRotate
+Rotate,旋转,Rotate

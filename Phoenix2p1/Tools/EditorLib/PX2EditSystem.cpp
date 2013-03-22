@@ -217,6 +217,10 @@ bool EditSystem::DeleteSelection ()
 		{
 			deleted = true;
 		}
+		else if (GetEditMap()->RemoveCtrl(obj))
+		{
+			deleted = true;
+		}
 	}
 
 	if (deleted)

@@ -769,15 +769,85 @@
 	</object>
 	<object class="wxPanel" name="KeyPoints">
 		<style>wxTAB_TRAVERSAL</style>
-		<size>257,290</size>
+		<size>257,345</size>
 		<object class="wxBoxSizer">
 			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxBoxSizer">
+					<orient>wxVERTICAL</orient>
+					<object class="sizeritem">
+						<option>0</option>
+						<flag>wxALIGN_CENTER_HORIZONTAL|wxEXPAND</flag>
+						<border>5</border>
+						<object class="wxButton" name="mCtrlCurve">
+							<size>-1,20</size>
+							<label>Curve</label>
+							<default>0</default>
+						</object>
+					</object>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxBoxSizer">
+					<orient>wxVERTICAL</orient>
+					<object class="sizeritem">
+						<option>0</option>
+						<flag>wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxTOP|wxBOTTOM</flag>
+						<border>5</border>
+						<object class="wxStaticLine" name="m_staticline5">
+							<style>wxLI_HORIZONTAL</style>
+						</object>
+					</object>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>0</option>
+				<flag>wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxBoxSizer">
+					<orient>wxHORIZONTAL</orient>
+					<object class="sizeritem">
+						<option>1</option>
+						<flag>wxALIGN_CENTER_VERTICAL|wxBOTTOM</flag>
+						<border>5</border>
+						<object class="wxButton" name="m_button25">
+							<size>-1,20</size>
+							<label>New</label>
+							<default>0</default>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<option>1</option>
+						<flag>wxALIGN_CENTER_VERTICAL|wxBOTTOM</flag>
+						<border>5</border>
+						<object class="wxButton" name="m_button26">
+							<size>-1,20</size>
+							<label>Delete</label>
+							<default>0</default>
+						</object>
+					</object>
+				</object>
+			</object>
 			<object class="sizeritem">
 				<option>1</option>
 				<flag>wxEXPAND</flag>
 				<border>5</border>
-				<object class="wxListCtrl" name="mKeyPointsList">
-					<style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
+				<object class="wxBoxSizer">
+					<orient>wxHORIZONTAL</orient>
+					<object class="sizeritem">
+						<option>1</option>
+						<flag>wxEXPAND</flag>
+						<border>5</border>
+						<object class="wxListCtrl" name="mKeyPointsList">
+							<style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
+						</object>
+					</object>
 				</object>
 			</object>
 		</object>

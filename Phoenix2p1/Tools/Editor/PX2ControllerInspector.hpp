@@ -11,6 +11,7 @@
 #include "foldpanelbar.h"
 #include "PX2ControllerPropertyGrid.hpp"
 #include "PX2ControllerKeyPointsPanel.hpp"
+#include "PX2ControllerKeyPointsValuePropertyGrid.hpp"
 
 namespace PX2Editor
 {
@@ -34,6 +35,7 @@ namespace PX2Editor
 		wxFoldPanelBar *mFoldPaneBar;
 		ControllerPropertyGrid *mPropertyGrid;
 		ControllerKeyPointsPanel *mKeyPointsPanel;
+		ControllerKeyPointsValuePropertyGrid *mKPVPropertyGrid;
 	};
 
 }
